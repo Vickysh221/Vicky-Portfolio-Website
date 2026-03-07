@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
+import H5DocContent from './H5DocContent';
 
 const cornerStyles: React.CSSProperties[] = [
   { top: '-1px', left: '-1px', borderTop: '8px solid #c8a96e', borderLeft: '8px solid #c8a96e' },
@@ -146,6 +147,7 @@ export default function PageTemplate({ route }: Props) {
 
   const isLevel1 = meta.parent === null;
   const accentColor = meta.color;
+  const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
 
   const handleBack = () => {
     if (meta.parent) {
@@ -284,6 +286,8 @@ export default function PageTemplate({ route }: Props) {
               ))}
             </div>
           </>
+        ) : isBTypeSubPage ? (
+          <H5DocContent route={route} accentColor={accentColor} />
         ) : (
           <div
             style={{
