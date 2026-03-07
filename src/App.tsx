@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Portfolio from './Portfolio';
-import DocPage from './DocPage';
+import UnityCameraCasePage from './UnityCameraCasePage';
 
 function getHashPath(): string {
   return window.location.hash.replace(/^#\/?/, '');
@@ -15,11 +15,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const segments = hashPath.split('/').filter(Boolean);
-  const isBTypeSubPage = segments.length >= 2;
-
-  if (isBTypeSubPage) {
-    return <DocPage routePath={hashPath} />;
+  if (hashPath === 'jidu-hmi/unity3d-camera') {
+    return <UnityCameraCasePage routePath={hashPath} />;
   }
 
   return <Portfolio />;
