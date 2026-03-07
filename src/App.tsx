@@ -3,10 +3,11 @@ import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { SceneManager } from './three/SceneManager';
 import { useRouteTransition } from './hooks/useRouteTransition';
-import { PAGE_META } from './constants/routeDepth';
+import { PAGE_META, getSlideCount } from './constants/routeDepth';
 import Portfolio from './Portfolio';
 import ProjectCard from './pages/ProjectCard';
 import PageTemplate from './pages/PageTemplate';
+import SubPageCarousel from './pages/SubPageCarousel';
 
 const PROJECT_COLORS = ['#c8a96e', '#7a9e8e', '#8b7db5'];
 
@@ -77,32 +78,56 @@ export default function App() {
       />
 
       {/* Sub-page DOM overlay — shown for all non-home routes (chapter pages) */}
-      {isSubPage && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 40,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            perspective: '1000px',
-            pointerEvents: 'auto',
-          }}
-        >
+      {isSubPage && (() => {
+        const count = getSlideCount(location.pathname);
+        const meta = PAGE_META[location.pathname];
+        if (count > 1) {
+          return (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 40,
+                perspective: '1800px',
+                perspectiveOrigin: '50% 50%',
+                pointerEvents: 'none',
+              }}
+            >
+              <SubPageCarousel
+                route={location.pathname}
+                accentColor={meta.color}
+                count={count}
+              />
+            </div>
+          );
+        }
+        return (
           <div
-            className="panel-enter-3d"
             style={{
-              width: '820px',
-              height: '680px',
-              maxWidth: '90vw',
-              maxHeight: '88vh',
+              position: 'absolute',
+              inset: 0,
+              zIndex: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              perspective: '1000px',
+              pointerEvents: 'auto',
             }}
           >
-            <PageTemplate route={location.pathname} />
+            <div
+              className="panel-enter-3d"
+              style={{
+                width: '820px',
+                height: '680px',
+                maxWidth: '90vw',
+                maxHeight: '88vh',
+              }}
+            >
+              <PageTemplate route={location.pathname} />
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* React portals → CSS3D orbit card inner divs */}
       {initialized &&

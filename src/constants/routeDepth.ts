@@ -19,6 +19,17 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/personal/language-diary": -17000,
 };
 
+export const SLIDE_COUNTS: Record<string, number> = {
+  '/jidu-hmi/unity3d-camera': 5,
+  '/jidu-hmi/3d-map': 3,
+  '/phoenix-ai/fuli-plus': 3,
+  '/personal/language-diary': 5,
+};
+
+export function getSlideCount(route: string): number {
+  return SLIDE_COUNTS[route] ?? 1;
+}
+
 export interface PageMeta {
   title: string;
   subtitle: string;
