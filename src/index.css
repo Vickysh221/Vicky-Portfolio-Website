@@ -1,3 +1,122 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #c8a96e;
+  --color-gold-dim: #a09070;
+  --color-gold-dark: #9a8870;
+  --color-gold-deep: #6a5a40;
+  --color-gold-shadow: #4a3a28;
+  --color-cream: #f0e8d8;
+  --color-cream-dim: #d4c4a0;
+  --color-cream-muted: #c0b090;
+  --color-cream-dark: #8a7a60;
+  --color-bg-base: #0e0c09;
+  --color-bg-card: #080604;
+  --font-family-serif: Georgia, 'Times New Roman', serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0e0c09;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .fade-up {
+    animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .panel-enter-3d {
+    animation: panelEnter3D 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-style: preserve-3d;
+  }
+
+  .mini-panel-enter {
+    animation: miniPanelEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-style: preserve-3d;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Full-size panel: camera pull-back → zoom-in → settle orthographic */
+@keyframes panelEnter3D {
+  0% {
+    opacity: 0;
+    transform: translateZ(-420px) scale(0.72);
+    filter: blur(8px);
+  }
+  58% {
+    opacity: 1;
+    transform: translateZ(28px) scale(1.018);
+    filter: blur(0);
+  }
+  80% {
+    transform: translateZ(-5px) scale(0.999);
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Mini panel: subtle depth entry */
+@keyframes miniPanelEnter {
+  0% {
+    opacity: 0;
+    transform: translateZ(-110px) scale(0.9) translateY(8px);
+    filter: blur(4px);
+  }
+  65% {
+    opacity: 1;
+    transform: translateZ(6px) scale(1.004) translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(0) scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Thin scrollbar for detail panels */
+.panel-scroll::-webkit-scrollbar {
+  width: 2px;
+}
+.panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.panel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(200, 169, 110, 0.18);
+  border-radius: 1px;
+}
+.panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 169, 110, 0.35);
+}

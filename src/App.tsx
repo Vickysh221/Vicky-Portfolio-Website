@@ -1,12 +1,5 @@
-import React from 'react';
-import BasicScene from './scenes/BasicScene';
+import Portfolio from './Portfolio';
 
-const App: React.FC = () => {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <BasicScene />
-    </div>
-  );
-};
-
-export default App;
+export default function App() {
+  return <Portfolio />;
+}
