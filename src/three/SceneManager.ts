@@ -79,7 +79,7 @@ export class SceneManager {
     dir.position.set(300, 500, 500);
     this.scene.add(dir);
 
-    this._createCards(projectColors);
+    this._createCards(projectColors.length);
     this._createParticles();
 
     window.addEventListener('resize', this._handleResize);
@@ -98,42 +98,21 @@ export class SceneManager {
   /** Returns the initial orbit position for card index i out of count total. */
   private _getOrbitPosition(i: number, count: number): THREE.Vector3 {
     const angle = (i / count) * Math.PI * 2;
-    const radius = 320;
+    const radius = 280;
     return new THREE.Vector3(
       Math.cos(angle) * radius,
-      Math.sin(angle * 0.5) * 80,
-      Math.sin(angle) * radius * 0.6,
+      Math.sin(angle * 0.5) * 50,
+      Math.sin(angle) * radius * 0.5,
     );
   }
 
-  private _createCards(projectColors: string[]) {
-    const count = projectColors.length;
+  private _createCards(count: number) {
     for (let i = 0; i < count; i++) {
+      // Invisible physics anchor — CSS3D cards provide all visuals
       const group = new THREE.Group();
       const pos = this._getOrbitPosition(i, count);
       group.position.copy(pos);
       group.userData = { baseAngle: (i / count) * Math.PI * 2, index: i, isActive: false };
-
-      const geo = new THREE.BoxGeometry(160, 220, 4);
-      const mat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(projectColors[i]),
-        roughness: 0.3,
-        metalness: 0.1,
-        transparent: true,
-        opacity: 0.85,
-      });
-      group.add(new THREE.Mesh(geo, mat));
-
-      const stripGeo = new THREE.BoxGeometry(160, 8, 5);
-      const stripMat = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.15,
-      });
-      const strip = new THREE.Mesh(stripGeo, stripMat);
-      strip.position.y = 95;
-      group.add(strip);
-
       this.scene.add(group);
       this._cards.push(group);
     }
@@ -260,22 +239,22 @@ export class SceneManager {
 
   private _animateLoop = () => {
     this._frameId = requestAnimationFrame(this._animateLoop);
-    this._t += 0.005;
+    this._t += 0.0015; // slower time progression
 
     this._cards.forEach((card, i) => {
       const isActive = card.userData.isActive as boolean;
-      const baseAngle = (card.userData.baseAngle as number) + this._t * 0.3;
-      const radius = isActive ? 220 : 320;
+      const baseAngle = (card.userData.baseAngle as number) + this._t * 0.12; // slower orbit rotation
+      const radius = isActive ? 220 : 280; // tighter orbit range
       const targetX = Math.cos(baseAngle) * radius;
-      const targetZ = Math.sin(baseAngle) * radius * 0.6;
+      const targetZ = Math.sin(baseAngle) * radius * 0.5;
 
-      card.position.x += (targetX - card.position.x) * 0.04;
-      card.position.z += (targetZ - card.position.z) * 0.04;
-      card.position.y += (Math.sin(this._t + i) * 15 - card.position.y * 0.1) * 0.05;
+      card.position.x += (targetX - card.position.x) * 0.025;
+      card.position.z += (targetZ - card.position.z) * 0.025;
+      card.position.y += (Math.sin(this._t * 2 + i) * 6 - card.position.y * 0.1) * 0.04; // gentler bob
 
       const targetScale = isActive ? 1.25 : 0.85;
       card.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.06);
-      card.rotation.y = Math.sin(this._t * 0.5 + i) * 0.15;
+      card.rotation.y = Math.sin(this._t * 0.4 + i) * 0.06; // subtle tilt only
     });
 
     // Sync CSS3D orbit cards with WebGL card positions each frame
