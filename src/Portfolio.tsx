@@ -290,6 +290,7 @@ function ExperienceDetailPanel({
         left: "50%",
         transform: "translateX(-50%) translateY(-50%)",
         zIndex: 40,
+        pointerEvents: "auto",
         perspective: "1000px",
         width: "720px",
         maxWidth: "92vw",
