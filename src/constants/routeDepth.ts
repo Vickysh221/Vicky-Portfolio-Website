@@ -21,7 +21,7 @@ export const ROUTE_DEPTH: Record<string, number> = {
 
 export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/unity3d-camera': 5,
-  '/jidu-hmi/3d-map': 3,
+  '/jidu-hmi/3d-map': 5,
   '/phoenix-ai/fuli-plus': 3,
   '/personal/language-diary': 5,
 };

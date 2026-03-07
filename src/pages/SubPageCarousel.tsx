@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
-import H5DocContent from './H5DocContent';
+import H5DocContent, { hasSectionContent } from './H5DocContent';
 
 interface Props {
   route: string;
@@ -248,8 +248,8 @@ function SlideContent({
         style={{ flex: 1, padding: '0 28px 24px', overflow: 'auto' }}
         className="panel-scroll"
       >
-        {slideIndex === 0 ? (
-          <H5DocContent route={route} accentColor={accentColor} />
+        {hasSectionContent(route, slideIndex) ? (
+          <H5DocContent route={route} accentColor={accentColor} slideIndex={slideIndex} />
         ) : (
           <div
             style={{
