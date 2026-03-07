@@ -6,9 +6,9 @@ import { ROUTE_DEPTH } from '../constants/routeDepth';
 // Orbit layout constants
 const ORBIT_X_RADIUS = 400;
 const ORBIT_Y_RADIUS = 70;
-const ORBIT_Z_RADIUS = 30;
+const ORBIT_Z_RADIUS = 100; // 增大 z 轴半径，让面板离屏幕更远
 const ORBIT_PHASE = Math.PI / 6; // 30° offset so panels start left/right spread
-const ORBIT_SCALE = 0.5;
+const ORBIT_SCALE = 0.15; // 减小缩放，让面板更小
 const ORBIT_SPEED = 0.10;
 
 interface OrbitCardData {
@@ -164,6 +164,7 @@ export class SceneManager {
       outer.style.width = '820px';
       outer.style.height = '680px';
       outer.style.pointerEvents = 'none';
+      outer.style.opacity = '0.8'; // 设置面板透明度
 
       const inner = document.createElement('div');
       inner.style.width = '100%';
@@ -278,7 +279,7 @@ export class SceneManager {
       const baseAngle = (card.userData.baseAngle as number) + this._t * ORBIT_SPEED;
       const targetX = Math.cos(baseAngle) * ORBIT_X_RADIUS;
       const targetY = Math.sin(baseAngle) * ORBIT_Y_RADIUS;
-      const targetZ = Math.sin(baseAngle * 0.5) * ORBIT_Z_RADIUS;
+      const targetZ = Math.sin(baseAngle * 0.5) * ORBIT_Z_RADIUS + 100; // 增加 z 轴偏移，让面板离屏幕更远
 
       card.position.x += (targetX - card.position.x) * 0.025;
       card.position.y += (targetY + Math.sin(this._t * 2 + i) * 5 - card.position.y) * 0.04;
