@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
+import { getUnityChapter2Sections } from './H5DocContentUnityCameraChapter2';
 
 interface H5DocContentProps {
   route: string;
@@ -13,7 +14,7 @@ interface SectionData {
   blocks: ReactNode[];
 }
 
-function sectionTitleStyle(accentColor: string): CSSProperties {
+function sectionTitleStyle(): CSSProperties {
   return {
     fontSize: '17px',
     color: '#efe4d0',
@@ -279,6 +280,7 @@ function get3dMapSlide1Sections(accentColor: string): SectionData[] {
 
 const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/unity3d-camera:0': getUnitySections,
+  '/jidu-hmi/unity3d-camera:1': getUnityChapter2Sections,
   '/jidu-hmi/3d-map:1': get3dMapSlide1Sections,
 };
 
@@ -294,7 +296,7 @@ export function hasSectionContent(route: string, slideIndex = 0): boolean {
 function H5Section({ section, accentColor }: { section: SectionData; accentColor: string }) {
   return (
     <section id={section.id} style={{ marginBottom: 26, scrollMarginTop: 12 }}>
-      <h1 style={sectionTitleStyle(accentColor)}>
+      <h1 style={sectionTitleStyle()}>
         <span style={{ color: accentColor, fontSize: '10px', letterSpacing: '0.2em' }}>{section.numeral}</span>
         <span>{section.title}</span>
       </h1>
