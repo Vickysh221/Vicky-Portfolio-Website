@@ -3,6 +3,14 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import gsap from 'gsap';
 import { ROUTE_DEPTH } from '../constants/routeDepth';
 
+// Orbit layout constants
+const ORBIT_X_RADIUS = 400;
+const ORBIT_Y_RADIUS = 70;
+const ORBIT_Z_RADIUS = 30;
+const ORBIT_PHASE = Math.PI / 6; // 30° offset so panels start left/right spread
+const ORBIT_SCALE = 0.5;
+const ORBIT_SPEED = 0.10;
+
 interface OrbitCardData {
   css3dObj: CSS3DObject;
   inner: HTMLDivElement;
@@ -26,6 +34,10 @@ export class SceneManager {
   private _t = 0;
   private _currentRoute = '/';
   private _wheelDebounce: ReturnType<typeof setTimeout> | null = null;
+
+  // Mouse parallax state
+  private _mouseNormX = 0;
+  private _mouseNormY = 0;
 
   static get instance(): SceneManager {
     if (!SceneManager._instance) {
@@ -84,6 +96,7 @@ export class SceneManager {
 
     window.addEventListener('resize', this._handleResize);
     window.addEventListener('wheel', this._handleWheel, { passive: true });
+    window.addEventListener('mousemove', this._handleMouseMove);
 
     this._animateLoop();
 
@@ -95,24 +108,27 @@ export class SceneManager {
     }
   }
 
-  /** Returns the initial orbit position for card index i out of count total. */
+  /** Initial world position for orbit card i out of count total. */
   private _getOrbitPosition(i: number, count: number): THREE.Vector3 {
-    const angle = (i / count) * Math.PI * 2;
-    const radius = 280;
+    const angle = (i / count) * Math.PI * 2 + ORBIT_PHASE;
     return new THREE.Vector3(
-      Math.cos(angle) * radius,
-      Math.sin(angle * 0.5) * 50,
-      Math.sin(angle) * radius * 0.5,
+      Math.cos(angle) * ORBIT_X_RADIUS,
+      Math.sin(angle) * ORBIT_Y_RADIUS,
+      Math.sin(angle * 0.5) * ORBIT_Z_RADIUS,
     );
   }
 
   private _createCards(count: number) {
     for (let i = 0; i < count; i++) {
-      // Invisible physics anchor — CSS3D cards provide all visuals
       const group = new THREE.Group();
       const pos = this._getOrbitPosition(i, count);
       group.position.copy(pos);
-      group.userData = { baseAngle: (i / count) * Math.PI * 2, index: i, isActive: false };
+      // Store baseAngle including phase offset so animation stays in sync
+      group.userData = {
+        baseAngle: (i / count) * Math.PI * 2 + ORBIT_PHASE,
+        index: i,
+        isActive: false,
+      };
       this.scene.add(group);
       this._cards.push(group);
     }
@@ -159,7 +175,7 @@ export class SceneManager {
       const obj = new CSS3DObject(outer);
       const pos = this._getOrbitPosition(i, count);
       obj.position.copy(pos);
-      obj.scale.set(0.25, 0.25, 0.25);
+      obj.scale.set(ORBIT_SCALE, ORBIT_SCALE, ORBIT_SCALE);
       this.scene.add(obj);
 
       // Force synchronous render so divs are in DOM before React portals target them
@@ -171,21 +187,28 @@ export class SceneManager {
     return inners;
   }
 
+  private _setOrbitCardsVisible(visible: boolean) {
+    this._orbitCards.forEach(data => {
+      data.css3dObj.element.style.visibility = visible ? '' : 'hidden';
+    });
+  }
+
   dockCard(index: number) {
     this._activeCardIndex = index;
     const data = this._orbitCards[index];
     data.isOrbiting = false;
 
-    gsap.to(data.css3dObj.position, { x: 0, y: 0, z: 0, duration: 0.75, ease: 'power3.inOut' });
+    // Bring active card to center, slightly in front of others
+    gsap.to(data.css3dObj.position, { x: 0, y: 0, z: 40, duration: 0.75, ease: 'power3.inOut' });
     gsap.to(data.css3dObj.scale, { x: 1, y: 1, z: 1, duration: 0.75, ease: 'power3.inOut' });
 
     // Enable pointer events on inner div so detail panel is interactive
     data.inner.style.pointerEvents = 'auto';
 
-    // Shrink other cards
+    // Hide other cards (very small, effectively invisible)
     this._orbitCards.forEach((d, i) => {
       if (i === index) return;
-      gsap.to(d.css3dObj.scale, { x: 0.1, y: 0.1, z: 0.1, duration: 0.5, ease: 'power2.inOut' });
+      gsap.to(d.css3dObj.scale, { x: 0.05, y: 0.05, z: 0.05, duration: 0.5, ease: 'power2.inOut' });
     });
 
     this._cards.forEach((c, i) => { c.userData.isActive = i === index; });
@@ -205,9 +228,9 @@ export class SceneManager {
           duration: 0.6, ease: 'power3.inOut',
           onComplete: () => { data.isOrbiting = true; },
         });
-        gsap.to(data.css3dObj.scale, { x: 0.25, y: 0.25, z: 0.25, duration: 0.6, ease: 'power3.inOut' });
+        gsap.to(data.css3dObj.scale, { x: ORBIT_SCALE, y: ORBIT_SCALE, z: ORBIT_SCALE, duration: 0.6, ease: 'power3.inOut' });
       } else {
-        gsap.to(data.css3dObj.scale, { x: 0.25, y: 0.25, z: 0.25, duration: 0.6, ease: 'power3.inOut' });
+        gsap.to(data.css3dObj.scale, { x: ORBIT_SCALE, y: ORBIT_SCALE, z: ORBIT_SCALE, duration: 0.6, ease: 'power3.inOut' });
       }
     });
 
@@ -222,6 +245,9 @@ export class SceneManager {
     this._currentRoute = route;
     const depth = ROUTE_DEPTH[route] ?? 0;
     const targetZ = depth + this.focalLength;
+
+    // Show orbit cards only on home; hide them for all other routes
+    this._setOrbitCardsVisible(route === '/');
 
     gsap.to(this.camera.position, {
       z: targetZ,
@@ -239,22 +265,26 @@ export class SceneManager {
 
   private _animateLoop = () => {
     this._frameId = requestAnimationFrame(this._animateLoop);
-    this._t += 0.0015; // slower time progression
+    this._t += 0.0015;
+
+    // Mouse parallax: gently shift camera X/Y — disabled when card is docked or off home
+    const applyParallax = this._activeCardIndex === null && this._currentRoute === '/';
+    const targetCamX = applyParallax ? this._mouseNormX * 85 : 0;
+    const targetCamY = applyParallax ? this._mouseNormY * 40 : 0;
+    this.camera.position.x += (targetCamX - this.camera.position.x) * 0.04;
+    this.camera.position.y += (targetCamY - this.camera.position.y) * 0.04;
 
     this._cards.forEach((card, i) => {
-      const isActive = card.userData.isActive as boolean;
-      const baseAngle = (card.userData.baseAngle as number) + this._t * 0.12; // slower orbit rotation
-      const radius = isActive ? 220 : 280; // tighter orbit range
-      const targetX = Math.cos(baseAngle) * radius;
-      const targetZ = Math.sin(baseAngle) * radius * 0.5;
+      const baseAngle = (card.userData.baseAngle as number) + this._t * ORBIT_SPEED;
+      const targetX = Math.cos(baseAngle) * ORBIT_X_RADIUS;
+      const targetY = Math.sin(baseAngle) * ORBIT_Y_RADIUS;
+      const targetZ = Math.sin(baseAngle * 0.5) * ORBIT_Z_RADIUS;
 
       card.position.x += (targetX - card.position.x) * 0.025;
+      card.position.y += (targetY + Math.sin(this._t * 2 + i) * 5 - card.position.y) * 0.04;
       card.position.z += (targetZ - card.position.z) * 0.025;
-      card.position.y += (Math.sin(this._t * 2 + i) * 6 - card.position.y * 0.1) * 0.04; // gentler bob
 
-      const targetScale = isActive ? 1.25 : 0.85;
-      card.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.06);
-      card.rotation.y = Math.sin(this._t * 0.4 + i) * 0.06; // subtle tilt only
+      card.rotation.y = Math.sin(this._t * 0.4 + i) * 0.06;
     });
 
     // Sync CSS3D orbit cards with WebGL card positions each frame
@@ -268,6 +298,11 @@ export class SceneManager {
     this.css3dRenderer.render(this.scene, this.camera);
   };
 
+  private _handleMouseMove = (e: MouseEvent) => {
+    this._mouseNormX = (e.clientX / window.innerWidth) * 2 - 1;   // -1 (left) to +1 (right)
+    this._mouseNormY = -((e.clientY / window.innerHeight) * 2 - 1); // +1 (top) to -1 (bottom)
+  };
+
   private _handleResize = () => {
     const W = window.innerWidth;
     const H = window.innerHeight;
@@ -279,7 +314,7 @@ export class SceneManager {
 
   private _handleWheel = (e: WheelEvent) => {
     if (!this._initialized) return;
-    if (this._activeCardIndex !== null) return; // Disable wheel when a card is docked
+    if (this._activeCardIndex !== null) return;
 
     const depth = ROUTE_DEPTH[this._currentRoute] ?? 0;
     const dockedZ = depth + this.focalLength;
@@ -306,6 +341,7 @@ export class SceneManager {
     cancelAnimationFrame(this._frameId);
     window.removeEventListener('resize', this._handleResize);
     window.removeEventListener('wheel', this._handleWheel);
+    window.removeEventListener('mousemove', this._handleMouseMove);
     if (this._wheelDebounce) clearTimeout(this._wheelDebounce);
     gsap.killTweensOf(this.camera.position);
     gsap.killTweensOf(this.camera.rotation);
