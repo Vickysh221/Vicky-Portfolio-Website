@@ -1,7 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+interface SubPage {
+  route: string;
+  label: string;
+  numeral: string;
+}
 
 interface Project {
   id: string;
@@ -11,6 +17,8 @@ interface Project {
   tags: string[];
   desc: string;
   color: string;
+  route: string;
+  subPages: SubPage[];
 }
 
 interface ExperienceDetail {
@@ -26,57 +34,53 @@ interface ExperienceDetail {
 const projects: Project[] = [
   {
     id: "01",
-    title: "3D Navigation & Camera System",
-    subtitle: "JIDU Automotive · HMI",
+    title: "JIDU HMI",
+    subtitle: "JIDU Automotive · HMI Design",
     year: "2022–2024",
-    tags: ["Unity3D", "HMI", "3D Map", "Camera Rig"],
-    desc: "Designed a virtual camera architecture for 3D automotive navigation maps — multi-state transitions, lens interruption logic, and spatial continuity across driving assistance modes.",
+    tags: ["Unity3D", "HMI", "3D Map", "Camera Rig", "ADAS"],
+    desc: "3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU's in-car HMI. Prototyped directly in Unity3D.",
     color: "#c8a96e",
+    route: "/jidu-hmi",
+    subPages: [
+      { route: "/jidu-hmi/unity3d-camera", label: "Unity3D Camera System", numeral: "I" },
+      { route: "/jidu-hmi/3d-map", label: "3D Map Strategy", numeral: "II" },
+      { route: "/jidu-hmi/avp", label: "AVP Auto-Park", numeral: "III" },
+      { route: "/jidu-hmi/minimap-camera", label: "Minimap Camera", numeral: "IV" },
+      { route: "/jidu-hmi/3d-map-gesture", label: "3D Map Gestures", numeral: "V" },
+      { route: "/jidu-hmi/simo-agent-parks", label: "SIMO Agent Parks", numeral: "VI" },
+    ],
   },
   {
     id: "02",
-    title: "Autonomous Driving UX States",
-    subtitle: "JIDU Automotive · ADAS",
-    year: "2022–2024",
-    tags: ["ADAS", "State Machine", "3D Interaction", "Unity3D"],
-    desc: "Defined user-facing state machines for low-speed (auto-park, path learning) and high-speed (NOA, active safety) driving assistance. Prototyped transitions directly in Unity.",
+    title: "Phoenix AI Platform",
+    subtitle: "Phoenix AI · SaaS",
+    year: "2025",
+    tags: ["AI Pipeline", "SaaS", "Three.js", "Vue3", "Agent UX"],
+    desc: "Generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback, multi-tenant asset isolation, and Fuli+ carpet agent.",
     color: "#7a9e8e",
+    route: "/phoenix-ai",
+    subPages: [
+      { route: "/phoenix-ai/overview", label: "Platform Overview", numeral: "I" },
+      { route: "/phoenix-ai/component-framework", label: "Component Framework", numeral: "II" },
+      { route: "/phoenix-ai/key-pages", label: "Key Pages", numeral: "III" },
+      { route: "/phoenix-ai/semantic-system", label: "Semantic System", numeral: "IV" },
+      { route: "/phoenix-ai/fuli-plus", label: "Fuli+ Agent", numeral: "V" },
+    ],
   },
   {
     id: "03",
-    title: "Multi-Agent Platform",
-    subtitle: "JIDU 4.0 Agent Platform",
-    year: "2024",
-    tags: ["Multi-Agent", "AI UX", "Concept"],
-    desc: "Full-screen laboratory interface for a vehicle-embedded agent ecosystem. Explored MBTI-personalized agent identities and an Agent Parks interaction paradigm.",
+    title: "Personal Projects",
+    subtitle: "Independent Work",
+    year: "2024–2025",
+    tags: ["Multi-Agent", "Language Learning", "Unreal", "Game Design"],
+    desc: "Side projects exploring AI agent architecture, procedural city generation, and game design — built for learning, curiosity, and fun.",
     color: "#8b7db5",
-  },
-  {
-    id: "04",
-    title: "3D Floor Plan AI Generation",
-    subtitle: "Phoenix AI · SaaS Platform",
-    year: "2025",
-    tags: ["AI Pipeline", "SaaS", "Three.js", "Vue3"],
-    desc: "Architected a generative pipeline for 3D interior layouts — upload, analyze, edit, render. Built async task polling, rollback mechanisms, and multi-tenant asset isolation.",
-    color: "#c47a5a",
-  },
-  {
-    id: "05",
-    title: "Fuli+ Carpet Generation Agent",
-    subtitle: "Phoenix AI · AI Agent",
-    year: "2025",
-    tags: ["Slot-based NLU", "Generative AI", "Agent UX"],
-    desc: "Designed a conversational agent that decomposes user intent (style, color, pattern) into structured generation parameters, producing editable carpet designs via multi-turn dialogue.",
-    color: "#4a7fa5",
-  },
-  {
-    id: "06",
-    title: "Language Diary Agent",
-    subtitle: "Personal Project",
-    year: "2025",
-    tags: ["Multi-Agent", "Language Learning", "Memory", "Daily Loop"],
-    desc: "A low-friction AI companion for language acquisition through personal journaling. Multi-agent architecture handles intent, knowledge intervention, and long-term memory separately.",
-    color: "#9e7a7a",
+    route: "/personal",
+    subPages: [
+      { route: "/personal/simbiocity", label: "Simbiocity", numeral: "I" },
+      { route: "/personal/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
+      { route: "/personal/language-diary", label: "Language Diary Agent", numeral: "III" },
+    ],
   },
 ];
 
@@ -170,7 +174,7 @@ const cornerStyles: React.CSSProperties[] = [
   { bottom: "-1px", right: "-1px", borderBottom: "8px solid #c8a96e", borderRight: "8px solid #c8a96e" },
 ];
 
-const romans = ["I", "II", "III", "IV", "V", "VI"];
+const romans = ["I", "II", "III"];
 
 const skills: [string, string][] = [
   ["Unity 3D", "熟练"],
@@ -183,7 +187,6 @@ const skills: [string, string][] = [
 
 // ─── Reusable Components ──────────────────────────────────────────────────────
 
-/** Circular transparent button with linear arrow — hover animates arrow right */
 function CircleArrowButton({
   onClick,
   size = 26,
@@ -234,7 +237,6 @@ function CircleArrowButton({
   );
 }
 
-/** Circular close (×) button — complements CircleArrowButton */
 function CloseButton({
   onClick,
   size = 22,
@@ -273,11 +275,6 @@ function CloseButton({
 
 // ─── Experience Detail Panel ──────────────────────────────────────────────────
 
-/**
- * Full experience detail panel.
- * Enters with a 3D camera-push animation (pull-back → zoom-in → settle).
- * Must be wrapped by a parent with perspective context.
- */
 function ExperienceDetailPanel({
   exp,
   onClose,
@@ -286,7 +283,6 @@ function ExperienceDetailPanel({
   onClose: () => void;
 }) {
   return (
-    // Centering wrapper — establishes perspective context for 3D entry
     <div
       style={{
         position: "absolute",
@@ -299,7 +295,6 @@ function ExperienceDetailPanel({
         maxWidth: "92vw",
       }}
     >
-      {/* Animated panel — translateZ driven by panelEnter3D keyframe */}
       <div
         className="panel-enter-3d"
         style={{
@@ -312,7 +307,6 @@ function ExperienceDetailPanel({
           flexDirection: "column",
         }}
       >
-        {/* Corner decorations */}
         {cornerStyles.map((cs, i) => (
           <div
             key={i}
@@ -320,7 +314,6 @@ function ExperienceDetailPanel({
           />
         ))}
 
-        {/* ── Header ── */}
         <div
           style={{
             padding: "24px 28px 18px",
@@ -330,34 +323,13 @@ function ExperienceDetailPanel({
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <div
-                style={{
-                  color: "#c8a96e",
-                  fontSize: "9px",
-                  letterSpacing: "0.3em",
-                  marginBottom: "10px",
-                }}
-              >
+              <div style={{ color: "#c8a96e", fontSize: "9px", letterSpacing: "0.3em", marginBottom: "10px" }}>
                 WORK EXPERIENCE
               </div>
-              <div
-                style={{
-                  color: "#f0e8d8",
-                  fontSize: "18px",
-                  fontStyle: "italic",
-                  lineHeight: 1.2,
-                }}
-              >
+              <div style={{ color: "#f0e8d8", fontSize: "18px", fontStyle: "italic", lineHeight: 1.2 }}>
                 {exp.company}
               </div>
-              <div
-                style={{
-                  color: "#c0b090",
-                  fontSize: "11px",
-                  letterSpacing: "0.08em",
-                  marginTop: "5px",
-                }}
-              >
+              <div style={{ color: "#c0b090", fontSize: "11px", letterSpacing: "0.08em", marginTop: "5px" }}>
                 {exp.role}
               </div>
               <div style={{ color: "#6a5a40", fontSize: "10px", marginTop: "3px" }}>
@@ -368,25 +340,10 @@ function ExperienceDetailPanel({
           </div>
         </div>
 
-        {/* ── Scrollable content ── */}
-        <div
-          className="panel-scroll"
-          style={{ padding: "20px 28px 26px", overflowY: "auto", flex: 1 }}
-        >
+        <div className="panel-scroll" style={{ padding: "20px 28px 26px", overflowY: "auto", flex: 1 }}>
           {exp.sections.map((section, si) => (
-            <div
-              key={si}
-              style={{ marginBottom: si < exp.sections.length - 1 ? "22px" : 0 }}
-            >
-              {/* Section title */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "10px",
-                }}
-              >
+            <div key={si} style={{ marginBottom: si < exp.sections.length - 1 ? "22px" : 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
                 <span
                   style={{
                     width: "3px",
@@ -408,41 +365,18 @@ function ExperienceDetailPanel({
                   {section.title}
                 </span>
               </div>
-
-              {/* Bullets */}
-              <div
-                style={{
-                  paddingLeft: "11px",
-                  borderLeft: "1px solid rgba(200,169,110,0.1)",
-                }}
-              >
+              <div style={{ paddingLeft: "11px", borderLeft: "1px solid rgba(200,169,110,0.1)" }}>
                 {section.bullets.map((bullet, bi) => (
                   <div
                     key={bi}
-                    style={{
-                      display: "flex",
-                      gap: "10px",
-                      marginBottom: bi < section.bullets.length - 1 ? "8px" : 0,
-                    }}
+                    style={{ display: "flex", gap: "10px", marginBottom: bi < section.bullets.length - 1 ? "8px" : 0 }}
                   >
                     <span
-                      style={{
-                        color: "#4a3a28",
-                        flexShrink: 0,
-                        fontSize: "11px",
-                        lineHeight: "1.85",
-                        userSelect: "none",
-                      }}
+                      style={{ color: "#4a3a28", flexShrink: 0, fontSize: "11px", lineHeight: "1.85", userSelect: "none" }}
                     >
                       –
                     </span>
-                    <span
-                      style={{
-                        color: "#a09070",
-                        fontSize: "11.5px",
-                        lineHeight: 1.85,
-                      }}
-                    >
+                    <span style={{ color: "#a09070", fontSize: "11.5px", lineHeight: 1.85 }}>
                       {bullet}
                     </span>
                   </div>
@@ -456,151 +390,18 @@ function ExperienceDetailPanel({
   );
 }
 
-// ─── Three.js Scene ───────────────────────────────────────────────────────────
-
-interface ThreeSceneProps {
-  activeProject: number | null;
-}
-
-function ThreeScene({ activeProject }: ThreeSceneProps) {
-  const mountRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<THREE.Group[]>([]);
-  const frameRef = useRef<number>(0);
-
-  useEffect(() => {
-    if (!mountRef.current) return;
-    const W = mountRef.current.clientWidth;
-    const H = mountRef.current.clientHeight;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(W, H);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    mountRef.current.appendChild(renderer.domElement);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 100);
-    camera.position.set(0, 0, 6);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const dir = new THREE.DirectionalLight(0xfff5e0, 1.2);
-    dir.position.set(3, 5, 5);
-    scene.add(dir);
-
-    const colors = projects.map((p) => p.color);
-    const cards: THREE.Group[] = [];
-
-    projects.forEach((_p, i) => {
-      const group = new THREE.Group();
-      const angle = (i / projects.length) * Math.PI * 2;
-      const radius = 3.2;
-      group.position.set(
-        Math.cos(angle) * radius,
-        Math.sin(angle * 0.5) * 0.8,
-        Math.sin(angle) * radius * 0.6
-      );
-      group.userData = { baseAngle: angle, index: i };
-
-      const geo = new THREE.BoxGeometry(1.6, 2.2, 0.04);
-      const mat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(colors[i]),
-        roughness: 0.3,
-        metalness: 0.1,
-        transparent: true,
-        opacity: 0.85,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      group.add(mesh);
-
-      const stripGeo = new THREE.BoxGeometry(1.6, 0.08, 0.05);
-      const stripMat = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.15,
-      });
-      const strip = new THREE.Mesh(stripGeo, stripMat);
-      strip.position.y = 0.95;
-      group.add(strip);
-
-      scene.add(group);
-      cards.push(group);
-    });
-
-    cardsRef.current = cards;
-
-    const pGeo = new THREE.BufferGeometry();
-    const pCount = 180;
-    const positions = new Float32Array(pCount * 3);
-    for (let i = 0; i < pCount * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 18;
-    }
-    pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const pMat = new THREE.PointsMaterial({
-      color: 0xd4b896,
-      size: 0.04,
-      transparent: true,
-      opacity: 0.5,
-    });
-    scene.add(new THREE.Points(pGeo, pMat));
-
-    let t = 0;
-    const animate = () => {
-      frameRef.current = requestAnimationFrame(animate);
-      t += 0.005;
-
-      cards.forEach((card, i) => {
-        const isActive = card.userData.isActive as boolean;
-        const baseAngle = card.userData.baseAngle + t * 0.3;
-        const radius = isActive ? 2.2 : 3.2;
-        const targetX = Math.cos(baseAngle) * radius;
-        const targetZ = Math.sin(baseAngle) * radius * 0.6;
-
-        card.position.x += (targetX - card.position.x) * 0.04;
-        card.position.z += (targetZ - card.position.z) * 0.04;
-        card.position.y += (Math.sin(t + i) * 0.15 - card.position.y * 0.1) * 0.05;
-
-        const targetScale = isActive ? 1.25 : 0.85;
-        card.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.06);
-        card.rotation.y = Math.sin(t * 0.5 + i) * 0.15;
-      });
-
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    const handleResize = () => {
-      if (!mountRef.current) return;
-      const W2 = mountRef.current.clientWidth;
-      const H2 = mountRef.current.clientHeight;
-      if (!W2 || !H2) return;
-      camera.aspect = W2 / H2;
-      camera.updateProjectionMatrix();
-      renderer.setSize(W2, H2);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", handleResize);
-      renderer.dispose();
-      if (mountRef.current?.contains(renderer.domElement)) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    cardsRef.current.forEach((card, i) => {
-      card.userData.isActive = activeProject === i;
-    });
-  }, [activeProject]);
-
-  return <div ref={mountRef} className="w-full h-full" />;
-}
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function Portfolio() {
-  const [activeProject, setActiveProject] = useState<number | null>(null);
+interface PortfolioProps {
+  activeCard: number | null;
+  onProjectClick: (i: number) => void;
+  onCloseCard: () => void;
+}
+
+export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const [hoveredNav, setHoveredNav] = useState<number | null>(null);
   const [showAbout, setShowAbout] = useState(false);
   const [showExp, setShowExp] = useState(false);
@@ -608,17 +409,29 @@ export default function Portfolio() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setMounted(true), 100);
+    const t = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(t);
   }, []);
 
-  const active = activeProject !== null ? projects[activeProject] : null;
+  // Close panels and reset selection when returning home
+  useEffect(() => {
+    if (isHome) return;
+    setShowAbout(false);
+    setShowExp(false);
+    setActiveExp(null);
+  }, [isHome]);
+
+  // Fade all home UI when not on home route or when a card is docked
+  const homeOpacity = isHome && activeCard === null ? 1 : 0;
+  const homePointerEvents = isHome && activeCard === null ? "all" : "none";
+  const homeTransition = "opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)";
 
   return (
     <div
-      className="relative w-screen h-screen overflow-hidden"
+      className="absolute inset-0 z-20"
       style={{
-        background: "#0e0c09",
         fontFamily: "'Georgia', 'Times New Roman', serif",
+        pointerEvents: "none",
       }}
     >
       {/* Grain overlay */}
@@ -634,28 +447,21 @@ export default function Portfolio() {
       <div
         className="absolute inset-0 pointer-events-none z-10"
         style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(5,3,1,0.75) 100%)",
+          background: "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(5,3,1,0.75) 100%)",
         }}
       />
-
-      {/* Three.js canvas */}
-      <div className="absolute inset-0 z-0">
-        <ThreeScene activeProject={activeProject} />
-      </div>
 
       {/* ── TOP LEFT: Name + tagline ── */}
       <div
         className="absolute top-8 left-8 z-30"
         style={{
-          opacity: mounted ? 1 : 0,
+          opacity: mounted ? homeOpacity : 0,
           transform: mounted ? "translateY(0)" : "translateY(-12px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1)",
+          transition: homeTransition,
+          pointerEvents: homePointerEvents,
         }}
       >
-        <div
-          style={{ color: "#c8a96e", fontSize: "10px", letterSpacing: "0.25em", marginBottom: "6px" }}
-        >
+        <div style={{ color: "#c8a96e", fontSize: "10px", letterSpacing: "0.25em", marginBottom: "6px" }}>
           PORTFOLIO · 2025
         </div>
         <div style={{ color: "#f0e8d8", fontSize: "28px", lineHeight: 1.1, fontStyle: "italic" }}>
@@ -664,24 +470,8 @@ export default function Portfolio() {
         <div style={{ color: "#a09070", fontSize: "11px", letterSpacing: "0.12em", marginTop: "4px" }}>
           Xinyue Shou
         </div>
-        <div
-          style={{
-            width: "32px",
-            height: "1px",
-            background: "#c8a96e",
-            margin: "10px 0",
-            opacity: 0.6,
-          }}
-        />
-        <div
-          style={{
-            color: "#9a8870",
-            fontSize: "10px",
-            letterSpacing: "0.08em",
-            lineHeight: 1.6,
-            maxWidth: "180px",
-          }}
-        >
+        <div style={{ width: "32px", height: "1px", background: "#c8a96e", margin: "10px 0", opacity: 0.6 }} />
+        <div style={{ color: "#9a8870", fontSize: "10px", letterSpacing: "0.08em", lineHeight: 1.6, maxWidth: "180px" }}>
           AI · HMI · 3D · Product
           <br />
           Interaction Design
@@ -692,9 +482,10 @@ export default function Portfolio() {
       <div
         className="absolute top-8 right-8 z-30 text-right"
         style={{
-          opacity: mounted ? 1 : 0,
+          opacity: mounted ? homeOpacity : 0,
           transform: mounted ? "translateY(0)" : "translateY(-12px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s",
+          transition: homeTransition,
+          pointerEvents: homePointerEvents,
         }}
       >
         <button
@@ -707,6 +498,7 @@ export default function Portfolio() {
             border: "none",
             cursor: "pointer",
             transition: "color 0.3s",
+            pointerEvents: "auto",
           }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "#c8a96e")}
           onMouseLeave={(e) =>
@@ -728,11 +520,10 @@ export default function Portfolio() {
               fontSize: "11px",
               lineHeight: 1.7,
               backdropFilter: "blur(8px)",
+              textAlign: "left",
             }}
           >
-            <div
-              style={{ color: "#c8a96e", marginBottom: "8px", letterSpacing: "0.12em" }}
-            >
+            <div style={{ color: "#c8a96e", marginBottom: "8px", letterSpacing: "0.12em" }}>
               UCL · MSc Game Design & Urban Design
             </div>
             AI × HMI × 3D 方向综合产品设计师。在智能驾驶和AI生成系统领域有4年落地经验，擅长将复杂系统抽象为可理解的用户交互。
@@ -752,14 +543,15 @@ export default function Portfolio() {
         )}
       </div>
 
-      {/* ── BOTTOM LEFT: Experience with goto buttons ── */}
+      {/* ── BOTTOM LEFT: Experience ── */}
       <div
         className="absolute bottom-8 left-8 z-30"
         style={{
-          opacity: mounted ? 1 : 0,
+          opacity: mounted ? homeOpacity : 0,
           transform: mounted ? "translateY(0)" : "translateY(12px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s",
-          perspective: "600px", // 3D context for mini-panel-enter animation
+          transition: homeTransition,
+          pointerEvents: homePointerEvents,
+          perspective: "600px",
         }}
       >
         <button
@@ -775,6 +567,7 @@ export default function Portfolio() {
             alignItems: "center",
             gap: "6px",
             transition: "color 0.3s",
+            pointerEvents: "auto",
           }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "#c8a96e")}
           onMouseLeave={(e) =>
@@ -795,9 +588,9 @@ export default function Portfolio() {
               backdropFilter: "blur(8px)",
               position: "relative",
               minWidth: "240px",
+              pointerEvents: "auto",
             }}
           >
-            {/* Close button — top right of mini panel */}
             <div style={{ position: "absolute", top: "8px", right: "8px" }}>
               <CloseButton onClick={() => setShowExp(false)} size={18} />
             </div>
@@ -814,19 +607,12 @@ export default function Portfolio() {
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <div
-                    style={{ color: "#c8a96e", fontSize: "11px", letterSpacing: "0.06em" }}
-                  >
+                  <div style={{ color: "#c8a96e", fontSize: "11px", letterSpacing: "0.06em" }}>
                     {exp.shortName}
                   </div>
-                  <div style={{ color: "#c0b090", fontSize: "12px", marginTop: "2px" }}>
-                    {exp.role}
-                  </div>
-                  <div style={{ color: "#6a5a40", fontSize: "10px", marginTop: "2px" }}>
-                    {exp.period}
-                  </div>
+                  <div style={{ color: "#c0b090", fontSize: "12px", marginTop: "2px" }}>{exp.role}</div>
+                  <div style={{ color: "#6a5a40", fontSize: "10px", marginTop: "2px" }}>{exp.period}</div>
                 </div>
-                {/* Goto button — opens full detail panel */}
                 <CircleArrowButton
                   onClick={() => {
                     setActiveExp(i);
@@ -844,33 +630,24 @@ export default function Portfolio() {
       <div
         className="absolute bottom-8 right-8 z-30 text-right"
         style={{
-          opacity: mounted ? 1 : 0,
+          opacity: mounted ? homeOpacity : 0,
           transform: mounted ? "translateY(0)" : "translateY(12px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s",
+          transition: homeTransition,
+          pointerEvents: homePointerEvents,
         }}
       >
-        <div
-          style={{
-            color: "#9a8870",
-            fontSize: "10px",
-            letterSpacing: "0.2em",
-            marginBottom: "10px",
-          }}
-        >
+        <div style={{ color: "#9a8870", fontSize: "10px", letterSpacing: "0.2em", marginBottom: "10px" }}>
           SKILLS
         </div>
         {skills.map(([skill, level]) => (
-          <div
-            key={skill}
-            style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: "4px" }}
-          >
+          <div key={skill} style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: "4px" }}>
             <span style={{ color: "#6a5a40", fontSize: "9px" }}>{level}</span>
             <span style={{ color: "#c0b090", fontSize: "10px" }}>{skill}</span>
           </div>
         ))}
       </div>
 
-      {/* ── CENTER: Project Directory (fades out when experience detail is open) ── */}
+      {/* ── CENTER: Project Directory ── */}
       <div
         className="absolute z-20"
         style={{
@@ -880,8 +657,8 @@ export default function Portfolio() {
             activeExp !== null
               ? "translateX(-50%) translateY(-50%) scale(0.93)"
               : "translateX(-50%) translateY(-50%) scale(1)",
-          opacity: activeExp !== null ? 0 : 1,
-          pointerEvents: activeExp !== null ? "none" : "all",
+          opacity: activeExp !== null ? 0 : homeOpacity,
+          pointerEvents: activeExp !== null || !isHome || activeCard !== null ? "none" : "all",
           transition: "opacity 0.38s cubic-bezier(0.16,1,0.3,1), transform 0.38s cubic-bezier(0.16,1,0.3,1)",
           width: "340px",
         }}
@@ -897,21 +674,14 @@ export default function Portfolio() {
             transition: "opacity 0.9s 0.4s",
           }}
         >
-          <div
-            style={{
-              color: "#c8a96e",
-              fontSize: "9px",
-              letterSpacing: "0.3em",
-              marginBottom: "16px",
-            }}
-          >
+          <div style={{ color: "#c8a96e", fontSize: "9px", letterSpacing: "0.3em", marginBottom: "16px" }}>
             SELECTED WORKS
           </div>
 
           {projects.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => setActiveProject(activeProject === i ? null : i)}
+              onClick={() => onProjectClick(i)}
               onMouseEnter={() => setHoveredNav(i)}
               onMouseLeave={() => setHoveredNav(null)}
               style={{
@@ -929,7 +699,7 @@ export default function Portfolio() {
             >
               <span
                 style={{
-                  color: activeProject === i ? "#c8a96e" : "#4a3a28",
+                  color: activeCard === i ? "#c8a96e" : "#4a3a28",
                   fontSize: "9px",
                   width: "18px",
                   textAlign: "right",
@@ -943,7 +713,7 @@ export default function Portfolio() {
               <span
                 style={{
                   color:
-                    activeProject === i
+                    activeCard === i
                       ? "#f0e8d8"
                       : hoveredNav === i
                       ? "#d4c4a0"
@@ -960,7 +730,7 @@ export default function Portfolio() {
               <span
                 style={{
                   marginLeft: "auto",
-                  color: activeProject === i ? p.color : "#3a2a18",
+                  color: activeCard === i ? p.color : "#3a2a18",
                   fontSize: "9px",
                   flexShrink: 0,
                   transition: "color 0.25s",
@@ -971,7 +741,6 @@ export default function Portfolio() {
             </button>
           ))}
 
-          {/* Corner decorations */}
           {cornerStyles.map((style, i) => (
             <div
               key={i}
@@ -981,81 +750,13 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* ── Experience Detail Panel — 3D camera-push entry ── */}
-      {activeExp !== null && (
+      {/* ── Experience Detail Panel ── */}
+      {activeExp !== null && isHome && (
         <ExperienceDetailPanel
           key={activeExp}
           exp={experienceDetails[activeExp]}
           onClose={() => setActiveExp(null)}
         />
-      )}
-
-      {/* ── Project Detail Panel (hidden while experience detail is open) ── */}
-      {active && activeExp === null && (
-        <div
-          className="absolute z-30 fade-up"
-          style={{
-            bottom: "80px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "500px",
-            maxWidth: "90vw",
-            padding: "20px 24px",
-            background: "rgba(8,6,4,0.9)",
-            border: `1px solid ${active.color}40`,
-            backdropFilter: "blur(12px)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              marginBottom: "10px",
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  color: active.color,
-                  fontSize: "9px",
-                  letterSpacing: "0.2em",
-                  marginBottom: "4px",
-                }}
-              >
-                {active.subtitle}
-              </div>
-              <div style={{ color: "#f0e8d8", fontSize: "15px" }}>{active.title}</div>
-            </div>
-            <CloseButton onClick={() => setActiveProject(null)} size={22} />
-          </div>
-          <p
-            style={{
-              color: "#a09070",
-              fontSize: "12px",
-              lineHeight: 1.7,
-              marginBottom: "12px",
-            }}
-          >
-            {active.desc}
-          </p>
-          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            {active.tags.map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  padding: "3px 8px",
-                  border: `1px solid ${active.color}50`,
-                  color: active.color,
-                  fontSize: "9px",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
       )}
 
       {/* ── Vertical label ── */}
@@ -1068,7 +769,7 @@ export default function Portfolio() {
           color: "#3a2a18",
           fontSize: "9px",
           letterSpacing: "0.25em",
-          opacity: mounted ? 1 : 0,
+          opacity: mounted && isHome ? 1 : 0,
           transition: "opacity 1.2s 1s",
           pointerEvents: "none",
         }}
