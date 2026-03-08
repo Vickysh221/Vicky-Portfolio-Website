@@ -3,7 +3,6 @@ import { getUnitySections } from './H5DocContentUnityCameraSlide01';
 import { getUnityChapter2Sections } from './H5DocContentUnityCameraSlide02';
 import { getUnityCameraSlide03Sections } from './H5DocContentUnityCameraSlide03';
 import { getUnityCameraSlide04Sections } from './H5DocContentUnityCameraSlide04';
-import { getUnityCameraSlide05Sections } from './H5DocContentUnityCameraSlide05';
 import { get3dMapSlide1Sections } from './H5DocContent3dMapSlide01';
 import { get3dMapSlide02Sections } from './H5DocContent3dMapSlide02';
 import { get3dMapSlide03Sections } from './H5DocContent3dMapSlide03';
@@ -54,7 +53,6 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/unity3d-camera:1': getUnityChapter2Sections,
   '/jidu-hmi/unity3d-camera:2': getUnityCameraSlide03Sections,
   '/jidu-hmi/unity3d-camera:3': getUnityCameraSlide04Sections,
-  '/jidu-hmi/unity3d-camera:4': getUnityCameraSlide05Sections,
 
   '/jidu-hmi/3d-map:0': get3dMapSlide1Sections,
   '/jidu-hmi/3d-map:1': get3dMapSlide02Sections,
