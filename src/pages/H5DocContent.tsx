@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { getUnityChapter2Sections } from './H5DocContentUnityCameraChapter2';
+import { getAvpSlide1Sections } from './H5DocContentAvpSlide1';
 
 interface H5DocContentProps {
   route: string;
