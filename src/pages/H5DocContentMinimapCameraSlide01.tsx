@@ -1,30 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
-import { paragraphStyle, mediaBlockStyle } from './h5Styles';
-
-function h2Style(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '14px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function mediaPlaceholderStyle(accentColor: string): CSSProperties {
-  return {
-    border: `1px dashed ${accentColor}66`,
-    borderRadius: 8,
-    minHeight: 260,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: accentColor,
-    fontSize: '10px',
-    letterSpacing: '0.16em',
-    background: 'rgba(18, 15, 11, 0.45)',
-  };
-}
+import { paragraphStyle, mediaBlockStyle, h2Style } from './h5Styles';
 
 export function getMinimapCameraSlide01Sections(accentColor: string): SectionData[] {
   return [
@@ -54,11 +30,6 @@ export function getMinimapCameraSlide01Sections(accentColor: string): SectionDat
               alt="Different display of the minimap" 
             />
           </div>
-
-          
-          <div style={{ marginTop: 10 }}>
-            <div style={mediaPlaceholderStyle(accentColor)}>IMAGE 1 · [Image #1]</div>
-          </div>
         </>,
       ],
     },
@@ -72,7 +43,7 @@ export function getMinimapCameraSlide01Sections(accentColor: string): SectionDat
 
           <div style={mediaBlockStyle()}>
             <img 
-              src="/src/images/slam/slide01-img01.png" 
+              src="/src/images/slam/slide01-img03.png" 
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="SLAM minimap concept and layout" 
             />
@@ -81,15 +52,19 @@ export function getMinimapCameraSlide01Sections(accentColor: string): SectionDat
           
           <div style={mediaBlockStyle()}>
             <img 
-              src="/src/images/slam/slide01-img02.png" 
+              src="/src/images/slam/slide01-img04.png" 
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="Different display of the minimap" 
             />
           </div>
-
+          <h2 style={h2Style(accentColor)}>Adaptive camera distance mechanism design</h2>
           
-          <div style={{ marginTop: 10 }}>
-            <div style={mediaPlaceholderStyle(accentColor)}>IMAGE 1 · [Image #1]</div>
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/slam/slide01-img05.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="Adaptive camera mechanism design" 
+            />
           </div>
         </>,
       ],
