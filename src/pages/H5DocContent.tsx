@@ -8,7 +8,6 @@ import { get3dMapSlide1Sections } from './H5DocContent3dMapSlide01';
 import { get3dMapSlide02Sections } from './H5DocContent3dMapSlide02';
 import { get3dMapSlide03Sections } from './H5DocContent3dMapSlide03';
 import { get3dMapSlide04Sections } from './H5DocContent3dMapSlide04';
-import { get3dMapSlide05Sections } from './H5DocContent3dMapSlide05';
 import { getAvpSlide1Sections } from './H5DocContentAvpSlide01';
 import { getMinimapCameraSlide01Sections } from './H5DocContentMinimapCameraSlide01';
 import { get3dMapGestureSlide01Sections } from './H5DocContent3dMapGestureSlide01';
@@ -61,7 +60,6 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/3d-map:1': get3dMapSlide02Sections,
   '/jidu-hmi/3d-map:2': get3dMapSlide03Sections,
   '/jidu-hmi/3d-map:3': get3dMapSlide04Sections,
-  '/jidu-hmi/3d-map:4': get3dMapSlide05Sections,
 
   '/jidu-hmi/avp:0': getAvpSlide1Sections,
   '/jidu-hmi/minimap-camera:0': getMinimapCameraSlide01Sections,
