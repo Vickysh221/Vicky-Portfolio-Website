@@ -71,15 +71,35 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
       blocks: [
         <>
           <div style={{ marginBottom: '26px', textAlign: 'left' }}>
-            <div style={{ color: '#c8a96e', fontSize: '9px', letterSpacing: '0.2em', marginBottom: '8px' }}>
-              H5 DOCUMENT SPEC · /jidu-hmi/avp
-            </div>
-            <div style={{ color: '#f0e8d8', fontSize: '24px', lineHeight: 1.2, fontStyle: 'italic' }}>
-              自动代客泊车（AVP）原型设计与 Unity Demo 系统状态流
-            </div>
+      
             <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
               通过 Unity 交互式 Demo 演示自动代客泊车系统的关键流程，展示停车场环境下车辆自主建图、路径规划与泊车执行的完整状态流。
             </p>
+         
+    
+             <h2 style={h2Style(accentColor)}>AVP学习系统流程总览</h2>
+            <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
+              为了在 Unity 中验证 AVP（自动泊车）复杂流程，需要通过状态流模拟来管理来自车辆系统状态与车位组件状态的多源信号，因为 AVP 是一个非线性系统，不同功能节点的状态转换会相互叠加并动态影响 3D 场景中的车位可选性、交互行为和视觉呈现。
+            </p>
+               <div style={mediaBlockStyle()}>
+            <video 
+              src="/src/images/avp/slide01-vid01.mov" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
+              controls 
+              title="AVP Unity Demo 自动泊车流程" 
+            />
+            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
+              视频 3-1 AVP 自动泊车 Unity Demo
+            </p>
+          </div>
+            
+            <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/avp/slide01-img01.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="AVP learning user flow overview" 
+            /></div>
+
           </div>
 
           <h2 style={h2Style(accentColor)}>项目目标</h2>
@@ -122,6 +142,12 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
               <ListItem key={item} accent={accentColor}>{item}</ListItem>
             ))}
           </ul>
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/avp/slide01-img02.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="AVP learning user flow overview" 
+            /></div>
         </>,
       ],
     },
@@ -131,40 +157,47 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
       title: 'Unity Demo 表达',
       blocks: [
         <>
-          <h2 style={h2Style(accentColor)}>3D 场景职责</h2>
-          <p style={paragraphStyle()}>
-            Unity Demo 用于演示 AVP 系统能力，包括 SLAM 建图过程、车辆路径规划以及自动泊车执行过程。
-          </p>
-
-          <h2 style={h2Style(accentColor)}>图片</h2>
+          <h2 style={h2Style(accentColor)}>3D场景模拟系统和车位状态流转</h2>
           <div style={mediaBlockStyle()}>
-            <div style={placeholderStyle('image', accentColor)}>Image · AVP 停车场地图与路径规划示意</div>
-            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
-              图 3-1 AVP 停车场建图与路径规划示意
-            </p>
-          </div>
+            <img 
+              src="/src/images/avp/slide01-img03.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="AVP learning user flow overview" 
+            /></div>
+                      <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/avp/slide01-img04.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="AVP learning user flow overview" 
+            /></div>
+          
 
           <h2 style={h2Style(accentColor)}>视频</h2>
           <div style={mediaBlockStyle()}>
-            <div style={placeholderStyle('video', accentColor)}>Video · AVP Unity Demo 自动泊车流程</div>
+            <video 
+              src="/src/images/avp/slide01-vid01.mov" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
+              controls 
+              title="AVP Unity Demo 自动泊车流程" 
+            />
             <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
               视频 3-1 AVP 自动泊车 Unity Demo
             </p>
           </div>
+          <div style={mediaBlockStyle()}>
+            <video 
+              src="/src/images/avp/slide01-vid02.mov" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
+              controls 
+              title="AVP Unity Demo 建图流程" 
+            />
+            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
+              视频 3-2 AVP 建图流程 Unity Demo
+            </p>
+          </div>
         </>,
       ],
     },
-    {
-      id: 'application-notes',
-      numeral: '04',
-      title: '应用说明',
-      blocks: [
-        <>
-          <p style={paragraphStyle()}>
-            当前文档内容将应用到 <code style={{ color: '#c8b080' }}>{'#/jidu-hmi/unity3d-camera'}</code> 页面 CONTENT 区域中，作为 H5 文档内容展示。
-          </p>
-        </>,
-      ],
-    },
+    
   ];
 }

@@ -286,6 +286,7 @@ function get3dMapSlide1Sections(accentColor: string): SectionData[] {
 const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/unity3d-camera:0': getUnitySections,
   '/jidu-hmi/unity3d-camera:1': getUnityChapter2Sections,
+  '/jidu-hmi/avp:0': getAvpSlide1Sections,
   '/jidu-hmi/3d-map:1': get3dMapSlide1Sections,
 };
 
