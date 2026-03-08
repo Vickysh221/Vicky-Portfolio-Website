@@ -22,7 +22,19 @@ export const ROUTE_DEPTH: Record<string, number> = {
 export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/unity3d-camera': 5,
   '/jidu-hmi/3d-map': 5,
+  '/jidu-hmi/avp': 1,
+  '/jidu-hmi/minimap-camera': 1,
+  '/jidu-hmi/3d-map-gesture': 1,
+  '/jidu-hmi/simo-agent-parks': 1,
+
+  '/phoenix-ai/overview': 1,
+  '/phoenix-ai/component-framework': 1,
+  '/phoenix-ai/key-pages': 1,
+  '/phoenix-ai/semantic-system': 1,
   '/phoenix-ai/fuli-plus': 3,
+
+  '/personal/simbiocity': 1,
+  '/personal/fortnite-demo': 1,
   '/personal/language-diary': 5,
 };
 

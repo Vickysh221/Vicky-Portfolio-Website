@@ -37,21 +37,7 @@ function mediaBlockStyle(): CSSProperties {
   };
 }
 
-function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
-  return {
-    height: '130px',
-    borderRadius: '5px',
-    border: `1px dashed ${kind === 'video' ? `${accentColor}66` : 'rgba(200,169,110,0.28)'}`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: kind === 'video' ? accentColor : '#8f7d5f',
-    fontSize: '10px',
-    letterSpacing: '0.12em',
-    background: 'rgba(255,255,255,0.01)',
-    textAlign: 'center',
-  };
-}
+
 
 function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
   return (
