@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent, { hasSectionContent } from './H5DocContent';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 interface Props {
   route: string;
@@ -57,6 +59,77 @@ function BackButton({ onClick }: { onClick: () => void }) {
         />
       </svg>
       BACK
+    </button>
+  );
+}
+
+function ExpandButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      title="Expand fullscreen"
+      style={{
+        width: '24px',
+        height: '24px',
+        borderRadius: '3px',
+        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
+        background: hov ? `${accentColor}18` : 'transparent',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.2s',
+        flexShrink: 0,
+      }}
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path
+          d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
+          stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+function CollapseButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      title="Exit fullscreen"
+      style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: '4px',
+        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.25)'}`,
+        background: hov ? `${accentColor}18` : 'rgba(8,6,4,0.7)',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.2s',
+        flexShrink: 0,
+        backdropFilter: 'blur(4px)',
+      }}
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path
+          d="M3.5 1V3.5H1M9 3.5H6.5V1M6.5 9V6.5H9M1 6.5H3.5V9"
+          stroke={hov ? accentColor : 'rgba(200,169,110,0.6)'}
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </button>
   );
 }
@@ -119,6 +192,9 @@ function SlideContent({
   accentColor,
   isActive,
   onBack,
+  onExpand,
+  isExpanded,
+  isMobile,
 }: {
   route: string;
   slideIndex: number;
@@ -126,11 +202,13 @@ function SlideContent({
   accentColor: string;
   isActive: boolean;
   onBack: () => void;
+  onExpand?: () => void;
+  isExpanded?: boolean;
+  isMobile?: boolean;
 }) {
   const meta = PAGE_META[route];
   if (!meta) return null;
 
-  // Roman numerals for slide indicator
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
 
@@ -167,41 +245,47 @@ function SlideContent({
       {/* Header */}
       <div
         style={{
-          padding: '22px 28px 16px',
+          padding: isMobile ? '16px 20px 12px' : '22px 28px 16px',
           borderBottom: '1px solid rgba(200,169,110,0.08)',
           flexShrink: 0,
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          alignItems: 'center',
         }}
       >
         <BackButton onClick={onBack} />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-          <div
-            style={{
-              color: 'rgba(200,169,110,0.28)',
-              fontSize: '9px',
-              letterSpacing: '0.25em',
-            }}
-          >
-            CHAPTER
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+            <div
+              style={{
+                color: 'rgba(200,169,110,0.28)',
+                fontSize: '9px',
+                letterSpacing: '0.25em',
+              }}
+            >
+              CHAPTER
+            </div>
+            <div
+              style={{
+                color: accentColor,
+                fontSize: '9px',
+                letterSpacing: '0.2em',
+                opacity: 0.7,
+                fontStyle: 'italic',
+              }}
+            >
+              {slideLabel}
+            </div>
           </div>
-          <div
-            style={{
-              color: accentColor,
-              fontSize: '9px',
-              letterSpacing: '0.2em',
-              opacity: 0.7,
-              fontStyle: 'italic',
-            }}
-          >
-            {slideLabel}
-          </div>
+          {/* Expand button: PC only, not in expanded state */}
+          {!isMobile && !isExpanded && onExpand && (
+            <ExpandButton onClick={onExpand} accentColor={accentColor} />
+          )}
         </div>
       </div>
 
       {/* Title block */}
-      <div style={{ padding: '24px 28px 20px', flexShrink: 0 }}>
+      <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
           <div
             style={{
@@ -216,7 +300,7 @@ function SlideContent({
           <div
             style={{
               color: '#f0e8d8',
-              fontSize: '22px',
+              fontSize: isMobile ? '18px' : '22px',
               fontStyle: 'italic',
               lineHeight: 1.15,
               letterSpacing: '-0.01em',
@@ -238,18 +322,18 @@ function SlideContent({
           }}
         />
 
-        <p style={{ color: '#a09070', fontSize: '12px', lineHeight: 1.8, paddingLeft: '17px' }}>
+        <p style={{ color: '#a09070', fontSize: isMobile ? '13px' : '12px', lineHeight: 1.8, paddingLeft: '17px' }}>
           {meta.desc}
         </p>
       </div>
 
       {/* Content area */}
       <div
-        style={{ flex: 1, padding: '0 28px 24px', overflow: 'auto' }}
+        style={{ flex: 1, padding: isMobile ? '0 20px 20px' : '0 28px 24px', overflow: 'auto' }}
         className="panel-scroll"
       >
         {hasSectionContent(route, slideIndex) ? (
-          <H5DocContent route={route} accentColor={accentColor} slideIndex={slideIndex} />
+          <H5DocContent route={route} accentColor={accentColor} slideIndex={slideIndex} isMobile={isMobile} />
         ) : (
           <div
             style={{
@@ -261,7 +345,6 @@ function SlideContent({
               gap: '20px',
             }}
           >
-            {/* Decorative top line */}
             <div
               style={{
                 width: '60px',
@@ -305,7 +388,6 @@ function SlideContent({
                 </span>
               </div>
             </div>
-            {/* Decorative bottom line */}
             <div
               style={{
                 width: '60px',
@@ -322,14 +404,16 @@ function SlideContent({
 
 export default function SubPageCarousel({ route, accentColor, count }: Props) {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const meta = PAGE_META[route];
 
   useEffect(() => {
-    // Trigger entry animation after one tick
     const raf = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(raf);
   }, []);
@@ -342,11 +426,13 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         setActiveIndex((i) => Math.min(count - 1, i + 1));
+      } else if (e.key === 'Escape' && isExpanded) {
+        setIsExpanded(false);
       }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [count]);
+  }, [count, isExpanded]);
 
   const handleBack = () => {
     if (meta?.parent) {
@@ -356,6 +442,180 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
     }
   };
 
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < 50) return;
+    if (delta < 0) {
+      setActiveIndex((i) => Math.min(count - 1, i + 1));
+    } else {
+      setActiveIndex((i) => Math.max(0, i - 1));
+    }
+  };
+
+  // Shared navigation controls (arrows + dots) — used in both modes
+  const navControls = (
+    <>
+      <ArrowButton
+        direction="left"
+        onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
+        visible={activeIndex > 0}
+        accentColor={accentColor}
+      />
+      <ArrowButton
+        direction="right"
+        onClick={() => setActiveIndex((i) => Math.min(count - 1, i + 1))}
+        visible={activeIndex < count - 1}
+        accentColor={accentColor}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '32px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '8px',
+          pointerEvents: 'auto',
+          zIndex: 10,
+        }}
+      >
+        {Array.from({ length: count }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            style={{
+              width: isMobile ? '8px' : '6px',
+              height: isMobile ? '8px' : '6px',
+              borderRadius: '50%',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              background: i === activeIndex ? accentColor : 'rgba(200,169,110,0.2)',
+              transition: 'background 0.3s, transform 0.3s',
+              transform: i === activeIndex ? 'scale(1.3)' : 'scale(1)',
+            }}
+          />
+        ))}
+      </div>
+    </>
+  );
+
+  // ── Mobile mode: fullscreen single slide, no 3D ──
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'auto',
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <SlideContent
+          route={route}
+          slideIndex={activeIndex}
+          totalSlides={count}
+          accentColor={accentColor}
+          isActive={true}
+          onBack={handleBack}
+          isMobile={true}
+        />
+        {navControls}
+      </div>
+    );
+  }
+
+  // ── PC Expanded fullscreen overlay (portal) ──
+  const expandedOverlay = isExpanded
+    ? createPortal(
+        <div
+          className="slide-expanded-overlay"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(8,6,4,0.97)',
+            backdropFilter: 'blur(12px)',
+            pointerEvents: 'auto',
+          }}
+        >
+          <SlideContent
+            route={route}
+            slideIndex={activeIndex}
+            totalSlides={count}
+            accentColor={accentColor}
+            isActive={true}
+            onBack={handleBack}
+            isExpanded={true}
+          />
+          {/* Collapse button — top right of overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              zIndex: 10,
+              pointerEvents: 'auto',
+            }}
+          >
+            <CollapseButton onClick={() => setIsExpanded(false)} accentColor={accentColor} />
+          </div>
+          {/* Navigation in expanded mode */}
+          <ArrowButton
+            direction="left"
+            onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
+            visible={activeIndex > 0}
+            accentColor={accentColor}
+          />
+          <ArrowButton
+            direction="right"
+            onClick={() => setActiveIndex((i) => Math.min(count - 1, i + 1))}
+            visible={activeIndex < count - 1}
+            accentColor={accentColor}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '32px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              gap: '8px',
+              pointerEvents: 'auto',
+            }}
+          >
+            {Array.from({ length: count }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  background: i === activeIndex ? accentColor : 'rgba(200,169,110,0.2)',
+                  transition: 'background 0.3s, transform 0.3s',
+                  transform: i === activeIndex ? 'scale(1.3)' : 'scale(1)',
+                }}
+              />
+            ))}
+          </div>
+        </div>,
+        document.body,
+      )
+    : null;
+
+  // ── PC 3D Carousel (default) ──
   return (
     <div
       ref={containerRef}
@@ -365,6 +625,8 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
         pointerEvents: 'none',
       }}
     >
+      {expandedOverlay}
+
       {/* 3D track */}
       <div
         style={{
@@ -396,11 +658,15 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
                 height: '680px',
                 transform: `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg)`,
                 opacity: op,
-                transition: mounted ? 'transform 0.65s cubic-bezier(0.16,1,0.3,1), opacity 0.65s cubic-bezier(0.16,1,0.3,1)' : 'none',
+                transition: mounted
+                  ? 'transform 0.65s cubic-bezier(0.16,1,0.3,1), opacity 0.65s cubic-bezier(0.16,1,0.3,1)'
+                  : 'none',
                 cursor: isActive ? 'default' : 'pointer',
                 pointerEvents: 'auto',
-                // Entry animation for active panel
-                animation: mounted && isActive && i === 0 ? 'carouselPanelEnter 0.7s cubic-bezier(0.16,1,0.3,1) forwards' : undefined,
+                animation:
+                  mounted && isActive && i === 0
+                    ? 'carouselPanelEnter 0.7s cubic-bezier(0.16,1,0.3,1) forwards'
+                    : undefined,
               }}
             >
               <SlideContent
@@ -410,6 +676,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
                 accentColor={accentColor}
                 isActive={isActive}
                 onBack={handleBack}
+                onExpand={isActive ? () => setIsExpanded(true) : undefined}
               />
             </div>
           );

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent from './H5DocContent';
@@ -12,6 +13,7 @@ const cornerStyles: React.CSSProperties[] = [
 
 interface Props {
   route: string;
+  isMobile?: boolean;
 }
 
 function BackButton({ onClick }: { onClick: () => void }) {
@@ -55,6 +57,77 @@ function BackButton({ onClick }: { onClick: () => void }) {
         />
       </svg>
       BACK
+    </button>
+  );
+}
+
+function ExpandButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      title="Expand fullscreen"
+      style={{
+        width: '24px',
+        height: '24px',
+        borderRadius: '3px',
+        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
+        background: hov ? `${accentColor}18` : 'transparent',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.2s',
+        flexShrink: 0,
+      }}
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path
+          d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
+          stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+function CollapseButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      title="Exit fullscreen"
+      style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: '4px',
+        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.25)'}`,
+        background: hov ? `${accentColor}18` : 'rgba(8,6,4,0.7)',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.2s',
+        flexShrink: 0,
+        backdropFilter: 'blur(4px)',
+      }}
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path
+          d="M3.5 1V3.5H1M9 3.5H6.5V1M6.5 9V6.5H9M1 6.5H3.5V9"
+          stroke={hov ? accentColor : 'rgba(200,169,110,0.6)'}
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </button>
   );
 }
@@ -139,23 +212,28 @@ function SubPageLink({
   );
 }
 
-export default function PageTemplate({ route }: Props) {
-  const navigate = useNavigate();
+function PanelContent({
+  route,
+  accentColor,
+  isExpanded,
+  isMobile,
+  onExpand,
+  onCollapse,
+  onBack,
+}: {
+  route: string;
+  accentColor: string;
+  isExpanded: boolean;
+  isMobile?: boolean;
+  onExpand: () => void;
+  onCollapse: () => void;
+  onBack: () => void;
+}) {
   const meta = PAGE_META[route];
-
   if (!meta) return null;
 
   const isLevel1 = meta.parent === null;
-  const accentColor = meta.color;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
-
-  const handleBack = () => {
-    if (meta.parent) {
-      navigate(meta.parent);
-    } else {
-      navigate('/');
-    }
-  };
 
   return (
     <div
@@ -182,29 +260,33 @@ export default function PageTemplate({ route }: Props) {
       {/* ── Header ── */}
       <div
         style={{
-          padding: '22px 28px 16px',
+          padding: isMobile ? '16px 20px 12px' : '22px 28px 16px',
           borderBottom: '1px solid rgba(200,169,110,0.08)',
           flexShrink: 0,
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          alignItems: 'center',
         }}
       >
-        <BackButton onClick={handleBack} />
-        <div
-          style={{
-            color: 'rgba(200,169,110,0.28)',
-            fontSize: '9px',
-            letterSpacing: '0.25em',
-            alignSelf: 'center',
-          }}
-        >
-          {isLevel1 ? 'PROJECT' : 'CHAPTER'}
+        <BackButton onClick={onBack} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              color: 'rgba(200,169,110,0.28)',
+              fontSize: '9px',
+              letterSpacing: '0.25em',
+            }}
+          >
+            {isLevel1 ? 'PROJECT' : 'CHAPTER'}
+          </div>
+          {/* Expand / collapse buttons */}
+          {!isMobile && !isExpanded && <ExpandButton onClick={onExpand} accentColor={accentColor} />}
+          {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
         </div>
       </div>
 
       {/* ── Title block ── */}
-      <div style={{ padding: '24px 28px 20px', flexShrink: 0 }}>
+      <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
           <div
             style={{
@@ -219,7 +301,7 @@ export default function PageTemplate({ route }: Props) {
           <div
             style={{
               color: '#f0e8d8',
-              fontSize: '22px',
+              fontSize: isMobile ? '18px' : '22px',
               fontStyle: 'italic',
               lineHeight: 1.15,
               letterSpacing: '-0.01em',
@@ -244,7 +326,7 @@ export default function PageTemplate({ route }: Props) {
         <p
           style={{
             color: '#a09070',
-            fontSize: '12px',
+            fontSize: isMobile ? '13px' : '12px',
             lineHeight: 1.8,
             paddingLeft: '17px',
           }}
@@ -257,7 +339,7 @@ export default function PageTemplate({ route }: Props) {
       <div
         style={{
           flex: 1,
-          padding: '0 28px 24px',
+          padding: isMobile ? '0 20px 20px' : '0 28px 24px',
           overflow: 'auto',
         }}
         className="panel-scroll"
@@ -287,7 +369,7 @@ export default function PageTemplate({ route }: Props) {
             </div>
           </>
         ) : isBTypeSubPage ? (
-          <H5DocContent route={route} accentColor={accentColor} />
+          <H5DocContent route={route} accentColor={accentColor} isMobile={isMobile} />
         ) : (
           <div
             style={{
@@ -318,4 +400,56 @@ export default function PageTemplate({ route }: Props) {
       </div>
     </div>
   );
+}
+
+export default function PageTemplate({ route, isMobile }: Props) {
+  const navigate = useNavigate();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const meta = PAGE_META[route];
+  if (!meta) return null;
+
+  const accentColor = meta.color;
+
+  const handleBack = () => {
+    if (meta.parent) {
+      navigate(meta.parent);
+    } else {
+      navigate('/');
+    }
+  };
+
+  const panelContent = (
+    <PanelContent
+      route={route}
+      accentColor={accentColor}
+      isExpanded={isExpanded}
+      isMobile={isMobile}
+      onExpand={() => setIsExpanded(true)}
+      onCollapse={() => setIsExpanded(false)}
+      onBack={handleBack}
+    />
+  );
+
+  // Fullscreen expanded portal
+  if (isExpanded) {
+    return createPortal(
+      <div
+        className="slide-expanded-overlay"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: 'rgba(8,6,4,0.97)',
+          backdropFilter: 'blur(12px)',
+          pointerEvents: 'auto',
+        }}
+      >
+        {panelContent}
+      </div>,
+      document.body,
+    );
+  }
+
+  return panelContent;
 }

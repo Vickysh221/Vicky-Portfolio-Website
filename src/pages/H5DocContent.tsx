@@ -6,6 +6,7 @@ interface H5DocContentProps {
   route: string;
   accentColor: string;
   slideIndex?: number;
+  isMobile?: boolean;
 }
 
 interface SectionData {
@@ -313,13 +314,16 @@ function H5Section({ section, accentColor }: { section: SectionData; accentColor
   );
 }
 
-export default function H5DocContent({ route, accentColor, slideIndex = 0 }: H5DocContentProps) {
+export default function H5DocContent({ route, accentColor, slideIndex = 0, isMobile }: H5DocContentProps) {
   const getter = sectionMap[`${route}:${slideIndex}`];
   if (!getter) return null;
 
   const sections = getter(accentColor);
   return (
-    <div style={{ padding: '0 17px 2px' }}>
+    <div
+      style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }}
+      className={isMobile ? 'h5-mobile-view' : undefined}
+    >
       {sections.map((section) => (
         <H5Section key={section.id} section={section} accentColor={accentColor} />
       ))}

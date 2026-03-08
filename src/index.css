@@ -141,3 +141,97 @@
 .panel-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(200, 169, 110, 0.35);
 }
+
+/* ── Expand / fullscreen overlay ── */
+@keyframes slideExpand {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideCollapse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.slide-expanded-overlay {
+  animation: slideExpand 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Mobile H5 content overrides (.h5-mobile-view) ── */
+/* CSS !important overrides all inline styles from H5DocContent files */
+
+.h5-mobile-view p {
+  font-size: 14px !important;
+  line-height: 2 !important;
+  margin-bottom: 14px !important;
+}
+
+.h5-mobile-view h2 {
+  font-size: 15px !important;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.h5-mobile-view li {
+  font-size: 14px !important;
+  line-height: 2 !important;
+}
+
+.h5-mobile-view ul {
+  padding-left: 0 !important;
+  gap: 6px !important;
+}
+
+/* Section title rows */
+.h5-mobile-view > div > div:first-child {
+  font-size: 15px !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 14px !important;
+}
+
+/* Images full width on mobile */
+.h5-mobile-view img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+/* Media / placeholder blocks: full width */
+.h5-mobile-view [style*="border-radius: 6px"] {
+  padding: 10px !important;
+  margin: 10px 0 !important;
+}
+
+/* Placeholder boxes: adaptive height */
+.h5-mobile-view [style*="height: 130px"] {
+  height: 80px !important;
+}
+
+/* Touch-friendly scrollbar */
+.h5-mobile-view::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+/* ── Mobile slide view ── */
+@media (max-width: 767px) {
+  /* Ensure body/root still fills screen */
+  html, body, #root {
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+}

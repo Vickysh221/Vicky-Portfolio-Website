@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { SceneManager } from './three/SceneManager';
 import { useRouteTransition } from './hooks/useRouteTransition';
 import { PAGE_META, getSlideCount } from './constants/routeDepth';
+import { useIsMobile } from './hooks/useIsMobile';
 import Portfolio from './Portfolio';
 import ProjectCard from './pages/ProjectCard';
 import PageTemplate from './pages/PageTemplate';
@@ -19,6 +20,7 @@ export default function App() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const location = useLocation();
+  const isMobile = useIsMobile();
   // Show PageTemplate overlay for any non-home route with known meta
   const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname];
 
@@ -81,6 +83,26 @@ export default function App() {
         const count = getSlideCount(location.pathname);
         const meta = PAGE_META[location.pathname];
         if (count > 1) {
+          // Mobile: no perspective wrapper, SubPageCarousel renders flat fullscreen
+          if (isMobile) {
+            return (
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 40,
+                  pointerEvents: 'auto',
+                }}
+              >
+                <SubPageCarousel
+                  route={location.pathname}
+                  accentColor={meta.color}
+                  count={count}
+                />
+              </div>
+            );
+          }
+          // Desktop: 3D perspective carousel
           return (
             <div
               style={{
@@ -97,6 +119,21 @@ export default function App() {
                 accentColor={meta.color}
                 count={count}
               />
+            </div>
+          );
+        }
+        // Single-slide page
+        if (isMobile) {
+          return (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 40,
+                pointerEvents: 'auto',
+              }}
+            >
+              <PageTemplate route={location.pathname} isMobile />
             </div>
           );
         }
