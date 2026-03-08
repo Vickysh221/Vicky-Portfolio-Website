@@ -1,19 +1,11 @@
 import type { CSSProperties, ReactNode } from 'react';
+import { paragraphStyle } from './h5Styles';
 
 export interface SectionData {
   id: string;
   numeral: string;
   title: string;
   blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
 }
 
 function markerStyle(accentColor: string): CSSProperties {

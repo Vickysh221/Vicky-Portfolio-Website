@@ -1,41 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
-
-interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function h2Style(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '13px',
-    margin: '16px 0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  };
-}
-
-function mediaBlockStyle(): CSSProperties {
-  return {
-    border: '1px solid rgba(200,169,110,0.15)',
-    borderRadius: '6px',
-    background: 'rgba(255,255,255,0.012)',
-    padding: '12px',
-    margin: '12px 0',
-  };
-}
+import type { SectionData } from './H5DocContentSlideFactory';
+import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 
 function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
   return {
@@ -56,14 +21,8 @@ function Accent({ color }: { color: string }) {
   return <span style={{ width: 3, height: 12, borderRadius: 2, background: color, opacity: 0.9, display: 'inline-block' }} />;
 }
 
-function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
-  return (
-    <li style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
-      <span style={{ color: accent }}>—</span>
-      <span>{children}</span>
-    </li>
-  );
-}
+
+
 
 function EventTable({ accentColor }: { accentColor: string }) {
   const rows: { category: string; sub: string; event: string; adopted: boolean | null; note: string }[] = [

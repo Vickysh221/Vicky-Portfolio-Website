@@ -1,16 +1,11 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
+import type { SectionData } from './H5DocContentSlideFactory';
+import { paragraphStyle, mediaBlockStyle } from './h5Styles';
 
-interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
+function h2Style(accentColor: string): CSSProperties {
   return {
-    color: '#a99679',
-    fontSize: '12px',
+    color: accentColor,
+    fontSize: '14px',
     lineHeight: 1.9,
     margin: '0 0 10px',
   };
@@ -45,12 +40,52 @@ export function getMinimapCameraSlide01Sections(accentColor: string): SectionDat
             information of drivers’ learning trajectories can help them track the parking process and historical
             learning records.
           </p>
-          <div style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}>
+          <div style={mediaBlockStyle()}>
             <img 
               src="/src/images/slam/slide01-img01.png" 
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="SLAM minimap concept and layout" 
-            /></div>
+            />
+          </div>
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/slam/slide01-img02.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="Different display of the minimap" 
+            />
+          </div>
+
+          
+          <div style={{ marginTop: 10 }}>
+            <div style={mediaPlaceholderStyle(accentColor)}>IMAGE 1 · [Image #1]</div>
+          </div>
+        </>,
+      ],
+    },
+       {
+      id: 'slam-simulation',
+      numeral: '01',
+      title: 'SLAM minimap simulation',
+      blocks: [
+        <>
+        <h2 style={h2Style(accentColor)}>Map elements and camera initialization</h2>
+
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/slam/slide01-img01.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="SLAM minimap concept and layout" 
+            />
+          </div>
+          <h2 style={h2Style(accentColor)}>Adaptive camera mechanism design</h2>
+          
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/slam/slide01-img02.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="Different display of the minimap" 
+            />
+          </div>
 
           
           <div style={{ marginTop: 10 }}>

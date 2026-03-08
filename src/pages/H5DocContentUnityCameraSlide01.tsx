@@ -1,41 +1,6 @@
-import type { CSSProperties, ReactNode } from 'react';
-
-interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function h2Style(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '13px',
-    margin: '16px 0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  };
-}
-
-function mediaBlockStyle(): CSSProperties {
-  return {
-    border: '1px solid rgba(200,169,110,0.15)',
-    borderRadius: '6px',
-    background: 'rgba(255,255,255,0.012)',
-    padding: '12px',
-    margin: '12px 0',
-  };
-}
+import type { CSSProperties } from 'react';
+import type { SectionData } from './H5DocContentSlideFactory';
+import { paragraphStyle, h2Style, mediaBlockStyle } from './h5Styles';
 
 function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
   return {

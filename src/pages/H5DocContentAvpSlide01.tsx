@@ -1,52 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
-
-interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function h2Style(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '13px',
-    margin: '16px 0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  };
-}
-
-function mediaBlockStyle(): CSSProperties {
-  return {
-    border: '1px solid rgba(200,169,110,0.15)',
-    borderRadius: '6px',
-    background: 'rgba(255,255,255,0.012)',
-    padding: '12px',
-    margin: '12px 0',
-  };
-}
-
-
-
-function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
-  return (
-    <li style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
-      <span style={{ color: accent }}>—</span>
-      <span>{children}</span>
-    </li>
-  );
-}
+import type { SectionData } from './H5DocContentSlideFactory';
+import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 
 export function getAvpSlide1Sections(accentColor: string): SectionData[] {
   return [
@@ -79,7 +32,7 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
             </p>
           </div>
             
-            <div style={mediaBlockStyle()}>
+          <div style={mediaBlockStyle()}>
             <img 
               src="/src/images/avp/slide01-img01.png" 
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 

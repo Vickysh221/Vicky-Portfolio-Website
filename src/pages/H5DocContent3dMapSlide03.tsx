@@ -1,22 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function subtitleStyle(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '13px',
-    margin: '16px 0 8px',
-  };
-}
+import { paragraphStyle, subtitleStyle } from './h5Styles';
 
 function listStyle(): CSSProperties {
   return {

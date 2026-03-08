@@ -1,40 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
-
-interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
-
-function paragraphStyle(): CSSProperties {
-  return {
-    color: '#a99679',
-    fontSize: '12px',
-    lineHeight: 1.9,
-    margin: '0 0 10px',
-  };
-}
-
-function h2Style(accentColor: string): CSSProperties {
-  return {
-    color: accentColor,
-    fontSize: '13px',
-    margin: '16px 0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  };
-}
-
-function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
-  return (
-    <li style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
-      <span style={{ color: accent }}>—</span>
-      <span>{children}</span>
-    </li>
-  );
-}
+import type { SectionData } from './H5DocContentSlideFactory';
+import { paragraphStyle, h2Style, ListItem } from './h5Styles';
 
 export function get3dMapSlide1Sections(accentColor: string): SectionData[] {
   return [
