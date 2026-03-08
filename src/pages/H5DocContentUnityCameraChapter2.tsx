@@ -198,7 +198,14 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机模式</h2>
         <p style={paragraphStyle()}>在大部分镜头下，相机看向「自车默认焦点」或「一个被偏移过的焦点」，并与自车保持相对固定的空间位置关系。其效果为：在固定运镜状态下，自车在屏幕上的显示恒定不变。</p>
         <div style={mediaBlockStyle()}>
-          <div style={placeholderStyle('image', accentColor)}>IMAGE · 相机模式示意图</div>
+                    <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/unity3d-camera/slide01-img01.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件触发来源概览</div>
+          </div>
           <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 3-1 相机与自车相对位置关系（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />选择该相机模式的原因</h2>
