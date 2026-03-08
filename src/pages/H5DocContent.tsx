@@ -112,7 +112,11 @@ function getUnitySections(accentColor: string): SectionData[] {
             行车模式下，相机跟随在自车后方，以第三人称视角表达路况信息。高优先级事件（如安全预警）可打断低优先级镜头。
           </p>
           <div style={mediaBlockStyle()}>
-            <div style={placeholderStyle('image', accentColor)}>IMAGE · 行车事件示意图</div>
+            <img 
+              src="/src/images/unity3d-camera/slide01-img01.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
             <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件触发来源概览</div>
           </div>
         </>,
@@ -282,7 +286,6 @@ function get3dMapSlide1Sections(accentColor: string): SectionData[] {
 const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/unity3d-camera:0': getUnitySections,
   '/jidu-hmi/unity3d-camera:1': getUnityChapter2Sections,
-  '/jidu-hmi/avp:0': getAvpSlide1Sections,
   '/jidu-hmi/3d-map:1': get3dMapSlide1Sections,
 };
 
