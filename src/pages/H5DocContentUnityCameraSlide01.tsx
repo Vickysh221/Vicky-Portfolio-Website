@@ -13,7 +13,7 @@ function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProp
     alignItems: 'center',
     justifyContent: 'center',
     color: kind === 'video' ? accentColor : '#8f7d5f',
-    fontSize: '10px',
+    fontSize: '12px',
     letterSpacing: '0.18em',
     background: 'rgba(255,255,255,0.01)',
   };
@@ -34,7 +34,7 @@ export function getUnitySections(accentColor: string): SectionData[] {
           <h2 style={h2Style(accentColor)}><span style={{ width: 3, height: 12, borderRadius: 2, background: accentColor }} />设计原则</h2>
           <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
             {['注意力优先', '最小镜头集', '稳定性优先', '安全信息优先'].map((item) => (
-              <li key={item} style={{ color: '#a99679', fontSize: '12px', display: 'flex', gap: 8 }}>
+              <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
                 <span style={{ color: accentColor }}>—</span>
                 <span>{item}</span>
               </li>

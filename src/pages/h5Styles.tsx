@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from 'react';
 export function paragraphStyle(): CSSProperties {
   return {
     color: '#a99679',
-    fontSize: '12px',
+    fontSize: '16px',
     lineHeight: 1.9,
     margin: '0 0 10px',
   };
@@ -14,7 +14,7 @@ export function paragraphStyle(): CSSProperties {
 export function h2Style(accentColor: string): CSSProperties {
   return {
     color: accentColor,
-    fontSize: '13px',
+    fontSize: '18px',
     margin: '16px 0 8px',
     display: 'flex',
     alignItems: 'center',
@@ -26,7 +26,7 @@ export function h2Style(accentColor: string): CSSProperties {
 export function subtitleStyle(accentColor: string): CSSProperties {
   return {
     color: accentColor,
-    fontSize: '13px',
+    fontSize: '18px',
     margin: '16px 0 8px',
   };
 }
@@ -45,7 +45,7 @@ export function mediaBlockStyle(): CSSProperties {
 /** dash 列表项，配合 <ul style={{ listStyle:'none', ... }}> 使用 */
 export function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
   return (
-    <li style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
+    <li style={{ color: '#a99679', fontSize: '16px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
       <span style={{ color: accent }}>—</span>
       <span>{children}</span>
     </li>

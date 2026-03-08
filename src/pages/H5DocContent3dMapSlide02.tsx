@@ -8,7 +8,7 @@ function mediaPlaceholderStyle(): CSSProperties {
     borderRadius: 8,
     padding: '16px 14px',
     color: '#c8a96e',
-    fontSize: '12px',
+    fontSize: '16px',
     lineHeight: 1.8,
     background: 'rgba(18, 15, 11, 0.45)',
     marginBottom: 6,
@@ -18,7 +18,7 @@ function mediaPlaceholderStyle(): CSSProperties {
 function captionStyle(): CSSProperties {
   return {
     color: '#8d7960',
-    fontSize: '11px',
+    fontSize: '13px',
     lineHeight: 1.7,
     margin: '0 0 12px',
   };
@@ -26,7 +26,7 @@ function captionStyle(): CSSProperties {
 
 function tableCellBase(): CSSProperties {
   return {
-    fontSize: '11px',
+    fontSize: '14px',
     color: '#a99679',
     padding: '8px 10px',
     lineHeight: 1.7,
@@ -40,7 +40,7 @@ function tableHeaderCell(accentColor: string): CSSProperties {
   return {
     ...tableCellBase(),
     color: accentColor,
-    fontSize: '10px',
+    fontSize: '13px',
     letterSpacing: '0.12em',
     fontWeight: 600,
     borderBottom: '1px solid rgba(200,169,110,0.2)',
@@ -359,7 +359,7 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
       title: '问题定义',
       blocks: [
         <>
-          <div style={{ color: '#c8a96e', fontSize: '9px', letterSpacing: '0.2em', marginBottom: 8 }}>
+          <div style={{ color: '#c8a96e', fontSize: '11px', letterSpacing: '0.2em', marginBottom: 8 }}>
             H5 DOCUMENT SPEC · /jidu-hmi/3d-map
           </div>
           <p style={{ ...paragraphStyle(), marginTop: 0 }}>

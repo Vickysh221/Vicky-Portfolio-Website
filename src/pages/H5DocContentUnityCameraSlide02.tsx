@@ -13,7 +13,7 @@ function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProp
     alignItems: 'center',
     justifyContent: 'center',
     color: kind === 'video' ? accentColor : '#8f7d5f',
-    fontSize: '10px',
+    fontSize: '12px',
     letterSpacing: '0.18em',
     background: 'rgba(255,255,255,0.01)',
   };
@@ -47,7 +47,7 @@ function EventTable({ accentColor }: { accentColor: string }) {
   ];
 
   const cellBase: CSSProperties = {
-    fontSize: '11px',
+    fontSize: '14px',
     color: '#a99679',
     padding: '8px 10px',
     lineHeight: 1.7,
@@ -58,7 +58,7 @@ function EventTable({ accentColor }: { accentColor: string }) {
   const headerCell: CSSProperties = {
     ...cellBase,
     color: accentColor,
-    fontSize: '10px',
+    fontSize: '13px',
     letterSpacing: '0.12em',
     fontWeight: 600,
     borderBottom: '1px solid rgba(200,169,110,0.2)',
@@ -88,8 +88,8 @@ function EventTable({ accentColor }: { accentColor: string }) {
               <td style={cellBase}>{row.sub}</td>
               <td style={cellBase}>{row.event}</td>
               <td style={{ ...cellBase, textAlign: 'center' }}>
-                {row.adopted === true && (<span style={{ color: '#7dba8a', fontSize: '10px', letterSpacing: '0.1em' }}>✓</span>)}
-                {row.adopted === false && (<span style={{ color: '#c26b5a', fontSize: '10px' }}>✗</span>)}
+                {row.adopted === true && (<span style={{ color: '#7dba8a', fontSize: '13px', letterSpacing: '0.1em' }}>✓</span>)}
+                {row.adopted === false && (<span style={{ color: '#c26b5a', fontSize: '13px' }}>✗</span>)}
               </td>
               <td style={{ ...cellBase, color: '#7f6f55' }}>{row.note}</td>
             </tr>
@@ -110,7 +110,7 @@ function ParkingEventList({ accentColor }: { accentColor: string }) {
   return (
     <ul style={{ margin: '8px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
       {items.map((it) => (
-        <li key={it.cat} style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
+        <li key={it.cat} style={{ color: '#a99679', fontSize: '16px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
           <span style={{ color: accentColor }}>—</span>
           <span><span style={{ color: '#c8b080' }}>{it.cat}：</span>{it.examples}</span>
         </li>
@@ -139,10 +139,10 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
     {
       id: 'driving', numeral: '02', title: '行车运镜', blocks: [<>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车事件</h2>
-        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '11px', marginBottom: 10 }}>— 哪些系统信号源向镜头「提出变化请求」</p>
+        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 10 }}>— 哪些系统信号源向镜头「提出变化请求」</p>
         <EventTable accentColor={accentColor} />
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车事件优先级规则</h2>
-        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '11px', marginBottom: 8 }}>— 不同事件镜头的冲替关系</p>
+        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 8 }}>— 不同事件镜头的冲替关系</p>
        
           <div style={mediaBlockStyle()}>
             <ImageWithStatus
@@ -150,7 +150,7 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="行车事件示意图" 
             />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件优先级仲裁关系</div>
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div>
           </div>
         
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车镜头的设计</h2>
@@ -160,13 +160,13 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
     },
     {
       id: 'camera-params', numeral: '03', title: '相机参数空间变化', blocks: [<>
-        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '11px', marginBottom: 12 }}>— 「一镜到底」的实现原理</p>
+        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 12 }}>— 「一镜到底」的实现原理</p>
         <p style={paragraphStyle()}><strong style={{ color: '#efe4d0' }}>主视图竞争的结果不是「切镜头」，而是参数目标的覆盖。</strong>通过镜头参数的连续变化而非离散动画状态，实现镜头之间的平滑过渡。</p>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机模式</h2>
         <p style={paragraphStyle()}>在大部分镜头下，相机看向「自车默认焦点」或「一个被偏移过的焦点」，并与自车保持相对固定的空间位置关系。其效果为：在固定运镜状态下，自车在屏幕上的显示恒定不变。</p>
         <div style={mediaBlockStyle()}>
          
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 3-1 相机与自车相对位置关系（占位）</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-1 相机与自车相对位置关系（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />选择该相机模式的原因</h2>
         <ul style={{ margin: '0 0 12px', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
@@ -176,14 +176,14 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         </ul>
         <div style={mediaBlockStyle()}>
           <div style={placeholderStyle('image', accentColor)}>IMAGE · 相机模式对比图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 3-2 相机模式选择依据（占位）</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-2 相机模式选择依据（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />镜头事件的通用触发和流转机制</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
           {['触发流转示意 A', '状态图 A', '触发流转示意 B', '状态图 B', '触发流转示意 C', '状态图 C'].map((label, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <div style={placeholderStyle(i % 2 === 1 ? 'video' : 'image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '10px' }}>图 3-{3 + i} {label}（占位）</div>
+              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 3-{3 + i} {label}（占位）</div>
             </div>
           ))}
         </div>
@@ -196,7 +196,7 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
           {['手动驾驶默认视角', 'AVP 自动泊入视角', '辅助驾驶自动变道视角', '导航驾驶视角'].map((label, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <div style={placeholderStyle('image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '10px' }}>图 4-{i + 1} {label}（占位）</div>
+              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 4-{i + 1} {label}（占位）</div>
             </div>
           ))}
         </div>
@@ -212,20 +212,20 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <p style={{ ...paragraphStyle(), marginTop: 12 }}>典型场景包括：3D 场景配合的场景演示、伴随车控车设内用户查看功能说明、用户查看里程能耗与充电状态、用户与 3D 场景组件交互（触发开门 / 查看胎温胎压 / 点击故障位置标识）。</p>
         <div style={mediaBlockStyle()}>
           <div style={placeholderStyle('image', accentColor)}>IMAGE · 驻车事件触发来源示意图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 5-1 驻车事件触发来源概览（占位）</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-1 驻车事件触发来源概览（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件优先级规则</h2>
         <p style={paragraphStyle()}>在车辆状态镜头系统中同样存在镜头优先级仲裁策略。若车身同时出现多个异常状态或充电状态叠加，则选择优先级更高的事件镜头进行展示。</p>
         <div style={mediaBlockStyle()}>
           <div style={placeholderStyle('image', accentColor)}>IMAGE · 驻车事件优先级仲裁图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 5-2 驻车事件优先级仲裁关系（占位）</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-2 驻车事件优先级仲裁关系（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车运镜视角示例</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
           {['传感器 L1 异常故障查看视角', '车门 R1 异常故障查看视角', '充电视角', '胎温胎压异常视角'].map((label, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <div style={placeholderStyle('image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '10px' }}>图 5-{i + 3} {label}（占位）</div>
+              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 5-{i + 3} {label}（占位）</div>
             </div>
           ))}
         </div>

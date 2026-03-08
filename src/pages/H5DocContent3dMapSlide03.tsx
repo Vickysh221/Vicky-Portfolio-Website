@@ -1,38 +1,23 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
-import { paragraphStyle, subtitleStyle } from './h5Styles';
+import { paragraphStyle, subtitleStyle, mediaBlockStyle } from './h5Styles';
+import { ImageWithStatus } from '../components/MediaWithStatus';
+import img01 from '../images/3d-2dmap/slide03-img01.png';
+import img02 from '../images/3d-2dmap/slide03-img02.png';
+import img03 from '../images/3d-2dmap/slide03-img03.png';
+import img04 from '../images/3d-2dmap/slide03-img04.png';
 
 function listStyle(): CSSProperties {
   return {
     margin: '10px 0 12px',
     paddingLeft: 18,
     color: '#a99679',
-    fontSize: '12px',
+    fontSize: '15px',
     lineHeight: 1.9,
   };
 }
 
-function mediaPlaceholderStyle(): CSSProperties {
-  return {
-    border: '1px dashed rgba(200,169,110,0.45)',
-    borderRadius: 8,
-    padding: '16px 14px',
-    color: '#c8a96e',
-    fontSize: '12px',
-    lineHeight: 1.8,
-    background: 'rgba(18, 15, 11, 0.45)',
-    marginBottom: 6,
-  };
-}
 
-function captionStyle(): CSSProperties {
-  return {
-    color: '#8d7960',
-    fontSize: '11px',
-    lineHeight: 1.7,
-    margin: '0 0 12px',
-  };
-}
 
 function bulletList(items: string[]): ReactNode {
   return (
@@ -52,23 +37,54 @@ export function get3dMapSlide03Sections(accentColor: string): SectionData[] {
       title: '视角体系总览',
       blocks: [
         <>
-          <div style={{ color: '#c8a96e', fontSize: '9px', letterSpacing: '0.2em', marginBottom: 8 }}>
+          <div style={{ color: '#c8a96e', fontSize: '11px', letterSpacing: '0.2em', marginBottom: 8 }}>
             H5 DOCUMENT SPEC · /jidu-hmi/3d-map
           </div>
           <p style={{ ...paragraphStyle(), marginTop: 0 }}>
             本页用于定义 3D 地图系统中的主要视角类型，包括 SR 视角、路线视角、路况视角以及漫游 / 锁定视角，并明确各自的触发条件、退出条件和显示元素规则。
           </p>
-          <h2 style={subtitleStyle(accentColor)}>视角状态</h2>
-          <p style={paragraphStyle()}>
-            当前系统中的核心视角包括：SR 视角、路线视角、路况视角，以及用户手势触发后的漫游 / 锁定视角。系统默认停留在 SR 视角，其余视角主要由系统流程或用户操作触发。
-          </p>
-          <h2 style={subtitleStyle(accentColor)}>设计目标</h2>
-          {bulletList([
-            '为不同任务阶段提供最合适的信息视角',
-            '平衡路线理解、环境理解与操作自由度',
-            '在自动切换与用户控制之间保持清晰边界',
-            '通过元素显隐控制不同视角下的信息密度',
-          ])}
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '15px', marginTop: 12 }}>
+            <thead>
+              <tr>
+                <th style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '8px 10px', color: '#c8a96e', fontWeight: 500, textAlign: 'left', whiteSpace: 'nowrap', width: '80px' }}>视角状态</th>
+                <th style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '8px 10px', color: '#c8a96e', fontWeight: 500, textAlign: 'left' }}>视图预览</th>
+                <th style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '8px 10px', color: '#c8a96e', fontWeight: 500, textAlign: 'left', width: '140px' }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>SR 视角</td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px' }}>
+                  <div style={mediaBlockStyle()}>
+                    <ImageWithStatus src={img01} alt="SR 视角预览" style={{ width: '100%', height: 'auto', borderRadius: 4, display: 'block' }} />
+                  </div>
+                </td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle' }}>默认视角</td>
+              </tr>
+              <tr>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>路况视角</td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px' }}>
+                  <div style={mediaBlockStyle()}>
+                    <ImageWithStatus src={img02} alt="路况视角预览" style={{ width: '100%', height: 'auto', borderRadius: 4, display: 'block' }} />
+                  </div>
+                </td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle' }}>
+                  <div>临时视角</div>
+                  <div style={{ color: '#8d7960', fontSize: '13px', marginTop: 4 }}>（除非用户选择固定）</div>
+                  <div style={{ marginTop: 8 }}>SR 以小图呈现（必要时）</div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>路线视角</td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px' }}>
+                  <div style={mediaBlockStyle()}>
+                    <ImageWithStatus src={img03} alt="路线视角预览" style={{ width: '100%', height: 'auto', borderRadius: 4, display: 'block' }} />
+                  </div>
+                </td>
+                <td style={{ border: '1px solid rgba(200,169,110,0.25)', padding: '10px', color: '#a99679', verticalAlign: 'middle' }}></td>
+              </tr>
+            </tbody>
+          </table>
         </>,
       ],
     },
@@ -169,27 +185,25 @@ export function get3dMapSlide03Sections(accentColor: string): SectionData[] {
       title: '图示与占位',
       blocks: [
         <>
-          <h2 style={subtitleStyle(accentColor)}>图片</h2>
-          <div style={mediaPlaceholderStyle()}>Image · SR / 路线 / 路况视角状态关系示意图</div>
-          <p style={captionStyle()}>图 6-1 主要视角类型与切换关系示意</p>
+                    <div style={mediaBlockStyle()}>
+            <ImageWithStatus
+              src={img04}
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="AVP learning user flow overview" 
+            /></div>
+        
+
+          
+          {/* <p style={captionStyle()}>图 6-1 主要视角类型与切换关系示意</p>
           <h2 style={subtitleStyle(accentColor)}>图片</h2>
           <div style={mediaPlaceholderStyle()}>Image · 各视角下的元素显隐规则对照图</div>
           <p style={captionStyle()}>图 6-2 路线、气泡与感知物在不同视角下的显示差异</p>
           <h2 style={subtitleStyle(accentColor)}>视频</h2>
           <div style={mediaPlaceholderStyle()}>Video · 路线视角、路况视角与 SR 视角切换演示</div>
-          <p style={captionStyle()}>视频 6-1 不同视角下的切换逻辑与显示反馈演示</p>
+          <p style={captionStyle()}>视频 6-1 不同视角下的切换逻辑与显示反馈演示</p> */}
         </>,
       ],
     },
-    {
-      id: 'usage-notes',
-      numeral: '07',
-      title: '应用说明',
-      blocks: [
-        <p style={paragraphStyle()}>
-          当前页面适合作为地图融合专题中的视角规则文档页，直接接入既有 CONTENT 区域即可。页面仅承担内容表达职责，不新增样式定义，保持与既有 H5 文档模板一致。
-        </p>,
-      ],
-    },
+    
   ];
 }

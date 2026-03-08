@@ -42,7 +42,7 @@ export function createPlaceholderSections(
           </p>
           <ul style={{ margin: '8px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
             {notes.map((note) => (
-              <li key={note} style={{ color: '#a99679', fontSize: '12px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
+              <li key={note} style={{ color: '#a99679', fontSize: '16px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
                 <span style={{ color: accentColor }}>—</span>
                 <span>{note}</span>
               </li>

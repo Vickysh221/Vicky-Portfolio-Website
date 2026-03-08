@@ -34,7 +34,7 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
               controls 
               title="AVP Unity Demo 自动泊车流程" 
             />
-            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
+            <p style={{ ...paragraphStyle(), fontSize: '13px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
               视频 3-1 AVP 自动泊车 Unity Demo
             </p>
           </div>
@@ -126,7 +126,7 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
               controls 
               title="AVP Unity Demo 自动泊车流程" 
             />
-            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
+            <p style={{ ...paragraphStyle(), fontSize: '13px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
               视频 3-1 AVP 自动泊车 Unity Demo
             </p>
           </div>
@@ -137,7 +137,7 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
               controls 
               title="AVP Unity Demo 建图流程" 
             />
-            <p style={{ ...paragraphStyle(), fontSize: '10px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
+            <p style={{ ...paragraphStyle(), fontSize: '13px', color: '#7f6f55', marginTop: 8, marginBottom: 0 }}>
               视频 3-2 AVP 建图流程 Unity Demo
             </p>
           </div>

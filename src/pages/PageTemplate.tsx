@@ -32,7 +32,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
         cursor: 'pointer',
         padding: '4px 0',
         color: hov ? '#c8a96e' : 'rgba(200,169,110,0.45)',
-        fontSize: '9px',
+        fontSize: '11px',
         letterSpacing: '0.2em',
         transition: 'color 0.25s',
         fontFamily: "Georgia, 'Times New Roman', serif",
@@ -167,7 +167,7 @@ function SubPageLink({
       <span
         style={{
           color: hov ? color : 'rgba(200,169,110,0.35)',
-          fontSize: '9px',
+          fontSize: '11px',
           fontStyle: 'italic',
           width: '22px',
           textAlign: 'right',
@@ -180,7 +180,7 @@ function SubPageLink({
       <span
         style={{
           color: hov ? '#f0e8d8' : '#8a7a60',
-          fontSize: '12px',
+          fontSize: '14px',
           letterSpacing: '0.04em',
           transition: 'color 0.25s',
         }}
@@ -273,7 +273,7 @@ function PanelContent({
           <div
             style={{
               color: 'rgba(200,169,110,0.28)',
-              fontSize: '9px',
+              fontSize: '11px',
               letterSpacing: '0.25em',
             }}
           >
@@ -301,7 +301,7 @@ function PanelContent({
           <div
             style={{
               color: '#f0e8d8',
-              fontSize: isMobile ? '18px' : '22px',
+              fontSize: isMobile ? '20px' : '24px',
               fontStyle: 'italic',
               lineHeight: 1.15,
               letterSpacing: '-0.01em',
@@ -310,7 +310,7 @@ function PanelContent({
             {meta.title}
           </div>
         </div>
-        <div style={{ color: '#6a5a40', fontSize: '10px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
+        <div style={{ color: '#6a5a40', fontSize: '12px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
           {meta.subtitle} · {meta.year}
         </div>
 
@@ -326,7 +326,7 @@ function PanelContent({
         <p
           style={{
             color: '#a09070',
-            fontSize: isMobile ? '13px' : '12px',
+            fontSize: isMobile ? '15px' : '16px',
             lineHeight: 1.8,
             paddingLeft: '17px',
           }}
@@ -349,7 +349,7 @@ function PanelContent({
             <div
               style={{
                 color: accentColor,
-                fontSize: '9px',
+                fontSize: '11px',
                 letterSpacing: '0.3em',
                 marginBottom: '12px',
               }}
@@ -381,17 +381,17 @@ function PanelContent({
             <div
               style={{
                 color: 'rgba(200,169,110,0.25)',
-                fontSize: '9px',
+                fontSize: '11px',
                 letterSpacing: '0.3em',
                 marginBottom: '10px',
               }}
             >
               CONTENT
             </div>
-            <div style={{ color: '#4a3a28', fontSize: '12px', lineHeight: 1.7 }}>
+            <div style={{ color: '#4a3a28', fontSize: '16px', lineHeight: 1.7 }}>
               Case study coming soon.
               <br />
-              <span style={{ fontSize: '10px', opacity: 0.6 }}>
+              <span style={{ fontSize: '12px', opacity: 0.6 }}>
                 Contact me for a detailed walkthrough.
               </span>
             </div>

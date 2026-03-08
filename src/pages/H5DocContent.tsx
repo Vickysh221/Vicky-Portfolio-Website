@@ -38,7 +38,7 @@ interface H5DocContentProps {
 
 function sectionTitleStyle(): CSSProperties {
   return {
-    fontSize: '17px',
+    fontSize: '20px',
     color: '#efe4d0',
     letterSpacing: '0.02em',
     borderBottom: '1px solid rgba(200,169,110,0.16)',
@@ -93,7 +93,7 @@ function H5Section({ section, accentColor }: { section: SectionData; accentColor
   return (
     <section id={section.id} style={{ marginBottom: 26, scrollMarginTop: 12 }}>
       <h1 style={sectionTitleStyle()}>
-        <span style={{ color: accentColor, fontSize: '10px', letterSpacing: '0.2em' }}>{section.numeral}</span>
+        <span style={{ color: accentColor, fontSize: '12px', letterSpacing: '0.2em' }}>{section.numeral}</span>
         <span>{section.title}</span>
       </h1>
       {section.blocks.map((block, idx) => (
