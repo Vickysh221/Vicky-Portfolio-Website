@@ -182,10 +182,16 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <EventTable accentColor={accentColor} />
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车事件优先级规则</h2>
         <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '11px', marginBottom: 8 }}>— 不同事件镜头的冲替关系</p>
-        <div style={mediaBlockStyle()}>
-          <div style={placeholderStyle('image', accentColor)}>IMAGE · 行车事件优先级示意图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件优先级仲裁关系（占位）</div>
-        </div>
+       
+          <div style={mediaBlockStyle()}>
+            <img 
+              src="/src/images/unity3d-camera/slide01-img01.png" 
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件优先级仲裁关系</div>
+          </div>
+        
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车镜头的设计</h2>
         <p style={paragraphStyle()}>在行车模式下，相机跟随在自车的后方，呈现出一种「第三人称」视角，既提供了驾驶的沉浸感，又保证对周围环境的充分展示。</p>
         <p style={paragraphStyle()}>由于当前渲染框架下自车在地图上的行驶并非改变自车的世界坐标位置，暂时不采用游戏中惯用的更灵活「第三人称跟随」方式。</p>
@@ -198,14 +204,7 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机模式</h2>
         <p style={paragraphStyle()}>在大部分镜头下，相机看向「自车默认焦点」或「一个被偏移过的焦点」，并与自车保持相对固定的空间位置关系。其效果为：在固定运镜状态下，自车在屏幕上的显示恒定不变。</p>
         <div style={mediaBlockStyle()}>
-                    <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/unity3d-camera/slide01-img01.png" 
-              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
-            />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 2-1 行车事件触发来源概览</div>
-          </div>
+         
           <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '10px' }}>图 3-1 相机与自车相对位置关系（占位）</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />选择该相机模式的原因</h2>
