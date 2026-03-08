@@ -1,5 +1,12 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
+import { ImageWithStatus, VideoWithStatus } from '../components/MediaWithStatus';
+import avpSlide01Image01 from '../images/avp/slide01-img01.png';
+import avpSlide01Image02 from '../images/avp/slide01-img02.png';
+import avpSlide01Image03 from '../images/avp/slide01-img03.png';
+import avpSlide01Image04 from '../images/avp/slide01-img04.png';
+import avpSlide01Video01 from '../images/avp/slide01-vid01.mov';
+import avpSlide01Video02 from '../images/avp/slide01-vid02.mov';
 
 export function getAvpSlide1Sections(accentColor: string): SectionData[] {
   return [
@@ -21,8 +28,8 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
               为了在 Unity 中验证 AVP（自动泊车）复杂流程，需要通过状态流模拟来管理来自车辆系统状态与车位组件状态的多源信号，因为 AVP 是一个非线性系统，不同功能节点的状态转换会相互叠加并动态影响 3D 场景中的车位可选性、交互行为和视觉呈现。
             </p>
                <div style={mediaBlockStyle()}>
-            <video 
-              src="/src/images/avp/slide01-vid01.mov" 
+            <VideoWithStatus
+              src={avpSlide01Video01}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
               controls 
               title="AVP Unity Demo 自动泊车流程" 
@@ -33,8 +40,8 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
           </div>
             
           <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/avp/slide01-img01.png" 
+            <ImageWithStatus
+              src={avpSlide01Image01}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="AVP learning user flow overview" 
             /></div>
@@ -82,8 +89,8 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
             ))}
           </ul>
           <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/avp/slide01-img02.png" 
+            <ImageWithStatus
+              src={avpSlide01Image02}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="AVP learning user flow overview" 
             /></div>
@@ -98,14 +105,14 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
         <>
           <h2 style={h2Style(accentColor)}>3D场景模拟系统和车位状态流转</h2>
           <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/avp/slide01-img03.png" 
+            <ImageWithStatus
+              src={avpSlide01Image03}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="AVP learning user flow overview" 
             /></div>
                       <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/avp/slide01-img04.png" 
+            <ImageWithStatus
+              src={avpSlide01Image04}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="AVP learning user flow overview" 
             /></div>
@@ -113,8 +120,8 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
 
           <h2 style={h2Style(accentColor)}>视频</h2>
           <div style={mediaBlockStyle()}>
-            <video 
-              src="/src/images/avp/slide01-vid01.mov" 
+            <VideoWithStatus
+              src={avpSlide01Video01}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
               controls 
               title="AVP Unity Demo 自动泊车流程" 
@@ -124,8 +131,8 @@ export function getAvpSlide1Sections(accentColor: string): SectionData[] {
             </p>
           </div>
           <div style={mediaBlockStyle()}>
-            <video 
-              src="/src/images/avp/slide01-vid02.mov" 
+            <VideoWithStatus
+              src={avpSlide01Video02}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }} 
               controls 
               title="AVP Unity Demo 建图流程" 

@@ -1,6 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
+import { ImageWithStatus } from '../components/MediaWithStatus';
+import unityCameraSlide01Image01 from '../images/unity3d-camera/slide01-img01.png';
 
 function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
   return {
@@ -143,8 +145,8 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '11px', marginBottom: 8 }}>— 不同事件镜头的冲替关系</p>
        
           <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/unity3d-camera/slide01-img01.png" 
+            <ImageWithStatus
+              src={unityCameraSlide01Image01}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="行车事件示意图" 
             />

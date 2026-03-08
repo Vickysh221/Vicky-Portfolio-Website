@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle } from './h5Styles';
+import { ImageWithStatus } from '../components/MediaWithStatus';
+import unityCameraSlide01Image01 from '../images/unity3d-camera/slide01-img01.png';
 
 function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
   return {
@@ -51,8 +53,8 @@ export function getUnitySections(accentColor: string): SectionData[] {
             行车模式下，相机跟随在自车后方，以第三人称视角表达路况信息。高优先级事件（如安全预警）可打断低优先级镜头。
           </p>
           <div style={mediaBlockStyle()}>
-            <img 
-              src="/src/images/unity3d-camera/slide01-img01.png" 
+            <ImageWithStatus
+              src={unityCameraSlide01Image01}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
               alt="行车事件示意图" 
             />
