@@ -3,31 +3,10 @@ import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
 import unityCameraSlide01Image01 from '../images/unity3d-camera/slide01-img01.png';
-import unityCameraSlide02Image02 from '../images/unity3d-camera/slide02-img02.png';
-import unityCameraSlide02Image03 from '../images/unity3d-camera/slide02-img03.png';
-import unityCameraSlide02Image04 from '../images/unity3d-camera/slide02-img04.png';
-
-function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
-  return {
-    height: '130px',
-    borderRadius: '5px',
-    border: `1px dashed ${kind === 'video' ? `${accentColor}66` : 'rgba(200,169,110,0.28)'}`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: kind === 'video' ? accentColor : '#8f7d5f',
-    fontSize: '12px',
-    letterSpacing: '0.18em',
-    background: 'rgba(255,255,255,0.01)',
-  };
-}
 
 function Accent({ color }: { color: string }) {
   return <span style={{ width: 3, height: 12, borderRadius: 2, background: color, opacity: 0.9, display: 'inline-block' }} />;
 }
-
-
-
 
 function EventTable({ accentColor }: { accentColor: string }) {
   const rows: { category: string; sub: string; event: string; adopted: boolean | null; note: string }[] = [
@@ -103,25 +82,6 @@ function EventTable({ accentColor }: { accentColor: string }) {
   );
 }
 
-function ParkingEventList({ accentColor }: { accentColor: string }) {
-  const items = [
-    { cat: '车辆状态类', examples: '充电状态' },
-    { cat: '组件交互联动类', examples: '车门窗控件、故障标识' },
-    { cat: '车模交互类', examples: '轮胎胎温胎压、开门指令、故障位置点击' },
-  ];
-
-  return (
-    <ul style={{ margin: '8px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
-      {items.map((it) => (
-        <li key={it.cat} style={{ color: '#a99679', fontSize: '16px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
-          <span style={{ color: accentColor }}>—</span>
-          <span><span style={{ color: '#c8b080' }}>{it.cat}：</span>{it.examples}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export function getUnityChapter2Sections(accentColor: string): SectionData[] {
   return [
     {
@@ -161,98 +121,7 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
         <p style={paragraphStyle()}>由于当前渲染框架下自车在地图上的行驶并非改变自车的世界坐标位置，暂时不采用游戏中惯用的更灵活「第三人称跟随」方式。</p>
       </>],
     },
-    {
-      id: 'camera-params', numeral: '03', title: '相机参数空间变化', blocks: [<>
-        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 12 }}>— 「一镜到底」的实现原理</p>
-        <p style={paragraphStyle()}><strong style={{ color: '#efe4d0' }}>主视图竞争的结果不是「切镜头」，而是参数目标的覆盖。</strong>通过镜头参数的连续变化而非离散动画状态，实现镜头之间的平滑过渡。</p>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机模式</h2>
-        <p style={paragraphStyle()}>在大部分镜头下，相机看向「自车默认焦点」或「一个被偏移过的焦点」，并与自车保持相对固定的空间位置关系。其效果为：在固定运镜状态下，自车在屏幕上的显示恒定不变。</p>
-        <div style={mediaBlockStyle()}>
-         
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-1 相机与自车相对位置关系（占位）</div>
-        </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />选择该相机模式的原因</h2>
-        <ul style={{ margin: '0 0 12px', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
-          {['在人机共驾地图的特定驾驶 / 车辆功能下，需给定看车模、地图场景的视角以使特定功能较好实现。', '在车机环境中，不提倡使用灵活度较高的相机，以免导致驾驶过程中不良的视觉体验和功能体验。'].map((t) => (
-            <ListItem key={t} accent={accentColor}>{t}</ListItem>
-          ))}
-        </ul>
-          <div style={mediaBlockStyle()}>
-            <ImageWithStatus
-              src={unityCameraSlide02Image02}
-              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
-            />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-1 相机与自车相对位置关系</div>
-          </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />镜头事件的通用触发和流转机制</h2>
-        {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
-          {['触发流转示意 A', '状态图 A', '触发流转示意 B', '状态图 B', '触发流转示意 C', '状态图 C'].map((label, i) => (
-            <div key={i} style={mediaBlockStyle()}>
-              <div style={placeholderStyle(i % 2 === 1 ? 'video' : 'image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 3-{3 + i} {label}（占位）</div>
-            </div>
-          ))}
-        </div> */}
-        <div style={mediaBlockStyle()}>
-            <ImageWithStatus
-              src={unityCameraSlide02Image03}
-              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
-            />
-            {/* <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div> */}
-          </div>
-                 <div style={mediaBlockStyle()}>
-            <ImageWithStatus
-              src={unityCameraSlide02Image04}
-              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
-            />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div>
-          </div>
-      </>],
-    },
-    {
-      id: 'view-examples', numeral: '04', title: '3D 地图视图呈现', blocks: [<>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车运镜视角示例</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
-          {['手动驾驶默认视角', 'AVP 自动泊入视角', '辅助驾驶自动变道视角', '导航驾驶视角'].map((label, i) => (
-            <div key={i} style={mediaBlockStyle()}>
-              <div style={placeholderStyle('image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 4-{i + 1} {label}（占位）</div>
-            </div>
-          ))}
-        </div>
-      </>],
-    },
-    {
-      id: 'parking', numeral: '05', title: '驻车运镜', blocks: [<>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车镜头的设计</h2>
-        <p style={paragraphStyle()}>在驻车模式下，镜头往往服务于特定功能下的车模交互、车辆整体或部件的状态展示，镜头更聚焦于车身或车身某一定点，因此采取更聚焦的镜头。默认 P 档镜头需兼顾车身和周遭环境。</p>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件</h2>
-        <p style={{ ...paragraphStyle(), marginBottom: 6 }}>驻车事件分为三个状态大类：</p>
-        <ParkingEventList accentColor={accentColor} />
-        <p style={{ ...paragraphStyle(), marginTop: 12 }}>典型场景包括：3D 场景配合的场景演示、伴随车控车设内用户查看功能说明、用户查看里程能耗与充电状态、用户与 3D 场景组件交互（触发开门 / 查看胎温胎压 / 点击故障位置标识）。</p>
-        <div style={mediaBlockStyle()}>
-          <div style={placeholderStyle('image', accentColor)}>IMAGE · 驻车事件触发来源示意图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-1 驻车事件触发来源概览（占位）</div>
-        </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件优先级规则</h2>
-        <p style={paragraphStyle()}>在车辆状态镜头系统中同样存在镜头优先级仲裁策略。若车身同时出现多个异常状态或充电状态叠加，则选择优先级更高的事件镜头进行展示。</p>
-        <div style={mediaBlockStyle()}>
-          <div style={placeholderStyle('image', accentColor)}>IMAGE · 驻车事件优先级仲裁图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-2 驻车事件优先级仲裁关系（占位）</div>
-        </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车运镜视角示例</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
-          {['传感器 L1 异常故障查看视角', '车门 R1 异常故障查看视角', '充电视角', '胎温胎压异常视角'].map((label, i) => (
-            <div key={i} style={mediaBlockStyle()}>
-              <div style={placeholderStyle('image', accentColor)}>IMAGE · {label}</div>
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 5-{i + 3} {label}（占位）</div>
-            </div>
-          ))}
-        </div>
-      </>],
-    },
+
+
   ];
 }
