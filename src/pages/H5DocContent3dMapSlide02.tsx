@@ -2,27 +2,6 @@ import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, subtitleStyle } from './h5Styles';
 
-function mediaPlaceholderStyle(): CSSProperties {
-  return {
-    border: '1px dashed rgba(200,169,110,0.45)',
-    borderRadius: 8,
-    padding: '16px 14px',
-    color: '#c8a96e',
-    fontSize: '16px',
-    lineHeight: 1.8,
-    background: 'rgba(18, 15, 11, 0.45)',
-    marginBottom: 6,
-  };
-}
-
-function captionStyle(): CSSProperties {
-  return {
-    color: '#8d7960',
-    fontSize: '13px',
-    lineHeight: 1.7,
-    margin: '0 0 12px',
-  };
-}
 
 function tableCellBase(): CSSProperties {
   return {
