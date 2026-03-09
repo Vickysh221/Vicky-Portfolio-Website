@@ -35,34 +35,77 @@ export function getUnitySections(accentColor: string): SectionData[] {
               </li>
             ))}
           </ul>
+          <h2 style={h2Style(accentColor)}><span style={{ width: 3, height: 12, borderRadius: 2, background: accentColor }} />设计目标</h2>
+          <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
+            {[
+              '安全信息优先，不被低优先级状态打断',
+              '用户注意力可控，避免无意义的视角变化',
+              '系统行为稳定可预测，符合驾驶心智模型',
+              '支持未来更多 AI 事件的接入（智驾能力演进）'
+            ].map((item) => (
+              <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
+                <span style={{ color: accentColor }}>—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <h2 style={h2Style(accentColor)}><span style={{ width: 3, height: 12, borderRadius: 2, background: accentColor }} />我的角色</h2>
+          <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
+            {
+              ['产品定义 & 系统设计',
+              '事件抽象与优先级规则制定',
+              '状态机与视图切换策略设计',
+              '通过 Unity 原型进行规则验证，反推产品决策合理性'
+            ].map((item) => (
+              <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
+                <span style={{ color: accentColor }}>—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <h2 style={h2Style(accentColor)}><span style={{ width: 3, height: 12, borderRadius: 2, background: accentColor }} />核心方案</h2>
+          <div style={{ margin: '6px 0 0' }}>
+            <div style={{ color: '#c8a96e', fontSize: '16px', margin: '12px 0 6px' }}>主视图优先级仲裁系统</div>
+            <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6, marginLeft: 16 }}>
+              {
+                ['将所有可能影响显示的输入统一抽象为 事件',
+                '为每类事件定义优先级是否允许打断',
+                '系统在任意时刻只允许一个事件拥有主视图控制权'
+              ].map((item) => (
+                <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
+                  <span style={{ color: accentColor }}>—</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div style={{ color: '#c8a96e', fontSize: '16px', margin: '12px 0 6px' }}>视图状态机</div>
+            <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6, marginLeft: 16 }}>
+              {
+                ['定义清晰的视图状态与切换路径： Driving / Navigation / Parking / AVP / APA 等 (详见后章节）'
+              ].map((item) => (
+                <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
+                  <span style={{ color: accentColor }}>—</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div style={{ color: '#c8a96e', fontSize: '16px', margin: '12px 0 6px' }}>信息分层与注意力管理</div>
+            <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6, marginLeft: 16 }}>
+              {
+                ['通过视角、焦点、缩放策略表达此刻用户最需要关注什么',
+                '例如：导航中路线与机动点优先 / 停车中车身周边与后向区域优先'
+              ].map((item) => (
+                <li key={item} style={{ color: '#a99679', fontSize: '16px', display: 'flex', gap: 8 }}>
+                  <span style={{ color: accentColor }}>—</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </>,
       ],
     },
-    {
-      id: 'driving',
-      numeral: '02',
-      title: '行车运镜',
-      blocks: [
-        <>
-          <p style={paragraphStyle()}>
-            行车模式下，相机跟随在自车后方，以第三人称视角表达路况信息。高优先级事件（如安全预警）可打断低优先级镜头。
-          </p>
-          
-        </>,
-      ],
-    },
-    {
-      id: 'camera',
-      numeral: '03',
-      title: '相机参数空间变化',
-      blocks: [
-        <>
-          <p style={paragraphStyle()}>
-            主视图竞争的结果不是"切镜头"，而是参数目标覆盖。通过连续参数变化，而不是离散动画状态，实现镜头间平滑过渡。
-          </p>
- 
-        </>,
-      ],
-    },
+
+
   ];
 }

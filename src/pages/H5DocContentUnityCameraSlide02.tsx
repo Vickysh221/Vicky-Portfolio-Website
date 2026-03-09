@@ -3,6 +3,9 @@ import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
 import unityCameraSlide01Image01 from '../images/unity3d-camera/slide01-img01.png';
+import unityCameraSlide02Image02 from '../images/unity3d-camera/slide02-img02.png';
+import unityCameraSlide02Image03 from '../images/unity3d-camera/slide02-img03.png';
+import unityCameraSlide02Image04 from '../images/unity3d-camera/slide02-img04.png';
 
 function placeholderStyle(kind: 'image' | 'video', accentColor: string): CSSProperties {
   return {
@@ -174,19 +177,39 @@ export function getUnityChapter2Sections(accentColor: string): SectionData[] {
             <ListItem key={t} accent={accentColor}>{t}</ListItem>
           ))}
         </ul>
-        <div style={mediaBlockStyle()}>
-          <div style={placeholderStyle('image', accentColor)}>IMAGE · 相机模式对比图</div>
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-2 相机模式选择依据（占位）</div>
-        </div>
+          <div style={mediaBlockStyle()}>
+            <ImageWithStatus
+              src={unityCameraSlide02Image02}
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-1 相机与自车相对位置关系</div>
+          </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />镜头事件的通用触发和流转机制</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
+        {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
           {['触发流转示意 A', '状态图 A', '触发流转示意 B', '状态图 B', '触发流转示意 C', '状态图 C'].map((label, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <div style={placeholderStyle(i % 2 === 1 ? 'video' : 'image', accentColor)}>IMAGE · {label}</div>
               <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 3-{3 + i} {label}（占位）</div>
             </div>
           ))}
-        </div>
+        </div> */}
+        <div style={mediaBlockStyle()}>
+            <ImageWithStatus
+              src={unityCameraSlide02Image03}
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
+            {/* <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div> */}
+          </div>
+                 <div style={mediaBlockStyle()}>
+            <ImageWithStatus
+              src={unityCameraSlide02Image04}
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
+              alt="行车事件示意图" 
+            />
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div>
+          </div>
       </>],
     },
     {
