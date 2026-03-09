@@ -419,34 +419,6 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
         </>,
       ],
     },
-    {
-      id: 'media-placeholders',
-      numeral: '06',
-      title: '图示与交互占位',
-      blocks: [
-        <>
-          <h2 style={subtitleStyle(accentColor)}>图片</h2>
-          <div style={mediaPlaceholderStyle()}>Image · 2D / 3D 地图主视图优先级关系示意图</div>
-          <p style={captionStyle()}>图 6-1 路线理解与 SR 环境理解的主视图优先级关系</p>
-          <h2 style={subtitleStyle(accentColor)}>图片</h2>
-          <div style={mediaPlaceholderStyle()}>Image · 开放道路与封闭道路场景下的 SR 显示决策表</div>
-          <p style={captionStyle()}>图 6-2 各驾驶场景下 SR 是否必须显示的判定示意</p>
-          <h2 style={subtitleStyle(accentColor)}>视频</h2>
-          <div style={mediaPlaceholderStyle()}>Video · 搜路 / 算路 / 泊车场景中的主视图切换演示</div>
-          <p style={captionStyle()}>视频 6-1 路线视角、SR 视角与小窗辅助显示的切换演示</p>
-        </>,
-      ],
-    },
-    {
-      id: 'usage-notes',
-      numeral: '07',
-      title: '应用说明',
-      blocks: [
-        <p style={paragraphStyle()}>
-          当前页面适合作为 2D / 3D 地图融合专题下的 H5 文档内容页，直接接入既有 CONTENT 区域即可。页面结构延续既有模板：顶部信息块 +
-          分节标题 + 正文说明 + 图像 / 视频占位，不额外引入新的样式定义。
-        </p>,
-      ],
-    },
+    
   ];
 }
