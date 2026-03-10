@@ -2,7 +2,7 @@ import { createPlaceholderSections, type SectionData } from './H5DocContentSlide
 
 export function getPersonalFortniteDemoSlide01Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Personal / Fortnite Demo',
+    routeLabel: 'Academic Works of Gamification / Fortnite Demo',
     slideNumber: 1,
   });
 }

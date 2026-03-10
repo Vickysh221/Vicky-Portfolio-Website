@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 const projectData = [
   {
     id: '01',
-    title: 'JIDU HMI',
-    subtitle: 'JIDU Automotive · HMI Design',
+    title: 'JIDU HMI 辅助驾驶体验设计',
+    subtitle: 'JIDU Automotive · ADAS HMI Design',
     year: '2022–2024',
     tags: ['Unity3D', 'HMI', '3D Map', 'ADAS'],
     desc: '3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU\'s in-car HMI. Prototyped directly in Unity3D.',
@@ -15,7 +15,6 @@ const projectData = [
       { route: '/jidu-hmi/avp', label: 'AVP Auto-Park', numeral: 'III' },
       { route: '/jidu-hmi/minimap-camera', label: 'Minimap Camera', numeral: 'IV' },
       { route: '/jidu-hmi/3d-map-gesture', label: '3D Map Gestures', numeral: 'V' },
-      { route: '/jidu-hmi/simo-agent-parks', label: 'SIMO Agent Parks', numeral: 'VI' },
     ],
   },
   {
@@ -36,16 +35,28 @@ const projectData = [
   },
   {
     id: '03',
-    title: 'Personal Projects',
-    subtitle: 'Independent Work',
+    title: 'AGENTIC DESIGN & DEVELOPMENT',
+    subtitle: 'AI Agent Product Design · Prototyping',
     year: '2024–2025',
-    tags: ['Multi-Agent', 'Language Learning', 'Unreal'],
-    desc: 'Side projects exploring AI agent architecture, procedural city generation, and game design — built for learning, curiosity, and fun.',
+    tags: ['Multi-Agent', 'Agent UX', 'Prototype'],
+    desc: 'Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.',
     color: '#8b7db5',
     subPages: [
-      { route: '/personal/simbiocity', label: 'Simbiocity', numeral: 'I' },
-      { route: '/personal/fortnite-demo', label: 'Fortnite Demo', numeral: 'II' },
-      { route: '/personal/language-diary', label: 'Language Diary Agent', numeral: 'III' },
+      { route: '/agentic-design-development/language-diary', label: 'Language Diary Agent', numeral: 'I' },
+      { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'II' },
+    ],
+  },
+  {
+    id: '04',
+    title: 'ACADEMIC WORKS OF GAMIFICATION',
+    subtitle: 'Game Systems · Interactive Prototypes',
+    year: '2024',
+    tags: ['Gamification', 'Urban Simulation', 'Level Design'],
+    desc: 'Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.',
+    color: '#6f8f92',
+    subPages: [
+      { route: '/academic-gamification/simbiocity', label: 'Simbiocity', numeral: 'I' },
+      { route: '/academic-gamification/fortnite-demo', label: 'Fortnite Demo', numeral: 'II' },
     ],
   },
 ];
@@ -213,7 +224,7 @@ export default function ProjectCard({ index, isActive, onClose }: ProjectCardPro
         <div style={{ color: p.color, fontSize: '9px', letterSpacing: '0.3em', marginBottom: '14px' }}>
           CHAPTERS
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           {p.subPages.map((sp) => (
             <button
               key={sp.route}
@@ -222,26 +233,58 @@ export default function ProjectCard({ index, isActive, onClose }: ProjectCardPro
                 onClose();
               }}
               style={{
-                padding: '7px 16px',
-                border: `1px solid ${p.color}50`,
-                background: 'transparent',
-                color: p.color,
-                fontSize: '11px',
-                letterSpacing: '0.06em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid rgba(200,169,110,0.12)',
+                background: 'rgba(255,255,255,0.015)',
+                color: '#8a7a60',
+                fontSize: '14px',
+                letterSpacing: '0.04em',
                 cursor: 'pointer',
                 fontFamily: 'Georgia, serif',
-                transition: 'all 0.2s',
+                textAlign: 'left',
+                transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = `${p.color}18`;
-                (e.currentTarget as HTMLButtonElement).style.borderColor = p.color;
+                (e.currentTarget as HTMLButtonElement).style.background = `${p.color}12`;
+                (e.currentTarget as HTMLButtonElement).style.borderColor = `${p.color}55`;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-                (e.currentTarget as HTMLButtonElement).style.borderColor = `${p.color}50`;
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.015)';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(200,169,110,0.12)';
               }}
             >
-              {sp.numeral}. {sp.label}
+              <span
+                style={{
+                  color: 'rgba(200,169,110,0.35)',
+                  fontSize: '11px',
+                  fontStyle: 'italic',
+                  width: '22px',
+                  textAlign: 'right',
+                  flexShrink: 0,
+                }}
+              >
+                {sp.numeral}
+              </span>
+              <span>{sp.label}</span>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 11 11"
+                fill="none"
+                style={{ marginLeft: 'auto', opacity: 0.72, flexShrink: 0 }}
+              >
+                <path
+                  d="M1.5 5.5H9.5M6 2.5L9.5 5.5L6 8.5"
+                  stroke={p.color}
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           ))}
         </div>

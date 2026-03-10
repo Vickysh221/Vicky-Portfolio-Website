@@ -10,7 +10,7 @@ import ProjectCard from './pages/ProjectCard';
 import PageTemplate from './pages/PageTemplate';
 import SubPageCarousel from './pages/SubPageCarousel';
 
-const PROJECT_COLORS = ['#c8a96e', '#7a9e8e', '#8b7db5'];
+const PROJECT_COLORS = ['#c8a96e', '#7a9e8e', '#8b7db5', '#6f8f92'];
 
 export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
@@ -33,7 +33,7 @@ export default function App() {
     const sm = SceneManager.instance;
     sm.init(webglRef.current, css3dRef.current, PROJECT_COLORS);
 
-    const inners = sm.createOrbitCards(3);
+    const inners = sm.createOrbitCards(4);
     orbitCardInners.current = inners;
 
     setInitialized(true);
@@ -167,7 +167,7 @@ export default function App() {
 
       {/* React portals → CSS3D orbit card inner divs */}
       {initialized &&
-        [0, 1, 2].map((i) => {
+        [0, 1, 2, 3].map((i) => {
           const el = orbitCardInners.current[i];
           if (!el) return null;
           return createPortal(

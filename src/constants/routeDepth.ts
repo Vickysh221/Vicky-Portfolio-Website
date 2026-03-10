@@ -6,17 +6,18 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/jidu-hmi/avp": -4000,
   "/jidu-hmi/minimap-camera": -5000,
   "/jidu-hmi/3d-map-gesture": -6000,
-  "/jidu-hmi/simo-agent-parks": -7000,
-  "/phoenix-ai": -8000,
-  "/phoenix-ai/overview": -9000,
-  "/phoenix-ai/component-framework": -10000,
-  "/phoenix-ai/key-pages": -11000,
-  "/phoenix-ai/semantic-system": -12000,
-  "/phoenix-ai/fuli-plus": -13000,
-  "/personal": -14000,
-  "/personal/simbiocity": -15000,
-  "/personal/fortnite-demo": -16000,
-  "/personal/language-diary": -17000,
+  "/phoenix-ai": -7000,
+  "/phoenix-ai/overview": -8000,
+  "/phoenix-ai/component-framework": -9000,
+  "/phoenix-ai/key-pages": -10000,
+  "/phoenix-ai/semantic-system": -11000,
+  "/phoenix-ai/fuli-plus": -12000,
+  "/agentic-design-development": -13000,
+  "/agentic-design-development/language-diary": -14000,
+  "/agentic-design-development/simo-agent-system": -15000,
+  "/academic-gamification": -16000,
+  "/academic-gamification/simbiocity": -17000,
+  "/academic-gamification/fortnite-demo": -18000,
 };
 
 export const SLIDE_COUNTS: Record<string, number> = {
@@ -25,7 +26,6 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/avp': 1,
   '/jidu-hmi/minimap-camera': 1,
   '/jidu-hmi/3d-map-gesture': 1,
-  '/jidu-hmi/simo-agent-parks': 1,
 
   '/phoenix-ai/overview': 1,
   '/phoenix-ai/component-framework': 1,
@@ -33,9 +33,11 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/phoenix-ai/semantic-system': 1,
   '/phoenix-ai/fuli-plus': 3,
 
-  '/personal/simbiocity': 1,
-  '/personal/fortnite-demo': 1,
-  '/personal/language-diary': 5,
+  '/agentic-design-development/language-diary': 5,
+  '/agentic-design-development/simo-agent-system': 1,
+
+  '/academic-gamification/simbiocity': 1,
+  '/academic-gamification/fortnite-demo': 1,
 };
 
 export function getSlideCount(route: string): number {
@@ -54,8 +56,8 @@ export interface PageMeta {
 
 export const PAGE_META: Record<string, PageMeta> = {
   "/jidu-hmi": {
-    title: "JIDU HMI",
-    subtitle: "JIDU Automotive · HMI Design",
+    title: "JIDU HMI 辅助驾驶体验设计",
+    subtitle: "JIDU Automotive · ADAS HMI Design",
     year: "2022–2024",
     desc: "Designed the 3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU's in-car HMI. Prototyped directly in Unity3D.",
     parent: null,
@@ -66,7 +68,6 @@ export const PAGE_META: Record<string, PageMeta> = {
       { route: "/jidu-hmi/avp", label: "AVP Auto-Park", numeral: "III" },
       { route: "/jidu-hmi/minimap-camera", label: "Minimap Camera", numeral: "IV" },
       { route: "/jidu-hmi/3d-map-gesture", label: "3D Map Gestures", numeral: "V" },
-      { route: "/jidu-hmi/simo-agent-parks", label: "SIMO Agent Parks", numeral: "VI" },
     ],
   },
   "/jidu-hmi/unity3d-camera": {
@@ -109,15 +110,6 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: "/jidu-hmi",
     color: "#c8a96e",
   },
-  "/jidu-hmi/simo-agent-parks": {
-    title: "SIMO Agent Parks",
-    subtitle: "JIDU 4.0 · Agent Platform",
-    year: "2024",
-    desc: "Full-screen laboratory concept for a vehicle-embedded agent ecosystem. MBTI-personalized agent identities and an Agent Parks interaction paradigm.",
-    parent: "/jidu-hmi",
-    color: "#c8a96e",
-  },
-
   "/phoenix-ai": {
     title: "Phoenix AI Platform",
     subtitle: "Phoenix AI · SaaS Platform",
@@ -174,41 +166,61 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#7a9e8e",
   },
 
-  "/personal": {
-    title: "Personal Projects",
-    subtitle: "Independent Work",
+  "/agentic-design-development": {
+    title: "AGENTIC DESIGN & DEVELOPMENT",
+    subtitle: "AI Agent Product Design · Prototyping",
     year: "2024–2025",
-    desc: "Side projects exploring AI agent architecture, procedural city generation, and game design — built for learning, curiosity, and fun.",
+    desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/personal/simbiocity", label: "Simbiocity", numeral: "I" },
-      { route: "/personal/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
-      { route: "/personal/language-diary", label: "Language Diary Agent", numeral: "III" },
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
     ],
   },
-  "/personal/simbiocity": {
-    title: "Simbiocity",
-    subtitle: "Personal · Urban Simulation",
-    year: "2024",
-    desc: "Procedural city generation with agent-based simulation — growing neighborhoods, evolving infrastructure, and emergent urban patterns.",
-    parent: "/personal",
-    color: "#8b7db5",
-  },
-  "/personal/fortnite-demo": {
-    title: "Fortnite Demo",
-    subtitle: "Personal · Game Design",
-    year: "2024",
-    desc: "A custom Fortnite Creative experience demonstrating spatial design principles — pacing, sightlines, and encounter design in a battle royale context.",
-    parent: "/personal",
-    color: "#8b7db5",
-  },
-  "/personal/language-diary": {
+  "/agentic-design-development/language-diary": {
     title: "Language Diary Agent",
-    subtitle: "Personal · AI Agent",
+    subtitle: "Agentic Design & Development · AI Agent",
     year: "2025",
     desc: "Low-friction AI companion for language acquisition through journaling. Multi-agent architecture: intent parsing, knowledge intervention, long-term memory.",
-    parent: "/personal",
+    parent: "/agentic-design-development",
     color: "#8b7db5",
+  },
+  "/agentic-design-development/simo-agent-system": {
+    title: "SIMO Agent System 概念设计",
+    subtitle: "JIDU 4.0 · Agent Platform Concept",
+    year: "2024",
+    desc: "Full-screen laboratory concept for a vehicle-embedded agent ecosystem. MBTI-personalized agent identities and a platform-level SIMO Agent System interaction paradigm.",
+    parent: "/agentic-design-development",
+    color: "#8b7db5",
+  },
+
+  "/academic-gamification": {
+    title: "ACADEMIC WORKS OF GAMIFICATION",
+    subtitle: "Game Systems · Interactive Prototypes",
+    year: "2024",
+    desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
+    parent: null,
+    color: "#6f8f92",
+    subPages: [
+      { route: "/academic-gamification/simbiocity", label: "Simbiocity", numeral: "I" },
+      { route: "/academic-gamification/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
+    ],
+  },
+  "/academic-gamification/simbiocity": {
+    title: "Simbiocity",
+    subtitle: "Academic Works of Gamification · Urban Simulation",
+    year: "2024",
+    desc: "Procedural city generation with agent-based simulation — growing neighborhoods, evolving infrastructure, and emergent urban patterns.",
+    parent: "/academic-gamification",
+    color: "#6f8f92",
+  },
+  "/academic-gamification/fortnite-demo": {
+    title: "Fortnite Demo",
+    subtitle: "Academic Works of Gamification · Game Design",
+    year: "2024",
+    desc: "A custom Fortnite Creative experience demonstrating spatial design principles — pacing, sightlines, and encounter design in a battle royale context.",
+    parent: "/academic-gamification",
+    color: "#6f8f92",
   },
 };

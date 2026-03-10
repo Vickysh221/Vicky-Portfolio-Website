@@ -34,8 +34,8 @@ interface ExperienceDetail {
 const projects: Project[] = [
   {
     id: "01",
-    title: "JIDU HMI",
-    subtitle: "JIDU Automotive · HMI Design",
+    title: "JIDU HMI 辅助驾驶体验设计",
+    subtitle: "JIDU Automotive · ADAS HMI Design",
     year: "2022–2024",
     tags: ["Unity3D", "HMI", "3D Map", "Camera Rig", "ADAS"],
     desc: "3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU's in-car HMI. Prototyped directly in Unity3D.",
@@ -47,7 +47,6 @@ const projects: Project[] = [
       { route: "/jidu-hmi/avp", label: "AVP Auto-Park", numeral: "III" },
       { route: "/jidu-hmi/minimap-camera", label: "Minimap Camera", numeral: "IV" },
       { route: "/jidu-hmi/3d-map-gesture", label: "3D Map Gestures", numeral: "V" },
-      { route: "/jidu-hmi/simo-agent-parks", label: "SIMO Agent Parks", numeral: "VI" },
     ],
   },
   {
@@ -69,17 +68,30 @@ const projects: Project[] = [
   },
   {
     id: "03",
-    title: "Personal Projects",
-    subtitle: "Independent Work",
+    title: "AGENTIC DESIGN & DEVELOPMENT",
+    subtitle: "AI Agent Product Design · Prototyping",
     year: "2024–2025",
-    tags: ["Multi-Agent", "Language Learning", "Unreal", "Game Design"],
-    desc: "Side projects exploring AI agent architecture, procedural city generation, and game design — built for learning, curiosity, and fun.",
+    tags: ["Multi-Agent", "Agent UX", "Prototype", "Creative Coding"],
+    desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
     color: "#8b7db5",
-    route: "/personal",
+    route: "/agentic-design-development",
     subPages: [
-      { route: "/personal/simbiocity", label: "Simbiocity", numeral: "I" },
-      { route: "/personal/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
-      { route: "/personal/language-diary", label: "Language Diary Agent", numeral: "III" },
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
+    ],
+  },
+  {
+    id: "04",
+    title: "ACADEMIC WORKS OF GAMIFICATION",
+    subtitle: "Game Systems · Interactive Prototypes",
+    year: "2024",
+    tags: ["Gamification", "Urban Simulation", "Level Design", "Prototype"],
+    desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
+    color: "#6f8f92",
+    route: "/academic-gamification",
+    subPages: [
+      { route: "/academic-gamification/simbiocity", label: "Simbiocity", numeral: "I" },
+      { route: "/academic-gamification/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
     ],
   },
 ];
@@ -174,7 +186,7 @@ const cornerStyles: React.CSSProperties[] = [
   { bottom: "-1px", right: "-1px", borderBottom: "8px solid #c8a96e", borderRight: "8px solid #c8a96e" },
 ];
 
-const romans = ["I", "II", "III"];
+const romans = ["I", "II", "III", "IV"];
 
 const skills: [string, string][] = [
   ["Unity 3D", "熟练"],

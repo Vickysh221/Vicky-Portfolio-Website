@@ -2,7 +2,7 @@ import { createPlaceholderSections, type SectionData } from './H5DocContentSlide
 
 export function getPersonalSimbiocitySlide01Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Personal / Simbiocity',
+    routeLabel: 'Academic Works of Gamification / Simbiocity',
     slideNumber: 1,
   });
 }

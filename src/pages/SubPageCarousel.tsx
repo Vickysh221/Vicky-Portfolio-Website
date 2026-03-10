@@ -211,6 +211,50 @@ function SlideContent({
 
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
+  const shouldScrollTitleBlock = !!isExpanded;
+  const titleBlock = (
+    <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+        <div
+          style={{
+            width: 7,
+            height: 7,
+            borderRadius: '50%',
+            background: accentColor,
+            flexShrink: 0,
+            opacity: 0.8,
+          }}
+        />
+        <div
+          style={{
+            color: '#f0e8d8',
+            fontSize: isMobile ? '18px' : '22px',
+            fontStyle: 'italic',
+            lineHeight: 1.15,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {meta.title}
+        </div>
+      </div>
+      <div style={{ color: '#6a5a40', fontSize: '10px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
+        {meta.subtitle} · {meta.year}
+      </div>
+
+      <div
+        style={{
+          width: '100%',
+          height: '1px',
+          background: 'rgba(200,169,110,0.1)',
+          margin: '16px 0',
+        }}
+      />
+
+      <p style={{ color: '#a09070', fontSize: isMobile ? '13px' : '12px', lineHeight: 1.8, paddingLeft: '17px' }}>
+        {meta.desc}
+      </p>
+    </div>
+  );
 
   return (
     <div
@@ -284,54 +328,14 @@ function SlideContent({
         </div>
       </div>
 
-      {/* Title block */}
-      <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-          <div
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: '50%',
-              background: accentColor,
-              flexShrink: 0,
-              opacity: 0.8,
-            }}
-          />
-          <div
-            style={{
-              color: '#f0e8d8',
-              fontSize: isMobile ? '18px' : '22px',
-              fontStyle: 'italic',
-              lineHeight: 1.15,
-              letterSpacing: '-0.01em',
-            }}
-          >
-            {meta.title}
-          </div>
-        </div>
-        <div style={{ color: '#6a5a40', fontSize: '10px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
-          {meta.subtitle} · {meta.year}
-        </div>
-
-        <div
-          style={{
-            width: '100%',
-            height: '1px',
-            background: 'rgba(200,169,110,0.1)',
-            margin: '16px 0',
-          }}
-        />
-
-        <p style={{ color: '#a09070', fontSize: isMobile ? '13px' : '12px', lineHeight: 1.8, paddingLeft: '17px' }}>
-          {meta.desc}
-        </p>
-      </div>
+      {!shouldScrollTitleBlock && titleBlock}
 
       {/* Content area */}
       <div
         style={{ flex: 1, padding: isMobile ? '0 20px 20px' : '0 28px 24px', overflow: 'auto' }}
         className="panel-scroll"
       >
+        {shouldScrollTitleBlock && titleBlock}
         {hasSectionContent(route, slideIndex) ? (
           <H5DocContent route={route} accentColor={accentColor} slideIndex={slideIndex} isMobile={isMobile} />
         ) : (

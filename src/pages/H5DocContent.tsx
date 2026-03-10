@@ -62,7 +62,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/avp:0': getAvpSlide1Sections,
   '/jidu-hmi/minimap-camera:0': getMinimapCameraSlide01Sections,
   '/jidu-hmi/3d-map-gesture:0': get3dMapGestureSlide01Sections,
-  '/jidu-hmi/simo-agent-parks:0': getSimoAgentParksSlide01Sections,
+  '/agentic-design-development/simo-agent-system:0': getSimoAgentParksSlide01Sections,
 
   '/phoenix-ai/overview:0': getPhoenixOverviewSlide01Sections,
   '/phoenix-ai/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,
@@ -72,13 +72,13 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/phoenix-ai/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
   '/phoenix-ai/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
 
-  '/personal/simbiocity:0': getPersonalSimbiocitySlide01Sections,
-  '/personal/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
-  '/personal/language-diary:0': getPersonalLanguageDiarySlide01Sections,
-  '/personal/language-diary:1': getPersonalLanguageDiarySlide02Sections,
-  '/personal/language-diary:2': getPersonalLanguageDiarySlide03Sections,
-  '/personal/language-diary:3': getPersonalLanguageDiarySlide04Sections,
-  '/personal/language-diary:4': getPersonalLanguageDiarySlide05Sections,
+  '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
+  '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
+  '/agentic-design-development/language-diary:0': getPersonalLanguageDiarySlide01Sections,
+  '/agentic-design-development/language-diary:1': getPersonalLanguageDiarySlide02Sections,
+  '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,
+  '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04Sections,
+  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05Sections,
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {

@@ -234,6 +234,57 @@ function PanelContent({
 
   const isLevel1 = meta.parent === null;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
+  const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
+  const titleBlock = (
+    <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+        <div
+          style={{
+            width: 7,
+            height: 7,
+            borderRadius: '50%',
+            background: accentColor,
+            flexShrink: 0,
+            opacity: 0.8,
+          }}
+        />
+        <div
+          style={{
+            color: '#f0e8d8',
+            fontSize: isMobile ? '20px' : '24px',
+            fontStyle: 'italic',
+            lineHeight: 1.15,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {meta.title}
+        </div>
+      </div>
+      <div style={{ color: '#6a5a40', fontSize: '12px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
+        {meta.subtitle} · {meta.year}
+      </div>
+
+      <div
+        style={{
+          width: '100%',
+          height: '1px',
+          background: 'rgba(200,169,110,0.1)',
+          margin: '16px 0',
+        }}
+      />
+
+      <p
+        style={{
+          color: '#a09070',
+          fontSize: isMobile ? '15px' : '16px',
+          lineHeight: 1.8,
+          paddingLeft: '17px',
+        }}
+      >
+        {meta.desc}
+      </p>
+    </div>
+  );
 
   return (
     <div
@@ -285,55 +336,7 @@ function PanelContent({
         </div>
       </div>
 
-      {/* ── Title block ── */}
-      <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-          <div
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: '50%',
-              background: accentColor,
-              flexShrink: 0,
-              opacity: 0.8,
-            }}
-          />
-          <div
-            style={{
-              color: '#f0e8d8',
-              fontSize: isMobile ? '20px' : '24px',
-              fontStyle: 'italic',
-              lineHeight: 1.15,
-              letterSpacing: '-0.01em',
-            }}
-          >
-            {meta.title}
-          </div>
-        </div>
-        <div style={{ color: '#6a5a40', fontSize: '12px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
-          {meta.subtitle} · {meta.year}
-        </div>
-
-        <div
-          style={{
-            width: '100%',
-            height: '1px',
-            background: 'rgba(200,169,110,0.1)',
-            margin: '16px 0',
-          }}
-        />
-
-        <p
-          style={{
-            color: '#a09070',
-            fontSize: isMobile ? '15px' : '16px',
-            lineHeight: 1.8,
-            paddingLeft: '17px',
-          }}
-        >
-          {meta.desc}
-        </p>
-      </div>
+      {!shouldScrollTitleBlock && titleBlock}
 
       {/* ── Sub-pages (level-1) or placeholder (level-2) ── */}
       <div
@@ -344,6 +347,7 @@ function PanelContent({
         }}
         className="panel-scroll"
       >
+        {shouldScrollTitleBlock && titleBlock}
         {isLevel1 && meta.subPages && meta.subPages.length > 0 ? (
           <>
             <div
