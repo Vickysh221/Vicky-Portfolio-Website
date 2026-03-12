@@ -11,6 +11,7 @@ import PageTemplate from './pages/PageTemplate';
 import SubPageCarousel from './pages/SubPageCarousel';
 
 const PROJECT_COLORS = ['#c8a96e', '#7a9e8e', '#8b7db5', '#6f8f92'];
+const PROJECT_ROUTES = ['/jidu-hmi', '/web-design-develop', '/agentic-design-development', '/academic-gamification'];
 
 export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
@@ -164,6 +165,24 @@ export default function App() {
           </div>
         );
       })()}
+
+      {isMobile && activeCard !== null && location.pathname === '/' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 50,
+            pointerEvents: 'auto',
+          }}
+        >
+          <PageTemplate
+            route={PROJECT_ROUTES[activeCard]}
+            isMobile
+            onBackOverride={handleCloseCard}
+            onNavigateAway={handleCloseCard}
+          />
+        </div>
+      )}
 
       {/* React portals → CSS3D orbit card inner divs */}
       {initialized &&

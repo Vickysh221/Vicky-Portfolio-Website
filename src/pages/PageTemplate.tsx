@@ -14,6 +14,8 @@ const cornerStyles: React.CSSProperties[] = [
 interface Props {
   route: string;
   isMobile?: boolean;
+  onBackOverride?: () => void;
+  onNavigateAway?: () => void;
 }
 
 function BackButton({ onClick }: { onClick: () => void }) {
@@ -137,17 +139,22 @@ function SubPageLink({
   label,
   numeral,
   color,
+  onNavigateAway,
 }: {
   route: string;
   label: string;
   numeral: string;
   color: string;
+  onNavigateAway?: () => void;
 }) {
   const [hov, setHov] = useState(false);
   const navigate = useNavigate();
   return (
     <button
-      onClick={() => navigate(route)}
+      onClick={() => {
+        navigate(route);
+        onNavigateAway?.();
+      }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
@@ -220,6 +227,7 @@ function PanelContent({
   onExpand,
   onCollapse,
   onBack,
+  onNavigateAway,
 }: {
   route: string;
   accentColor: string;
@@ -228,6 +236,7 @@ function PanelContent({
   onExpand: () => void;
   onCollapse: () => void;
   onBack: () => void;
+  onNavigateAway?: () => void;
 }) {
   const meta = PAGE_META[route];
   if (!meta) return null;
@@ -368,6 +377,7 @@ function PanelContent({
                   label={sp.label}
                   numeral={sp.numeral}
                   color={accentColor}
+                  onNavigateAway={onNavigateAway}
                 />
               ))}
             </div>
@@ -406,7 +416,7 @@ function PanelContent({
   );
 }
 
-export default function PageTemplate({ route, isMobile }: Props) {
+export default function PageTemplate({ route, isMobile, onBackOverride, onNavigateAway }: Props) {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -416,6 +426,10 @@ export default function PageTemplate({ route, isMobile }: Props) {
   const accentColor = meta.color;
 
   const handleBack = () => {
+    if (onBackOverride) {
+      onBackOverride();
+      return;
+    }
     if (meta.parent) {
       navigate(meta.parent);
     } else {
@@ -432,6 +446,7 @@ export default function PageTemplate({ route, isMobile }: Props) {
       onExpand={() => setIsExpanded(true)}
       onCollapse={() => setIsExpanded(false)}
       onBack={handleBack}
+      onNavigateAway={onNavigateAway}
     />
   );
 
