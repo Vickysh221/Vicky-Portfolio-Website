@@ -42,6 +42,23 @@ export function mediaBlockStyle(): CSSProperties {
   };
 }
 
+/** 代码块 */
+export function codeBlockStyle(): CSSProperties {
+  return {
+    margin: '12px 0 8px',
+    padding: '14px 16px',
+    borderRadius: '6px',
+    border: '1px solid rgba(200,169,110,0.16)',
+    background: 'rgba(255,255,255,0.02)',
+    color: '#d8ccb6',
+    fontSize: '13px',
+    lineHeight: 1.75,
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-word',
+    fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+  };
+}
+
 /** dash 列表项，配合 <ul style={{ listStyle:'none', ... }}> 使用 */
 export function ListItem({ accent, children }: { accent: string; children: ReactNode }) {
   return (

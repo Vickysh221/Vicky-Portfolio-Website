@@ -61,7 +61,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
       blocks: [
         <>
           <div style={{ marginBottom: '26px', textAlign: 'left' }}>
-            <div style={eyebrowStyle()}>H5 DOCUMENT SPEC · /phoenix-ai/fuli-plus</div>
+            <div style={eyebrowStyle()}>H5 DOCUMENT SPEC · /web-design-develop/fuli-plus</div>
             <div style={leadTitleStyle()}>基于槽位抽象、瀑布流探索与用户反馈闭环的织物图案生成系统</div>
             <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
               这是一个面向织物 / 地毯 / 图案设计场景的 AI 生成系统。它不把用户输入直接粗暴地翻译成一次性 Prompt，

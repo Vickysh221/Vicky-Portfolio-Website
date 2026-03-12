@@ -2,7 +2,7 @@ import { createPlaceholderSections, type SectionData } from './H5DocContentSlide
 
 export function getPhoenixSemanticSystemSlide01Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Phoenix AI / Semantic System',
+    routeLabel: 'Web Design Develop / Semantic System',
     slideNumber: 1,
   });
 }

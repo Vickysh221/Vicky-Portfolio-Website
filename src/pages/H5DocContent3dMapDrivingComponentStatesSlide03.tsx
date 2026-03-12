@@ -1,8 +1,8 @@
 import { createPlaceholderSections, type SectionData } from './H5DocContentSlideFactory';
 
-export function getPhoenixFuliPlusSlide03Sections(accentColor: string): SectionData[] {
+export function get3dMapDrivingComponentStatesSlide03Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Web Design Develop / Fuli Plus',
+    routeLabel: 'JIDU HMI / 3D Map Driving Component States',
     slideNumber: 3,
   });
 }

@@ -1,8 +1,8 @@
 import { createPlaceholderSections, type SectionData } from './H5DocContentSlideFactory';
 
-export function getPhoenixOverviewSlide01Sections(accentColor: string): SectionData[] {
+export function get3dMapDrivingComponentStatesSlide01Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Web Design Develop / Overview',
+    routeLabel: 'JIDU HMI / 3D Map Driving Component States',
     slideNumber: 1,
   });
 }

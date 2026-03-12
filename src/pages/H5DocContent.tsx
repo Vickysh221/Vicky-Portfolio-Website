@@ -11,6 +11,11 @@ import { getAvpSlide1Sections } from './H5DocContentAvpSlide01';
 import { getMinimapCameraSlide01Sections } from './H5DocContentMinimapCameraSlide01';
 import { get3dMapGestureSlide01Sections } from './H5DocContent3dMapGestureSlide01';
 import { getSimoAgentParksSlide01Sections } from './H5DocContentSimoAgentParksSlide01';
+import { get3dMapDrivingComponentStatesSlide01Sections } from './H5DocContent3dMapDrivingComponentStatesSlide01';
+import { get3dMapDrivingComponentStatesSlide02Sections } from './H5DocContent3dMapDrivingComponentStatesSlide02';
+import { get3dMapDrivingComponentStatesSlide03Sections } from './H5DocContent3dMapDrivingComponentStatesSlide03';
+import { get3dMapDrivingComponentStatesSlide04Sections } from './H5DocContent3dMapDrivingComponentStatesSlide04';
+import { get3dMapDrivingComponentStatesSlide05Sections } from './H5DocContent3dMapDrivingComponentStatesSlide05';
 import { getPhoenixOverviewSlide01Sections } from './H5DocContentPhoenixOverviewSlide01';
 import { getPhoenixComponentFrameworkSlide01Sections } from './H5DocContentPhoenixComponentFrameworkSlide01';
 import { getPhoenixKeyPagesSlide01Sections } from './H5DocContentPhoenixKeyPagesSlide01';
@@ -62,15 +67,20 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/avp:0': getAvpSlide1Sections,
   '/jidu-hmi/minimap-camera:0': getMinimapCameraSlide01Sections,
   '/jidu-hmi/3d-map-gesture:0': get3dMapGestureSlide01Sections,
+  '/jidu-hmi/3d-map-driving-component-states:0': get3dMapDrivingComponentStatesSlide01Sections,
+  '/jidu-hmi/3d-map-driving-component-states:1': get3dMapDrivingComponentStatesSlide02Sections,
+  '/jidu-hmi/3d-map-driving-component-states:2': get3dMapDrivingComponentStatesSlide03Sections,
+  '/jidu-hmi/3d-map-driving-component-states:3': get3dMapDrivingComponentStatesSlide04Sections,
+  '/jidu-hmi/3d-map-driving-component-states:4': get3dMapDrivingComponentStatesSlide05Sections,
   '/agentic-design-development/simo-agent-system:0': getSimoAgentParksSlide01Sections,
 
-  '/phoenix-ai/overview:0': getPhoenixOverviewSlide01Sections,
-  '/phoenix-ai/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,
-  '/phoenix-ai/key-pages:0': getPhoenixKeyPagesSlide01Sections,
-  '/phoenix-ai/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
-  '/phoenix-ai/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
-  '/phoenix-ai/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
-  '/phoenix-ai/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
+  '/web-design-develop/overview:0': getPhoenixOverviewSlide01Sections,
+  '/web-design-develop/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,
+  '/web-design-develop/key-pages:0': getPhoenixKeyPagesSlide01Sections,
+  '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
+  '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
+  '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
+  '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,

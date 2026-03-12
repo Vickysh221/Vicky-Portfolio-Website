@@ -2,7 +2,7 @@ import { createPlaceholderSections, type SectionData } from './H5DocContentSlide
 
 export function getPhoenixKeyPagesSlide01Sections(accentColor: string): SectionData[] {
   return createPlaceholderSections(accentColor, {
-    routeLabel: 'Phoenix AI / Key Pages',
+    routeLabel: 'Web Design Develop / Key Pages',
     slideNumber: 1,
   });
 }
