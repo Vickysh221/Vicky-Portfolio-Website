@@ -139,41 +139,49 @@ function SubPageLink({
   label,
   numeral,
   color,
+  disabled,
   onNavigateAway,
 }: {
   route: string;
   label: string;
   numeral: string;
   color: string;
+  disabled?: boolean;
   onNavigateAway?: () => void;
 }) {
   const [hov, setHov] = useState(false);
   const navigate = useNavigate();
+  const isInteractive = !disabled;
   return (
     <button
       onClick={() => {
+        if (!isInteractive) return;
         navigate(route);
         onNavigateAway?.();
       }}
-      onMouseEnter={() => setHov(true)}
+      onMouseEnter={() => {
+        if (!isInteractive) return;
+        setHov(true);
+      }}
       onMouseLeave={() => setHov(false)}
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
         padding: '10px 14px',
-        background: hov ? `${color}12` : 'rgba(255,255,255,0.015)',
-        border: `1px solid ${hov ? `${color}55` : 'rgba(200,169,110,0.12)'}`,
-        cursor: 'pointer',
+        background: isInteractive && hov ? `${color}12` : 'rgba(255,255,255,0.015)',
+        border: `1px solid ${isInteractive && hov ? `${color}55` : 'rgba(200,169,110,0.12)'}`,
+        cursor: isInteractive ? 'pointer' : 'default',
         width: '100%',
         textAlign: 'left',
         transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
         fontFamily: "Georgia, 'Times New Roman', serif",
+        opacity: isInteractive ? 1 : 0.45,
       }}
     >
       <span
         style={{
-          color: hov ? color : 'rgba(200,169,110,0.35)',
+          color: isInteractive && hov ? color : isInteractive ? 'rgba(200,169,110,0.35)' : '#5f5340',
           fontSize: '11px',
           fontStyle: 'italic',
           width: '22px',
@@ -186,7 +194,7 @@ function SubPageLink({
       </span>
       <span
         style={{
-          color: hov ? '#f0e8d8' : '#8a7a60',
+          color: isInteractive && hov ? '#f0e8d8' : isInteractive ? '#8a7a60' : '#6f624f',
           fontSize: '14px',
           letterSpacing: '0.04em',
           transition: 'color 0.25s',
@@ -201,8 +209,8 @@ function SubPageLink({
         fill="none"
         style={{
           marginLeft: 'auto',
-          opacity: hov ? 1 : 0,
-          transform: hov ? 'translateX(0)' : 'translateX(-4px)',
+          opacity: isInteractive && hov ? 1 : 0,
+          transform: isInteractive && hov ? 'translateX(0)' : 'translateX(-4px)',
           transition: 'all 0.25s',
           flexShrink: 0,
         }}
@@ -377,6 +385,7 @@ function PanelContent({
                   label={sp.label}
                   numeral={sp.numeral}
                   color={accentColor}
+                  disabled={sp.disabled}
                   onNavigateAway={onNavigateAway}
                 />
               ))}

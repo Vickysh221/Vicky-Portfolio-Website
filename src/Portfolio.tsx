@@ -7,6 +7,7 @@ interface SubPage {
   route: string;
   label: string;
   numeral: string;
+  disabled?: boolean;
 }
 
 interface Project {
@@ -19,6 +20,7 @@ interface Project {
   color: string;
   route: string;
   subPages: SubPage[];
+  disabled?: boolean;
 }
 
 interface ExperienceDetail {
@@ -42,17 +44,33 @@ const projects: Project[] = [
     color: "#c8a96e",
     route: "/jidu-hmi",
     subPages: [
-      { route: "/jidu-hmi/unity3d-camera", label: "Unity3D Camera System", numeral: "I" },
-      { route: "/jidu-hmi/3d-map", label: "3D Map Strategy", numeral: "II" },
-      { route: "/jidu-hmi/avp", label: "AVP Auto-Park", numeral: "III" },
-      { route: "/jidu-hmi/minimap-camera", label: "Minimap Camera", numeral: "IV" },
-      { route: "/jidu-hmi/3d-map-gesture", label: "3D Map Gestures", numeral: "V" },
-      { route: "/jidu-hmi/3d-map-driving-component-states", label: "3D地图和驾驶组件状态设计", numeral: "VI" },
+      { route: "/jidu-hmi/unity3d-camera", label: "3D地图一镜到底系统", numeral: "I" },
+      { route: "/jidu-hmi/3d-map", label: "2/3D地图融合策略概念", numeral: "II" },
+      { route: "/jidu-hmi/avp", label: "AVP自动泊车体设计和原型开发", numeral: "III" },
+      { route: "/jidu-hmi/dashboard-layout", label: "驾驶区布局和驾驶状态原型设计", numeral: "IV" },
+      { route: "/jidu-hmi/minimap-camera", label: "SLAM小地图策略", numeral: "V" },
+      { route: "/jidu-hmi/3d-map-gesture", label: "3D地图手势系统", numeral: "VI" },
+      { route: "/jidu-hmi/3d-map-driving-component-states", label: "3D地图和驾驶组件状态设计", numeral: "VII" },
     ],
   },
   {
     id: "02",
-    title: "网页设计和开发",
+    title: "智能体设计与开发",
+    subtitle: "AI Agent Product Design · Prototyping",
+    year: "2024–2025",
+    tags: ["Multi-Agent", "Agent UX", "Prototype", "Creative Coding"],
+    desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
+    color: "#8b7db5",
+    route: "/agentic-design-development",
+    subPages: [
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent（敬请期待）", numeral: "I", disabled: true },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
+      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
+    ],
+  },
+  {
+    id: "03",
+    title: "网页设计和开发（敬请期待）",
     subtitle: "Web Design Develop",
     year: "2025",
     tags: ["AI Pipeline", "SaaS", "Three.js", "Vue3", "Agent UX"],
@@ -64,36 +82,8 @@ const projects: Project[] = [
       { route: "/web-design-develop/component-framework", label: "Component Framework", numeral: "II" },
       { route: "/web-design-develop/key-pages", label: "Key Pages", numeral: "III" },
       { route: "/web-design-develop/semantic-system", label: "Semantic System", numeral: "IV" },
-      { route: "/web-design-develop/fuli-plus", label: "Fuli+ Agent", numeral: "V" },
     ],
-  },
-  {
-    id: "03",
-    title: "AGENTIC DESIGN & DEVELOPMENT",
-    subtitle: "AI Agent Product Design · Prototyping",
-    year: "2024–2025",
-    tags: ["Multi-Agent", "Agent UX", "Prototype", "Creative Coding"],
-    desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
-    color: "#8b7db5",
-    route: "/agentic-design-development",
-    subPages: [
-      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
-      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
-    ],
-  },
-  {
-    id: "04",
-    title: "ACADEMIC WORKS OF GAMIFICATION",
-    subtitle: "Game Systems · Interactive Prototypes",
-    year: "2024",
-    tags: ["Gamification", "Urban Simulation", "Level Design", "Prototype"],
-    desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
-    color: "#6f8f92",
-    route: "/academic-gamification",
-    subPages: [
-      { route: "/academic-gamification/simbiocity", label: "Simbiocity", numeral: "I" },
-      { route: "/academic-gamification/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
-    ],
+    disabled: true,
   },
 ];
 
@@ -674,13 +664,13 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
           opacity: activeExp !== null ? 0 : homeOpacity,
           pointerEvents: activeExp !== null || !isHome || activeCard !== null ? "none" : "all",
           transition: "opacity 0.38s cubic-bezier(0.16,1,0.3,1), transform 0.38s cubic-bezier(0.16,1,0.3,1)",
-          width: "340px",
+          width: "510px",
         }}
       >
         <div
           style={{
             border: "1px solid rgba(200,169,110,0.3)",
-            padding: "28px 28px 24px",
+            padding: "40px 40px 36px",
             position: "relative",
             background: "rgba(8,6,4,0.55)",
             backdropFilter: "blur(6px)",
@@ -688,34 +678,41 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
             transition: "opacity 0.9s 0.4s",
           }}
         >
-          <div style={{ color: "#c8a96e", fontSize: "9px", letterSpacing: "0.3em", marginBottom: "16px" }}>
+          <div style={{ color: "#c8a96e", fontSize: "13px", letterSpacing: "0.3em", marginBottom: "24px" }}>
             SELECTED WORKS
           </div>
 
           {projects.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => onProjectClick(i)}
-              onMouseEnter={() => setHoveredNav(i)}
+              onClick={() => {
+                if (p.disabled) return;
+                onProjectClick(i);
+              }}
+              onMouseEnter={() => {
+                if (p.disabled) return;
+                setHoveredNav(i);
+              }}
               onMouseLeave={() => setHoveredNav(null)}
               style={{
                 display: "flex",
                 width: "100%",
                 alignItems: "baseline",
-                gap: "14px",
-                padding: "6px 0",
+                gap: "22px",
+                padding: "10px 0",
                 background: "none",
                 border: "none",
-                cursor: "pointer",
+                cursor: p.disabled ? "default" : "pointer",
                 borderBottom: "1px solid rgba(200,169,110,0.08)",
                 transition: "all 0.25s",
+                opacity: p.disabled ? 0.42 : 1,
               }}
             >
               <span
                 style={{
-                  color: activeCard === i ? "#c8a96e" : "#4a3a28",
-                  fontSize: "9px",
-                  width: "18px",
+                  color: p.disabled ? "#3a3126" : activeCard === i ? "#c8a96e" : "#4a3a28",
+                  fontSize: "13px",
+                  width: "28px",
                   textAlign: "right",
                   fontStyle: "italic",
                   flexShrink: 0,
@@ -727,12 +724,14 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
               <span
                 style={{
                   color:
-                    activeCard === i
+                    p.disabled
+                      ? "#5f5340"
+                      : activeCard === i
                       ? "#f0e8d8"
                       : hoveredNav === i
                       ? "#d4c4a0"
                       : "#8a7a60",
-                  fontSize: "13px",
+                  fontSize: "18px",
                   textAlign: "left",
                   lineHeight: 1.3,
                   transition: "color 0.25s",
@@ -744,13 +743,13 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
               <span
                 style={{
                   marginLeft: "auto",
-                  color: activeCard === i ? p.color : "#3a2a18",
-                  fontSize: "9px",
+                  color: p.disabled ? "#4f4537" : activeCard === i ? p.color : "#3a2a18",
+                  fontSize: "13px",
                   flexShrink: 0,
                   transition: "color 0.25s",
                 }}
               >
-                {p.year}
+                {p.disabled ? "敬请期待" : p.year}
               </span>
             </button>
           ))}

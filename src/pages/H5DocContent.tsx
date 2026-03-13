@@ -8,6 +8,7 @@ import { get3dMapSlide02Sections } from './H5DocContent3dMapSlide02';
 import { get3dMapSlide03Sections } from './H5DocContent3dMapSlide03';
 import { get3dMapSlide04Sections } from './H5DocContent3dMapSlide04';
 import { getAvpSlide1Sections } from './H5DocContentAvpSlide01';
+import { getDashboardLayoutSlide01Sections } from './H5DocContentDashboardLayoutSlide01';
 import { getMinimapCameraSlide01Sections } from './H5DocContentMinimapCameraSlide01';
 import { get3dMapGestureSlide01Sections } from './H5DocContent3dMapGestureSlide01';
 import { getSimoAgentParksSlide01Sections } from './H5DocContentSimoAgentParksSlide01';
@@ -65,6 +66,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/3d-map:3': get3dMapSlide04Sections,
 
   '/jidu-hmi/avp:0': getAvpSlide1Sections,
+  '/jidu-hmi/dashboard-layout:0': getDashboardLayoutSlide01Sections,
   '/jidu-hmi/minimap-camera:0': getMinimapCameraSlide01Sections,
   '/jidu-hmi/3d-map-gesture:0': get3dMapGestureSlide01Sections,
   '/jidu-hmi/3d-map-driving-component-states:0': get3dMapDrivingComponentStatesSlide01Sections,
@@ -81,6 +83,9 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
   '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
+  '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
+  '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
+  '/agentic-design-development/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,

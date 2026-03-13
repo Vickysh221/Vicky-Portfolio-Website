@@ -4,9 +4,10 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/jidu-hmi/unity3d-camera": -2000,
   "/jidu-hmi/3d-map": -3000,
   "/jidu-hmi/avp": -4000,
-  "/jidu-hmi/minimap-camera": -5000,
-  "/jidu-hmi/3d-map-gesture": -6000,
-  "/jidu-hmi/3d-map-driving-component-states": -7000,
+  "/jidu-hmi/dashboard-layout": -5000,
+  "/jidu-hmi/minimap-camera": -6000,
+  "/jidu-hmi/3d-map-gesture": -7000,
+  "/jidu-hmi/3d-map-driving-component-states": -8000,
   "/web-design-develop": -8000,
   "/web-design-develop/overview": -9000,
   "/web-design-develop/component-framework": -10000,
@@ -16,6 +17,7 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/agentic-design-development": -14000,
   "/agentic-design-development/language-diary": -15000,
   "/agentic-design-development/simo-agent-system": -16000,
+  "/agentic-design-development/fuli-plus": -16500,
   "/academic-gamification": -17000,
   "/academic-gamification/simbiocity": -18000,
   "/academic-gamification/fortnite-demo": -19000,
@@ -25,6 +27,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/unity3d-camera': 4,
   '/jidu-hmi/3d-map': 4,
   '/jidu-hmi/avp': 1,
+  '/jidu-hmi/dashboard-layout': 1,
   '/jidu-hmi/minimap-camera': 1,
   '/jidu-hmi/3d-map-gesture': 1,
   '/jidu-hmi/3d-map-driving-component-states': 5,
@@ -37,6 +40,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
 
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/simo-agent-system': 1,
+  '/agentic-design-development/fuli-plus': 3,
 
   '/academic-gamification/simbiocity': 1,
   '/academic-gamification/fortnite-demo': 1,
@@ -53,7 +57,7 @@ export interface PageMeta {
   desc: string;
   parent: string | null;
   color: string;
-  subPages?: { route: string; label: string; numeral: string }[];
+  subPages?: { route: string; label: string; numeral: string; disabled?: boolean }[];
 }
 
 export const PAGE_META: Record<string, PageMeta> = {
@@ -65,16 +69,17 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#c8a96e",
     subPages: [
-      { route: "/jidu-hmi/unity3d-camera", label: "Unity3D Camera System", numeral: "I" },
-      { route: "/jidu-hmi/3d-map", label: "3D Map Strategy", numeral: "II" },
-      { route: "/jidu-hmi/avp", label: "AVP Auto-Park", numeral: "III" },
-      { route: "/jidu-hmi/minimap-camera", label: "Minimap Camera", numeral: "IV" },
-      { route: "/jidu-hmi/3d-map-gesture", label: "3D Map Gestures", numeral: "V" },
-      { route: "/jidu-hmi/3d-map-driving-component-states", label: "3D地图和驾驶组件状态设计", numeral: "VI" },
+      { route: "/jidu-hmi/unity3d-camera", label: "3D地图一镜到底系统", numeral: "I" },
+      { route: "/jidu-hmi/3d-map", label: "2/3D地图融合策略概念", numeral: "II" },
+      { route: "/jidu-hmi/avp", label: "AVP自动泊车体设计和原型开发", numeral: "III" },
+      { route: "/jidu-hmi/dashboard-layout", label: "驾驶区布局和驾驶状态原型设计", numeral: "IV" },
+      { route: "/jidu-hmi/minimap-camera", label: "SLAM小地图策略", numeral: "V" },
+      { route: "/jidu-hmi/3d-map-gesture", label: "3D地图手势系统", numeral: "VI" },
+      { route: "/jidu-hmi/3d-map-driving-component-states", label: "3D地图和驾驶组件状态设计", numeral: "VII" },
     ],
   },
   "/jidu-hmi/unity3d-camera": {
-    title: "Unity3D Camera System",
+    title: "3D地图一镜到底系统",
     subtitle: "JIDU HMI · Camera Architecture",
     year: "2022–2024",
     desc: "Multi-state virtual camera rig for 3D navigation maps — lens interruption logic, spatial continuity across driving modes, and dynamic FOV transitions.",
@@ -82,7 +87,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/3d-map": {
-    title: "3D Map Strategy",
+    title: "2/3D地图融合策略概念",
     subtitle: "JIDU HMI · Map Design",
     year: "2022–2024",
     desc: "Fusing perception data, map data, and navigation info into a unified spatial interface — element hierarchy, display rules, and transition strategies.",
@@ -90,15 +95,23 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/avp": {
-    title: "AVP Auto-Park",
+    title: "AVP自动泊车体设计和原型开发",
     subtitle: "JIDU HMI · Low-Speed ADAS",
     year: "2022–2024",
     desc: "Gamified interaction for user-marked parking spots: path learning, auto-routing, spot selection, and automated parking via screen-space controls.",
     parent: "/jidu-hmi",
     color: "#c8a96e",
   },
+  "/jidu-hmi/dashboard-layout": {
+    title: "驾驶区布局和驾驶状态原型设计",
+    subtitle: "JIDU HMI · Dashboard Layout",
+    year: "2022–2024",
+    desc: "面向辅助驾驶场景的仪表信息布局与 3D 地图屏幕位置方案设计，结合方向盘形态与驾驶视线偏好，验证驾驶区信息呈现的最优区域。",
+    parent: "/jidu-hmi",
+    color: "#c8a96e",
+  },
   "/jidu-hmi/minimap-camera": {
-    title: "Minimap Camera",
+    title: "SLAM小地图策略",
     subtitle: "JIDU HMI · Map UI",
     year: "2022–2024",
     desc: "Screen-space and world-space mapping rules for HMI elements within the 3D scene — composition, layout logic, and element positioning.",
@@ -106,7 +119,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/3d-map-gesture": {
-    title: "3D Map Gestures",
+    title: "3D地图手势系统",
     subtitle: "JIDU HMI · Interaction Design",
     year: "2022–2024",
     desc: "Custom 3D gesture system translating touch input (tap, swipe, pinch, rotate) into scene interactions — pan, zoom, rotate, and custom lens extension.",
@@ -122,7 +135,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/web-design-develop": {
-    title: "网页设计和开发",
+    title: "网页设计和开发（敬请期待）",
     subtitle: "Web Design Develop",
     year: "2025",
     desc: "Architected a generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback mechanisms, multi-tenant asset isolation.",
@@ -133,7 +146,6 @@ export const PAGE_META: Record<string, PageMeta> = {
       { route: "/web-design-develop/component-framework", label: "Component Framework", numeral: "II" },
       { route: "/web-design-develop/key-pages", label: "Key Pages", numeral: "III" },
       { route: "/web-design-develop/semantic-system", label: "Semantic System", numeral: "IV" },
-      { route: "/web-design-develop/fuli-plus", label: "Fuli+ Agent", numeral: "V" },
     ],
   },
   "/web-design-develop/overview": {
@@ -170,23 +182,24 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   "/web-design-develop/fuli-plus": {
     title: "Fuli+ Agent",
-    subtitle: "Web Design Develop · AI Agent",
+    subtitle: "Agentic Design & Development · AI Agent",
     year: "2025",
     desc: "Conversational agent decomposing carpet design intent (style, color, pattern) into structured generation parameters via multi-turn slot-based NLU dialogue.",
-    parent: "/web-design-develop",
-    color: "#7a9e8e",
+    parent: "/agentic-design-development",
+    color: "#8b7db5",
   },
 
   "/agentic-design-development": {
-    title: "AGENTIC DESIGN & DEVELOPMENT",
+    title: "智能体设计与开发",
     subtitle: "AI Agent Product Design · Prototyping",
     year: "2024–2025",
     desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent（敬请期待）", numeral: "I", disabled: true },
       { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
+      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
     ],
   },
   "/agentic-design-development/language-diary": {
@@ -205,9 +218,17 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: "/agentic-design-development",
     color: "#8b7db5",
   },
+  "/agentic-design-development/fuli-plus": {
+    title: "Fuli+ Agent",
+    subtitle: "Agentic Design & Development · AI Agent",
+    year: "2025",
+    desc: "Conversational agent decomposing carpet design intent (style, color, pattern) into structured generation parameters via multi-turn slot-based NLU dialogue.",
+    parent: "/agentic-design-development",
+    color: "#8b7db5",
+  },
 
   "/academic-gamification": {
-    title: "ACADEMIC WORKS OF GAMIFICATION",
+    title: "学术作品和个人项目 - 游戏化",
     subtitle: "Game Systems · Interactive Prototypes",
     year: "2024",
     desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
