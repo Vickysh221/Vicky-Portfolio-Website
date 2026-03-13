@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import ChapterArrowButton from '../components/ChapterArrowButton';
+import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent from './H5DocContent';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
@@ -477,6 +479,8 @@ export default function PageTemplate({ route, isMobile, onBackOverride, onNaviga
   if (!meta) return null;
 
   const accentColor = meta.color;
+  const prevTarget = getAdjacentChapterSlideTarget(route, 0, 'prev');
+  const nextTarget = getAdjacentChapterSlideTarget(route, 0, 'next');
 
   const handleBack = () => {
     if (onBackOverride) {
@@ -489,6 +493,38 @@ export default function PageTemplate({ route, isMobile, onBackOverride, onNaviga
       navigate('/');
     }
   };
+
+  const handleSlideNavigation = (target: { route: string; slideIndex: number } | null) => {
+    if (!target) return;
+    navigate(target.route, { state: { initialSlideIndex: target.slideIndex } });
+  };
+
+  const chapterNavOverlay = meta.parent !== null
+    ? createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: isExpanded ? 10000 : 45,
+          }}
+        >
+          <ChapterArrowButton
+            direction="left"
+            onClick={prevTarget ? () => handleSlideNavigation(prevTarget) : () => {}}
+            visible={!!prevTarget}
+            accentColor={accentColor}
+          />
+          <ChapterArrowButton
+            direction="right"
+            onClick={nextTarget ? () => handleSlideNavigation(nextTarget) : () => {}}
+            visible={!!nextTarget}
+            accentColor={accentColor}
+          />
+        </div>,
+        document.body,
+      )
+    : null;
 
   const panelContent = (
     <PanelContent
@@ -518,10 +554,16 @@ export default function PageTemplate({ route, isMobile, onBackOverride, onNaviga
         }}
       >
         {panelContent}
+        {chapterNavOverlay}
       </div>,
       document.body,
     );
   }
 
-  return panelContent;
+  return (
+    <>
+      {panelContent}
+      {chapterNavOverlay}
+    </>
+  );
 }

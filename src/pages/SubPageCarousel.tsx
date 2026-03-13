@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ChapterArrowButton from '../components/ChapterArrowButton';
+import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent, { hasSectionContent } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -160,57 +162,6 @@ function CollapseButton({ onClick, accentColor }: { onClick: () => void; accentC
           d="M3.5 1V3.5H1M9 3.5H6.5V1M6.5 9V6.5H9M1 6.5H3.5V9"
           stroke={hov ? accentColor : 'rgba(200,169,110,0.6)'}
           strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  );
-}
-
-function ArrowButton({
-  direction,
-  onClick,
-  visible,
-  accentColor,
-}: {
-  direction: 'left' | 'right';
-  onClick: () => void;
-  visible: boolean;
-  accentColor: string;
-}) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        position: 'absolute',
-        top: '50%',
-        [direction]: '24px',
-        transform: 'translateY(-50%)',
-        width: '44px',
-        height: '44px',
-        borderRadius: '50%',
-        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.35)'}`,
-        background: hov ? `${accentColor}18` : 'rgba(8,6,4,0.7)',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: visible ? 1 : 0,
-        pointerEvents: visible ? 'auto' : 'none',
-        transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
-        zIndex: 10,
-        backdropFilter: 'blur(4px)',
-      }}
-    >
-      <svg width="14" height="14" viewBox="0 0 11 11" fill="none">
-        <path
-          d={direction === 'left' ? 'M9.5 5.5H1.5M5 2.5L1.5 5.5L5 8.5' : 'M1.5 5.5H9.5M6 2.5L9.5 5.5L6 8.5'}
-          stroke={hov ? accentColor : 'rgba(200,169,110,0.7)'}
-          strokeWidth="1.1"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -450,6 +401,7 @@ function SlideContent({
 
 export default function SubPageCarousel({ route, accentColor, count }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
@@ -459,6 +411,17 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   const touchStartX = useRef<number | null>(null);
 
   const meta = PAGE_META[route];
+  const prevTarget = getAdjacentChapterSlideTarget(route, activeIndex, 'prev');
+  const nextTarget = getAdjacentChapterSlideTarget(route, activeIndex, 'next');
+
+  const goToTarget = (target: { route: string; slideIndex: number } | null) => {
+    if (!target) return;
+    if (target.route === route) {
+      setActiveIndex(target.slideIndex);
+      return;
+    }
+    navigate(target.route, { state: { initialSlideIndex: target.slideIndex } });
+  };
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setMounted(true));
@@ -466,20 +429,34 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   }, []);
 
   useEffect(() => {
+    const initialSlideIndex =
+      typeof location.state === 'object' && location.state && 'initialSlideIndex' in location.state
+        ? location.state.initialSlideIndex
+        : 0;
+
+    const nextIndex =
+      typeof initialSlideIndex === 'number' && Number.isFinite(initialSlideIndex)
+        ? Math.min(Math.max(initialSlideIndex, 0), count - 1)
+        : 0;
+
+    setActiveIndex(nextIndex);
+  }, [count, location.state, route]);
+
+  useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        setActiveIndex((i) => Math.max(0, i - 1));
+        goToTarget(getAdjacentChapterSlideTarget(route, activeIndex, 'prev'));
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        setActiveIndex((i) => Math.min(count - 1, i + 1));
+        goToTarget(getAdjacentChapterSlideTarget(route, activeIndex, 'next'));
       } else if (e.key === 'Escape' && isExpanded) {
         setIsExpanded(false);
       }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [count, isExpanded]);
+  }, [activeIndex, isExpanded, navigate, route]);
 
   const handleBack = () => {
     if (meta?.parent) {
@@ -500,25 +477,25 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
     touchStartX.current = null;
     if (Math.abs(delta) < 50) return;
     if (delta < 0) {
-      setActiveIndex((i) => Math.min(count - 1, i + 1));
+      goToTarget(getAdjacentChapterSlideTarget(route, activeIndex, 'next'));
     } else {
-      setActiveIndex((i) => Math.max(0, i - 1));
+      goToTarget(getAdjacentChapterSlideTarget(route, activeIndex, 'prev'));
     }
   };
 
   // Shared navigation controls (arrows + dots) — used in both modes
   const navControls = (
     <>
-      <ArrowButton
+      <ChapterArrowButton
         direction="left"
-        onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
-        visible={activeIndex > 0}
+        onClick={() => goToTarget(prevTarget)}
+        visible={!!prevTarget}
         accentColor={accentColor}
       />
-      <ArrowButton
+      <ChapterArrowButton
         direction="right"
-        onClick={() => setActiveIndex((i) => Math.min(count - 1, i + 1))}
-        visible={activeIndex < count - 1}
+        onClick={() => goToTarget(nextTarget)}
+        visible={!!nextTarget}
         accentColor={accentColor}
       />
       <div
@@ -618,16 +595,16 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
             <CollapseButton onClick={() => setIsExpanded(false)} accentColor={accentColor} />
           </div>
           {/* Navigation in expanded mode */}
-          <ArrowButton
+          <ChapterArrowButton
             direction="left"
-            onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
-            visible={activeIndex > 0}
+            onClick={() => goToTarget(prevTarget)}
+            visible={!!prevTarget}
             accentColor={accentColor}
           />
-          <ArrowButton
+          <ChapterArrowButton
             direction="right"
-            onClick={() => setActiveIndex((i) => Math.min(count - 1, i + 1))}
-            visible={activeIndex < count - 1}
+            onClick={() => goToTarget(nextTarget)}
+            visible={!!nextTarget}
             accentColor={accentColor}
           />
           <div
@@ -742,16 +719,16 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
       </div>
 
       {/* Nav arrows */}
-      <ArrowButton
+      <ChapterArrowButton
         direction="left"
-        onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
-        visible={activeIndex > 0}
+        onClick={() => goToTarget(prevTarget)}
+        visible={!!prevTarget}
         accentColor={accentColor}
       />
-      <ArrowButton
+      <ChapterArrowButton
         direction="right"
-        onClick={() => setActiveIndex((i) => Math.min(count - 1, i + 1))}
-        visible={activeIndex < count - 1}
+        onClick={() => goToTarget(nextTarget)}
+        visible={!!nextTarget}
         accentColor={accentColor}
       />
 
