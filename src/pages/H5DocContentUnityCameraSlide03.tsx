@@ -6,7 +6,6 @@ import slide03Img02 from '../images/unity3d-camera/slide03-img02.png';
 import slide03Img03 from '../images/unity3d-camera/slide03-img03.png';
 import slide03Img04 from '../images/unity3d-camera/slide03-img04.png';
 import slide03Img05 from '../images/unity3d-camera/slide03-img05.png';
-import slide03Img06 from '../images/unity3d-camera/slide03-img06.png';
 import slide03Img07 from '../images/unity3d-camera/slide03-img07.png';
 import slide03Img08 from '../images/unity3d-camera/slide03-img08.png';
 import slide03Img09 from '../images/unity3d-camera/slide03-img09.png';
@@ -69,23 +68,15 @@ export function getUnityCameraSlide03Sections(accentColor: string): SectionData[
         <p style={{ ...paragraphStyle(), marginBottom: 6 }}>驻车事件分为三个状态大类：</p>
         <ParkingEventList accentColor={accentColor} />
         <p style={{ ...paragraphStyle(), marginTop: 12 }}>典型场景包括：3D 场景配合的场景演示、伴随车控车设内用户查看功能说明、用户查看里程能耗与充电状态、用户与 3D 场景组件交互（触发开门 / 查看胎温胎压 / 点击故障位置标识）。</p>
-        <div style={mediaBlockStyle()}>
-          <ImageWithStatus
-            src={slide03Img05}
-            style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}
-            alt="驻车事件触发来源示意图"
-          />
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-1 驻车事件触发来源概览</div>
-        </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件优先级规则</h2>
         <p style={paragraphStyle()}>在车辆状态镜头系统中同样存在镜头优先级仲裁策略。若车身同时出现多个异常状态或充电状态叠加，则选择优先级更高的事件镜头进行展示。</p>
         <div style={mediaBlockStyle()}>
           <ImageWithStatus
-            src={slide03Img06}
+            src={slide03Img05}
             style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}
-            alt="驻车事件优先级仲裁图"
+            alt="驻车事件触发来源概览和优先级仲裁关系"
           />
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-2 驻车事件优先级仲裁关系</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-2 驻车事件触发来源概览和优先级仲裁关系</div>
         </div>
         <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车运镜视角示例</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
