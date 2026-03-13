@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent, { hasSectionContent } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
+import { useFullscreenHint } from '../hooks/useFullscreenHint';
 
 interface Props {
   route: string;
@@ -63,38 +64,71 @@ function BackButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function ExpandButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+function ExpandButton({
+  onClick,
+  accentColor,
+  showHint,
+}: {
+  onClick: () => void;
+  accentColor: string;
+  showHint?: boolean;
+}) {
   const [hov, setHov] = useState(false);
   return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      title="Expand fullscreen"
-      style={{
-        width: '24px',
-        height: '24px',
-        borderRadius: '3px',
-        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
-        background: hov ? `${accentColor}18` : 'transparent',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'all 0.2s',
-        flexShrink: 0,
-      }}
-    >
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-        <path
-          d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
-          stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+      <button
+        onClick={onClick}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        title="Expand fullscreen"
+        style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: '3px',
+          border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
+          background: hov ? `${accentColor}18` : 'transparent',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 0.2s',
+          flexShrink: 0,
+        }}
+      >
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path
+            d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
+            stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
+            strokeWidth="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {showHint && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 8px)',
+            right: 0,
+            width: '156px',
+            padding: '8px 10px',
+            borderRadius: '6px',
+            border: `1px solid ${accentColor}55`,
+            background: 'rgba(8,6,4,0.94)',
+            color: '#d8ccb7',
+            fontSize: '11px',
+            lineHeight: 1.5,
+            letterSpacing: '0.04em',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
+            backdropFilter: 'blur(6px)',
+            zIndex: 20,
+          }}
+        >
+          点击这里可进入全屏查看
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -193,8 +227,10 @@ function SlideContent({
   isActive,
   onBack,
   onExpand,
+  onExpandWithHint,
   isExpanded,
   isMobile,
+  showExpandHint,
 }: {
   route: string;
   slideIndex: number;
@@ -203,8 +239,10 @@ function SlideContent({
   isActive: boolean;
   onBack: () => void;
   onExpand?: () => void;
+  onExpandWithHint?: () => void;
   isExpanded?: boolean;
   isMobile?: boolean;
+  showExpandHint?: boolean;
 }) {
   const meta = PAGE_META[route];
   if (!meta) return null;
@@ -323,7 +361,11 @@ function SlideContent({
           </div>
           {/* Expand button: PC only, not in expanded state */}
           {!isMobile && !isExpanded && onExpand && (
-            <ExpandButton onClick={onExpand} accentColor={accentColor} />
+            <ExpandButton
+              onClick={onExpandWithHint ?? onExpand}
+              accentColor={accentColor}
+              showHint={showExpandHint}
+            />
           )}
         </div>
       </div>
@@ -412,6 +454,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
 
@@ -531,6 +574,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
           isActive={true}
           onBack={handleBack}
           isMobile={true}
+          showExpandHint={false}
         />
         {navControls}
       </div>
@@ -559,6 +603,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
             isActive={true}
             onBack={handleBack}
             isExpanded={true}
+            showExpandHint={false}
           />
           {/* Collapse button — top right of overlay */}
           <div
@@ -681,6 +726,15 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
                 isActive={isActive}
                 onBack={handleBack}
                 onExpand={isActive ? () => setIsExpanded(true) : undefined}
+                onExpandWithHint={
+                  isActive
+                    ? () => {
+                        dismissForever();
+                        setIsExpanded(true);
+                      }
+                    : undefined
+                }
+                showExpandHint={isActive ? showFullscreenHint : false}
               />
             </div>
           );

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_META } from '../constants/routeDepth';
 import H5DocContent from './H5DocContent';
+import { useFullscreenHint } from '../hooks/useFullscreenHint';
 
 const cornerStyles: React.CSSProperties[] = [
   { top: '-1px', left: '-1px', borderTop: '8px solid #c8a96e', borderLeft: '8px solid #c8a96e' },
@@ -63,38 +64,71 @@ function BackButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function ExpandButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+function ExpandButton({
+  onClick,
+  accentColor,
+  showHint,
+}: {
+  onClick: () => void;
+  accentColor: string;
+  showHint?: boolean;
+}) {
   const [hov, setHov] = useState(false);
   return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      title="Expand fullscreen"
-      style={{
-        width: '24px',
-        height: '24px',
-        borderRadius: '3px',
-        border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
-        background: hov ? `${accentColor}18` : 'transparent',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'all 0.2s',
-        flexShrink: 0,
-      }}
-    >
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-        <path
-          d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
-          stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+      <button
+        onClick={onClick}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        title="Expand fullscreen"
+        style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: '3px',
+          border: `1px solid ${hov ? accentColor : 'rgba(200,169,110,0.2)'}`,
+          background: hov ? `${accentColor}18` : 'transparent',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 0.2s',
+          flexShrink: 0,
+        }}
+      >
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path
+            d="M1 3.5V1H3.5M6.5 1H9V3.5M9 6.5V9H6.5M3.5 9H1V6.5"
+            stroke={hov ? accentColor : 'rgba(200,169,110,0.5)'}
+            strokeWidth="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {showHint && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 8px)',
+            right: 0,
+            width: '156px',
+            padding: '8px 10px',
+            borderRadius: '6px',
+            border: `1px solid ${accentColor}55`,
+            background: 'rgba(8,6,4,0.94)',
+            color: '#d8ccb7',
+            fontSize: '11px',
+            lineHeight: 1.5,
+            letterSpacing: '0.04em',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
+            backdropFilter: 'blur(6px)',
+            zIndex: 20,
+          }}
+        >
+          点击这里可进入全屏查看
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -248,6 +282,7 @@ function PanelContent({
 }) {
   const meta = PAGE_META[route];
   if (!meta) return null;
+  const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
 
   const isLevel1 = meta.parent === null;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
@@ -348,7 +383,16 @@ function PanelContent({
             {isLevel1 ? 'PROJECT' : 'CHAPTER'}
           </div>
           {/* Expand / collapse buttons */}
-          {!isMobile && !isExpanded && <ExpandButton onClick={onExpand} accentColor={accentColor} />}
+          {!isMobile && !isExpanded && (
+            <ExpandButton
+              onClick={() => {
+                dismissForever();
+                onExpand();
+              }}
+              accentColor={accentColor}
+              showHint={showFullscreenHint}
+            />
+          )}
           {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
         </div>
       </div>

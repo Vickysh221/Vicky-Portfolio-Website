@@ -30,7 +30,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/dashboard-layout': 1,
   '/jidu-hmi/minimap-camera': 1,
   '/jidu-hmi/3d-map-gesture': 1,
-  '/jidu-hmi/3d-map-driving-component-states': 5,
+  '/jidu-hmi/3d-map-driving-component-states': 3,
 
   '/web-design-develop/overview': 1,
   '/web-design-develop/component-framework': 1,

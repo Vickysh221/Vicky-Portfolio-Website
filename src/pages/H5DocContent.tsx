@@ -15,8 +15,6 @@ import { getSimoAgentParksSlide01Sections } from './H5DocContentSimoAgentParksSl
 import { get3dMapDrivingComponentStatesSlide01Sections } from './H5DocContent3dMapDrivingComponentStatesSlide01';
 import { get3dMapDrivingComponentStatesSlide02Sections } from './H5DocContent3dMapDrivingComponentStatesSlide02';
 import { get3dMapDrivingComponentStatesSlide03Sections } from './H5DocContent3dMapDrivingComponentStatesSlide03';
-import { get3dMapDrivingComponentStatesSlide04Sections } from './H5DocContent3dMapDrivingComponentStatesSlide04';
-import { get3dMapDrivingComponentStatesSlide05Sections } from './H5DocContent3dMapDrivingComponentStatesSlide05';
 import { getPhoenixOverviewSlide01Sections } from './H5DocContentPhoenixOverviewSlide01';
 import { getPhoenixComponentFrameworkSlide01Sections } from './H5DocContentPhoenixComponentFrameworkSlide01';
 import { getPhoenixKeyPagesSlide01Sections } from './H5DocContentPhoenixKeyPagesSlide01';
@@ -72,8 +70,6 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/3d-map-driving-component-states:0': get3dMapDrivingComponentStatesSlide01Sections,
   '/jidu-hmi/3d-map-driving-component-states:1': get3dMapDrivingComponentStatesSlide02Sections,
   '/jidu-hmi/3d-map-driving-component-states:2': get3dMapDrivingComponentStatesSlide03Sections,
-  '/jidu-hmi/3d-map-driving-component-states:3': get3dMapDrivingComponentStatesSlide04Sections,
-  '/jidu-hmi/3d-map-driving-component-states:4': get3dMapDrivingComponentStatesSlide05Sections,
   '/agentic-design-development/simo-agent-system:0': getSimoAgentParksSlide01Sections,
 
   '/web-design-develop/overview:0': getPhoenixOverviewSlide01Sections,
