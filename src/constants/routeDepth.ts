@@ -197,7 +197,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent（敬请期待）", numeral: "I", disabled: true },
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
       { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
       { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
     ],

@@ -30,7 +30,7 @@ const projectData = [
     desc: 'Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.',
     color: '#8b7db5',
     subPages: [
-      { route: '/agentic-design-development/language-diary', label: 'Language Diary Agent（敬请期待）', numeral: 'I', disabled: true },
+      { route: '/agentic-design-development/language-diary', label: 'Language Diary Agent', numeral: 'I' },
       { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'II' },
       { route: '/agentic-design-development/fuli-plus', label: 'Fuli+ Agent', numeral: 'III' },
     ],

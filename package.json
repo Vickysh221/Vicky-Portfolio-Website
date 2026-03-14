@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "sync:language-diary": "node ./scripts/sync-language-diary-prd.mjs",
+    "sync:language-diary:watch": "node ./scripts/watch-language-diary-prd.mjs",
+    "dev": "npm run sync:language-diary && vite",
+    "build": "npm run sync:language-diary && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

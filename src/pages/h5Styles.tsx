@@ -68,3 +68,58 @@ export function ListItem({ accent, children }: { accent: string; children: React
     </li>
   );
 }
+
+/** 小型元信息标签 */
+export function smallMetaStyle(): CSSProperties {
+  return {
+    color: '#d8ccb6',
+    fontSize: '12px',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    marginBottom: '6px',
+  };
+}
+
+/** 轻卡片，用于文档摘要 / note block */
+export function noteCardStyle(): CSSProperties {
+  return {
+    border: '1px solid rgba(200,169,110,0.14)',
+    borderRadius: '6px',
+    background: 'rgba(255,255,255,0.014)',
+    padding: '12px 14px',
+  };
+}
+
+/** 竖向栅格列表容器 */
+export function gridListStyle(gap = 8): CSSProperties {
+  return {
+    margin: 0,
+    padding: 0,
+    listStyle: 'none',
+    display: 'grid',
+    gap,
+  };
+}
+
+/** 文档路径 / 技术路径标签 */
+export function pathLabelStyle(): CSSProperties {
+  return {
+    color: '#8e7d61',
+    fontSize: '12px',
+    lineHeight: 1.6,
+    margin: '0 0 8px',
+    wordBreak: 'break-word',
+    fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+  };
+}
+
+/** 页面导语 kicker */
+export function kickerStyle(accentColor: string): CSSProperties {
+  return {
+    color: accentColor,
+    fontSize: '11px',
+    letterSpacing: '0.22em',
+    textTransform: 'uppercase',
+    margin: '0 0 10px',
+  };
+}

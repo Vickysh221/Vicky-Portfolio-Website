@@ -1,8 +1,6 @@
-import { createPlaceholderSections, type SectionData } from './H5DocContentSlideFactory';
+import type { SectionData } from './H5DocContentSlideFactory';
+import { getLanguageDiarySlideSections } from './languageDiary/getLanguageDiarySlideSections';
 
 export function getPersonalLanguageDiarySlide05Sections(accentColor: string): SectionData[] {
-  return createPlaceholderSections(accentColor, {
-    routeLabel: 'Agentic Design & Development / Language Diary',
-    slideNumber: 5,
-  });
+  return getLanguageDiarySlideSections(4, accentColor);
 }
