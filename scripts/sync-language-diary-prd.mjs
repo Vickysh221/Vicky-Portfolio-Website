@@ -1,8 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const portfolioRoot = '/Users/vickyshou/Documents/trae_projects/My-portfolio';
-const prdRoot = '/Users/vickyshou/language app multiagent/docs/product-prd';
+const scriptDir = path.dirname(new URL(import.meta.url).pathname);
+const portfolioRoot = path.resolve(scriptDir, '..');
+const defaultPrdRoot = path.resolve(portfolioRoot, '../language app multiagent/docs/product-prd');
+const prdRoot = process.env.LANGUAGE_DIARY_PRD_ROOT
+  ? path.resolve(process.env.LANGUAGE_DIARY_PRD_ROOT)
+  : defaultPrdRoot;
 const outFile = path.join(portfolioRoot, 'src/pages/languageDiary/generated/languageDiarySlides.generated.ts');
 
 const slidePlan = [
@@ -97,6 +101,20 @@ const slidePlan = [
     ],
   },
 ];
+
+function ensureSourceDocsAvailable() {
+  if (fs.existsSync(prdRoot)) return true;
+  if (fs.existsSync(outFile)) {
+    console.warn(
+      `[language-diary:sync] source docs not found at ${prdRoot}; keeping existing generated file ${outFile}`,
+    );
+    return false;
+  }
+
+  throw new Error(
+    `[language-diary:sync] source docs not found at ${prdRoot} and no generated fallback exists at ${outFile}`,
+  );
+}
 
 function readDoc(relPath) {
   return fs.readFileSync(path.join(prdRoot, relPath), 'utf8');
@@ -244,6 +262,12 @@ function buildSlide(slide) {
     highlights,
     sections,
   };
+}
+
+const shouldGenerate = ensureSourceDocsAvailable();
+
+if (!shouldGenerate) {
+  process.exit(0);
 }
 
 const generated = slidePlan.map(buildSlide);

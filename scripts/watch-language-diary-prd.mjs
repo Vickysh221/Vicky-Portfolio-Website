@@ -2,7 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 
-const prdRoot = '/Users/vickyshou/language app multiagent/docs/product-prd';
+const scriptDir = path.dirname(new URL(import.meta.url).pathname);
+const portfolioRoot = path.resolve(scriptDir, '..');
+const defaultPrdRoot = path.resolve(portfolioRoot, '../language app multiagent/docs/product-prd');
+const prdRoot = process.env.LANGUAGE_DIARY_PRD_ROOT
+  ? path.resolve(process.env.LANGUAGE_DIARY_PRD_ROOT)
+  : defaultPrdRoot;
 
 let timer = null;
 let running = false;
@@ -16,7 +21,7 @@ function runSync() {
   running = true;
   console.log('[language-diary:watch] syncing...');
   const child = spawn('node', ['./scripts/sync-language-diary-prd.mjs'], {
-    cwd: '/Users/vickyshou/Documents/trae_projects/My-portfolio',
+    cwd: portfolioRoot,
     stdio: 'inherit',
   });
   child.on('exit', () => {
@@ -47,5 +52,9 @@ function watchDir(dir) {
 }
 
 console.log('[language-diary:watch] watching', prdRoot);
+if (!fs.existsSync(prdRoot)) {
+  console.error('[language-diary:watch] source docs directory not found:', prdRoot);
+  process.exit(1);
+}
 runSync();
 watchDir(prdRoot);

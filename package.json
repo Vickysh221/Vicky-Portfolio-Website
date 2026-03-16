@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "sync:language-diary": "node ./scripts/sync-language-diary-prd.mjs",
     "sync:language-diary:watch": "node ./scripts/watch-language-diary-prd.mjs",
