@@ -1,8 +1,9 @@
 import { type CSSProperties } from 'react';
 import { type SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
-import { ImageWithStatus } from '../components/MediaWithStatus';
+import { ImageWithStatus, VideoWithStatus } from '../components/MediaWithStatus';
 import fuliSlide02Img01 from '../images/fuli/slide02-img01.png';
+import fuliSlide02Vid01 from '../images/fuli/slide02-vid01.mp4';
 
 function eyebrowStyle(): CSSProperties {
   return {
@@ -55,8 +56,26 @@ function listStyle(): CSSProperties {
 export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionData[] {
   return [
     {
-      id: 'background-problem',
+      id: 'demo-video',
       numeral: '01',
+      title: '地毯生成 demo 演示',
+      blocks: [
+        <>
+          <div style={mediaBlockStyle()}>
+            <VideoWithStatus
+              src={fuliSlide02Vid01}
+              style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }}
+              controls
+              playsInline
+              title="Fuli+ demo 演示"
+            />
+          </div>
+        </>,
+      ],
+    },
+    {
+      id: 'background-problem',
+      numeral: '02',
       title: '背景与问题定义',
       blocks: [
         <>
@@ -99,7 +118,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-based-ai-interface',
-      numeral: '02',
+      numeral: '03',
       title: 'slot-based AI创意生成界面探索',
       blocks: [
         <>
@@ -115,7 +134,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'product-goals',
-      numeral: '03',
+      numeral: '04',
       title: '产品目标',
       blocks: [
         <>
@@ -147,7 +166,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'system-overview',
-      numeral: '04',
+      numeral: '05',
       title: '系统机制总览',
       blocks: [
         <>
@@ -167,7 +186,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-system',
-      numeral: '05',
+      numeral: '06',
       title: '槽位系统：把模糊审美变成结构化设计语言',
       blocks: [
         <>
@@ -191,7 +210,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'waterfall-exploration',
-      numeral: '06',
+      numeral: '07',
       title: '瀑布流探索：不是给答案，而是制造可比较的假设',
       blocks: [
         <>
@@ -222,7 +241,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'feedback-loop',
-      numeral: '07',
+      numeral: '08',
       title: '用户反馈闭环：让系统知道问题到底出在哪',
       blocks: [
         <>
@@ -246,7 +265,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-state-machine',
-      numeral: '08',
+      numeral: '09',
       title: '槽位状态机：从探索走向收敛',
       blocks: [
         <>

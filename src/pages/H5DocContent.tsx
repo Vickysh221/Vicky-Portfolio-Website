@@ -21,7 +21,6 @@ import { getPhoenixKeyPagesSlide01Sections } from './H5DocContentPhoenixKeyPages
 import { getPhoenixSemanticSystemSlide01Sections } from './H5DocContentPhoenixSemanticSystemSlide01';
 import { getPhoenixFuliPlusSlide01Sections } from './H5DocContentPhoenixFuliPlusSlide01';
 import { getPhoenixFuliPlusSlide02Sections } from './H5DocContentPhoenixFuliPlusSlide02';
-import { getPhoenixFuliPlusSlide03Sections } from './H5DocContentPhoenixFuliPlusSlide03';
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
@@ -78,10 +77,8 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
   '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
-  '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
   '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
-  '/agentic-design-development/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
