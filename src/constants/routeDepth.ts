@@ -135,17 +135,15 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/web-design-develop": {
-    title: "网页设计和开发（敬请期待）",
+    title: "AI coding 网页设计和开发",
     subtitle: "Web Design Develop",
     year: "2025",
     desc: "Architected a generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback mechanisms, multi-tenant asset isolation.",
     parent: null,
     color: "#7a9e8e",
     subPages: [
-      { route: "/web-design-develop/overview", label: "Platform Overview", numeral: "I" },
-      { route: "/web-design-develop/component-framework", label: "Component Framework", numeral: "II" },
-      { route: "/web-design-develop/key-pages", label: "Key Pages", numeral: "III" },
-      { route: "/web-design-develop/semantic-system", label: "Semantic System", numeral: "IV" },
+      { route: "/web-design-develop/key-pages", label: "关键页面", numeral: "I" },
+      { route: "/web-design-develop/component-framework", label: "组件框架", numeral: "II" },
     ],
   },
   "/web-design-develop/overview": {
@@ -157,7 +155,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#7a9e8e",
   },
   "/web-design-develop/component-framework": {
-    title: "Component Framework",
+    title: "组件框架",
     subtitle: "Web Design Develop · Design System",
     year: "2025",
     desc: "Three.js + Vue3 + TypeScript component architecture for 3D rendering — shared with engineering team to unify the product's design and development language.",
@@ -165,7 +163,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#7a9e8e",
   },
   "/web-design-develop/key-pages": {
-    title: "Key Pages",
+    title: "关键页面",
     subtitle: "Web Design Develop · Core Flows",
     year: "2025",
     desc: "2D/3D hybrid interaction flows — state-machine-driven generation steps that are controllable, interruptible, and revertible with full history.",
@@ -197,9 +195,9 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "I" },
-      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
-      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "I" },
+      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "II" },
+      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "III" },
     ],
   },
   "/agentic-design-development/language-diary": {

@@ -1,8 +1,50 @@
 import PageTemplate from './PageTemplate';
 
-const projectData = [
+interface ProjectCardData {
+  id: string;
+  route: string;
+  title: string;
+  subtitle: string;
+  year: string;
+  tags: string[];
+  desc: string;
+  color: string;
+  subPages: { route: string; label: string; numeral: string }[];
+  disabled?: boolean;
+}
+
+const projectData: ProjectCardData[] = [
   {
     id: '01',
+    route: '/agentic-design-development',
+    title: '智能体设计与开发',
+    subtitle: 'AI Agent Product Design · Prototyping',
+    year: '2024–2025',
+    tags: ['Multi-Agent', 'Agent UX', 'Prototype'],
+    desc: 'Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.',
+    color: '#8b7db5',
+    subPages: [
+      { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'I' },
+      { route: '/agentic-design-development/fuli-plus', label: 'Fuli+ Agent', numeral: 'II' },
+      { route: '/agentic-design-development/language-diary', label: 'Language Diary Agent', numeral: 'III' },
+    ],
+  },
+  {
+    id: '02',
+    route: '/web-design-develop',
+    title: 'AI coding 网页设计和开发',
+    subtitle: 'Web Design Develop',
+    year: '2025',
+    tags: ['AI Pipeline', 'SaaS', 'Three.js', 'Vue3'],
+    desc: 'Generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback, multi-tenant asset isolation, and Fuli+ carpet agent.',
+    color: '#7a9e8e',
+    subPages: [
+      { route: '/web-design-develop/key-pages', label: '关键页面', numeral: 'I' },
+      { route: '/web-design-develop/component-framework', label: '组件框架', numeral: 'II' },
+    ],
+  },
+  {
+    id: '03',
     route: '/jidu-hmi',
     title: 'JIDU HMI 辅助驾驶体验设计',
     subtitle: 'JIDU Automotive · ADAS HMI Design',
@@ -19,38 +61,6 @@ const projectData = [
       { route: '/jidu-hmi/3d-map-gesture', label: '3D地图手势系统', numeral: 'VI' },
       { route: '/jidu-hmi/3d-map-driving-component-states', label: '3D地图和驾驶组件状态设计', numeral: 'VII' },
     ],
-  },
-  {
-    id: '02',
-    route: '/agentic-design-development',
-    title: '智能体设计与开发',
-    subtitle: 'AI Agent Product Design · Prototyping',
-    year: '2024–2025',
-    tags: ['Multi-Agent', 'Agent UX', 'Prototype'],
-    desc: 'Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.',
-    color: '#8b7db5',
-    subPages: [
-      { route: '/agentic-design-development/language-diary', label: 'Language Diary Agent', numeral: 'I' },
-      { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'II' },
-      { route: '/agentic-design-development/fuli-plus', label: 'Fuli+ Agent', numeral: 'III' },
-    ],
-  },
-  {
-    id: '03',
-    route: '/web-design-develop',
-    title: '网页设计和开发（敬请期待）',
-    subtitle: 'Web Design Develop',
-    year: '2025',
-    tags: ['AI Pipeline', 'SaaS', 'Three.js', 'Vue3'],
-    desc: 'Generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback, multi-tenant asset isolation, and Fuli+ carpet agent.',
-    color: '#7a9e8e',
-    subPages: [
-      { route: '/web-design-develop/overview', label: 'Platform Overview', numeral: 'I' },
-      { route: '/web-design-develop/component-framework', label: 'Component Framework', numeral: 'II' },
-      { route: '/web-design-develop/key-pages', label: 'Key Pages', numeral: 'III' },
-      { route: '/web-design-develop/semantic-system', label: 'Semantic System', numeral: 'IV' },
-    ],
-    disabled: true,
   },
 ];
 

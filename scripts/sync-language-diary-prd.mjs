@@ -13,14 +13,8 @@ const slidePlan = [
     intro:
       'This chapter introduces Language Diary as a ritual-based language companion: not a quiz-first tool, but a system that turns everyday expression into reusable learning assets.',
     sections: [
-      {
-        heading: 'Product Definition',
-        docs: ['01-product-overview.md'],
-      },
-      {
-        heading: 'Core Cognitive Framing',
-        docs: ['COGNITIVE_ARCHITECTURE.md'],
-      },
+      { heading: 'Product Definition', docs: ['01-product-overview.md'] },
+      { heading: 'Core Cognitive Framing', docs: ['COGNITIVE_ARCHITECTURE.md'] },
     ],
   },
   {
@@ -30,14 +24,8 @@ const slidePlan = [
     intro:
       'The system is organized as a stage-based architecture. Each ritual moment has its own behavioral goal, memory surface, and orchestration logic.',
     sections: [
-      {
-        heading: 'System Layers',
-        docs: ['02-system-architecture.md'],
-      },
-      {
-        heading: 'Coordination and Runtime',
-        docs: ['04-agent-coordination.md', '06-api-and-runtime-surfaces.md'],
-      },
+      { heading: 'System Layers', docs: ['02-system-architecture.md'] },
+      { heading: 'Coordination and Runtime', docs: ['04-agent-coordination.md', '06-api-and-runtime-surfaces.md'] },
     ],
   },
   {
@@ -104,14 +92,8 @@ const slidePlan = [
     intro:
       'This final chapter focuses on prompt governance, evaluation logic, and the path from prototype structure to a more mature product system.',
     sections: [
-      {
-        heading: 'Prompt and Quality Control',
-        docs: ['05-prompt-guardrails-and-generation.md'],
-      },
-      {
-        heading: 'Evaluation and Roadmap',
-        docs: ['07-evaluation-risks-and-roadmap.md'],
-      },
+      { heading: 'Prompt and Quality Control', docs: ['05-prompt-guardrails-and-generation.md'] },
+      { heading: 'Evaluation and Roadmap', docs: ['07-evaluation-risks-and-roadmap.md'] },
     ],
   },
 ];
@@ -123,7 +105,7 @@ function readDoc(relPath) {
 function normalizeText(text) {
   return text
     .replace(/\r/g, '')
-    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/```[\s\S]*?```/g, (m) => m)
     .replace(/`([^`]+)`/g, '$1')
     .replace(/\*\*([^*]+)\*\*/g, '$1')
     .replace(/\*([^*]+)\*/g, '$1')
@@ -144,12 +126,27 @@ function extractParagraphs(md) {
     .filter(Boolean)
     .filter((p) => !/^#+\s/.test(p))
     .filter((p) => !/^[-*]\s/.test(p))
-    .filter((p) => !/^\d+\.\s/.test(p));
+    .filter((p) => !/^\d+\.\s/.test(p))
+    .filter((p) => !/^```/.test(p));
 }
 
-function extractSummary(md, maxLength = 220) {
-  const paragraph = extractParagraphs(md)[0] || '';
-  return paragraph.length > maxLength ? `${paragraph.slice(0, maxLength - 1)}…` : paragraph;
+function trimLen(text, maxLength = 320) {
+  const t = text.replace(/\n+/g, ' ').trim();
+  return t.length > maxLength ? `${t.slice(0, maxLength - 1)}…` : t;
+}
+
+function extractSummary(md, maxLength = 260, relPath = '') {
+  const paragraphs = extractParagraphs(md);
+
+  const preferredIndex = (() => {
+    if (relPath === '01-product-overview.md') return Math.min(1, paragraphs.length - 1);
+    if (relPath === 'COGNITIVE_ARCHITECTURE.md') return Math.min(1, paragraphs.length - 1);
+    if (relPath === '04-agent-coordination.md') return Math.min(1, paragraphs.length - 1);
+    return 0;
+  })();
+
+  const paragraph = paragraphs[preferredIndex] || paragraphs[0] || '';
+  return trimLen(paragraph, maxLength);
 }
 
 function isGoodBullet(text) {
@@ -164,22 +161,55 @@ function extractBullets(md, limit = 4) {
   for (const rawLine of md.split('\n')) {
     const line = rawLine.trim();
     let bullet = '';
-    if (/^[-*]\s+/.test(line)) {
-      bullet = normalizeText(line.replace(/^[-*]\s+/, ''));
-    } else if (/^\d+\.\s+/.test(line)) {
-      bullet = normalizeText(line.replace(/^\d+\.\s+/, ''));
-    }
+    if (/^[-*]\s+/.test(line)) bullet = normalizeText(line.replace(/^[-*]\s+/, ''));
+    else if (/^\d+\.\s+/.test(line)) bullet = normalizeText(line.replace(/^\d+\.\s+/, ''));
     if (!isGoodBullet(bullet)) continue;
     if (!bullets.includes(bullet)) bullets.push(bullet);
     if (bullets.length >= limit) break;
   }
   if (bullets.length >= 2) return bullets;
+  return extractParagraphs(md).map((p) => trimLen(p, 140)).slice(0, limit);
+}
 
-  const fallbackParagraphs = extractParagraphs(md)
-    .map((p) => p.replace(/[:：]$/g, '').trim())
-    .filter((p) => p.length >= 18)
-    .slice(0, limit);
-  return fallbackParagraphs;
+function extractSectionBody(md, heading) {
+  const lines = md.split('\n');
+  const startIndex = lines.findIndex((line) => {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith('## ')) return false;
+    return trimmed.includes(heading);
+  });
+  if (startIndex === -1) return '';
+
+  const collected = [];
+  for (let i = startIndex + 1; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (line.startsWith('## ')) break;
+    collected.push(line);
+  }
+  return collected.join('\n').trim();
+}
+
+function extractPromptSnippet(md) {
+  const body = extractSectionBody(md, '核心 Prompt 示意');
+  if (!body) return null;
+  const code = body.match(/```(?:text)?\n([\s\S]*?)```/);
+  if (code) return code[1].trim();
+  const paras = extractParagraphs(body).slice(0, 2).join('\n\n');
+  return paras || null;
+}
+
+function extractTechnicalPath(md) {
+  const body = extractSectionBody(md, '技术实现路径');
+  if (!body) return null;
+  const bullets = extractBullets(body, 5);
+  return bullets.length ? bullets : null;
+}
+
+function extractExcerpts(md, count = 2) {
+  return extractParagraphs(md)
+    .filter((p) => p.length >= 40)
+    .slice(0, count)
+    .map((p) => trimLen(p, 360));
 }
 
 function buildDoc(relPath) {
@@ -187,8 +217,11 @@ function buildDoc(relPath) {
   return {
     path: relPath,
     label: extractTitle(md),
-    summary: extractSummary(md),
+    summary: extractSummary(md, 260, relPath),
     bullets: extractBullets(md, relPath.startsWith('agents/') ? 4 : 4),
+    excerpts: extractExcerpts(md, relPath.startsWith('agents/') ? 1 : 2),
+    promptSnippet: relPath.startsWith('agents/') ? extractPromptSnippet(md) : null,
+    technicalPath: relPath.startsWith('agents/') ? extractTechnicalPath(md) : null,
   };
 }
 
@@ -198,10 +231,10 @@ function buildSlide(slide) {
     docs: section.docs.map(buildDoc),
   }));
 
-  const highlights = sections
-    .flatMap((section) => section.docs)
-    .slice(0, 3)
-    .map((doc) => ({ label: doc.label, text: doc.summary }));
+  const highlights = sections.flatMap((section) => section.docs).slice(0, 3).map((doc) => ({
+    label: doc.label,
+    text: doc.summary,
+  }));
 
   return {
     numeral: slide.numeral,
@@ -229,6 +262,9 @@ export interface SyncedDocumentRow {
   path: string;
   summary: string;
   bullets: string[];
+  excerpts: string[];
+  promptSnippet: string | null;
+  technicalPath: string[] | null;
 }
 
 export interface SyncedSlideSection {

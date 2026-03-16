@@ -12,6 +12,9 @@ export interface SyncedDocumentRow {
   path: string;
   summary: string;
   bullets: string[];
+  excerpts: string[];
+  promptSnippet: string | null;
+  technicalPath: string[] | null;
 }
 
 export interface SyncedSlideSection {
@@ -37,11 +40,11 @@ export const languageDiarySlides: SyncedSlideData[] = [
     "highlights": [
       {
         "label": "Product Overview",
-        "text": "language app multiagent 是一个围绕语言学习 ritual（仪式化节律）构建的多智能体系统。它不把语言学习理解为“做题、背词、纠错”的直线流程，而是把它设计成一个贯穿日常生活的认知循环："
+        "text": "它本质上是一个："
       },
       {
         "label": "Cognitive Architecture",
-        "text": "language app multiagent 如果只从“功能模块”角度看，会被理解成："
+        "text": "但从真实运行机制看，它更像一套被拆分成多个器官的人工认知系统。"
       }
     ],
     "sections": [
@@ -51,13 +54,19 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "01-product-overview.md",
             "label": "Product Overview",
-            "summary": "language app multiagent 是一个围绕语言学习 ritual（仪式化节律）构建的多智能体系统。它不把语言学习理解为“做题、背词、纠错”的直线流程，而是把它设计成一个贯穿日常生活的认知循环：",
+            "summary": "它本质上是一个：",
             "bullets": [
               "用户在真实生活中表达",
               "系统接住表达，而不是立刻打断纠错",
               "系统把表达转化成可复用表达、知识卡、记忆锚点、日记与测验",
               "系统在未来合适的时间再温柔地把这些内容唤醒"
-            ]
+            ],
+            "excerpts": [
+              "这不是一个把聊天、背词和做题拼在一起的语言学习工具，而是一套围绕日常 ritual（仪式化节律）组织的多智能体学习系统。它不把语言学习理解为“做题、背词、纠错”的直线流程，而是把它设计成一个贯穿日常生活的认知循环：",
+              "一个基于日常 ritual 的多智能体语言陪伴系统，把用户真实生活中的表达，转化为可记忆、可复用、可回顾的长期学习资产。"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       },
@@ -67,13 +76,19 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "COGNITIVE_ARCHITECTURE.md",
             "label": "Cognitive Architecture",
-            "summary": "language app multiagent 如果只从“功能模块”角度看，会被理解成：",
+            "summary": "但从真实运行机制看，它更像一套被拆分成多个器官的人工认知系统。",
             "bullets": [
               "一个聊天 agent",
               "一个知识卡 agent",
               "一个 quiz agent",
               "一个 diary agent"
-            ]
+            ],
+            "excerpts": [
+              "``text 真实生活表达   ↓ 捕获与承接   ↓ 短时上下文维持   ↓ 表达升级   ↓ 知识蒸馏   ↓ 事件 / 事实记忆编码   ↓ 夜间整合   ↓ 晨间唤醒   ↓ 再次表达与复用 `",
+              "| 认知器官/功能类比 | 系统模块 | 说明 | |---|---|---| | 感官输入层 | DaytimeCaptureAgent | 接住用户当下的语言输入 | | 工作记忆 | SessionStore, MemoryManager | 暂存与组织当前会话语境 | | 海马体 / 事件编码 | EventAnchorService | 把表达压缩为可回忆的事件锚点 | | 事实记忆形成 | AutoMemoryCaptureService | 抽取 preference / goal / reflection 等个人事实 | | 表达重构系统 | AcquisitionAgent, LadderingEngine | 把已有表达重组为更自然模式 | | 语义压缩层 | KnowledgeAgent…"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       }
@@ -91,11 +106,11 @@ export const languageDiarySlides: SyncedSlideData[] = [
       },
       {
         "label": "Agent Coordination",
-        "text": "多 Agent 产品真正难的地方从来不是“有几个 agent”，而是："
+        "text": "这个项目的价值不只在 agent 数量，而在于它已经形成了一个相对清晰的协调机制。"
       },
       {
         "label": "API and Runtime Surfaces",
-        "text": "这是在线系统的运行主入口。它负责：\n- 启动 Express\n- 初始化 agent / services / repos\n- 注册 API 路由\n- 提供静态资源\n- 启动 backup 和 daily reset 任务"
+        "text": "这是在线系统的运行主入口。它负责： - 启动 Express - 初始化 agent / services / repos - 注册 API 路由 - 提供静态资源 - 启动 backup 和 daily reset 任务"
       }
     ],
     "sections": [
@@ -111,7 +126,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "Orchestrator",
               "多个在线 Agent",
               "事件锚点与事实捕获"
-            ]
+            ],
+            "excerpts": [
+              "Orchestrator 是系统的中央调度器。它根据当前 ritual stage 做主路径判断：",
+              "``text User Input   ↓ POST /api/message   ↓ SessionStore.appendMessage(user)   ↓ Orchestrator.handleUserMessage()   ↓ DaytimeCaptureAgent.generateResponse()   ↓ (optional) AcquisitionAgent.generateAcquisitionCard()   ↓ (optional) KnowledgeAgent.generateInsight()   ↓ SessionStore.appendMessage(agent)   ↓ AutoMemoryCaptureService.captureFromMessage()   ↓ Even…"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       },
@@ -121,24 +142,36 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "04-agent-coordination.md",
             "label": "Agent Coordination",
-            "summary": "多 Agent 产品真正难的地方从来不是“有几个 agent”，而是：",
+            "summary": "这个项目的价值不只在 agent 数量，而在于它已经形成了一个相对清晰的协调机制。",
             "bullets": [
               "谁在当前阶段拥有决策权",
               "谁只提供辅助产物",
               "optimizeOnly -> Acquisition + Knowledge",
               "night wrap-up -> Diary + Quiz"
-            ]
+            ],
+            "excerpts": [
+              "在多 Agent 产品里，真正困难的不是列出多少个 agent，而是把它们组织成一个稳定、可解释、可维护的行为系统：",
+              "这个项目的价值不只在 agent 数量，而在于它已经形成了一个相对清晰的协调机制。"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "06-api-and-runtime-surfaces.md",
             "label": "API and Runtime Surfaces",
-            "summary": "这是在线系统的运行主入口。它负责：\n- 启动 Express\n- 初始化 agent / services / repos\n- 注册 API 路由\n- 提供静态资源\n- 启动 backup 和 daily reset 任务",
+            "summary": "这是在线系统的运行主入口。它负责： - 启动 Express - 初始化 agent / services / repos - 注册 API 路由 - 提供静态资源 - 启动 backup 和 daily reset 任务",
             "bullets": [
               "启动 Express",
               "初始化 agent / services / repos",
               "注册 API 路由",
               "启动 backup 和 daily reset 任务"
-            ]
+            ],
+            "excerpts": [
+              "这是在线系统的运行主入口。它负责： - 启动 Express - 初始化 agent / services / repos - 注册 API 路由 - 提供静态资源 - 启动 backup 和 daily reset 任务",
+              "输入包括： - content - language / targetLanguage - optimizeOnly - selectedMode - personaId - optimizationKind"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       }
@@ -152,15 +185,15 @@ export const languageDiarySlides: SyncedSlideData[] = [
     "highlights": [
       {
         "label": "Orchestrator",
-        "text": "名称：Orchestrator  \n角色：中央编排器 / Ritual 执行控制器  \n核心目标：根据当前 ritual stage，把请求送到合适的 agent，并在必要时拼装多 agent 产物  \n输入：user, message, recentSRSItems, messageHistory, optimizeOnly, selectedMode, personaId, optimizationKind  \n输出：respon…"
+        "text": "名称：Orchestrator   角色：中央编排器 / Ritual 执行控制器   核心目标：根据当前 ritual stage，把请求送到合适的 agent，并在必要时拼装多 agent 产物   输入：user, message, recentSRSItems, messageHistory, optimizeOnly, selectedMode, personaId, optimizationKind   输出：response, acquisitionCard?, knowledgeInsight?,…"
       },
       {
         "label": "DaytimeCaptureAgent",
-        "text": "名称：DaytimeCaptureAgent  \n角色：白天主陪伴 Agent / 主对话入口人格  \n核心目标：让用户在真实生活语境中放心表达、持续表达、自然表达  \n触发条件：daytime-capture stage 下的主消息入口  \n输出：自然回复 + 可选 expression upgrade 元数据"
+        "text": "名称：DaytimeCaptureAgent   角色：白天主陪伴 Agent / 主对话入口人格   核心目标：让用户在真实生活语境中放心表达、持续表达、自然表达   触发条件：daytime-capture stage 下的主消息入口   输出：自然回复 + 可选 expression upgrade 元数据"
       },
       {
         "label": "AcquisitionAgent",
-        "text": "名称：AcquisitionAgent  \n角色：表达升级 Agent  \n核心目标：把用户原句重写成更自然、可偷走、可迁移的表达  \n触发条件：optimizeOnly 场景 / daytime 优化链路  \n输出：upgraded + stealablePhrases"
+        "text": "名称：AcquisitionAgent   角色：表达升级 Agent   核心目标：把用户原句重写成更自然、可偷走、可迁移的表达   触发条件：optimizeOnly 场景 / daytime 优化链路   输出：upgraded + stealablePhrases"
       }
     ],
     "sections": [
@@ -170,45 +203,89 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "agents/orchestrator.md",
             "label": "Orchestrator",
-            "summary": "名称：Orchestrator  \n角色：中央编排器 / Ritual 执行控制器  \n核心目标：根据当前 ritual stage，把请求送到合适的 agent，并在必要时拼装多 agent 产物  \n输入：user, message, recentSRSItems, messageHistory, optimizeOnly, selectedMode, personaId, optimizationKind  \n输出：respon…",
+            "summary": "名称：Orchestrator   角色：中央编排器 / Ritual 执行控制器   核心目标：根据当前 ritual stage，把请求送到合适的 agent，并在必要时拼装多 agent 产物   输入：user, message, recentSRSItems, messageHistory, optimizeOnly, selectedMode, personaId, optimizationKind   输出：response, acquisitionCard?, knowledgeInsight?,…",
             "bullets": [
               "当前阶段是谁主导",
               "什么时候只是回复一条消息",
               "什么时候要顺带生成 acquisitionCard",
               "什么时候要顺带生成 knowledgeInsight"
+            ],
+            "excerpts": [
+              "名称：Orchestrator   角色：中央编排器 / Ritual 执行控制器   核心目标：根据当前 ritual stage，把请求送到合适的 agent，并在必要时拼装多 agent 产物   输入：user, message, recentSRSItems, messageHistory, optimizeOnly, selectedMode, personaId, optimizationKind   输出：response, acquisitionCard?, knowledgeInsight?, dailySummary?"
+            ],
+            "promptSnippet": "因此它没有一个单独的核心 prompt，而是负责选择：\n- DaytimeCapture 的 prompt 链\n- KnowledgeAgent 的 mode prompt\n- AcquisitionAgent 的 rewrite prompt\n- DiaryAgent 的 diary prompt",
+            "technicalPath": [
+              "src/online/orchestrator/Orchestrator.ts",
+              "在 constructor 中初始化各核心 agent：",
+              "MorningRecallAgent",
+              "DaytimeCaptureAgent",
+              "NightWrapupAgent"
             ]
           },
           {
             "path": "agents/daytime-capture-agent.md",
             "label": "DaytimeCaptureAgent",
-            "summary": "名称：DaytimeCaptureAgent  \n角色：白天主陪伴 Agent / 主对话入口人格  \n核心目标：让用户在真实生活语境中放心表达、持续表达、自然表达  \n触发条件：daytime-capture stage 下的主消息入口  \n输出：自然回复 + 可选 expression upgrade 元数据",
+            "summary": "名称：DaytimeCaptureAgent   角色：白天主陪伴 Agent / 主对话入口人格   核心目标：让用户在真实生活语境中放心表达、持续表达、自然表达   触发条件：daytime-capture stage 下的主消息入口   输出：自然回复 + 可选 expression upgrade 元数据",
             "bullets": [
               "interview 感",
               "teacher mode",
               "therapist mode",
               "必须主要回应最新用户消息"
+            ],
+            "excerpts": [
+              "名称：DaytimeCaptureAgent   角色：白天主陪伴 Agent / 主对话入口人格   核心目标：让用户在真实生活语境中放心表达、持续表达、自然表达   触发条件：daytime-capture stage 下的主消息入口   输出：自然回复 + 可选 expression upgrade 元数据"
+            ],
+            "promptSnippet": "You are a diary companion. Reply in <targetLanguage>.\n\nHard rules:\n- Must primarily answer the latest user message\n- Do not introduce a new topic unless user explicitly shifts\n- Keep it natural and brief: 1–2 sentences total\n- At most one question mark\n- Must show active listening by referencing one concrete detail\n- Questions are optional; if asked, they must be open-ended and non-leading\n- No lecturing, no summaries, no advice unless asked\n- Do not talk about yourself\n- Use tentative language for emotions",
+            "technicalPath": [
+              "src/online/agents/DaytimeCaptureAgent.ts",
+              "generateResponse() 是主入口。",
+              "如果 optimizeOnly=true：",
+              "返回简短 acknowledgment",
+              "调用 runExpressionUpgrade() 生成表达升级信息"
             ]
           },
           {
             "path": "agents/acquisition-agent.md",
             "label": "AcquisitionAgent",
-            "summary": "名称：AcquisitionAgent  \n角色：表达升级 Agent  \n核心目标：把用户原句重写成更自然、可偷走、可迁移的表达  \n触发条件：optimizeOnly 场景 / daytime 优化链路  \n输出：upgraded + stealablePhrases",
+            "summary": "名称：AcquisitionAgent   角色：表达升级 Agent   核心目标：把用户原句重写成更自然、可偷走、可迁移的表达   触发条件：optimizeOnly 场景 / daytime 优化链路   输出：upgraded + stealablePhrases",
             "bullets": [
               "不能沿用原句结构",
               "不能只是加个引导词",
               "必须在结构上重组",
               "daytime optimize flow 使用"
+            ],
+            "excerpts": [
+              "名称：AcquisitionAgent   角色：表达升级 Agent   核心目标：把用户原句重写成更自然、可偷走、可迁移的表达   触发条件：optimizeOnly 场景 / daytime 优化链路   输出：upgraded + stealablePhrases"
+            ],
+            "promptSnippet": "You are a <language> language learning expert.\n\nTask:\nTransform the learner's original sentence into a structurally improved,\nmore idiomatic expression.\n\nRules:\n- The upgraded version must NOT keep the same sentence structure\n- Do NOT simply add an introductory phrase and repeat the original\n- Reformulate the core idea using more natural patterns\n- If the original phrasing is unnatural, fix it completely\n- Return ONLY valid JSON:\n{\n  \"upgraded\": \"...\",\n  \"stealablePhrases\": [\"...\", \"...\"]\n}",
+            "technicalPath": [
+              "src/online/agents/AcquisitionAgent.ts",
+              "通过 generateAcquisitionCard(originalText, language) 进入主流程。",
+              "构造一个严格 JSON 输出约束的 prompt：",
+              "禁止保留原句结构",
+              "生成 upgraded + stealablePhrases"
             ]
           },
           {
             "path": "agents/knowledge-agent.md",
             "label": "KnowledgeAgent",
-            "summary": "名称：KnowledgeAgent  \n角色：知识蒸馏 Agent  \n核心目标：把真实表达压缩成结构化学习资产  \n触发条件：optimizeOnly、night wrap-up、knowledge regenerate 等  \n输出：K1 / K2 / K3 / K4 知识卡",
+            "summary": "名称：KnowledgeAgent   角色：知识蒸馏 Agent   核心目标：把真实表达压缩成结构化学习资产   触发条件：optimizeOnly、night wrap-up、knowledge regenerate 等   输出：K1 / K2 / K3 / K4 知识卡",
             "bullets": [
               "build prompt",
               "generate",
               "parse JSON",
               "normalize"
+            ],
+            "excerpts": [
+              "名称：KnowledgeAgent   角色：知识蒸馏 Agent   核心目标：把真实表达压缩成结构化学习资产   触发条件：optimizeOnly、night wrap-up、knowledge regenerate 等   输出：K1 / K2 / K3 / K4 知识卡"
+            ],
+            "promptSnippet": "Input:\n- latest user message\n- user target language\n- user level\n- selected mode (K1 / K2 / K3 / K4) or auto\n- optional expression upgrade\n\nPrompt goal:\nGenerate ONE structured knowledge card in valid JSON.\n\nRequirements:\n- Must match the selected mode contract\n- Must produce upgraded language content\n- Must contain points / modePayload usable by downstream systems\n- No markdown, no free-form essay",
+            "technicalPath": [
+              "src/online/agents/KnowledgeAgent.ts",
+              "generateInsight() 接收 user、recentMessages、selectedMode、modeOptions。",
+              "提取最新用户消息作为主分析对象。",
+              "根据是否指定 mode：",
+              "指定 mode -> 使用对应 mode plugin prompt"
             ]
           }
         ]
@@ -219,56 +296,111 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "agents/morning-recall-agent.md",
             "label": "MorningRecallAgent",
-            "summary": "名称：MorningRecallAgent  \n角色：晨间轻 recall Agent  \n核心目标：在 3 分钟内轻量唤醒已学内容  \n触发条件：morning-recall stage  \n输出：朋友式 recall session message",
+            "summary": "名称：MorningRecallAgent   角色：晨间轻 recall Agent   核心目标：在 3 分钟内轻量唤醒已学内容   触发条件：morning-recall stage   输出：朋友式 recall session message",
             "bullets": [
               "默认 2 题，最多 3 题",
               "成功率目标 90%",
               "像朋友，不像老师",
               "不新增学习内容，只重组旧内容"
+            ],
+            "excerpts": [
+              "名称：MorningRecallAgent   角色：晨间轻 recall Agent   核心目标：在 3 分钟内轻量唤醒已学内容   触发条件：morning-recall stage   输出：朋友式 recall session message"
+            ],
+            "promptSnippet": "Morning recall rules:\n- Finish within ~3 minutes\n- Default 2 tasks, max 3\n- High success rate target\n- Friend-like tone\n- New scene + old expression\n- No new learning content",
+            "technicalPath": [
+              "src/online/agents/MorningRecallAgent.ts",
+              "generateResponse(user, recentSRSItems) 进入主流程。",
+              "先生成 morning opening。",
+              "如果没有 SRS items，则返回默认晨间问题。",
+              "如果有 SRS items："
             ]
           },
           {
             "path": "agents/morning-wake-agent.md",
             "label": "MorningWakeAgent",
-            "summary": "名称：MorningWakeAgent  \n角色：晨间个性化记忆唤醒 Agent  \n核心目标：基于事件锚点、词汇和知识资产，生成一个自然、轻柔、个性化的晨间提问  \n触发条件：POST /api/morning-recall/generate  \n输出：greeting + question + meta",
+            "summary": "名称：MorningWakeAgent   角色：晨间个性化记忆唤醒 Agent   核心目标：基于事件锚点、词汇和知识资产，生成一个自然、轻柔、个性化的晨间提问   触发条件：POST /api/morning-recall/generate   输出：greeting + question + meta",
             "bullets": [
               "从过去一周里挑一个最值得被重新想起的点",
               "用用户语言中的词或知识作为钩子",
               "生成一句像朋友一样的晨间唤醒问题",
               "来自 Word Planet"
+            ],
+            "excerpts": [
+              "名称：MorningWakeAgent   角色：晨间个性化记忆唤醒 Agent   核心目标：基于事件锚点、词汇和知识资产，生成一个自然、轻柔、个性化的晨间提问   触发条件：POST /api/morning-recall/generate   输出：greeting + question + meta"
+            ],
+            "promptSnippet": "You are the Morning Wake Agent for a language learning app.\nAsk exactly ONE short, natural question in the user target language.\n\nThe question should:\n- gently wake up memory\n- connect one event anchor\n- optionally weave in one saved word or one grammar point if natural\n- not explain grammar\n- not mention metadata, tags, or IDs\n- keep answer scope to 1–3 sentences",
+            "technicalPath": [
+              "src/online/agents/MorningWakeAgent.ts",
+              "从 eventAnchorRepo 读取最近 anchors，并优先选择真实 event anchor。",
+              "如果缺少 anchor，则使用：",
+              "buildSyntheticAnchorFromWord()",
+              "buildSyntheticAnchorFromKnowledge()"
             ]
           },
           {
             "path": "agents/night-wrapup-agent.md",
             "label": "NightWrapupAgent",
-            "summary": "名称：NightWrapupAgent  \n角色：夜间闭环 Agent  \n核心目标：帮助用户收束一天的表达与学习，并进入温和结束状态  \n触发条件：night-wrapup stage / /api/night-wrapup/session  \n输出：highlights, quiz items, grammar challenge, closing",
+            "summary": "名称：NightWrapupAgent   角色：夜间闭环 Agent   核心目标：帮助用户收束一天的表达与学习，并进入温和结束状态   触发条件：night-wrapup stage / /api/night-wrapup/session   输出：highlights, quiz items, grammar challenge, closing",
             "bullets": [
               "今天说过的话不是白说的",
               "今天有可带走的语言成果",
               "今天的学习有结束感",
               "used naturally"
+            ],
+            "excerpts": [
+              "名称：NightWrapupAgent   角色：夜间闭环 Agent   核心目标：帮助用户收束一天的表达与学习，并进入温和结束状态   触发条件：night-wrapup stage / /api/night-wrapup/session   输出：highlights, quiz items, grammar challenge, closing"
+            ],
+            "promptSnippet": "You are a language quiz generator.\nBased on the user's recent learning history, generate 3–4 quiz items.\n\nInput:\n- target language\n- recent knowledge cards\n- word planet entries\n\nRequirements:\n- test naturalness, gap-fill, or situational use\n- return ONLY valid JSON",
+            "technicalPath": [
+              "src/online/agents/NightWrapupAgent.ts",
+              "配套 route：src/online/routes/nightWrapupRoutes.ts",
+              "route 层读取：",
+              "recent knowledge cards",
+              "某天的 daytime session history"
             ]
           },
           {
             "path": "agents/diary-agent.md",
             "label": "DiaryAgent",
-            "summary": "名称：DiaryAgent  \n角色：日记沉淀 Agent  \n核心目标：把用户与 companion 的对话线程，转写为一篇自然的第一人称日记  \n触发条件：night wrap-up 中的 diary 生成流程 / orchestrator.generateDiary()  \n输出：diary text + debugInfo",
+            "summary": "名称：DiaryAgent   角色：日记沉淀 Agent   核心目标：把用户与 companion 的对话线程，转写为一篇自然的第一人称日记   触发条件：night wrap-up 中的 diary 生成流程 / orchestrator.generateDiary()   输出：diary text + debugInfo",
             "bullets": [
               "recall 唤醒",
               "只能写用户明确说过的内容",
               "companion 的问题只提供上下文，不应成为 diary 内容",
               "不允许脑补事件、人物、情绪"
+            ],
+            "excerpts": [
+              "名称：DiaryAgent   角色：日记沉淀 Agent   核心目标：把用户与 companion 的对话线程，转写为一篇自然的第一人称日记   触发条件：night wrap-up 中的 diary 生成流程 / orchestrator.generateDiary()   输出：diary text + debugInfo"
+            ],
+            "promptSnippet": "You are a diary writing assistant in a language learning system.\n\nYour only source of truth is the conversation thread.\nRewrite the user's statements into a natural first-person diary entry\nin <targetLanguage>.\n\nHard rules:\n- Write ONLY from what the user explicitly stated\n- Do NOT invent people, places, events, or feelings\n- Companion questions provide context, not diary content\n- Write in first-person\n- Sound like a private diary, not a report\n- Do not exceed the target length",
+            "technicalPath": [
+              "src/online/agents/DiaryAgent.ts",
+              "generateDiary(user, messages) 进入主流程。",
+              "先执行 deduplicateUserMessages()，去除近重复用户消息。",
+              "通过 buildConversationThread() 把 user / agent 组织成 Q&A thread。",
+              "根据 user.diaryTemplate 生成 system prompt。"
             ]
           },
           {
             "path": "agents/quiz-agent.md",
             "label": "QuizAgent",
-            "summary": "名称：QuizAgent  \n角色：测验生成 Agent  \n核心目标：把知识资产转成可练、可测、可解释的练习会话  \n触发条件：night wrap-up、知识卡 quiz、上下文化 quiz session  \n输出：quiz session / answer explanation / fallback quiz",
+            "summary": "名称：QuizAgent   角色：测验生成 Agent   核心目标：把知识资产转成可练、可测、可解释的练习会话   触发条件：night wrap-up、知识卡 quiz、上下文化 quiz session   输出：quiz session / answer explanation / fallback quiz",
             "bullets": [
               "slotFill",
               "为什么这个表达在当前 scene 更合适",
               "为什么另一个答案不如它自然",
               "帮用户辨认表达差异"
+            ],
+            "excerpts": [
+              "名称：QuizAgent   角色：测验生成 Agent   核心目标：把知识资产转成可练、可测、可解释的练习会话   触发条件：night wrap-up、知识卡 quiz、上下文化 quiz session   输出：quiz session / answer explanation / fallback quiz"
+            ],
+            "promptSnippet": "You are a language quiz generator.\nBased on the user's recent learning history, generate 3–4 quiz items.\n\nInput:\n- target language\n- recent knowledge cards\n- word planet entries\n\nRequirements:\n- generate quiz items for naturalness, gap-fill, or situational use\n- return ONLY valid JSON",
+            "technicalPath": [
+              "src/online/agents/QuizAgent.ts",
+              "基于知识卡时，调用 generateKnowledgeCardQuiz()：",
+              "读取 knowledge card mode",
+              "根据 K1 / K2 / K3 / K4 走不同 builder 逻辑",
+              "输出 choose / judge / slotFill 等 session item"
             ]
           }
         ]
@@ -283,7 +415,7 @@ export const languageDiarySlides: SyncedSlideData[] = [
     "highlights": [
       {
         "label": "Memory Architecture",
-        "text": "这个系统表面上看像一个多 Agent 语言学习产品，但真正的产品壁垒在 memory architecture。"
+        "text": "如果把这个产品理解成“一个会说话的语言学习助手”，就会低估它真正的系统深度。对这套系统来说，真正构成产品壁垒的不是聊天界面，而是 memory architecture。"
       },
       {
         "label": "SessionStore",
@@ -301,13 +433,19 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "03-memory-architecture.md",
             "label": "Memory Architecture",
-            "summary": "这个系统表面上看像一个多 Agent 语言学习产品，但真正的产品壁垒在 memory architecture。",
+            "summary": "如果把这个产品理解成“一个会说话的语言学习助手”，就会低估它真正的系统深度。对这套系统来说，真正构成产品壁垒的不是聊天界面，而是 memory architecture。",
             "bullets": [
               "Agent 回一句",
               "能被未来再次调用的事件记忆",
               "能被结构化保存的知识资产",
               "能被重新激活的表达模式"
-            ]
+            ],
+            "excerpts": [
+              "如果把这个产品理解成“一个会说话的语言学习助手”，就会低估它真正的系统深度。对这套系统来说，真正构成产品壁垒的不是聊天界面，而是 memory architecture。",
+              "因为系统并不满足于： - 用户说一句 - Agent 回一句 - 对话结束即消失"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "memory/session-store.md",
@@ -318,7 +456,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "当前对话没有连续性",
               "不同 ritual 阶段会互相污染上下文",
               "morning-recall"
-            ]
+            ],
+            "excerpts": [
+              "这让 morning / daytime / night 三个阶段拥有明确的会话边界。",
+              "``ts store[userId][${dateKey}::${stage}] = Message[] `"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "memory/memory-manager.md",
@@ -329,7 +473,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "memoryStrength",
               "daily reset",
               "将消息加入上下文"
-            ]
+            ],
+            "excerpts": [
+              "MemoryManager 是一个轻量的 session-level working memory 模块。",
+              "它维护： - 当前 session messages - summary - memoryStrength - daily reset"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "memory/event-anchor-service.md",
@@ -340,7 +490,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "captureFromDiary",
               "eventType",
               "timeScope"
-            ]
+            ],
+            "excerpts": [
+              "它把用户消息或 diary 中的生活片段，转成结构化的 EventAnchor，供未来 recall、linking 和 morning wake 使用。",
+              "EventAnchor 的价值在于，它把生活片段变成： - 有标签 - 可打分 - 可链接 - 可回忆"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "memory/auto-memory-capture-service.md",
@@ -351,7 +507,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "它属于哪种记忆类型",
               "它的重要性和可检索性如何",
               "evidence"
-            ]
+            ],
+            "excerpts": [
+              "它从用户消息中自动判断： - 这是不是值得记住的东西 - 它属于哪种记忆类型 - 它的重要性和可检索性如何",
+              "MemoryFact 让系统开始拥有： - 关于用户偏好 - 关于用户目标 - 关于用户持续性想法"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       },
@@ -367,7 +529,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "knowledge cards",
               "grammar points",
               "topWords"
-            ]
+            ],
+            "excerpts": [
+              "它的职责不是生成内容，而是把一个 EventAnchor 与其他学习资产建立联系： - word entries - knowledge cards - grammar points",
+              "AnchorLinkService 让系统具备： - 从事件跳到词汇 - 从事件跳到知识卡 - 从事件带出语法点"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "services/guardrails.md",
@@ -378,7 +546,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "multi-focus",
               "lexicon 违规",
               "stretch quota 超限"
-            ]
+            ],
+            "excerpts": [
+              "Prompt 定义理想行为，Guardrails 检查实际输出是否偏离，并在必要时修复。",
+              "Guardrails 的价值在于： - 不让 Daytime agent 漂成老师或心理咨询师 - 不让输出突然发明自己的生活经验 - 不让输出在细节上破坏信任感 - 不让一个好 prompt 因偶发输出失真而破坏整体产品调性"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "services/laddering-engine.md",
@@ -388,7 +562,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "不必每次显式纠错",
               "可以在自然交互中逐步带用户上台阶",
               "升级的是 pattern，而不仅是单词"
-            ]
+            ],
+            "excerpts": [
+              "它负责识别用户当前表达的意图，并基于语言与级别，给出更高阶或更自然的表达模板替换。",
+              "它让用户的表达不是停在当前层级，而是在不打断体验的前提下，逐步往更自然的语言模式爬升。"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "profiles/language-profile-manager.md",
@@ -399,7 +579,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "confidence",
               "各项语言技能分数",
               "generation policy"
-            ]
+            ],
+            "excerpts": [
+              "它负责维护： - 用户 CEFR level - confidence - 各项语言技能分数 - generation policy - domain 配置 - laddering 偏好 - language observations",
+              "虽然 profile 驱动尚未完全贯穿所有主链路，但它已经提供了非常关键的产品方向："
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           },
           {
             "path": "profiles/generation-policy-injector.md",
@@ -410,7 +596,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "stretchQuota",
               "register",
               "cefrLevel"
-            ]
+            ],
+            "excerpts": [
+              "这让系统不再只是“语言正确地回答”，而是： - 用多长回答 - 用什么 register 回答 - 允许多高级的词 - 在当前 domain 是否可以稍微拉高难度",
+              "这是从“智能聊天”走向“有 pedagogical control 的学习系统”的关键一步。"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       }
@@ -424,7 +616,7 @@ export const languageDiarySlides: SyncedSlideData[] = [
     "highlights": [
       {
         "label": "Prompt, Guardrails, and Generation Architecture",
-        "text": "这个项目的产品稳定性，并不只靠单个 system prompt，而是靠一整套“生成治理系统”。"
+        "text": "在这个项目里，生成质量并不是“prompt 写得够不够好”这么简单的问题。真正决定产品稳定性的，是一整套面向行为控制的生成治理系统。"
       },
       {
         "label": "Evaluation, Risks, and Roadmap",
@@ -438,13 +630,19 @@ export const languageDiarySlides: SyncedSlideData[] = [
           {
             "path": "05-prompt-guardrails-and-generation.md",
             "label": "Prompt, Guardrails, and Generation Architecture",
-            "summary": "这个项目的产品稳定性，并不只靠单个 system prompt，而是靠一整套“生成治理系统”。",
+            "summary": "在这个项目里，生成质量并不是“prompt 写得够不够好”这么简单的问题。真正决定产品稳定性的，是一整套面向行为控制的生成治理系统。",
             "bullets": [
               "prompt 分层",
               "generation policy",
               "laddering",
               "memory gating"
-            ]
+            ],
+            "excerpts": [
+              "在这个项目里，生成质量并不是“prompt 写得够不够好”这么简单的问题。真正决定产品稳定性的，是一整套面向行为控制的生成治理系统。",
+              "它定义： - 角色是谁 - 语气应该怎样 - 能不能问问题 - 问什么样的问题 - 多长 - 不能进入什么模式"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       },
@@ -460,7 +658,13 @@ export const languageDiarySlides: SyncedSlideData[] = [
               "agent 分工是否稳定",
               "记忆是否真的起作用",
               "知识资产是否真的被再利用"
-            ]
+            ],
+            "excerpts": [
+              "这个项目真正应该评估的是： - 阶段体验是否顺滑 - agent 分工是否稳定 - 记忆是否真的起作用 - 知识资产是否真的被再利用 - fallback 是否足够稳",
+              "风险：未来系统变复杂后，可能出现： - 召回不稳定 - 重复调用相似记忆 - 重要记忆被遗漏"
+            ],
+            "promptSnippet": null,
+            "technicalPath": null
           }
         ]
       }

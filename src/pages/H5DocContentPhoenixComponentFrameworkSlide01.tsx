@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, codeBlockStyle } from './h5Styles';
+import { ImageWithStatus } from '../components/MediaWithStatus';
+import phoenixFrameworkOverview from '../images/phoenix/slide03-img01.png';
 
 function captionStyle(): CSSProperties {
   return {
@@ -65,15 +67,39 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
     {
       id: 'document-goal',
       numeral: '01',
-      title: 'Phoenix 设计系统 · 组件状态规范',
+      title: '组件框架',
       blocks: [
         <>
           <div style={{ marginBottom: '26px', textAlign: 'left' }}>
             <div style={{ color: '#c8a96e', fontSize: '9px', letterSpacing: '0.2em', marginBottom: '8px' }}>
               H5 DOCUMENT SPEC · /web-design-develop/component-framework
             </div>
+            <div
+              style={{
+                border: `1px solid ${accentColor}22`,
+                borderRadius: '8px',
+                padding: '10px',
+                marginBottom: '16px',
+                background: 'rgba(255,255,255,0.012)',
+              }}
+            >
+              <ImageWithStatus
+                src={phoenixFrameworkOverview}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '5px',
+                  border: `1px dashed ${accentColor}55`,
+                  background: 'rgba(255,255,255,0.01)',
+                }}
+                alt="Phoenix 组件框架与页面结构总览"
+              />
+            </div>
             <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
               本文件是 Phoenix 项目的组件状态系统规范。它同时服务 Figma 设计师、前端工程师和 AI Coding Agent（Codex），目标不是仅描述 UI，而是形成一套可推导、可生成、可实现的组件系统。
+            </p>
+            <p style={{ ...paragraphStyle(), color: '#8f7d61', fontSize: '14px' }}>
+              上图对应我整理的网页产品信息架构与组件分层长图，用来统一业务页面、弹窗、表单、列表和 AI 生成工作台之间的组件语言。
             </p>
           </div>
 
