@@ -27,8 +27,6 @@ import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalL
 import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalLanguageDiarySlide02';
 import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
 import { getPersonalLanguageDiarySlide04Sections } from './H5DocContentPersonalLanguageDiarySlide04';
-import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
-import { getPersonalLanguageDiarySlide06Sections } from './H5DocContentPersonalLanguageDiarySlide06';
 import { getPersonalLanguageDiarySlide07Sections } from './H5DocContentPersonalLanguageDiarySlide07';
 import type { SectionData } from './H5DocContentSlideFactory';
 
@@ -88,9 +86,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/language-diary:1': getPersonalLanguageDiarySlide02Sections,
   '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,
   '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04Sections,
-  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05Sections,
-  '/agentic-design-development/language-diary:5': getPersonalLanguageDiarySlide06Sections,
-  '/agentic-design-development/language-diary:6': getPersonalLanguageDiarySlide07Sections,
+  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide07Sections,
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {

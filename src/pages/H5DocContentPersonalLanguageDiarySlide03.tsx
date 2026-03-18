@@ -1,11 +1,17 @@
 import type { CSSProperties } from 'react';
 import type { SectionData } from './H5DocContentSlideFactory';
-import { gridListStyle, infoTagStyle, kickerStyle, mediaBlockStyle, paragraphStyle, smallMetaStyle, subtitleStyle, ListItem } from './h5Styles';
+import { codeBlockStyle, gridListStyle, infoTagStyle, kickerStyle, mediaBlockStyle, paragraphStyle, smallMetaStyle, subtitleStyle, ListItem } from './h5Styles';
 
 function listStyle(): CSSProperties {
   return {
     ...gridListStyle(8),
     marginTop: '10px',
+  };
+}
+
+function promptBoxStyle(): CSSProperties {
+  return {
+    marginTop: '12px',
   };
 }
 
@@ -40,6 +46,21 @@ export function getPersonalLanguageDiarySlide03Sections(accentColor: string): Se
               <ListItem accent={accentColor}>引用具体细节，维持真实表达的连续性</ListItem>
               <ListItem accent={accentColor}>在低干预陪伴中识别值得升级的表达机会</ListItem>
             </ul>
+            <div style={promptBoxStyle()}>
+              <div style={infoTagStyle(accentColor, 'prompt')}>Prompt Skeleton</div>
+              <pre style={codeBlockStyle()}>{`You are a diary companion. Reply in <targetLanguage>.
+
+Hard rules:
+- Must primarily answer the latest user message
+- Do not introduce a new topic unless user explicitly shifts
+- Keep it natural and brief: 1–2 sentences total
+- At most one question mark
+- Must show active listening by referencing one concrete detail
+- Questions are optional; if asked, they must be open-ended and non-leading
+- No lecturing, no summaries, no advice unless asked
+- Do not talk about yourself
+- Use tentative language for emotions`}</pre>
+            </div>
           </div>
         </>,
         <>
@@ -63,6 +84,10 @@ export function getPersonalLanguageDiarySlide03Sections(accentColor: string): Se
               <ListItem accent={accentColor}>完成语义澄清、表达比较与句子升级</ListItem>
               <ListItem accent={accentColor}>把临时说法转成未来还能继续使用的语言形式</ListItem>
             </ul>
+            <p style={{ ...paragraphStyle(), marginTop: '12px' }}>
+              当前同步文档中没有单独拆出 EveningReviewAgent 的 prompt skeleton，夜间这条链路更多是通过下游的
+              NightWrapupAgent 与 DiaryAgent 合同来体现其行为边界。
+            </p>
           </div>
         </>,
         <>
@@ -83,6 +108,36 @@ export function getPersonalLanguageDiarySlide03Sections(accentColor: string): Se
               <ListItem accent={accentColor}>DiaryAgent 严格基于用户原话改写为第一人称日记</ListItem>
               <ListItem accent={accentColor}>系统避免凭空发明情绪或事实，保持私人记录的可信度</ListItem>
             </ul>
+            <div style={promptBoxStyle()}>
+              <div style={infoTagStyle(accentColor, 'prompt')}>NightWrapup Prompt Skeleton</div>
+              <pre style={codeBlockStyle()}>{`You are a language quiz generator.
+Based on the user's recent learning history, generate 3–4 quiz items.
+
+Input:
+- target language
+- recent knowledge cards
+- word planet entries
+
+Requirements:
+- test naturalness, gap-fill, or situational use
+- return ONLY valid JSON`}</pre>
+            </div>
+            <div style={promptBoxStyle()}>
+              <div style={infoTagStyle(accentColor, 'prompt')}>Diary Prompt Skeleton</div>
+              <pre style={codeBlockStyle()}>{`You are a diary writing assistant in a language learning system.
+
+Your only source of truth is the conversation thread.
+Rewrite the user's statements into a natural first-person diary entry
+in <targetLanguage>.
+
+Hard rules:
+- Write ONLY from what the user explicitly stated
+- Do NOT invent people, places, events, or feelings
+- Companion questions provide context, not diary content
+- Write in first-person
+- Sound like a private diary, not a report
+- Do not exceed the target length`}</pre>
+            </div>
           </div>
         </>,
         <>
@@ -96,6 +151,19 @@ export function getPersonalLanguageDiarySlide03Sections(accentColor: string): Se
             <p style={paragraphStyle()}>
               通过这种机制，语言和记忆之间形成闭环：白天生成，夜晚整理，早晨唤醒，随后再次进入现实对话。
             </p>
+            <div style={promptBoxStyle()}>
+              <div style={infoTagStyle(accentColor, 'prompt')}>MorningWake Prompt Skeleton</div>
+              <pre style={codeBlockStyle()}>{`You are the Morning Wake Agent for a language learning app.
+Ask exactly ONE short, natural question in the user target language.
+
+The question should:
+- gently wake up memory
+- connect one event anchor
+- optionally weave in one saved word or one grammar point if natural
+- not explain grammar
+- not mention metadata, tags, or IDs
+- keep answer scope to 1–3 sentences`}</pre>
+            </div>
           </div>
         </>,
         <>

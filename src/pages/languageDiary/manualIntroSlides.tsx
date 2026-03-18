@@ -26,9 +26,16 @@ function mediaPairStyle(): CSSProperties {
   };
 }
 
-function mediaPairItemStyle(): CSSProperties {
+function captionListStyle(): CSSProperties {
   return {
-    flex: '1 1 280px',
+    ...gridListStyle(6),
+    marginTop: '10px',
+  };
+}
+
+function videoStripItemStyle(): CSSProperties {
+  return {
+    flex: '1 1 220px',
     minWidth: 0,
   };
 }
@@ -41,6 +48,16 @@ function journeyMediaStyle(accentColor: string): CSSProperties {
     borderRadius: '5px',
     border: `1px dashed ${accentColor}55`,
     background: 'rgba(255,255,255,0.01)',
+  };
+}
+
+function mediaCaptionStyle(): CSSProperties {
+  return {
+    color: '#8e7d61',
+    fontSize: '13px',
+    lineHeight: 1.7,
+    marginTop: '8px',
+    textAlign: 'center',
   };
 }
 
@@ -112,9 +129,31 @@ function renderJourneyPlaceholderSlide(accentColor: string): ReactNode[] {
       <p style={paragraphStyle()}>
         在这个作品里，我会用一个叫 Mira 的小女孩来讲它。
       </p>
+      <div style={{ marginTop: '12px' }}>
+        <ImageWithStatus src={diarySlide02Img01} style={journeyMediaStyle(accentColor)} alt="Mira 的一天" />
+      </div>
+      <ul style={captionListStyle()}>
+        <ListItem accent={accentColor}>Mira 在清晨回顾昨天野餐的记忆。</ListItem>
+        <ListItem accent={accentColor}>Mira 白天边逛超市边表达自己所见所思。</ListItem>
+        <ListItem accent={accentColor}>Mira 晚间回顾自己的一天并学习升级的表达。</ListItem>
+      </ul>
     </div>,
     <div key="journey-morning" style={mediaBlockStyle()}>
       <div style={smallMetaStyle()}>晨间唤醒</div>
+      <div style={mediaPairStyle()}>
+        <div style={videoStripItemStyle()}>
+          <VideoWithStatus src={diarySlide02Vid01} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 晨间唤醒视频" />
+          <p style={mediaCaptionStyle()}>晨间唤醒界面</p>
+        </div>
+        <div style={videoStripItemStyle()}>
+          <VideoWithStatus src={diarySlide02Vid02} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 白天表达沉淀视频" />
+          <p style={mediaCaptionStyle()}>日间表达界面</p>
+        </div>
+        <div style={videoStripItemStyle()}>
+          <VideoWithStatus src={diarySlide02Vid03} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 夜间记忆收回视频" />
+          <p style={mediaCaptionStyle()}>晚间回顾界面</p>
+        </div>
+      </div>
       <p style={paragraphStyle()}>
         清晨，Mira 醒来，她伸手摸到床边的手机，脑子里还是散的。她并不想一大早就看到那种
         “你昨天学的第 6 个单词还记得吗” 的问题。
@@ -127,14 +166,6 @@ function renderJourneyPlaceholderSlide(accentColor: string): ReactNode[] {
         一天不是从输入知识开始，而是从一个熟悉的位置开始开口。有时是一个场景，有时是一个偏好，
         有时是一个方向，有时是一个未完成的念头。
       </p>
-      <div style={mediaPairStyle()}>
-        <div style={mediaPairItemStyle()}>
-          <VideoWithStatus src={diarySlide02Vid01} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 晨间唤醒视频" />
-        </div>
-        <div style={mediaPairItemStyle()}>
-          <ImageWithStatus src={diarySlide02Img01} style={journeyMediaStyle(accentColor)} alt="Mira 晨间唤醒插画占位" />
-        </div>
-      </div>
     </div>,
     <div key="journey-daytime" style={mediaBlockStyle()}>
       <div style={smallMetaStyle()}>白天陪伴</div>
@@ -167,14 +198,6 @@ function renderJourneyPlaceholderSlide(accentColor: string): ReactNode[] {
         早餐前的匆忙、和朋友闹别扭后的沉默、某个开心得想立刻告诉别人的时刻。
         语言从一开始就和记忆缠在一起。
       </p>
-      <div style={mediaPairStyle()}>
-        <div style={mediaPairItemStyle()}>
-          <VideoWithStatus src={diarySlide02Vid02} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 白天表达沉淀视频" />
-        </div>
-        <div style={mediaPairItemStyle()}>
-          <ImageWithStatus src={diarySlide02Img01} style={journeyMediaStyle(accentColor)} alt="Mira 白天陪伴插画占位" />
-        </div>
-      </div>
     </div>,
     <div key="journey-night" style={mediaBlockStyle()}>
       <div style={smallMetaStyle()}>晚间回顾</div>
@@ -209,14 +232,6 @@ function renderJourneyPlaceholderSlide(accentColor: string): ReactNode[] {
         在这个 app 的设想里，语言学习从来不是脱离主体的。一个人怎样说话，往往也暴露了她怎样面对世界。
         到了晚上，系统不仅帮助 Mira 记住“怎么说”，也帮助她记住“原来我今天是这样在感受、这样在组织自己”。
       </p>
-      <div style={mediaPairStyle()}>
-        <div style={mediaPairItemStyle()}>
-          <VideoWithStatus src={diarySlide02Vid03} style={journeyMediaStyle(accentColor)} controls playsInline title="Mira 夜间记忆收回视频" />
-        </div>
-        <div style={mediaPairItemStyle()}>
-          <ImageWithStatus src={diarySlide02Img01} style={journeyMediaStyle(accentColor)} alt="Mira 夜间回顾插画占位" />
-        </div>
-      </div>
     </div>,
     <div key="journey-core">
       <div style={dividerStyle()} />

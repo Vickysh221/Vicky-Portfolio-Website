@@ -3,13 +3,13 @@ import { createLanguageDiarySections } from './languageDiarySlideFactory';
 import { languageDiarySlides } from './generated/languageDiarySlides.generated';
 import { getManualLanguageDiaryIntroSlides } from './manualIntroSlides';
 
-export function getLanguageDiarySlideSections(slideIndex: number, accentColor: string): SectionData[] {
+export function getLanguageDiarySlideSections(slideIndex: number, accentColor: string, sourceSlideIndex = slideIndex): SectionData[] {
   const manualSlides = getManualLanguageDiaryIntroSlides(accentColor);
-  if (slideIndex < manualSlides.length) {
-    return [manualSlides[slideIndex]];
+  if (sourceSlideIndex < manualSlides.length) {
+    return [manualSlides[sourceSlideIndex]];
   }
 
-  const generatedSlide = languageDiarySlides[slideIndex - manualSlides.length];
+  const generatedSlide = languageDiarySlides[sourceSlideIndex - manualSlides.length];
   if (!generatedSlide) return [];
   return createLanguageDiarySections(accentColor, generatedSlide, {
     displayNumeral: String(slideIndex + 1).padStart(2, '0'),
