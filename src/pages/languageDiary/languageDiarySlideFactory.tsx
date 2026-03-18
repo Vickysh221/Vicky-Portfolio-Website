@@ -235,11 +235,16 @@ function getSlideBlocks(accentColor: string, slide: SyncedSlideData): ReactNode[
   }
 }
 
-export function createLanguageDiarySections(accentColor: string, slide: SyncedSlideData): SectionData[] {
+export function createLanguageDiarySections(
+  accentColor: string,
+  slide: SyncedSlideData,
+  options?: { displayNumeral?: string },
+): SectionData[] {
+  const numeral = options?.displayNumeral ?? slide.numeral;
   return [
     {
-      id: `language-diary-slide-${slide.numeral}`,
-      numeral: slide.numeral,
+      id: `language-diary-slide-${numeral}`,
+      numeral,
       title: slide.title,
       blocks: getSlideBlocks(accentColor, slide),
     },
