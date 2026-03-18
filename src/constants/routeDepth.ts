@@ -195,13 +195,13 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "I" },
-      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "II" },
-      { route: "/agentic-design-development/language-diary", label: "Language Diary Agent", numeral: "III" },
+      { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "I" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
+      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
     ],
   },
   "/agentic-design-development/language-diary": {
-    title: "Language Diary Agent",
+    title: "A Ritual of Expression - 语言学习陪伴多智能体系统",
     subtitle: "Agentic Design & Development · AI Agent",
     year: "2025",
     desc: "Low-friction AI companion for language acquisition through journaling. Multi-agent architecture: intent parsing, knowledge intervention, long-term memory.",
