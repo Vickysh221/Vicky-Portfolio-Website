@@ -13,9 +13,9 @@ import {
 } from '../h5Styles';
 import { ImageWithStatus, VideoWithStatus } from '../../components/MediaWithStatus';
 import diarySlide02Img01 from '../../images/diary-agent/slide02-img01.png';
-import diarySlide02Vid01 from '../../images/diary-agent/slide02-vid01.mov';
-import diarySlide02Vid02 from '../../images/diary-agent/slide02-vid02.mov';
-import diarySlide02Vid03 from '../../images/diary-agent/slide02-vid03.mov';
+import diarySlide02Vid01 from '../../images/diary-agent/slide02-vid01-540p.mp4';
+import diarySlide02Vid02 from '../../images/diary-agent/slide02-vid02-540p.mp4';
+import diarySlide02Vid03 from '../../images/diary-agent/slide02-vid03-540p.mp4';
 
 function mediaPairStyle(): CSSProperties {
   return {
