@@ -1,10 +1,10 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
-import gestureSlide01Image01 from '../images/gesture/slide01-img01.png';
-import gestureSlide01Image02 from '../images/gesture/slide01-img02.png';
 import gestureSlide01Image03 from '../images/gesture/slide01-img03.png';
 import gestureSlide01Image04 from '../images/gesture/slide01-img04.png';
+import gestureSlide01Image05 from '../images/gesture/slide01-img05.png';
+import gestureSlide01Image06 from '../images/gesture/slide01-img06.png';
 
 export function get3dMapGestureSlide01Sections(accentColor: string): SectionData[] {
   return [
@@ -21,7 +21,7 @@ export function get3dMapGestureSlide01Sections(accentColor: string): SectionData
           <h2 style={h2Style(accentColor)}>双指滑动与地图空间映射设计</h2>
           <div style={mediaBlockStyle()}>
             <ImageWithStatus
-              src={gestureSlide01Image01}
+              src={gestureSlide01Image05}
               style={{
                 width: '100%',
                 height: 'auto',
@@ -36,7 +36,7 @@ export function get3dMapGestureSlide01Sections(accentColor: string): SectionData
           <h2 style={h2Style(accentColor)}>单指点击滑动手势与响应机制</h2>
           <div style={mediaBlockStyle()}>
             <ImageWithStatus
-              src={gestureSlide01Image02}
+              src={gestureSlide01Image06}
               style={{
                 width: '100%',
                 height: 'auto',
