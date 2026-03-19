@@ -1,7 +1,7 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 import { ImageWithStatus, VideoWithStatus } from '../components/MediaWithStatus';
-import avpSlide01Image01 from '../images/avp/slide01-img01.png';
+import avpSlide01Image01 from '../images/avp/slide01-img01.jpg';
 import avpSlide01Image02 from '../images/avp/slide01-img02.png';
 import avpSlide01Image03 from '../images/avp/slide01-img03.png';
 import avpSlide01Image04 from '../images/avp/slide01-img04.png';
