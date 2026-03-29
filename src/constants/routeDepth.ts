@@ -40,7 +40,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
 
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/simo-agent-system': 1,
-  '/agentic-design-development/fuli-plus': 2,
+  '/agentic-design-development/fuli-plus': 7,
 
   '/academic-gamification/simbiocity': 1,
   '/academic-gamification/fortnite-demo': 1,
