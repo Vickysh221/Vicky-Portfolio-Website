@@ -21,6 +21,11 @@ import { getPhoenixKeyPagesSlide01Sections } from './H5DocContentPhoenixKeyPages
 import { getPhoenixSemanticSystemSlide01Sections } from './H5DocContentPhoenixSemanticSystemSlide01';
 import { getPhoenixFuliPlusSlide01Sections } from './H5DocContentPhoenixFuliPlusSlide01';
 import { getPhoenixFuliPlusSlide02Sections } from './H5DocContentPhoenixFuliPlusSlide02';
+import { getPhoenixFuliPlusSlide03Sections } from './H5DocContentPhoenixFuliPlusSlide03';
+import { getPhoenixFuliPlusSlide04Sections } from './H5DocContentPhoenixFuliPlusSlide04';
+import { getPhoenixFuliPlusSlide05Sections } from './H5DocContentPhoenixFuliPlusSlide05';
+import { getPhoenixFuliPlusSlide06Sections } from './H5DocContentPhoenixFuliPlusSlide06';
+import { getPhoenixFuliPlusSlide07Sections } from './H5DocContentPhoenixFuliPlusSlide07';
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
@@ -77,8 +82,19 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
   '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
+  '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
+  '/web-design-develop/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
+  '/web-design-develop/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
+  '/web-design-develop/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
+  '/web-design-develop/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
+
   '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
+  '/agentic-design-development/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
+  '/agentic-design-development/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
+  '/agentic-design-development/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
+  '/agentic-design-development/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
+  '/agentic-design-development/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
@@ -113,10 +129,7 @@ export default function H5DocContent({ route, accentColor, slideIndex = 0, isMob
 
   const sections = getter(accentColor);
   return (
-    <div
-      style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }}
-      className={isMobile ? 'h5-mobile-view' : undefined}
-    >
+    <div style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }} className={isMobile ? 'h5-mobile-view' : undefined}>
       {sections.map((section) => (
         <H5Section key={section.id} section={section} accentColor={accentColor} />
       ))}
