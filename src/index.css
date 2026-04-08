@@ -127,19 +127,52 @@
   animation: carouselPanelEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Thin scrollbar for detail panels */
+/* Project scrollbar */
+.portfolio-scroll,
+.panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 169, 110, 0.9) rgba(200, 169, 110, 0.02);
+}
+
+.portfolio-scroll::-webkit-scrollbar,
 .panel-scroll::-webkit-scrollbar {
   width: 2px;
+  height: 2px;
 }
+
+.portfolio-scroll::-webkit-scrollbar-track,
 .panel-scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(200, 169, 110, 0.015);
+  border-left: 1px solid rgba(200, 169, 110, 0.12);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(200, 169, 110, 0.03);
+  opacity: 0;
+  transition: opacity 0.18s ease;
 }
+
+.portfolio-scroll::-webkit-scrollbar-thumb,
 .panel-scroll::-webkit-scrollbar-thumb {
-  background: rgba(200, 169, 110, 0.18);
-  border-radius: 1px;
+  background: radial-gradient(circle at 35% 35%, rgba(244, 225, 176, 1), rgba(200, 169, 110, 0.98) 68%, rgba(146, 117, 69, 0.95) 100%);
+  border: none;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 5px rgba(210, 181, 120, 0.08),
+    0 0 18px rgba(210, 181, 120, 0.18);
+  min-height: 10px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
 }
+
+.portfolio-scroll::-webkit-scrollbar-thumb:hover,
 .panel-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 169, 110, 0.35);
+  background: radial-gradient(circle at 35% 35%, rgba(255, 236, 188, 1), rgba(214, 183, 118, 1) 68%, rgba(158, 126, 73, 0.96) 100%);
+}
+
+.portfolio-scroll:hover::-webkit-scrollbar-track,
+.panel-scroll:hover::-webkit-scrollbar-track,
+.portfolio-scroll:hover::-webkit-scrollbar-thumb,
+.panel-scroll:hover::-webkit-scrollbar-thumb {
+  opacity: 0.7;
 }
 
 /* ── Expand / fullscreen overlay ── */

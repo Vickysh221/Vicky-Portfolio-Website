@@ -14,6 +14,17 @@ const cornerStyles: React.CSSProperties[] = [
   { bottom: '-1px', right: '-1px', borderBottom: '8px solid #c8a96e', borderRight: '8px solid #c8a96e' },
 ];
 
+const expandedViewportPadding = 'clamp(24px, 4vw, 56px)';
+const expandedContentFrameStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  margin: '0 auto',
+};
+const readingColumnStyle: React.CSSProperties = {
+  width: 'min(860px, 100%)',
+  margin: '0 auto',
+};
+
 interface Props {
   route: string;
   isMobile?: boolean;
@@ -288,9 +299,16 @@ function PanelContent({
 
   const isLevel1 = meta.parent === null;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
+  const isReadingMode = isExpanded && !isMobile;
   const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
   const titleBlock = (
-    <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
+    <div
+      style={{
+        ...(isReadingMode ? readingColumnStyle : null),
+        padding: isReadingMode ? '0 0 28px' : isMobile ? '16px 20px 14px' : '24px 28px 20px',
+        flexShrink: 0,
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
         <div
           style={{
@@ -305,7 +323,7 @@ function PanelContent({
         <div
           style={{
             color: '#f0e8d8',
-            fontSize: isMobile ? '20px' : '24px',
+            fontSize: isReadingMode ? 'clamp(30px, 3vw, 44px)' : isMobile ? '20px' : '24px',
             fontStyle: 'italic',
             lineHeight: 1.15,
             letterSpacing: '-0.01em',
@@ -314,7 +332,14 @@ function PanelContent({
           {meta.title}
         </div>
       </div>
-      <div style={{ color: '#6a5a40', fontSize: '12px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
+      <div
+        style={{
+          color: '#6a5a40',
+          fontSize: isReadingMode ? '11px' : '12px',
+          letterSpacing: '0.12em',
+          paddingLeft: '17px',
+        }}
+      >
         {meta.subtitle} · {meta.year}
       </div>
 
@@ -330,9 +355,10 @@ function PanelContent({
       <p
         style={{
           color: '#a09070',
-          fontSize: isMobile ? '15px' : '16px',
-          lineHeight: 1.8,
+          fontSize: isReadingMode ? '16px' : isMobile ? '15px' : '16px',
+          lineHeight: isReadingMode ? 1.95 : 1.8,
           paddingLeft: '17px',
+          maxWidth: isReadingMode ? '48em' : undefined,
         }}
       >
         {meta.desc}
@@ -342,20 +368,21 @@ function PanelContent({
 
   return (
     <div
+      className={isReadingMode ? 'portfolio-scroll' : undefined}
       style={{
         width: '100%',
         height: '100%',
-        background: 'rgba(8,6,4,0.96)',
-        border: `1px solid rgba(200,169,110,0.28)`,
+        background: isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
+        border: isReadingMode ? 'none' : `1px solid rgba(200,169,110,0.28)`,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         fontFamily: "Georgia, 'Times New Roman', serif",
-        overflow: 'hidden',
+        overflow: isReadingMode ? 'auto' : 'hidden',
       }}
     >
       {/* Corner decorations */}
-      {cornerStyles.map((cs, i) => (
+      {!isReadingMode && cornerStyles.map((cs, i) => (
         <div
           key={i}
           style={{ position: 'absolute', width: 10, height: 10, opacity: 0.65, ...cs }}
@@ -373,29 +400,33 @@ function PanelContent({
           alignItems: 'center',
         }}
       >
-        <BackButton onClick={onBack} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              color: 'rgba(200,169,110,0.28)',
-              fontSize: '11px',
-              letterSpacing: '0.25em',
-            }}
-          >
-            {isLevel1 ? 'PROJECT' : 'CHAPTER'}
+        <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
+              <BackButton onClick={onBack} />
+              <div
+                style={{
+                  color: 'rgba(200,169,110,0.28)',
+                  fontSize: '11px',
+                  letterSpacing: '0.25em',
+                }}
+              >
+                {isLevel1 ? 'PROJECT' : 'CHAPTER'}
+              </div>
+            </div>
+            {/* Expand / collapse buttons */}
+            {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
+            {!isMobile && !isExpanded && (
+              <ExpandButton
+                onClick={() => {
+                  dismissForever();
+                  onExpand();
+                }}
+                accentColor={accentColor}
+                showHint={showFullscreenHint}
+              />
+            )}
           </div>
-          {/* Expand / collapse buttons */}
-          {!isMobile && !isExpanded && (
-            <ExpandButton
-              onClick={() => {
-                dismissForever();
-                onExpand();
-              }}
-              accentColor={accentColor}
-              showHint={showFullscreenHint}
-            />
-          )}
-          {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
         </div>
       </div>
 
@@ -405,10 +436,11 @@ function PanelContent({
       <div
         style={{
           flex: 1,
-          padding: isMobile ? '0 20px 20px' : '0 28px 24px',
-          overflow: 'auto',
+          padding: isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
+          overflow: isReadingMode ? 'visible' : 'auto',
+          ...(isReadingMode ? readingColumnStyle : null),
         }}
-        className="panel-scroll"
+        className="panel-scroll portfolio-scroll"
       >
         {shouldScrollTitleBlock && titleBlock}
         {isLevel1 && meta.subPages && meta.subPages.length > 0 ? (
@@ -553,7 +585,16 @@ export default function PageTemplate({ route, isMobile, onBackOverride, onNaviga
           pointerEvents: 'auto',
         }}
       >
-        {panelContent}
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: expandedViewportPadding,
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={expandedContentFrameStyle}>{panelContent}</div>
+        </div>
         {chapterNavOverlay}
       </div>,
       document.body,

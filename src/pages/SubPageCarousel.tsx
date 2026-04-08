@@ -21,6 +21,17 @@ const cornerStyles: React.CSSProperties[] = [
   { bottom: '-1px', right: '-1px', borderBottom: '8px solid #c8a96e', borderRight: '8px solid #c8a96e' },
 ];
 
+const expandedViewportPadding = 'clamp(24px, 4vw, 56px)';
+const expandedContentFrameStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  margin: '0 auto',
+};
+const readingColumnStyle: React.CSSProperties = {
+  width: 'min(860px, 100%)',
+  margin: '0 auto',
+};
+
 function BackButton({ onClick }: { onClick: () => void }) {
   const [hov, setHov] = useState(false);
   return (
@@ -200,9 +211,16 @@ function SlideContent({
 
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
+  const isReadingMode = !!isExpanded && !isMobile;
   const shouldScrollTitleBlock = !!isExpanded;
   const titleBlock = (
-    <div style={{ padding: isMobile ? '16px 20px 14px' : '24px 28px 20px', flexShrink: 0 }}>
+    <div
+      style={{
+        ...(isReadingMode ? readingColumnStyle : null),
+        padding: isReadingMode ? '0 0 28px' : isMobile ? '16px 20px 14px' : '24px 28px 20px',
+        flexShrink: 0,
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
         <div
           style={{
@@ -217,7 +235,7 @@ function SlideContent({
         <div
           style={{
             color: '#f0e8d8',
-            fontSize: isMobile ? '18px' : '22px',
+            fontSize: isReadingMode ? 'clamp(28px, 3vw, 42px)' : isMobile ? '18px' : '22px',
             fontStyle: 'italic',
             lineHeight: 1.15,
             letterSpacing: '-0.01em',
@@ -226,7 +244,14 @@ function SlideContent({
           {meta.title}
         </div>
       </div>
-      <div style={{ color: '#6a5a40', fontSize: '10px', letterSpacing: '0.12em', paddingLeft: '17px' }}>
+      <div
+        style={{
+          color: '#6a5a40',
+          fontSize: isReadingMode ? '11px' : '10px',
+          letterSpacing: '0.12em',
+          paddingLeft: '17px',
+        }}
+      >
         {meta.subtitle} · {meta.year}
       </div>
 
@@ -239,7 +264,15 @@ function SlideContent({
         }}
       />
 
-      <p style={{ color: '#a09070', fontSize: isMobile ? '13px' : '12px', lineHeight: 1.8, paddingLeft: '17px' }}>
+      <p
+        style={{
+          color: '#a09070',
+          fontSize: isReadingMode ? '15px' : isMobile ? '13px' : '12px',
+          lineHeight: isReadingMode ? 1.95 : 1.8,
+          paddingLeft: '17px',
+          maxWidth: isReadingMode ? '48em' : undefined,
+        }}
+      >
         {meta.desc}
       </p>
     </div>
@@ -247,21 +280,22 @@ function SlideContent({
 
   return (
     <div
+      className={isReadingMode ? 'portfolio-scroll' : undefined}
       style={{
         width: '100%',
         height: '100%',
-        background: 'rgba(8,6,4,0.96)',
-        border: `1px solid rgba(200,169,110,${isActive ? '0.28' : '0.14'})`,
+        background: isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
+        border: isReadingMode ? 'none' : `1px solid rgba(200,169,110,${isActive ? '0.28' : '0.14'})`,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         fontFamily: "Georgia, 'Times New Roman', serif",
-        overflow: 'hidden',
+        overflow: isReadingMode ? 'auto' : 'hidden',
         transition: 'border-color 0.4s',
       }}
     >
       {/* Corner decorations */}
-      {cornerStyles.map((cs, i) => (
+      {!isReadingMode && cornerStyles.map((cs, i) => (
         <div
           key={i}
           style={{
@@ -286,38 +320,42 @@ function SlideContent({
           alignItems: 'center',
         }}
       >
-        <BackButton onClick={onBack} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-            <div
-              style={{
-                color: 'rgba(200,169,110,0.28)',
-                fontSize: '9px',
-                letterSpacing: '0.25em',
-              }}
-            >
-              CHAPTER
+        <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
+              <BackButton onClick={onBack} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 }}>
+                <div
+                  style={{
+                    color: 'rgba(200,169,110,0.28)',
+                    fontSize: '9px',
+                    letterSpacing: '0.25em',
+                  }}
+                >
+                  CHAPTER
+                </div>
+                <div
+                  style={{
+                    color: accentColor,
+                    fontSize: '9px',
+                    letterSpacing: '0.2em',
+                    opacity: 0.7,
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {slideLabel}
+                </div>
+              </div>
             </div>
-            <div
-              style={{
-                color: accentColor,
-                fontSize: '9px',
-                letterSpacing: '0.2em',
-                opacity: 0.7,
-                fontStyle: 'italic',
-              }}
-            >
-              {slideLabel}
-            </div>
+            {/* Expand button: PC only, not in expanded state */}
+            {!isMobile && !isExpanded && onExpand && (
+              <ExpandButton
+                onClick={onExpandWithHint ?? onExpand}
+                accentColor={accentColor}
+                showHint={showExpandHint}
+              />
+            )}
           </div>
-          {/* Expand button: PC only, not in expanded state */}
-          {!isMobile && !isExpanded && onExpand && (
-            <ExpandButton
-              onClick={onExpandWithHint ?? onExpand}
-              accentColor={accentColor}
-              showHint={showExpandHint}
-            />
-          )}
         </div>
       </div>
 
@@ -325,8 +363,13 @@ function SlideContent({
 
       {/* Content area */}
       <div
-        style={{ flex: 1, padding: isMobile ? '0 20px 20px' : '0 28px 24px', overflow: 'auto' }}
-        className="panel-scroll"
+        style={{
+          flex: 1,
+          padding: isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
+          overflow: isReadingMode ? 'visible' : 'auto',
+          ...(isReadingMode ? readingColumnStyle : null),
+        }}
+        className="panel-scroll portfolio-scroll"
       >
         {shouldScrollTitleBlock && titleBlock}
         {hasSectionContent(route, slideIndex) ? (
@@ -572,22 +615,33 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
             pointerEvents: 'auto',
           }}
         >
-          <SlideContent
-            route={route}
-            slideIndex={activeIndex}
-            totalSlides={count}
-            accentColor={accentColor}
-            isActive={true}
-            onBack={handleBack}
-            isExpanded={true}
-            showExpandHint={false}
-          />
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              padding: expandedViewportPadding,
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={expandedContentFrameStyle}>
+              <SlideContent
+                route={route}
+                slideIndex={activeIndex}
+                totalSlides={count}
+                accentColor={accentColor}
+                isActive={true}
+                onBack={handleBack}
+                isExpanded={true}
+                showExpandHint={false}
+              />
+            </div>
+          </div>
           {/* Collapse button — top right of overlay */}
           <div
             style={{
               position: 'absolute',
-              top: '20px',
-              right: '20px',
+              top: expandedViewportPadding,
+              right: expandedViewportPadding,
               zIndex: 10,
               pointerEvents: 'auto',
             }}
