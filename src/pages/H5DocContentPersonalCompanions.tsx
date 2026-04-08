@@ -68,7 +68,7 @@ function noteStyle(): CSSProperties {
   };
 }
 
-export function getPersonalCompanionsSlideSections(accentColor: string, slideIndex: number, shouldPlayMedia: boolean): SectionData[] {
+export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPlayMedia: boolean): SectionData[] {
   const slide = companionSlides[slideIndex] ?? companionSlides[0];
 
   return [

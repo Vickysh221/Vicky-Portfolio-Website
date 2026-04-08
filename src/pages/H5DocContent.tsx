@@ -147,7 +147,7 @@ export default function H5DocContent({
   }
 
   if (route === '/academic-gamification/companions') {
-    const sections = getPersonalCompanionsSlideSections(accentColor, slideIndex, shouldPlayMedia ?? false);
+    const sections = getPersonalCompanionsSlideSections(slideIndex, shouldPlayMedia ?? false);
     return (
       <div style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }} className={isMobile ? 'h5-mobile-view' : undefined}>
         {sections.map((section) => (

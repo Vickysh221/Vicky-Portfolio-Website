@@ -465,7 +465,7 @@ function PanelContent({
               CHAPTERS
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              {meta.subPages.map((sp) => (
+              {(meta.subPages ?? []).map((sp) => (
                 <SubPageLink
                   key={sp.route}
                   route={sp.route}
