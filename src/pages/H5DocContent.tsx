@@ -27,6 +27,7 @@ import { getPhoenixFuliPlusSlide05Sections } from './H5DocContentPhoenixFuliPlus
 import { getPhoenixFuliPlusSlide06Sections } from './H5DocContentPhoenixFuliPlusSlide06';
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
+import { getPersonalCompanionsSlideSections } from './H5DocContentPersonalCompanions';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
 import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalLanguageDiarySlide02';
 import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
@@ -106,6 +107,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
+  if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 6) return true;
   return `${route}:${slideIndex}` in sectionMap;
 }
 
@@ -139,6 +141,17 @@ export default function H5DocContent({
         isMobile={isMobile}
         enableMotion={enableNarrativeMotion}
       />
+    );
+  }
+
+  if (route === '/academic-gamification/companions') {
+    const sections = getPersonalCompanionsSlideSections(accentColor, slideIndex);
+    return (
+      <div style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }} className={isMobile ? 'h5-mobile-view' : undefined}>
+        {sections.map((section) => (
+          <H5Section key={section.id} section={section} accentColor={accentColor} />
+        ))}
+      </div>
     );
   }
 

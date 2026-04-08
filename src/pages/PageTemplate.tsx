@@ -299,6 +299,7 @@ function PanelContent({
   const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
 
   const isLevel1 = meta.parent === null;
+  const hasChildChapters = !!meta.subPages && meta.subPages.length > 0;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
   const isReadingMode = isExpanded && !isMobile;
   const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
@@ -419,7 +420,7 @@ function PanelContent({
                   letterSpacing: '0.25em',
                 }}
               >
-                {isLevel1 ? 'PROJECT' : 'CHAPTER'}
+                {hasChildChapters || isLevel1 ? 'PROJECT' : 'CHAPTER'}
               </div>
             </div>
             {/* Expand / collapse buttons */}
@@ -451,7 +452,7 @@ function PanelContent({
         className="panel-scroll portfolio-scroll"
       >
         {shouldScrollTitleBlock && titleBlock}
-        {isLevel1 && meta.subPages && meta.subPages.length > 0 ? (
+        {hasChildChapters ? (
           <>
             <div
               style={{

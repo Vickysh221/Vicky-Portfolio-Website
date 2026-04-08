@@ -19,6 +19,7 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/agentic-design-development/simo-agent-system": -16000,
   "/agentic-design-development/fuli-plus": -16500,
   "/academic-gamification": -17000,
+  "/academic-gamification/companions": -17500,
   "/academic-gamification/simbiocity": -18000,
   "/academic-gamification/fortnite-demo": -19000,
 };
@@ -41,6 +42,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/simo-agent-system': 1,
   '/agentic-design-development/fuli-plus': 6,
+  '/academic-gamification/companions': 6,
 
   '/academic-gamification/simbiocity': 1,
   '/academic-gamification/fortnite-demo': 1,
@@ -139,11 +141,14 @@ export const PAGE_META: Record<string, PageMeta> = {
     subtitle: "Web Design Develop",
     year: "2025",
     desc: "Architected a generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback mechanisms, multi-tenant asset isolation.",
-    parent: null,
+    parent: "/agentic-design-development",
     color: "#7a9e8e",
     subPages: [
-      { route: "/web-design-develop/key-pages", label: "关键页面", numeral: "I" },
+      { route: "/web-design-develop/overview", label: "项目概览", numeral: "I" },
       { route: "/web-design-develop/component-framework", label: "组件框架", numeral: "II" },
+      { route: "/web-design-develop/key-pages", label: "关键页面", numeral: "III" },
+      { route: "/web-design-develop/semantic-system", label: "语义系统", numeral: "IV" },
+      { route: "/web-design-develop/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "V" },
     ],
   },
   "/web-design-develop/overview": {
@@ -188,7 +193,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
 
   "/agentic-design-development": {
-    title: "智能体设计与开发",
+    title: "My String Figure Player - Being with AI",
     subtitle: "AI Agent Product Design · Prototyping",
     year: "2024–2025",
     desc: "Selected explorations in agent product design, interactive prototyping, and AI-native experience building across concept, system design, and implementation.",
@@ -198,6 +203,7 @@ export const PAGE_META: Record<string, PageMeta> = {
       { route: "/agentic-design-development/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "I" },
       { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "II" },
       { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "III" },
+      { route: "/web-design-develop", label: "AI coding 网页设计和开发", numeral: "IV" },
     ],
   },
   "/agentic-design-development/language-diary": {
@@ -226,16 +232,23 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
 
   "/academic-gamification": {
-    title: "学术作品和个人项目 - 游戏化",
-    subtitle: "Game Systems · Interactive Prototypes",
+    title: "Have a cup of tea with AI",
+    subtitle: "进入伙伴们的音乐世界吧",
     year: "2024",
     desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
     parent: null,
     color: "#6f8f92",
     subPages: [
-      { route: "/academic-gamification/simbiocity", label: "Simbiocity", numeral: "I" },
-      { route: "/academic-gamification/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
+      { route: "/academic-gamification/companions", label: "进入伙伴们的音乐世界吧", numeral: "I" },
     ],
+  },
+  "/academic-gamification/companions": {
+    title: "进入伙伴们的音乐世界吧",
+    subtitle: "Have a cup of tea with AI",
+    year: "2024",
+    desc: "A sequence of companion-world video sketches collected under Have a cup of tea with AI, focusing on atmosphere, relation, and small emotional worlds.",
+    parent: "/academic-gamification",
+    color: "#6f8f92",
   },
   "/academic-gamification/simbiocity": {
     title: "Simbiocity",

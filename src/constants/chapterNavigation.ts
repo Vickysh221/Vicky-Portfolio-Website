@@ -21,7 +21,7 @@ export function getAdjacentChapterSlideTarget(
   direction: Direction,
 ): ChapterSlideTarget | null {
   const meta = PAGE_META[route];
-  if (!meta || meta.parent === null) return null;
+  if (!meta) return null;
 
   const totalSlides = getSlideCount(route);
   if (direction === 'prev' && slideIndex > 0) {
@@ -30,6 +30,8 @@ export function getAdjacentChapterSlideTarget(
   if (direction === 'next' && slideIndex < totalSlides - 1) {
     return { route, slideIndex: slideIndex + 1 };
   }
+
+  if (meta.parent === null) return null;
 
   const chapterRoutes = getOrderedChapterRoutes();
   const currentRouteIndex = chapterRoutes.indexOf(route);
