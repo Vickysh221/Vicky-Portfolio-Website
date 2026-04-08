@@ -213,7 +213,7 @@ function paragraphStyle(): CSSProperties {
 function cardTitleStyle(): CSSProperties {
   return {
     color: '#f0e8d8',
-    fontSize: 18,
+    fontSize: 20,
     lineHeight: 1.3,
     marginBottom: 8,
   };
@@ -222,7 +222,7 @@ function cardTitleStyle(): CSSProperties {
 function smallBodyStyle(): CSSProperties {
   return {
     color: '#ab9a7d',
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 1.8,
   };
 }
@@ -282,6 +282,64 @@ function Reveal({
       style={{ ...style, ...revealStyle(visible, delay) }}
     >
       {children}
+    </div>
+  );
+}
+
+function AgentThinking({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className="agentthinking narrative-card"
+      style={{
+        borderRadius: 14,
+        border: '1px solid rgba(200,169,110,0.16)',
+        background: 'linear-gradient(180deg, rgba(18,18,18,0.92), rgba(10,10,10,0.96))',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          padding: '10px 12px 8px',
+          borderBottom: '1px solid rgba(200,169,110,0.12)',
+        }}
+      >
+        <span style={{ color: '#53d769', fontSize: 13, lineHeight: 1, fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" }}>
+          ◇
+        </span>
+        <span
+          style={{
+            color: '#53d769',
+            fontSize: 14,
+            lineHeight: 1.2,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+          }}
+        >
+          Agent
+        </span>
+        <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.18)' }} />
+      </div>
+      <div
+        style={{
+          padding: '12px 14px 14px',
+          color: '#b8b8b8',
+          fontSize: 16,
+          lineHeight: 1.7,
+          fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+          display: 'grid',
+          gap: 10,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -602,8 +660,77 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           >
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户输入</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 10 }}>Case05｜Fish and Lotus</div>
-              <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, 'center'), aspectRatio: isMobile ? '1.18 / 1' : '1 / 1.08', marginBottom: 12 }} />
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 10 }}>Case05｜Fish and Lotus</div>
+              <div
+                className="narrative-card"
+                style={{
+                  borderRadius: 16,
+                  border: '1px solid rgba(200,169,110,0.1)',
+                  background: 'linear-gradient(180deg, rgba(18,14,12,0.82), rgba(10,8,6,0.92))',
+                  padding: isMobile ? '12px 12px 14px' : '14px 14px 16px',
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ display: 'grid', gap: 10 }}>
+                  <div className="narrative-card" style={{ borderRadius: 12, border: '1px solid rgba(200,169,110,0.08)', padding: '10px 10px 12px', background: 'rgba(255,255,255,0.015)' }}>
+                    <div style={{ color: '#f0e8d8', fontSize: 16, lineHeight: 1.4, marginBottom: 4 }}>用户输入</div>
+                    <div style={{ color: '#efe4d0', fontSize: 20, lineHeight: 1.3, marginBottom: 6 }}>鱼与荷</div>
+                    <div style={{ color: '#c6b79e', fontSize: 16, lineHeight: 1.7 }}>
+                      “我想保留鱼和荷的意向，但不要太像传统花鸟图。整体更适合地毯，能有一点流动感和结构感。”
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: accentColor, boxShadow: `0 0 0 3px ${accentColor}18` }} />
+                  </div>
+
+                  <div className="narrative-card" style={{ borderRadius: 12, border: '1px solid rgba(200,169,110,0.08)', padding: '10px 10px 12px', background: 'rgba(255,255,255,0.015)' }}>
+                    <div style={{ color: '#f0e8d8', fontSize: 16, lineHeight: 1.4, marginBottom: 6 }}>语义解释</div>
+                    <div style={{ marginBottom: 8 }}>
+                      <AgentThinking>
+                        <div>识别到这是一个需要发散思维的任务，调用诠释联想能力。</div>
+                      </AgentThinking>
+                    </div>
+                    <div style={{ color: '#c6b79e', fontSize: 16, lineHeight: 1.7, marginBottom: 8 }}>
+                      系统把它们理解成一组可以被重新组织的母体关系：鱼的流动、荷叶的展开、两者之间的疏密和方向，才是更适合进入地毯语言的部分。
+                    </div>
+                    <div style={{ color: '#d9ccb6', fontSize: 16, lineHeight: 1.75 }}>
+                      <div>保留“鱼与荷”的来源关系</div>
+                      <div>• 降低叙事性</div>
+                      <div>• 提高图案组织感</div>
+                      <div>• 让流动关系比物体轮廓更重要</div>
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <AgentThinking>
+                        <div>风格匹配：判断这个输入更适合走哪种“主体成立方式”。</div>
+                      </AgentThinking>
+                    </div>
+                    <div style={{ marginTop: 8, color: '#c6b79e', fontSize: 16, lineHeight: 1.7 }}>
+                      在这个 case 里，系统没有把它理解成传统花鸟 motif，而是更偏向路径化植物单元、流动节奏和有机组织关系。
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: accentColor, boxShadow: `0 0 0 3px ${accentColor}18` }} />
+                  </div>
+
+                  <div className="narrative-card" style={{ borderRadius: 12, border: '1px solid rgba(200,169,110,0.08)', padding: '10px 10px 12px', background: 'rgba(255,255,255,0.015)' }}>
+                    <div style={{ display: 'grid', gap: 10 }}>
+                      {[
+                        ['Primary Bucket', 'leaf-chain unit grammar', '荷叶可以被压成重复单元或路径化单元，适合从植物来源转向图案组织。'],
+                        ['Secondary Bucket', 'density-gradient textile field', '鱼与水流关系可以被转译成疏密变化和织场节奏，而不是直画鱼身。'],
+                        ['Supporting Bucket', 'soft-node network', '如果保留一点有机连接感，荷叶 / 水波 / 鱼群关系可以通过更柔和的节点式组织出现。'],
+                      ].map(([label, title, body], index) => (
+                        <div key={label} style={{ paddingTop: index === 0 ? 0 : 10, borderTop: index === 0 ? 'none' : '1px solid rgba(200,169,110,0.08)' }}>
+                          <div style={{ color: '#f0e8d8', fontSize: 16, lineHeight: 1.4 }}>{label}</div>
+                          <div style={{ color: '#efe4d0', fontSize: 20, lineHeight: 1.45, marginTop: 2 }}>{title}</div>
+                          <div style={{ color: '#c6b79e', fontSize: 16, lineHeight: 1.7, marginTop: 4 }}>{body}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
                 {['Reference image', 'Theme cue', 'Initial intent'].map((tag) => (
                   <span key={tag} style={{ padding: '5px 9px', borderRadius: 999, border: '1px solid rgba(200,169,110,0.1)', color: '#a9987f', fontSize: 11, letterSpacing: '0.04em' }}>
@@ -618,7 +745,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>语义解释</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>系统如何理解这个输入</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>系统如何理解这个输入</div>
               <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
                 {[
                   ['母体来源', '鱼 + 荷'],
@@ -626,8 +753,8 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   ['设计目标', '找到更适合 rug 的主体成立方式'],
                 ].map(([label, value]) => (
                   <div key={label} className="narrative-card" style={{ borderRadius: 14, padding: '10px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
-                    <div style={{ color: '#9b8a72', fontSize: 11, letterSpacing: '0.08em', marginBottom: 4 }}>{label}</div>
-                    <div style={{ color: '#efe4d0', fontSize: 14, lineHeight: 1.5 }}>{value}</div>
+                    <div style={{ color: '#9b8a72', fontSize: 12, letterSpacing: '0.08em', marginBottom: 4 }}>{label}</div>
+                    <div style={{ color: '#efe4d0', fontSize: 16, lineHeight: 1.5 }}>{value}</div>
                   </div>
                 ))}
               </div>
@@ -638,7 +765,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮输出</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>第一轮方向展开</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮方向展开</div>
               <div style={{ ...smallBodyStyle(), marginBottom: 14 }}>
                 从同样的输入出发，系统没有生成三张轻微不同的图，而是明确展开了三种不同的组织方法：更聚簇的、更加结构化的、以及更偏场域与流动的。这样，用户面对的就不再是“选哪张更好看”，而是“我更认同哪一种主体成立方式”。
               </div>
@@ -658,8 +785,8 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                     }}
                   >
                     <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, card.crop), aspectRatio: '0.9 / 1', marginBottom: 10 }} />
-                    <div style={{ color: '#f0e8d8', fontSize: 14, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
-                    <div style={{ color: '#ac9c83', fontSize: 12, lineHeight: 1.65 }}>{card.body}</div>
+                    <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.65 }}>{card.body}</div>
                   </div>
                 ))}
               </div>
@@ -667,7 +794,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', minHeight: isMobile ? undefined : 420 }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮的意义</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
               <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.015)', padding: '14px 14px 12px', marginBottom: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: accentColor, fontSize: 13, marginBottom: 8 }}>
                   <span>题材</span>
@@ -676,7 +803,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   <span>→</span>
                   <span>可比较方向</span>
                 </div>
-                <div style={{ color: '#98886f', fontSize: 12, lineHeight: 1.7 }}>从“鱼与荷是什么”过渡到“主体如何成立”。</div>
+                <div style={{ color: '#98886f', fontSize: 16, lineHeight: 1.7 }}>从“鱼与荷是什么”过渡到“主体如何成立”。</div>
               </div>
               <div style={smallBodyStyle()}>
                 第一轮的任务不是直接命中最终结果，而是把同一个主题展开成几个真正可比较的方向。到这一步，系统开始帮助用户看见方向空间：哪些版本更依赖题材，哪些更依赖结构，哪些更适合作为后续 refinement 的起点。
@@ -693,7 +820,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
             <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Top Block｜选中方向二</div>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr', gap: 14, alignItems: 'center' }}>
               <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, '52% 40%'), aspectRatio: isMobile ? '1.15 / 1' : '1.35 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
-              <div style={{ color: '#efe4d0', fontSize: isMobile ? 18 : 22, lineHeight: 1.55 }}>
+              <div style={{ color: '#efe4d0', fontSize: isMobile ? 20 : 24, lineHeight: 1.55 }}>
                 在这个案例里，用户选中的并不只是“第二张图更好看”，而是一种更适合继续推进的成立方式。
               </div>
             </div>
@@ -702,7 +829,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Left</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>这次选择让系统确认了什么</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>这次选择让系统确认了什么</div>
               <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', padding: '12px 12px 10px', marginBottom: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: accentColor, fontSize: 13 }}>
                   <span>题材意向</span>
@@ -717,7 +844,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Right</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>系统开始收束下来的判断</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>系统开始收束下来的判断</div>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
                 {[
                   ['主体如何成立', '通过结构节奏来建立主体，而不是通过具体形象来建立主体。'],
@@ -725,8 +852,8 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   ['为什么适合继续做', '这一方向更容易继续 refinement，因为接下来可以调整的是密度、开合、重心和表面节奏，而不必重新定义主题。'],
                 ].map(([title, body], index) => (
                   <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${100 + index * 60}ms` }}>
-                    <div style={{ color: '#f0e8d8', fontSize: 15, lineHeight: 1.35, marginBottom: 8 }}>{title}</div>
-                    <div style={{ color: '#ac9c83', fontSize: 13, lineHeight: 1.75 }}>{body}</div>
+                    <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>{title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.75 }}>{body}</div>
                   </div>
                 ))}
               </div>
@@ -736,7 +863,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Left</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>下一轮会如何受到这次选择的影响</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>下一轮会如何受到这次选择的影响</div>
               <div style={smallBodyStyle()}>
                 到这里，下一轮变化的重点就不再是“鱼和荷要不要继续出现”，而是围绕已经确认的结构语言，继续调整密度、开合、重心和表面节奏。系统会保留这条纵向有机骨架的主线，再沿着更清楚、更柔和或更开阔的方向继续 refinement。
               </div>
@@ -749,7 +876,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Right</div>
-              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>沿同一条主线继续 refinement</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>沿同一条主线继续 refinement</div>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
                 {[
                   ['Direction A｜骨架更清楚', '保持纵向格构语言，进一步提升主路径和骨架的可读性。'],
@@ -757,8 +884,8 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   ['Direction C｜更开放的纵向场', '保持有机 lattice 的核心，同时把局部骨架稍微打开，增加呼吸和留白。'],
                 ].map(([title, body], index) => (
                   <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${140 + index * 60}ms` }}>
-                    <div style={{ color: '#f0e8d8', fontSize: 15, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
-                    <div style={{ color: '#ac9c83', fontSize: 13, lineHeight: 1.75 }}>{body}</div>
+                    <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.75 }}>{body}</div>
                   </div>
                 ))}
               </div>

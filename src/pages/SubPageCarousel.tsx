@@ -274,7 +274,7 @@ function SlideContent({
       <p
         style={{
           color: '#a09070',
-          fontSize: isReadingMode ? '15px' : isMobile ? '13px' : '12px',
+          fontSize: isReadingMode ? '16px' : isMobile ? '13px' : '12px',
           lineHeight: isReadingMode ? 1.95 : 1.8,
           paddingLeft: '17px',
           maxWidth: isReadingMode ? '48em' : undefined,
@@ -377,7 +377,7 @@ function SlideContent({
           overflow: isReadingMode ? 'visible' : 'auto',
           ...(isReadingMode ? readingColumnStyle : null),
         }}
-        className="panel-scroll portfolio-scroll"
+        className={isReadingMode ? 'panel-scroll portfolio-scroll h5-reading-view' : 'panel-scroll portfolio-scroll'}
       >
         {shouldScrollTitleBlock && titleBlock}
         {hasSectionContent(route, slideIndex) ? (

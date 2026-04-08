@@ -14,7 +14,7 @@ export function paragraphStyle(): CSSProperties {
 export function h2Style(accentColor: string): CSSProperties {
   return {
     color: accentColor,
-    fontSize: '18px',
+    fontSize: '17px',
     margin: '16px 0 8px',
     display: 'flex',
     alignItems: 'center',
@@ -26,7 +26,7 @@ export function h2Style(accentColor: string): CSSProperties {
 export function subtitleStyle(accentColor: string): CSSProperties {
   return {
     color: accentColor,
-    fontSize: '18px',
+    fontSize: '17px',
     margin: '16px 0 8px',
   };
 }

@@ -45,7 +45,7 @@ interface H5DocContentProps {
 
 function sectionTitleStyle(): CSSProperties {
   return {
-    fontSize: '20px',
+    fontSize: '18px',
     color: '#efe4d0',
     letterSpacing: '0.02em',
     borderBottom: '1px solid rgba(200,169,110,0.16)',

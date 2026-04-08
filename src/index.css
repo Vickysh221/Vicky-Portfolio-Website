@@ -334,6 +334,25 @@
   width: 4px !important;
 }
 
+/* ── Desktop fullscreen H5 reading overrides ── */
+.h5-reading-view p {
+  font-size: 16px !important;
+  line-height: 1.9 !important;
+}
+
+.h5-reading-view li {
+  font-size: 16px !important;
+  line-height: 1.9 !important;
+}
+
+.h5-reading-view h1 {
+  font-size: 18px !important;
+}
+
+.h5-reading-view h2 {
+  font-size: 17px !important;
+}
+
 /* ── Mobile slide view ── */
 @media (max-width: 767px) {
   /* Ensure body/root still fills screen */
