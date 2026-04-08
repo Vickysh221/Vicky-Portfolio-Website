@@ -80,7 +80,6 @@ export function getPersonalCompanionsSlideSections(accentColor: string, slideInd
         <div style={videoFrameStyle()}>
           <VideoWithStatus
             sources={[{ src: slide.src, type: 'video/mp4' }]}
-            muted
             autoPlay
             loop
             controls
