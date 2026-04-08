@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type ImgHTMLAttributes, type VideoHTMLAttributes } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ImgHTMLAttributes, type VideoHTMLAttributes } from 'react';
 
 type Status = 'loading' | 'loaded' | 'error';
 
@@ -89,14 +89,35 @@ type VideoSource = {
 
 type VideoWithStatusProps = Omit<VideoHTMLAttributes<HTMLVideoElement>, 'children'> & {
   sources?: VideoSource[];
+  activePlayback?: boolean;
 };
 
-export function VideoWithStatus({ onLoadedData, onError, sources, ...props }: VideoWithStatusProps) {
+export function VideoWithStatus({ onLoadedData, onError, sources, activePlayback = true, ...props }: VideoWithStatusProps) {
   const [status, setStatus] = useState<Status>('loading');
   const [playbackRate, setPlaybackRate] = useState(1);
   const hasSources = Array.isArray(sources) && sources.length > 0;
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const playbackRates = [1, 1.5, 2];
+
+  useEffect(() => {
+    const node = videoRef.current;
+    if (!node) return;
+
+    if (!activePlayback) {
+      node.pause();
+      return;
+    }
+
+    const attemptPlay = async () => {
+      try {
+        await node.play();
+      } catch {
+        // Ignore autoplay interruption; controls remain available for manual playback.
+      }
+    };
+
+    void attemptPlay();
+  }, [activePlayback]);
 
   function applyPlaybackRate(nextRate: number) {
     setPlaybackRate(nextRate);

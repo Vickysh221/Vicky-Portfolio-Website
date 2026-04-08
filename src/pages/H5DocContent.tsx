@@ -42,6 +42,7 @@ interface H5DocContentProps {
   slideIndex?: number;
   isMobile?: boolean;
   enableNarrativeMotion?: boolean;
+  shouldPlayMedia?: boolean;
 }
 
 function sectionTitleStyle(): CSSProperties {
@@ -131,6 +132,7 @@ export default function H5DocContent({
   slideIndex = 0,
   isMobile,
   enableNarrativeMotion,
+  shouldPlayMedia,
 }: H5DocContentProps) {
   if (hasFuliPlusCaseStudy(route, slideIndex)) {
     return (
@@ -145,7 +147,7 @@ export default function H5DocContent({
   }
 
   if (route === '/academic-gamification/companions') {
-    const sections = getPersonalCompanionsSlideSections(accentColor, slideIndex);
+    const sections = getPersonalCompanionsSlideSections(accentColor, slideIndex, shouldPlayMedia ?? false);
     return (
       <div style={{ padding: isMobile ? '0 4px 2px' : '0 17px 2px' }} className={isMobile ? 'h5-mobile-view' : undefined}>
         {sections.map((section) => (

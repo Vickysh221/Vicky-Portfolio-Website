@@ -387,6 +387,7 @@ function SlideContent({
             slideIndex={slideIndex}
             isMobile={isMobile}
             enableNarrativeMotion={isReadingMode && isActive}
+            shouldPlayMedia={isActive && !isExpanded}
           />
         ) : (
           <div

@@ -68,7 +68,7 @@ function noteStyle(): CSSProperties {
   };
 }
 
-export function getPersonalCompanionsSlideSections(accentColor: string, slideIndex: number): SectionData[] {
+export function getPersonalCompanionsSlideSections(accentColor: string, slideIndex: number, shouldPlayMedia: boolean): SectionData[] {
   const slide = companionSlides[slideIndex] ?? companionSlides[0];
 
   return [
@@ -85,6 +85,7 @@ export function getPersonalCompanionsSlideSections(accentColor: string, slideInd
             loop
             controls
             playsInline
+            activePlayback={shouldPlayMedia}
             style={{
               width: '100%',
               height: '100%',
