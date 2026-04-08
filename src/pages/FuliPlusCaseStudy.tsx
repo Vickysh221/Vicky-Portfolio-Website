@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import fuliHeroImage from '../images/fuli/slide01-img01.png';
 import fuliSystemImage from '../images/fuli/slide02-img01.png';
+import lotusWarmClusterDrift from '../images/fuli/lotus and fish/Warm Cluster Drift.png';
+import lotusVerticalOrganicLattice from '../images/fuli/lotus and fish/vertical organic lattice.png';
+import lotusLeafAndCurrentField from '../images/fuli/lotus and fish/Leaf-and-Current Field.png';
+import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical organic lattice2.png';
+import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
+import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 7;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 6;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -15,6 +21,7 @@ type VisualBlock =
   | { type: 'heroImage'; title?: string; src: string; caption: string }
   | { type: 'workflowDiagram'; title?: string; nodes: string[] }
   | { type: 'problemGrid'; title?: string; items: { title: string; body: string; crop?: string }[] }
+  | { type: 'rugJudgmentGrid'; items: { title: string; body: string; diagram: 'abstract' | 'led' | 'surface' | 'refinable' }[]; closing: string }
   | { type: 'beforeAfter'; title?: string; before: string[]; after: string[] }
   | { type: 'pipeline'; title?: string; stages: string[] }
   | { type: 'case05FirstRound' }
@@ -72,22 +79,35 @@ const pages: CaseStudyPage[] = [
     pageTitle: '我们需要一个懂地毯，懂品牌的「专家」',
     pageGoal: '具体展示为什么 generic image generation 在这个场景里不够用。',
     mainCopy:
-      '通用图像模型很容易给出一张“看起来有风格”的图，但在 rug design 里，图像是否可用不只取决于好不好看，还取决于它是不是图案、能不能转成织物语言、有没有工艺与材料上的自洽、是不是符合品牌的审美语义。',
-    contentBlocks: [
-      {
-        type: 'miniCaptions',
-        items: ['他能解决每一次试图把模糊需求拉进真实设计流程时会遇到的所有问题。'],
-      },
-    ],
+      '生成地毯这件事，难的地方从来不只是“画面漂不漂亮”。很多图单看并不差，但一旦放到地毯这个媒介里，就会显得太像插画、太像装饰画，或者只是把参考图换了一种方式重说一遍。真正的差别在于：一个懂地毯的人，看图时不会只看题材，而会同时判断图案是怎么成立的，结构是不是稳定，表面和工艺有没有真正参与进去，最后这个方向有没有继续往下 refinement 的空间。',
+    contentBlocks: [],
     visualBlocks: [
       {
-        type: 'problemGrid',
+        type: 'rugJudgmentGrid',
         items: [
-          { title: '图像太具象，像插画', body: '视觉主体很完整，却难以转成地毯图案的组织方式。', crop: '12% 28%' },
-          { title: '图像太像参考图', body: '它抓住了表面相似，却没有形成新的设计判断。', crop: '42% 36%' },
-          { title: '更像空间效果图', body: '画面氛围成立，但不像一张真正可讨论的 rug pattern。', crop: '72% 44%' },
-          { title: '忽略表面与材料逻辑', body: '纹理、工艺和密度关系没有被纳入生成约束。', crop: '58% 72%' },
+          {
+            title: '先别急着看它画了什么',
+            body: '鱼、荷叶、石纹、水流，这些都只是入口。真正要判断的是，这些东西最后有没有被整理成图案语言。停在题材上，出来的东西很容易像画；能往结构、单元和节奏里走，才更像地毯。',
+            diagram: 'abstract',
+          },
+          {
+            title: '我更在意它靠什么成立',
+            body: '有些方向是靠一个 motif 被看见，有些方向靠的是骨架，有些靠的是密度和关系。这一步其实决定了整张 rug 的气质：它是直接、装饰性的，还是更克制、更耐看、要慢慢读出来的。',
+            diagram: 'led',
+          },
+          {
+            title: '地毯的判断，最后一定会落到表面上',
+            body: '边缘软不软，纹理浮不浮，哪些地方该更密、哪些地方该退下去，这些都会改变图案最后的成立方式。所以做 rug 不能只顾着把图案想清楚，还要同时把“它以什么表面出现”想清楚。',
+            diagram: 'surface',
+          },
+          {
+            title: '还要看这个方向能不能继续做',
+            body: '有些图第一眼很好看，但没有后劲；再做一轮就散。真正好的方向，往往是骨架已经立住、逻辑已经清楚，后面还能继续调密度、调节奏、调重心，而不用每次都重新来过。',
+            diagram: 'refinable',
+          },
         ],
+        closing:
+          '地毯设计里，真正重要的判断往往不只落在题材上。画面怎么被组织起来，主体靠什么成立，表面和工艺有没有进入，方向有没有后续 refinement 的空间——这些层一起成立了，一张图才真正开始像一张 rug。',
       },
     ],
   },
@@ -140,25 +160,7 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: '项目系统设计',
-    pageGoal: '证明这不是概念方案，而是已有系统资产和测试结果的项目。',
-    mainCopy:
-      '我将这套系统凝练成一组skill.md，使其成为可运行的工作流骨架、可复用的语义参考系统，以及能持续积累案例的结构。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'caseImageStrip',
-        title: 'First-round / second-round case',
-        items: [
-          { title: 'First round', body: '先展开三个可比较方向，而不是急着命中答案。', src: fuliHeroImage },
-          { title: 'Selected direction', body: '把用户选择变成新的 design evidence。', src: fuliSystemImage },
-          { title: 'Second round', body: '沿选中方向继续长，差异更可控，判断也更聚焦。', src: fuliHeroImage },
-        ],
-      },
-    ],
-  },
-  {
-    pageTitle: 'Appendix C｜Slot-state 映射层',
+    pageTitle: 'Appendix A｜Slot-state 映射层',
     pageGoal: '把 bucket 到 slot-state 的作用链路讲清楚，但保持作品集附录的阅读感。',
     mainCopy:
       '这一页不试图把系统解释成一份规范文档。它只把最关键的一层展开：参考图如何先被解释成 semantic bucket，再继续压成可以进入生成系统的 slot-state，并最终影响方向生成与 refinement。',
@@ -466,6 +468,92 @@ function mediaFrame(src: string, crop = 'center') {
   } as CSSProperties;
 }
 
+function rugJudgmentDiagram(kind: 'abstract' | 'led' | 'surface' | 'refinable', accentColor: string) {
+  const line = '1px solid rgba(200,169,110,0.16)';
+  const labelStyle: CSSProperties = {
+    color: '#9e8f76',
+    fontSize: 11,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+  };
+
+  switch (kind) {
+    case 'abstract':
+      return (
+        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+            <span style={labelStyle}>具象轮廓</span>
+            <span style={{ color: accentColor, fontSize: 14 }}>→</span>
+            <span style={labelStyle}>抽象单元 / 路径 / 格构</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+            <div style={{ height: 54, borderRadius: 12, border: line, background: 'radial-gradient(circle at 30% 42%, rgba(255,255,255,0.08), transparent 30%), radial-gradient(circle at 62% 60%, rgba(255,255,255,0.06), transparent 26%)' }} />
+            <div style={{ height: 54, borderRadius: 12, border: line, background: 'linear-gradient(120deg, transparent 0 35%, rgba(255,255,255,0.06) 35% 39%, transparent 39% 100%), linear-gradient(150deg, transparent 0 55%, rgba(255,255,255,0.06) 55% 59%, transparent 59% 100%)' }} />
+            <div style={{ height: 54, borderRadius: 12, border: line, backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+          </div>
+        </div>
+      );
+    case 'led':
+      return (
+        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
+            {[
+              ['motif-led', '单一母题显影'],
+              ['structure-led', '骨架与路径先成立'],
+              ['density-led', '靠疏密与关系被读到'],
+            ].map(([title, desc]) => (
+              <div key={title} style={{ borderRadius: 12, border: line, padding: '10px 10px 12px', minHeight: 74 }}>
+                <div style={labelStyle}>{title}</div>
+                <div style={{ color: '#cdbfa8', fontSize: 13, lineHeight: 1.65, marginTop: 6 }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case 'surface':
+      return (
+        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: 10 }}>
+            <div style={{ borderRadius: 12, border: line, minHeight: 86, background: 'linear-gradient(135deg, rgba(255,255,255,0.05), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.04), transparent 70%)' }} />
+            <div style={{ display: 'grid', gap: 8 }}>
+              <div style={{ borderRadius: 12, border: line, minHeight: 39 }} />
+              <div style={{ borderRadius: 12, border: line, minHeight: 39, backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
+            </div>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <div style={{ borderRadius: 12, border: line, minHeight: 39, background: 'linear-gradient(180deg, rgba(255,255,255,0.05), transparent)' }} />
+              <div style={{ borderRadius: 12, border: line, minHeight: 39 }} />
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 14, color: '#9e8f76', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <span>边缘</span>
+            <span>密度</span>
+            <span>表面层次</span>
+          </div>
+        </div>
+      );
+    case 'refinable':
+      return (
+        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10, alignItems: 'center' }}>
+            {[
+              ['初始方向', 'loose'],
+              ['方向确认', 'stable'],
+              ['refinement', 'refinable'],
+            ].map(([title, state], index) => (
+              <div key={title} style={{ position: 'relative' }}>
+                <div style={{ borderRadius: 12, border: line, padding: '10px 10px 12px', minHeight: 72 }}>
+                  <div style={labelStyle}>{title}</div>
+                  <div style={{ color: '#cdbfa8', fontSize: 13, lineHeight: 1.65, marginTop: 6 }}>{state}</div>
+                </div>
+                {index < 2 ? <div style={{ position: 'absolute', right: -8, top: '50%', transform: 'translateY(-50%)', color: accentColor }}>→</div> : null}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+  }
+}
+
 function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
   const blockPanel = panelStyle();
 
@@ -502,6 +590,25 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                 <div style={smallBodyStyle()}>{item.body}</div>
               </div>
             ))}
+          </div>
+        </div>
+      );
+    case 'rugJudgmentGrid':
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 20px' : '24px 24px 26px' }}>
+          <div style={{ display: 'grid', gap: 18 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 16, alignItems: 'stretch' }}>
+              {block.items.map((item, index) => (
+                <div key={item.title} className="narrative-card" style={{ borderRadius: 18, padding: '18px 18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)', display: 'grid', gap: 14, transitionDelay: `${index * 70}ms` }}>
+                  <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.28 }}>{item.title}</div>
+                  <div style={smallBodyStyle()}>{item.body}</div>
+                  {rugJudgmentDiagram(item.diagram, accentColor)}
+                </div>
+              ))}
+            </div>
+            <div style={{ ...smallBodyStyle(), maxWidth: 980, margin: '0 auto', paddingTop: 6 }}>
+              {block.closing}
+            </div>
           </div>
         </div>
       );
@@ -631,19 +738,19 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         {
           title: 'Warm Cluster Drift',
           body: '更偏聚簇的组织方式，把鱼与荷的意向压进较温和的团簇节奏里。',
-          crop: '16% 34%',
+          src: lotusWarmClusterDrift,
           highlight: false,
         },
         {
           title: 'Vertical Organic Lattice',
           body: '更强调纵向路径和有机骨架，主体由结构节奏而不是题材描画来成立。',
-          crop: '52% 40%',
+          src: lotusVerticalOrganicLattice,
           highlight: true,
         },
         {
           title: 'Leaf-and-Current Field',
           body: '更偏场域与流动，鱼与荷退到背景，留下更连续的叶片与水流关系。',
-          crop: '78% 44%',
+          src: lotusLeafAndCurrentField,
           highlight: false,
         },
       ];
@@ -658,6 +765,24 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               alignItems: 'start',
             }}
           >
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', minHeight: isMobile ? undefined : 420 }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮的意义</div>
+              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
+              <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.015)', padding: '14px 14px 12px', marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: accentColor, fontSize: 13, marginBottom: 8 }}>
+                  <span>题材</span>
+                  <span>→</span>
+                  <span>结构</span>
+                  <span>→</span>
+                  <span>可比较方向</span>
+                </div>
+                <div style={{ color: '#98886f', fontSize: 16, lineHeight: 1.7 }}>从“鱼与荷是什么”过渡到“主体如何成立”。</div>
+              </div>
+              <div style={smallBodyStyle()}>
+                第一轮的任务不是直接命中最终结果，而是把同一个主题展开成几个真正可比较的方向。到这一步，系统开始帮助用户看见方向空间：哪些版本更依赖题材，哪些更依赖结构，哪些更适合作为后续 refinement 的起点。
+              </div>
+            </div>
+
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户输入</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 10 }}>Case05｜Fish and Lotus</div>
@@ -714,21 +839,22 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                     <div style={{ width: 10, height: 10, borderRadius: '50%', background: accentColor, boxShadow: `0 0 0 3px ${accentColor}18` }} />
                   </div>
 
-                  <div className="narrative-card" style={{ borderRadius: 12, border: '1px solid rgba(200,169,110,0.08)', padding: '10px 10px 12px', background: 'rgba(255,255,255,0.015)' }}>
+                  <AgentThinking>
+                    <div style={{ color: '#53d769', fontSize: 14, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Agent Bucket Mapping</div>
                     <div style={{ display: 'grid', gap: 10 }}>
                       {[
                         ['Primary Bucket', 'leaf-chain unit grammar', '荷叶可以被压成重复单元或路径化单元，适合从植物来源转向图案组织。'],
                         ['Secondary Bucket', 'density-gradient textile field', '鱼与水流关系可以被转译成疏密变化和织场节奏，而不是直画鱼身。'],
                         ['Supporting Bucket', 'soft-node network', '如果保留一点有机连接感，荷叶 / 水波 / 鱼群关系可以通过更柔和的节点式组织出现。'],
                       ].map(([label, title, body], index) => (
-                        <div key={label} style={{ paddingTop: index === 0 ? 0 : 10, borderTop: index === 0 ? 'none' : '1px solid rgba(200,169,110,0.08)' }}>
+                        <div key={label} style={{ paddingTop: index === 0 ? 0 : 10, borderTop: index === 0 ? 'none' : '1px solid rgba(255,255,255,0.08)' }}>
                           <div style={{ color: '#f0e8d8', fontSize: 16, lineHeight: 1.4 }}>{label}</div>
                           <div style={{ color: '#efe4d0', fontSize: 20, lineHeight: 1.45, marginTop: 2 }}>{title}</div>
                           <div style={{ color: '#c6b79e', fontSize: 16, lineHeight: 1.7, marginTop: 4 }}>{body}</div>
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </AgentThinking>
                 </div>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
@@ -764,7 +890,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
             </div>
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮输出</div>
+              <div style={{ color: '#53d769', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.92, fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" }}>Agent 第一轮成果交付</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮方向展开</div>
               <div style={{ ...smallBodyStyle(), marginBottom: 14 }}>
                 从同样的输入出发，系统没有生成三张轻微不同的图，而是明确展开了三种不同的组织方法：更聚簇的、更加结构化的、以及更偏场域与流动的。这样，用户面对的就不再是“选哪张更好看”，而是“我更认同哪一种主体成立方式”。
@@ -784,7 +910,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                       transitionDelay: `${120 + index * 70}ms`,
                     }}
                   >
-                    <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, card.crop), aspectRatio: '0.9 / 1', marginBottom: 10 }} />
+                    <div className="narrative-media" style={{ ...mediaFrame(card.src, 'center'), aspectRatio: '0.9 / 1', marginBottom: 10 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.65 }}>{card.body}</div>
                   </div>
@@ -792,23 +918,6 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               </div>
             </div>
 
-            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', minHeight: isMobile ? undefined : 420 }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮的意义</div>
-              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
-              <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.015)', padding: '14px 14px 12px', marginBottom: 12 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: accentColor, fontSize: 13, marginBottom: 8 }}>
-                  <span>题材</span>
-                  <span>→</span>
-                  <span>结构</span>
-                  <span>→</span>
-                  <span>可比较方向</span>
-                </div>
-                <div style={{ color: '#98886f', fontSize: 16, lineHeight: 1.7 }}>从“鱼与荷是什么”过渡到“主体如何成立”。</div>
-              </div>
-              <div style={smallBodyStyle()}>
-                第一轮的任务不是直接命中最终结果，而是把同一个主题展开成几个真正可比较的方向。到这一步，系统开始帮助用户看见方向空间：哪些版本更依赖题材，哪些更依赖结构，哪些更适合作为后续 refinement 的起点。
-              </div>
-            </div>
           </div>
         </div>
       );
@@ -817,9 +926,9 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
       return (
         <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 20px' : '22px 22px 24px', display: 'grid', gap: 12 }}>
           <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.14)', background: 'rgba(255,255,255,0.022)' }}>
-            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Top Block｜选中方向二</div>
+            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户选择后的主线确认</div>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr', gap: 14, alignItems: 'center' }}>
-              <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, '52% 40%'), aspectRatio: isMobile ? '1.15 / 1' : '1.35 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
+              <div className="narrative-media" style={{ ...mediaFrame(lotusVerticalOrganicLattice, 'center'), aspectRatio: isMobile ? '1.15 / 1' : '1.35 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
               <div style={{ color: '#efe4d0', fontSize: isMobile ? 20 : 24, lineHeight: 1.55 }}>
                 在这个案例里，用户选中的并不只是“第二张图更好看”，而是一种更适合继续推进的成立方式。
               </div>
@@ -828,8 +937,14 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Left</div>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>选择如何改变系统理解</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>这次选择让系统确认了什么</div>
+              <div style={{ marginBottom: 12 }}>
+                <AgentThinking>
+                  <div>接收用户选择信号，开始把候选方向从“并列比较”切换成“主线确认”。</div>
+                  <div>当前任务：识别这次选择到底认可了题材、结构，还是某种更稳定的主体成立方式。</div>
+                </AgentThinking>
+              </div>
               <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', padding: '12px 12px 10px', marginBottom: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: accentColor, fontSize: 13 }}>
                   <span>题材意向</span>
@@ -838,13 +953,22 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                 </div>
               </div>
               <div style={smallBodyStyle()}>
-                相比另外两个方向，这一版把鱼与荷从可辨认的题材意向，进一步转成了更明确的纵向结构和有机骨架。用户真正认可的，是一个通过结构节奏建立主体的方向：鱼与荷仍然存在，但它们更多作为结构来源，而不是直接被描绘的对象。
+                相比另外两个方向，这一版没有把鱼与荷停留在可辨认的题材意向上，而是进一步转成了更明确的纵向结构和有机骨架。用户真正认可的，不是一张更顺眼的图，而是一个通过结构节奏建立主体的方向。
+              </div>
+              <div style={{ ...smallBodyStyle(), marginTop: 10 }}>
+                到这一步，鱼与荷依然存在，但它们更多作为结构来源，而不是直接被描绘的对象。系统因此可以把“用户喜欢第二张图”重新理解成“用户认可这条结构主线值得继续长下去”。
               </div>
             </div>
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Right</div>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>收束后的核心判断</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>系统开始收束下来的判断</div>
+              <div style={{ marginBottom: 12 }}>
+                <AgentThinking>
+                  <div>收束任务启动：冻结已被用户确认的 DNA，缩小下一轮需要重新探索的范围。</div>
+                  <div>当前重点：把“为什么选中它”压成几条可继续作用于 refinement 的判断，而不是只保留一个结果编号。</div>
+                </AgentThinking>
+              </div>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
                 {[
                   ['主体如何成立', '通过结构节奏来建立主体，而不是通过具体形象来建立主体。'],
@@ -857,12 +981,15 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   </div>
                 ))}
               </div>
+              <div style={{ ...smallBodyStyle(), marginTop: 12 }}>
+                这些判断合在一起，意味着第二轮不需要再回头争论“主题到底是什么”，而可以把精力放在怎样沿着这条已经成立的结构语言继续 refinement。
+              </div>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Left</div>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>这次选择如何影响下一轮</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>下一轮会如何受到这次选择的影响</div>
               <div style={smallBodyStyle()}>
                 到这里，下一轮变化的重点就不再是“鱼和荷要不要继续出现”，而是围绕已经确认的结构语言，继续调整密度、开合、重心和表面节奏。系统会保留这条纵向有机骨架的主线，再沿着更清楚、更柔和或更开阔的方向继续 refinement。
@@ -875,15 +1002,16 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
             </div>
 
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Right</div>
+              <div style={{ color: '#53d769', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.92, fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" }}>Agent 第n轮成果交付</div>
               <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>沿同一条主线继续 refinement</div>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
                 {[
-                  ['Direction A｜骨架更清楚', '保持纵向格构语言，进一步提升主路径和骨架的可读性。'],
-                  ['Direction B｜骨架保留，但更柔和', '保留纵向骨架和路径关系，但减少结构的硬感，让组织更自然地长出来。'],
-                  ['Direction C｜更开放的纵向场', '保持有机 lattice 的核心，同时把局部骨架稍微打开，增加呼吸和留白。'],
-                ].map(([title, body], index) => (
+                  ['Direction A｜纵向结构显影', '让骨架更清楚，主体更多通过结构节奏成立。', lotusVerticalOrganicLattice2],
+                  ['Direction B｜柔化的格构生长', '保留骨架关系，让组织更柔和、更像自然生长。', lotusVerticalOrganicLattice3],
+                  ['Direction C｜打开的罩顶格场', '打开局部单元关系，让留白和呼吸感更明显。', lotusVerticalOrganicLattice4],
+                ].map(([title, body, src], index) => (
                   <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${140 + index * 60}ms` }}>
+                    <div className="narrative-media" style={{ ...mediaFrame(src as string, 'center'), aspectRatio: '1 / 0.82', marginBottom: 12 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.75 }}>{body}</div>
                   </div>

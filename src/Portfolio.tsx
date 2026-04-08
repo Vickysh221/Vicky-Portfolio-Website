@@ -63,9 +63,9 @@ const projects: Project[] = [
     color: "#8b7db5",
     route: "/agentic-design-development",
     subPages: [
-      { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "I" },
-      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "II" },
-      { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "III" },
+      { route: "/agentic-design-development/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "I" },
+      { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "II" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "III" },
     ],
   },
   {
