@@ -62,7 +62,7 @@ export interface PageMeta {
 
 export const PAGE_META: Record<string, PageMeta> = {
   "/jidu-hmi": {
-    title: "JIDU HMI 辅助驾驶体验设计",
+    title: "座舱 HMI 设计",
     subtitle: "JIDU Automotive · ADAS HMI Design",
     year: "2022–2024",
     desc: "Designed the 3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU's in-car HMI. Prototyped directly in Unity3D.",
