@@ -2,12 +2,12 @@ import type { CSSProperties } from 'react';
 import { VideoWithStatus } from '../components/MediaWithStatus';
 import type { SectionData } from './H5DocContentSlideFactory';
 
-import christmasEveVideo from '../images/companions/christmas eve.mov';
-import greenVideo from '../images/companions/green-1.mov';
-import neverOneVideo from '../images/companions/never1-1(1).mov';
-import neverTwoVideo from '../images/companions/never2-1.mov';
-import nightcarVideo from '../images/companions/nightcar-1.mov';
-import submarineVideo from '../images/companions/submarine-1.mov';
+import christmasEveVideo from '../images/companions/christmas eve.mp4';
+import greenVideo from '../images/companions/green-1.mp4';
+import neverOneVideo from '../images/companions/never1-1(1).mp4';
+import neverTwoVideo from '../images/companions/never2-1.mp4';
+import nightcarVideo from '../images/companions/nightcar-1.mp4';
+import submarineVideo from '../images/companions/submarine-1.mp4';
 
 type CompanionSlide = {
   title: string;
@@ -55,6 +55,7 @@ function videoFrameStyle(): CSSProperties {
     overflow: 'hidden',
     background: 'rgba(10,8,6,0.92)',
     boxShadow: '0 18px 40px rgba(0,0,0,0.18)',
+    aspectRatio: '1 / 1',
   };
 }
 
@@ -78,7 +79,7 @@ export function getPersonalCompanionsSlideSections(accentColor: string, slideInd
       blocks: [
         <div style={videoFrameStyle()}>
           <VideoWithStatus
-            sources={[{ src: slide.src, type: 'video/quicktime' }]}
+            sources={[{ src: slide.src, type: 'video/mp4' }]}
             muted
             autoPlay
             loop
@@ -86,8 +87,10 @@ export function getPersonalCompanionsSlideSections(accentColor: string, slideInd
             playsInline
             style={{
               width: '100%',
+              height: '100%',
               display: 'block',
               background: '#050403',
+              objectFit: 'cover',
             }}
           />
         </div>,
@@ -95,7 +98,7 @@ export function getPersonalCompanionsSlideSections(accentColor: string, slideInd
           {slide.note}
         </p>,
         <p style={{ ...noteStyle(), fontSize: '14px', color: '#8f816c', marginTop: '10px' }}>
-          当前页面直接打包原始 MOV 资源。Vite build 可以稳定输出文件；若个别浏览器对该 MOV 编码支持不足，视频区域会显示加载失败提示。
+          视频已转为更适合网页播放的 H.264 MP4，优先保证浏览器内联播放和构建兼容性。
         </p>,
       ],
     },
