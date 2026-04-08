@@ -207,12 +207,19 @@ function SlideContent({
   showExpandHint?: boolean;
 }) {
   const meta = PAGE_META[route];
+  const rootScrollRef = useRef<HTMLDivElement>(null);
   if (!meta) return null;
 
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
   const isReadingMode = !!isExpanded && !isMobile;
   const shouldScrollTitleBlock = !!isExpanded;
+
+  useEffect(() => {
+    if (!isReadingMode) return;
+    rootScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [isReadingMode, slideIndex]);
+
   const titleBlock = (
     <div
       style={{
@@ -280,6 +287,7 @@ function SlideContent({
 
   return (
     <div
+      ref={rootScrollRef}
       className={isReadingMode ? 'portfolio-scroll' : undefined}
       style={{
         width: '100%',
@@ -373,7 +381,13 @@ function SlideContent({
       >
         {shouldScrollTitleBlock && titleBlock}
         {hasSectionContent(route, slideIndex) ? (
-          <H5DocContent route={route} accentColor={accentColor} slideIndex={slideIndex} isMobile={isMobile} />
+          <H5DocContent
+            route={route}
+            accentColor={accentColor}
+            slideIndex={slideIndex}
+            isMobile={isMobile}
+            enableNarrativeMotion={isReadingMode && isActive}
+          />
         ) : (
           <div
             style={{

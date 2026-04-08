@@ -25,7 +25,6 @@ import { getPhoenixFuliPlusSlide03Sections } from './H5DocContentPhoenixFuliPlus
 import { getPhoenixFuliPlusSlide04Sections } from './H5DocContentPhoenixFuliPlusSlide04';
 import { getPhoenixFuliPlusSlide05Sections } from './H5DocContentPhoenixFuliPlusSlide05';
 import { getPhoenixFuliPlusSlide06Sections } from './H5DocContentPhoenixFuliPlusSlide06';
-import { getPhoenixFuliPlusSlide07Sections } from './H5DocContentPhoenixFuliPlusSlide07';
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
@@ -34,12 +33,14 @@ import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalL
 import { getPersonalLanguageDiarySlide04Sections } from './H5DocContentPersonalLanguageDiarySlide04';
 import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
 import type { SectionData } from './H5DocContentSlideFactory';
+import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 
 interface H5DocContentProps {
   route: string;
   accentColor: string;
   slideIndex?: number;
   isMobile?: boolean;
+  enableNarrativeMotion?: boolean;
 }
 
 function sectionTitleStyle(): CSSProperties {
@@ -86,7 +87,6 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
   '/web-design-develop/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
   '/web-design-develop/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
-  '/web-design-develop/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
@@ -94,7 +94,6 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
   '/agentic-design-development/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
   '/agentic-design-development/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
-  '/agentic-design-development/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
@@ -106,6 +105,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
+  if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
   return `${route}:${slideIndex}` in sectionMap;
 }
 
@@ -123,7 +123,25 @@ function H5Section({ section, accentColor }: { section: SectionData; accentColor
   );
 }
 
-export default function H5DocContent({ route, accentColor, slideIndex = 0, isMobile }: H5DocContentProps) {
+export default function H5DocContent({
+  route,
+  accentColor,
+  slideIndex = 0,
+  isMobile,
+  enableNarrativeMotion,
+}: H5DocContentProps) {
+  if (hasFuliPlusCaseStudy(route, slideIndex)) {
+    return (
+      <FuliPlusCaseStudy
+        route={route}
+        accentColor={accentColor}
+        slideIndex={slideIndex}
+        isMobile={isMobile}
+        enableMotion={enableNarrativeMotion}
+      />
+    );
+  }
+
   const getter = sectionMap[`${route}:${slideIndex}`];
   if (!getter) return null;
 

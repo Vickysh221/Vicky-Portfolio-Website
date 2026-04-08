@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import ChapterArrowButton from '../components/ChapterArrowButton';
@@ -294,6 +294,7 @@ function PanelContent({
   onNavigateAway?: () => void;
 }) {
   const meta = PAGE_META[route];
+  const rootScrollRef = useRef<HTMLDivElement>(null);
   if (!meta) return null;
   const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
 
@@ -301,6 +302,12 @@ function PanelContent({
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
   const isReadingMode = isExpanded && !isMobile;
   const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
+
+  useEffect(() => {
+    if (!isReadingMode) return;
+    rootScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [isReadingMode, route]);
+
   const titleBlock = (
     <div
       style={{
@@ -368,6 +375,7 @@ function PanelContent({
 
   return (
     <div
+      ref={rootScrollRef}
       className={isReadingMode ? 'portfolio-scroll' : undefined}
       style={{
         width: '100%',
@@ -470,7 +478,12 @@ function PanelContent({
             </div>
           </>
         ) : isBTypeSubPage ? (
-          <H5DocContent route={route} accentColor={accentColor} isMobile={isMobile} />
+          <H5DocContent
+            route={route}
+            accentColor={accentColor}
+            isMobile={isMobile}
+            enableNarrativeMotion={isReadingMode}
+          />
         ) : (
           <div
             style={{
