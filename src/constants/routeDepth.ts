@@ -62,14 +62,14 @@ export interface PageMeta {
 
 export const PAGE_META: Record<string, PageMeta> = {
   "/jidu-hmi": {
-    title: "JIDU HMI 辅助驾驶体验设计",
+    title: "智能座舱 HMI 设计",
     subtitle: "JIDU Automotive · ADAS HMI Design",
     year: "2022–2024",
     desc: "Designed the 3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU's in-car HMI. Prototyped directly in Unity3D.",
     parent: null,
     color: "#c8a96e",
     subPages: [
-      { route: "/jidu-hmi/unity3d-camera", label: "3D地图一镜到底系统", numeral: "I" },
+      { route: "/jidu-hmi/unity3d-camera", label: "Seamless 3D Map Camera System", numeral: "I" },
       { route: "/jidu-hmi/3d-map", label: "2/3D地图融合策略概念", numeral: "II" },
       { route: "/jidu-hmi/avp", label: "AVP自动泊车体设计和原型开发", numeral: "III" },
       { route: "/jidu-hmi/dashboard-layout", label: "驾驶区布局和驾驶状态原型设计", numeral: "IV" },
@@ -79,7 +79,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     ],
   },
   "/jidu-hmi/unity3d-camera": {
-    title: "3D地图一镜到底系统",
+    title: "Seamless 3D Map Camera System",
     subtitle: "JIDU HMI · Camera Architecture",
     year: "2022–2024",
     desc: "Multi-state virtual camera rig for 3D navigation maps — lens interruption logic, spatial continuity across driving modes, and dynamic FOV transitions.",

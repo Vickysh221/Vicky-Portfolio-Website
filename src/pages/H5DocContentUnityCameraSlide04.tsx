@@ -16,54 +16,54 @@ function Accent({ color }: { color: string }) {
 export function getUnityCameraSlide04Sections(accentColor: string): SectionData[] {
   return [
     {
-      id: 'camera-params', numeral: '03', title: '相机参数空间变化', blocks: [<>        
-        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 12 }}>— 「一镜到底」的实现原理</p>
-        <p style={paragraphStyle()}><strong style={{ color: '#efe4d0' }}>主视图竞争的结果不是「切镜头」，而是参数目标的覆盖。</strong>通过镜头参数的连续变化而非离散动画状态，实现镜头之间的平滑过渡。</p>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机模式</h2>
-        <p style={paragraphStyle()}>在大部分镜头下，相机看向「自车默认焦点」或「一个被偏移过的焦点」，并与自车保持相对固定的空间位置关系。其效果为：在固定运镜状态下，自车在屏幕上的显示恒定不变。</p>
+      id: 'camera-params', numeral: '03', title: 'Camera Parameter Space and Transitions', blocks: [<>        
+        <p style={{ ...paragraphStyle(), color: '#6a5a40', fontSize: '13px', marginBottom: 12 }}>— How the seamless single-take camera is implemented</p>
+        <p style={paragraphStyle()}><strong style={{ color: '#efe4d0' }}>The result of primary-view competition is not a hard camera cut, but an override of target parameters.</strong> Smooth transitions are achieved through continuous parameter interpolation rather than discrete animation states.</p>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Camera Mode</h2>
+        <p style={paragraphStyle()}>In most camera states, the camera looks toward either the ego vehicle&apos;s default focal point or an offset focal point while maintaining a relatively fixed spatial relationship to the vehicle. The result is that, within a given motion state, the vehicle remains visually stable on screen.</p>
           <div style={mediaBlockStyle()}>
             <ImageWithStatus
               src={unityCameraSlide02Image02}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
+              alt="Relative position between camera and ego vehicle" 
             />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 3-1 相机与自车相对位置关系</div>
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>Fig. 3-1 Relative position between camera and ego vehicle</div>
           </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />选择该相机模式的原因</h2>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Why This Camera Mode</h2>
         <ul style={{ margin: '0 0 12px', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
-          {['在人机共驾地图的特定驾驶 / 车辆功能下，需给定看车模、地图场景的视角以使特定功能较好实现。', '在车机环境中，不提倡使用灵活度较高的相机，以免导致驾驶过程中不良的视觉体验和功能体验。'].map((t) => (
+          {['Specific driving and vehicle functions within the shared human-machine map require predefined views of the vehicle model and map scene to support clear task execution.', 'In an in-vehicle environment, highly flexible free cameras are intentionally avoided because they can create unstable visual and functional experiences while driving.'].map((t) => (
             <li key={t} style={{ color: '#a99679', fontSize: '16px', lineHeight: 1.8, display: 'flex', gap: 8 }}>
               <span style={{ color: accentColor }}>—</span>
               <span>{t}</span>
             </li>
           ))}
         </ul>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />镜头事件的通用触发和流转机制</h2>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Generic Triggering and Transition Logic</h2>
         <div style={mediaBlockStyle()}>
             <ImageWithStatus
               src={unityCameraSlide02Image03}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
+              alt="Generic camera event trigger flow" 
             />
           </div>
                  <div style={mediaBlockStyle()}>
             <ImageWithStatus
               src={unityCameraSlide02Image04}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }} 
-              alt="行车事件示意图" 
+              alt="Driving event priority arbitration" 
             />
-            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 2-1 行车事件优先级仲裁关系</div>
+            <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>Fig. 2-1 Driving event priority arbitration</div>
           </div>
       </>],
     },
     {
       id: 'unity-camera-simulation',
       numeral: '04',
-      title: '在 Unity 中对相机进行模拟设计',
+      title: 'Camera System Simulation in Unity',
       blocks: [
         <>
-          <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机的过渡和打断策略</h2>
-          <p style={paragraphStyle()}>通过统一的镜头状态与优先级规则，实现不同驾驶事件间的平滑过渡与可控打断。</p>
+          <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Transition and Interruption Strategy</h2>
+          <p style={paragraphStyle()}>A unified camera-state model and shared priority rules enable smooth transitions and controlled interruptions across different driving events.</p>
           <div style={mediaBlockStyle()}>
             <VideoWithStatus
               sources={[
@@ -73,12 +73,12 @@ export function getUnityCameraSlide04Sections(accentColor: string): SectionData[
               ]}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }}
               controls
-              title="相机的过渡和打断策略"
+              title="Camera transition and interruption strategy"
             />
           </div>
 
-          <h2 style={h2Style(accentColor)}><Accent color={accentColor} />相机的参数调节</h2>
-          <p style={paragraphStyle()}>通过位置、朝向与焦点等参数联动，持续优化不同场景下的视角表达与信息可读性。</p>
+          <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Camera Parameter Tuning</h2>
+          <p style={paragraphStyle()}>By coordinating position, orientation, and focal targets, the system continuously optimizes viewpoint expression and information readability across scenarios.</p>
           <div style={mediaBlockStyle()}>
             <VideoWithStatus
               sources={[
@@ -88,7 +88,7 @@ export function getUnityCameraSlide04Sections(accentColor: string): SectionData[
               ]}
               style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed ${accentColor}66`, background: 'rgba(255,255,255,0.01)' }}
               controls
-              title="相机的参数调节"
+              title="Camera parameter tuning"
             />
           </div>
         </>,

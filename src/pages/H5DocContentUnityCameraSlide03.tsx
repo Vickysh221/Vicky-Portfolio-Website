@@ -19,9 +19,9 @@ function Accent({ color }: { color: string }) {
 
 function ParkingEventList({ accentColor }: { accentColor: string }) {
   const items = [
-    { cat: '车辆状态类', examples: '充电状态' },
-    { cat: '组件交互联动类', examples: '车门窗控件、故障标识' },
-    { cat: '车模交互类', examples: '轮胎胎温胎压、开门指令、故障位置点击' },
+    { cat: 'Vehicle status', examples: 'Charging status' },
+    { cat: 'Component-linked interactions', examples: 'Door and window controls, fault indicators' },
+    { cat: 'Vehicle-model interactions', examples: 'Tire temperature/pressure, door-open commands, tapping fault locations' },
   ];
 
   return (
@@ -39,14 +39,14 @@ function ParkingEventList({ accentColor }: { accentColor: string }) {
 export function getUnityCameraSlide03Sections(accentColor: string): SectionData[] {
   return [
     {
-      id: 'view-examples', numeral: '04', title: '3D 地图视图呈现', blocks: [<>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />行车运镜视角示例</h2>
+      id: 'view-examples', numeral: '04', title: '3D Map View Examples', blocks: [<>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Driving Camera View Examples</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
           {[
-            { label: '手动驾驶默认视角', img: slide03Img01 },
-            { label: 'AVP 自动泊入视角', img: slide03Img02 },
-            { label: '辅助驾驶自动变道视角', img: slide03Img03 },
-            { label: '导航驾驶视角', img: slide03Img04 }
+            { label: 'Manual driving default view', img: slide03Img01 },
+            { label: 'AVP automated parking-in view', img: slide03Img02 },
+            { label: 'ADAS automatic lane-change view', img: slide03Img03 },
+            { label: 'Navigation driving view', img: slide03Img04 }
           ].map((item, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <ImageWithStatus
@@ -54,37 +54,37 @@ export function getUnityCameraSlide03Sections(accentColor: string): SectionData[
                 style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}
                 alt={item.label}
               />
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 4-{i + 1} {item.label}</div>
+              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>Fig. 4-{i + 1} {item.label}</div>
             </div>
           ))}
         </div>
       </>],
     },
     {
-      id: 'parking', numeral: '05', title: '驻车运镜', blocks: [<>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车镜头的设计</h2>
-        <p style={paragraphStyle()}>在驻车模式下，镜头往往服务于特定功能下的车模交互、车辆整体或部件的状态展示，镜头更聚焦于车身或车身某一定点，因此采取更聚焦的镜头。默认 P 档镜头需兼顾车身和周遭环境。</p>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件</h2>
-        <p style={{ ...paragraphStyle(), marginBottom: 6 }}>驻车事件分为三个状态大类：</p>
+      id: 'parking', numeral: '05', title: 'Parking Camera Logic', blocks: [<>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Parking Camera Design</h2>
+        <p style={paragraphStyle()}>In parking mode, the camera primarily supports vehicle-model interaction, whole-vehicle status review, or component-level state inspection within specific functions. The framing therefore becomes more focused on the vehicle body or a target point on the vehicle. The default P-gear view still needs to balance vehicle visibility with awareness of the surrounding environment.</p>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Parking Events</h2>
+        <p style={{ ...paragraphStyle(), marginBottom: 6 }}>Parking events are grouped into three high-level state categories:</p>
         <ParkingEventList accentColor={accentColor} />
-        <p style={{ ...paragraphStyle(), marginTop: 12 }}>典型场景包括：3D 场景配合的场景演示、伴随车控车设内用户查看功能说明、用户查看里程能耗与充电状态、用户与 3D 场景组件交互（触发开门 / 查看胎温胎压 / 点击故障位置标识）。</p>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车事件优先级规则</h2>
-        <p style={paragraphStyle()}>在车辆状态镜头系统中同样存在镜头优先级仲裁策略。若车身同时出现多个异常状态或充电状态叠加，则选择优先级更高的事件镜头进行展示。</p>
+        <p style={{ ...paragraphStyle(), marginTop: 12 }}>Typical scenarios include guided demonstrations within the 3D scene, feature explanation flows linked to vehicle controls and settings, reviewing range/energy/charging states, and interacting directly with 3D scene components such as triggering door-open actions, checking tire temperature and pressure, or tapping fault markers.</p>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Parking Event Priority Rules</h2>
+        <p style={paragraphStyle()}>The vehicle-status camera system also relies on priority arbitration. When multiple abnormal states or charging states appear simultaneously, the higher-priority event view is selected for presentation.</p>
         <div style={mediaBlockStyle()}>
           <ImageWithStatus
             src={slide03Img05}
             style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}
-            alt="驻车事件触发来源概览和优先级仲裁关系"
+            alt="Parking event sources and priority arbitration overview"
           />
-          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>图 5-2 驻车事件触发来源概览和优先级仲裁关系</div>
+          <div style={{ marginTop: 8, color: '#7f6f55', fontSize: '13px' }}>Fig. 5-2 Parking event sources and priority arbitration</div>
         </div>
-        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />驻车运镜视角示例</h2>
+        <h2 style={h2Style(accentColor)}><Accent color={accentColor} />Parking Camera View Examples</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, margin: '12px 0' }}>
           {[
-            { label: '传感器 L1 异常故障查看视角', img: slide03Img07 },
-            { label: '车门 R1 异常故障查看视角', img: slide03Img08 },
-            { label: '充电视角', img: slide03Img09 },
-            { label: '胎温胎压异常视角', img: slide03Img10 }
+            { label: 'Sensor L1 fault inspection view', img: slide03Img07 },
+            { label: 'Door R1 fault inspection view', img: slide03Img08 },
+            { label: 'Charging view', img: slide03Img09 },
+            { label: 'Tire temperature and pressure alert view', img: slide03Img10 }
           ].map((item, i) => (
             <div key={i} style={mediaBlockStyle()}>
               <ImageWithStatus
@@ -92,7 +92,7 @@ export function getUnityCameraSlide03Sections(accentColor: string): SectionData[
                 style={{ width: '100%', height: 'auto', borderRadius: '5px', border: `1px dashed rgba(200,169,110,0.28)`, background: 'rgba(255,255,255,0.01)' }}
                 alt={item.label}
               />
-              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>图 5-{i + 3} {item.label}</div>
+              <div style={{ marginTop: 6, color: '#7f6f55', fontSize: '13px' }}>Fig. 5-{i + 3} {item.label}</div>
             </div>
           ))}
         </div>
