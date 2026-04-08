@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import fuliHeroImage from '../images/fuli/slide01-img01.png';
 import fuliSystemImage from '../images/fuli/slide02-img01.png';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 6;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 7;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -17,6 +17,8 @@ type VisualBlock =
   | { type: 'problemGrid'; title?: string; items: { title: string; body: string; crop?: string }[] }
   | { type: 'beforeAfter'; title?: string; before: string[]; after: string[] }
   | { type: 'pipeline'; title?: string; stages: string[] }
+  | { type: 'case05FirstRound' }
+  | { type: 'case05SelectionConvergence' }
   | { type: 'referenceImageGrid'; title?: string; items: { label: string; body: string; crop: string }[] }
   | { type: 'semanticBuckets'; title?: string; items: { title: string; body: string }[] }
   | { type: 'roleCompare'; title?: string; left: { title: string; body: string }; right: { title: string; body: string } }
@@ -27,6 +29,7 @@ type VisualBlock =
   | { type: 'appendixC' };
 
 interface CaseStudyPage {
+  pageId?: string;
   pageTitle: string;
   pageGoal: string;
   mainCopy: string;
@@ -89,30 +92,6 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: '用户与Agent共创地毯设计方向',
-    pageGoal: '让读者看到你对问题的重新定义。',
-    mainCopy:
-      '每张生成的地毯图样背后都有一套参数槽位系统，负责把用户语言、参考图里的主体线索，以及 rug 本身的视觉与工艺逻辑，翻译成一个可以继续推进的参数化方向。',
-    contentBlocks: [
-      {
-        type: 'shortParagraphs',
-        title: '问题重定义',
-        items: [
-          '客户想要“再来几张”是要“朝更对的方向再延伸一点”。',
-          '系统需要处理的是方向空间的建立、比较与收敛，而不是一次性生成。',
-        ],
-      },
-    ],
-    visualBlocks: [
-      {
-        type: 'beforeAfter',
-        title: '流程对照',
-        before: ['输入', 'prompt', '出图'],
-        after: ['输入', '语义解释', '方向生成', '用户选择', '继续优化'],
-      },
-    ],
-  },
-  {
     pageTitle: '项目被重构成一个两阶段的 AI 协作工作流',
     pageGoal: '清楚展示系统框架。',
     mainCopy:
@@ -131,6 +110,32 @@ const pages: CaseStudyPage[] = [
       {
         type: 'pipeline',
         stages: ['输入（文本 / 参考图 / 混合输入 / 用户反馈）', '第一阶段：方向规划', '3 个初始方向', '用户选择', '第二阶段：受控变体', 'case 累积与回流'],
+      },
+    ],
+  },
+  {
+    pageId: 'case05-first-round-expansion',
+    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
+    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
+    mainCopy:
+      '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05FirstRound',
+      },
+    ],
+  },
+  {
+    pageId: 'case05-selection-and-convergence',
+    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
+    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
+    mainCopy:
+      '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05SelectionConvergence',
       },
     ],
   },
@@ -563,6 +568,204 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           </div>
         </div>
       );
+    case 'case05FirstRound': {
+      const directionCards = [
+        {
+          title: 'Warm Cluster Drift',
+          body: '更偏聚簇的组织方式，把鱼与荷的意向压进较温和的团簇节奏里。',
+          crop: '16% 34%',
+          highlight: false,
+        },
+        {
+          title: 'Vertical Organic Lattice',
+          body: '更强调纵向路径和有机骨架，主体由结构节奏而不是题材描画来成立。',
+          crop: '52% 40%',
+          highlight: true,
+        },
+        {
+          title: 'Leaf-and-Current Field',
+          body: '更偏场域与流动，鱼与荷退到背景，留下更连续的叶片与水流关系。',
+          crop: '78% 44%',
+          highlight: false,
+        },
+      ];
+
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 20px' : '22px 22px 24px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 12,
+              alignItems: 'start',
+            }}
+          >
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户输入</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 10 }}>Case05｜Fish and Lotus</div>
+              <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, 'center'), aspectRatio: isMobile ? '1.18 / 1' : '1 / 1.08', marginBottom: 12 }} />
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
+                {['Reference image', 'Theme cue', 'Initial intent'].map((tag) => (
+                  <span key={tag} style={{ padding: '5px 9px', borderRadius: 999, border: '1px solid rgba(200,169,110,0.1)', color: '#a9987f', fontSize: 11, letterSpacing: '0.04em' }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div style={smallBodyStyle()}>
+                用户带来的起点并不是一份清晰的 brief，而是一张参考图和一个模糊但真实的期待：保留鱼与荷的意向，同时把画面从“题材”转成更适合地毯的组织方式。
+              </div>
+            </div>
+
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>语义解释</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>系统如何理解这个输入</div>
+              <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
+                {[
+                  ['母体来源', '鱼 + 荷'],
+                  ['转化重点', '从题材走向结构'],
+                  ['设计目标', '找到更适合 rug 的主体成立方式'],
+                ].map(([label, value]) => (
+                  <div key={label} className="narrative-card" style={{ borderRadius: 14, padding: '10px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+                    <div style={{ color: '#9b8a72', fontSize: 11, letterSpacing: '0.08em', marginBottom: 4 }}>{label}</div>
+                    <div style={{ color: '#efe4d0', fontSize: 14, lineHeight: 1.5 }}>{value}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={smallBodyStyle()}>
+                系统没有直接把“鱼和荷”当成要描绘的对象，而是先把它们理解成一个母体来源：一部分来自鱼与水流的动势，一部分来自荷叶和植物单元的结构感。接下来的关键，不是“画得像不像”，而是决定这个主题是通过聚散、路径、网络，还是更清晰的垂直结构来成立。
+              </div>
+            </div>
+
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮输出</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>第一轮方向展开</div>
+              <div style={{ ...smallBodyStyle(), marginBottom: 14 }}>
+                从同样的输入出发，系统没有生成三张轻微不同的图，而是明确展开了三种不同的组织方法：更聚簇的、更加结构化的、以及更偏场域与流动的。这样，用户面对的就不再是“选哪张更好看”，而是“我更认同哪一种主体成立方式”。
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
+                {directionCards.map((card, index) => (
+                  <div
+                    key={card.title}
+                    className="narrative-card"
+                    style={{
+                      borderRadius: 16,
+                      padding: '8px 8px 12px',
+                      border: card.highlight ? '1px solid rgba(200,169,110,0.2)' : '1px solid rgba(200,169,110,0.08)',
+                      background: card.highlight ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.016)',
+                      boxShadow: card.highlight ? '0 0 0 1px rgba(200,169,110,0.08), 0 10px 28px rgba(0,0,0,0.16)' : undefined,
+                      transform: !isMobile && card.highlight ? 'translateY(-4px)' : undefined,
+                      transitionDelay: `${120 + index * 70}ms`,
+                    }}
+                  >
+                    <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, card.crop), aspectRatio: '0.9 / 1', marginBottom: 10 }} />
+                    <div style={{ color: '#f0e8d8', fontSize: 14, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 12, lineHeight: 1.65 }}>{card.body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', minHeight: isMobile ? undefined : 420 }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮的意义</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
+              <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.015)', padding: '14px 14px 12px', marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: accentColor, fontSize: 13, marginBottom: 8 }}>
+                  <span>题材</span>
+                  <span>→</span>
+                  <span>结构</span>
+                  <span>→</span>
+                  <span>可比较方向</span>
+                </div>
+                <div style={{ color: '#98886f', fontSize: 12, lineHeight: 1.7 }}>从“鱼与荷是什么”过渡到“主体如何成立”。</div>
+              </div>
+              <div style={smallBodyStyle()}>
+                第一轮的任务不是直接命中最终结果，而是把同一个主题展开成几个真正可比较的方向。到这一步，系统开始帮助用户看见方向空间：哪些版本更依赖题材，哪些更依赖结构，哪些更适合作为后续 refinement 的起点。
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    case 'case05SelectionConvergence':
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 20px' : '22px 22px 24px', display: 'grid', gap: 12 }}>
+          <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.14)', background: 'rgba(255,255,255,0.022)' }}>
+            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Top Block｜选中方向二</div>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr', gap: 14, alignItems: 'center' }}>
+              <div className="narrative-media" style={{ ...mediaFrame(fuliHeroImage, '52% 40%'), aspectRatio: isMobile ? '1.15 / 1' : '1.35 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
+              <div style={{ color: '#efe4d0', fontSize: isMobile ? 18 : 22, lineHeight: 1.55 }}>
+                在这个案例里，用户选中的并不只是“第二张图更好看”，而是一种更适合继续推进的成立方式。
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Left</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>这次选择让系统确认了什么</div>
+              <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', padding: '12px 12px 10px', marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: accentColor, fontSize: 13 }}>
+                  <span>题材意向</span>
+                  <span>→</span>
+                  <span>纵向结构</span>
+                </div>
+              </div>
+              <div style={smallBodyStyle()}>
+                相比另外两个方向，这一版把鱼与荷从可辨认的题材意向，进一步转成了更明确的纵向结构和有机骨架。用户真正认可的，是一个通过结构节奏建立主体的方向：鱼与荷仍然存在，但它们更多作为结构来源，而不是直接被描绘的对象。
+              </div>
+            </div>
+
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Middle Right</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>系统开始收束下来的判断</div>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
+                {[
+                  ['主体如何成立', '通过结构节奏来建立主体，而不是通过具体形象来建立主体。'],
+                  ['图案如何组织', '纵向路径和有机骨架开始成为更稳定的组织主线。'],
+                  ['为什么适合继续做', '这一方向更容易继续 refinement，因为接下来可以调整的是密度、开合、重心和表面节奏，而不必重新定义主题。'],
+                ].map(([title, body], index) => (
+                  <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${100 + index * 60}ms` }}>
+                    <div style={{ color: '#f0e8d8', fontSize: 15, lineHeight: 1.35, marginBottom: 8 }}>{title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 13, lineHeight: 1.75 }}>{body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Left</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>下一轮会如何受到这次选择的影响</div>
+              <div style={smallBodyStyle()}>
+                到这里，下一轮变化的重点就不再是“鱼和荷要不要继续出现”，而是围绕已经确认的结构语言，继续调整密度、开合、重心和表面节奏。系统会保留这条纵向有机骨架的主线，再沿着更清楚、更柔和或更开阔的方向继续 refinement。
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, color: accentColor, fontSize: 13 }}>
+                <span>selected direction</span>
+                <span>→</span>
+                <span>refinement variables</span>
+              </div>
+            </div>
+
+            <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>Bottom Right</div>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.3, marginBottom: 12 }}>沿同一条主线继续 refinement</div>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
+                {[
+                  ['Direction A｜骨架更清楚', '保持纵向格构语言，进一步提升主路径和骨架的可读性。'],
+                  ['Direction B｜骨架保留，但更柔和', '保留纵向骨架和路径关系，但减少结构的硬感，让组织更自然地长出来。'],
+                  ['Direction C｜更开放的纵向场', '保持有机 lattice 的核心，同时把局部骨架稍微打开，增加呼吸和留白。'],
+                ].map(([title, body], index) => (
+                  <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${140 + index * 60}ms` }}>
+                    <div style={{ color: '#f0e8d8', fontSize: 15, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
+                    <div style={{ color: '#ac9c83', fontSize: 13, lineHeight: 1.75 }}>{body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     case 'referenceImageGrid':
       return (
         <div style={blockPanel}>
@@ -935,7 +1138,7 @@ export default function FuliPlusCaseStudy({
   const page = pages[slideIndex];
 
   return (
-    <div style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
+    <div id={page.pageId} style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
       <IntroReveal
         pageIndex={slideIndex}
         pageTitle={page.pageTitle}

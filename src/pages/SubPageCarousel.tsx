@@ -731,11 +731,13 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
       >
         {Array.from({ length: count }, (_, i) => {
           const offset = i - activeIndex;
-          const tx = offset * 860;
+          const absOffset = Math.abs(offset);
+          const tx = offset * 840;
           const tz = -Math.abs(offset) * 300;
           const ry = -offset * 25;
           const op = mounted ? Math.max(0.15, 1 - Math.abs(offset) * 0.35) : 0;
           const isActive = i === activeIndex;
+          const scale = isActive ? 1.16 : absOffset === 1 ? 0.78 : 0.64;
           const isVisible = Math.abs(offset) <= 2;
 
           if (!isVisible) return null;
@@ -750,7 +752,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
                 top: 'calc(50% - 340px)',
                 width: '820px',
                 height: '680px',
-                transform: `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg)`,
+                transform: `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`,
                 opacity: op,
                 transition: mounted
                   ? 'transform 0.65s cubic-bezier(0.16,1,0.3,1), opacity 0.65s cubic-bezier(0.16,1,0.3,1)'
