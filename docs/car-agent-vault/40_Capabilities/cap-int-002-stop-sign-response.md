@@ -1,38 +1,38 @@
 ---
 type: capability
 sheet: 02_Capability_Taxonomy
-capabilityid: "CAP-PRK-001"
-一级域: "泊车"
-二级域: "搜索"
-capability_名称: "Parking Slot Search"
-描述: "找车位"
+capabilityid: "CAP-INT-002"
+一级域: "辅助驾驶"
+二级域: "路口"
+capability_名称: "Stop Sign Response"
+描述: "响应停牌"
 触发方式: "系统执行"
 是否可学习个性化: "否"
-默认风险级别: "中"
-prototype_备注: "可被语音触发"
+默认风险级别: "高"
+prototype_备注: "保守策略"
 ---
 
-# Parking Slot Search
+# Stop Sign Response
 
 ## CapabilityID
 
-CAP-PRK-001
+CAP-INT-002
 
 ## 一级域
 
-泊车
+辅助驾驶
 
 ## 二级域
 
-搜索
+路口
 
 ## Capability 名称
 
-Parking Slot Search
+Stop Sign Response
 
 ## 描述
 
-找车位
+响应停牌
 
 ## 触发方式
 
@@ -44,8 +44,8 @@ Parking Slot Search
 
 ## 默认风险级别
 
-中
+高
 
 ## Prototype 备注
 
-可被语音触发
+保守策略
