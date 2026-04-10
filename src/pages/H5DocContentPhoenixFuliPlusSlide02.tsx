@@ -57,7 +57,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
   return [
     {
       id: 'demo-video',
-      numeral: '01',
+      numeral: '',
       title: '地毯生成 demo 演示',
       blocks: [
         <>
@@ -75,7 +75,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'background-problem',
-      numeral: '02',
+      numeral: '',
       title: '背景与问题定义',
       blocks: [
         <>
@@ -118,7 +118,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-based-ai-interface',
-      numeral: '03',
+      numeral: '',
       title: 'slot-based AI创意生成界面探索',
       blocks: [
         <>
@@ -134,7 +134,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'product-goals',
-      numeral: '04',
+      numeral: '',
       title: '产品目标',
       blocks: [
         <>
@@ -166,7 +166,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'system-overview',
-      numeral: '05',
+      numeral: '',
       title: '系统机制总览',
       blocks: [
         <>
@@ -186,7 +186,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-system',
-      numeral: '06',
+      numeral: '',
       title: '槽位系统：把模糊审美变成结构化设计语言',
       blocks: [
         <>
@@ -210,7 +210,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'waterfall-exploration',
-      numeral: '07',
+      numeral: '',
       title: '瀑布流探索：不是给答案，而是制造可比较的假设',
       blocks: [
         <>
@@ -241,7 +241,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'feedback-loop',
-      numeral: '08',
+      numeral: '',
       title: '用户反馈闭环：让系统知道问题到底出在哪',
       blocks: [
         <>
@@ -265,7 +265,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'slot-state-machine',
-      numeral: '09',
+      numeral: '',
       title: '槽位状态机：从探索走向收敛',
       blocks: [
         <>
@@ -287,7 +287,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'system-output',
-      numeral: '09',
+      numeral: '',
       title: '系统输出：从 Prompt 升级为“设计状态”',
       blocks: [
         <>
@@ -309,7 +309,7 @@ export function getPhoenixFuliPlusSlide02Sections(accentColor: string): SectionD
     },
     {
       id: 'success-metrics',
-      numeral: '10',
+      numeral: '',
       title: '成功指标',
       blocks: [
         <>

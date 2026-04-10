@@ -116,6 +116,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
   '/agentic-design-development/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
   '/agentic-design-development/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
+  '/agentic-design-development/fuli-plus:9': getPhoenixFuliPlusSlide07Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,

@@ -5,7 +5,7 @@ export function getPhoenixFuliPlusSlide04Sections(accentColor: string): SectionD
   return [
     {
       id: 'two-modes',
-      numeral: '05',
+      numeral: '',
       title: '两种模式：上传图模式 / 语言模式',
       blocks: [
         <>

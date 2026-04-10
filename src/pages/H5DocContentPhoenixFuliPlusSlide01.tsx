@@ -9,7 +9,7 @@ export function getPhoenixFuliPlusSlide01Sections(accentColor: string): SectionD
   return [
     {
       id: 'fuli-plus-concept',
-      numeral: '01',
+      numeral: '',
       title: 'broadcast-video',
       blocks: [
         <>

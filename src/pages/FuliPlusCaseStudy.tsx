@@ -8,7 +8,7 @@ import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 10;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 11;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -21,7 +21,7 @@ type VisualBlock =
   | { type: 'heroImage'; title?: string; src: string; caption: string }
   | { type: 'workflowDiagram'; title?: string; nodes: string[] }
   | { type: 'problemGrid'; title?: string; items: { title: string; body: string; crop?: string }[] }
-  | { type: 'rugJudgmentGrid'; items: { title: string; body: string; diagram: 'abstract' | 'led' | 'surface' | 'refinable' }[]; closing: string }
+  | { type: 'rugJudgmentGrid'; items: { title: string; body: string; src?: string; crop?: string }[] }
   | { type: 'beforeAfter'; title?: string; before: string[]; after: string[] }
   | { type: 'pipeline'; title?: string; stages: string[] }
   | { type: 'case05FirstRound' }
@@ -49,7 +49,7 @@ interface CaseStudyPage {
 
 const pages: CaseStudyPage[] = [
   {
-    pageTitle: '面向地毯生成的AI协作设计系统',
+    pageTitle: '传统用户定制地毯工作流',
     pageGoal: '让读者立刻知道这是一个 AI + 设计系统项目，主题是 rug 定制与设计转化。',
     mainCopy:
       '这个项目试图把用户模糊的语言、参考图里的线索，以及一轮轮反馈里的微小判断，转成可比较、可推进的 rug 设计方向。它关心的不是单次出图，而是怎样让方向生成、选择与 refinement 形成一条能持续工作的路径。',
@@ -79,7 +79,7 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: '项目被重构成一个两阶段的 AI 协作工作流',
+    pageTitle: 'AI流程自动化以提升效率与成交量',
     pageGoal: '清楚展示系统框架。',
     mainCopy:
       '在这个判断之上，项目被重构成一个两阶段系统。第一阶段负责把模糊输入翻译成方向空间，先给出几条足够有差异、但仍在同一问题域内的起点；第二阶段负责沿已选方向继续长，避免每一轮都从头开始。',
@@ -101,10 +101,11 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: '我们需要一个懂地毯，懂品牌的「专家」',
+    pageId: 'professional-rug-designer-judgment',
+    pageTitle: '一个专业的地毯设计师会怎么做？',
     pageGoal: '具体展示为什么 generic image generation 在这个场景里不够用。',
     mainCopy:
-      '生成地毯这件事，难的地方从来不只是“画面漂不漂亮”。很多图单看并不差，但一旦放到地毯这个媒介里，就会显得太像插画、太像装饰画，或者只是把参考图换了一种方式重说一遍。真正的差别在于：一个懂地毯的人，看图时不会只看题材，而会同时判断图案是怎么成立的，结构是不是稳定，表面和工艺有没有真正参与进去，最后这个方向有没有继续往下 refinement 的空间。',
+      '生成地毯这件事，难的地方从来不只是“画面漂不漂亮”。很多图单看并不差，但一旦放到地毯这个媒介里，就会显得太像插画、太像装饰画，或者只是把参考图换了一种方式重说一遍。一个地毯顾问，他会结合意向，品牌审美，材质，空间等因素，来判断一个方向是否符合预期。',
     contentBlocks: [],
     visualBlocks: [
       {
@@ -113,58 +114,26 @@ const pages: CaseStudyPage[] = [
           {
             title: '先别急着看它画了什么',
             body: '鱼、荷叶、石纹、水流，这些都只是入口。真正要判断的是，这些东西最后有没有被整理成图案语言。停在题材上，出来的东西很容易像画；能往结构、单元和节奏里走，才更像地毯。',
-            diagram: 'abstract',
           },
           {
-            title: '我更在意它靠什么成立',
-            body: '有些方向是靠一个 motif 被看见，有些方向靠的是骨架，有些靠的是密度和关系。这一步其实决定了整张 rug 的气质：它是直接、装饰性的，还是更克制、更耐看、要慢慢读出来的。',
-            diagram: 'led',
+            title: '这些意向能被转义成什么地毯设计的语言',
+            body: '有些方向是靠一个图案被看见，有些方向靠的是骨架，有些靠的是密度和关系。这一步其实决定了整张 rug 的气质：它是直接、装饰性的，还是更克制、更耐看、要慢慢读出来的。',
           },
           {
-            title: '地毯的判断，最后一定会落到表面上',
-            body: '边缘软不软，纹理浮不浮，哪些地方该更密、哪些地方该退下去，这些都会改变图案最后的成立方式。所以做 rug 不能只顾着把图案想清楚，还要同时把“它以什么表面出现”想清楚。',
-            diagram: 'surface',
+            title: '地毯艺术是图案和工艺的结合',
+            body: '边缘软不软，纹理浮不浮，哪些地方该更密、哪些地方该退下去，这些都会改变方案。',
           },
           {
-            title: '还要看这个方向能不能继续做',
+            title: '用户偏好的方向上有没有更值得继续探索的空间',
             body: '有些图第一眼很好看，但没有后劲；再做一轮就散。真正好的方向，往往是骨架已经立住、逻辑已经清楚，后面还能继续调密度、调节奏、调重心，而不用每次都重新来过。',
-            diagram: 'refinable',
           },
         ],
-        closing:
-          '地毯设计里，真正重要的判断往往不只落在题材上。画面怎么被组织起来，主体靠什么成立，表面和工艺有没有进入，方向有没有后续 refinement 的空间——这些层一起成立了，一张图才真正开始像一张 rug。',
-      },
-    ],
-  },
-  {
-    pageId: 'case05-first-round-expansion',
-    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
-    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
-    mainCopy:
-      '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'case05FirstRound',
-      },
-    ],
-  },
-  {
-    pageId: 'case05-selection-and-convergence',
-    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
-    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
-    mainCopy:
-      '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'case05SelectionConvergence',
       },
     ],
   },
   {
     pageId: 'semantic-compilation-chain',
-    pageTitle: '模糊语义不是 prompt：它先被编译成三条可比较的方向',
+    pageTitle: '基于地毯生成目标的任务拆解-round 1 方向探索',
     pageGoal: '解释第一轮为什么是方向假设，而不是三张随机图。',
     mainCopy:
       '用户给出的通常不是一份完整 brief，而是一组混合着情绪、场景、审美倾向和局部限制的模糊语义。系统的第一步不是把这些话直接翻成一句 prompt，而是先判断哪些信号已经足够明确，哪些仍然含混，然后围绕同一个输入展开三条可以比较的设计方向。',
@@ -206,7 +175,7 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'direction-weighting-and-rug-language',
-    pageTitle: '从语义方向到地毯语言：每条方向都通过不同的槽位重心成立',
+    pageTitle: '基于地毯生成目标的任务拆解-round n>1 方向收束',
     pageGoal: '把三方向的差异解释成可控的设计维度，而不是同义改写。',
     mainCopy:
       '同一句输入下，三个方向不会平均地改所有变量。系统会给每条方向分配不同的主导维度：有的让 arrangement 先成立，有的把 material feel 拉到前台，有的把 color restraint 和 motif abstraction 作为主轴。这样，差异才不是“看起来有点不同”，而是“成立方式不同”。',
@@ -249,8 +218,60 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
+    pageId: 'case05-first-round-expansion',
+    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
+    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
+    mainCopy:
+      '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05FirstRound',
+      },
+    ],
+  },
+  {
+    pageId: 'case05-selection-and-convergence',
+    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
+    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
+    mainCopy:
+      '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05SelectionConvergence',
+      },
+    ],
+  },
+  {
+    pageTitle: 'Towards an agentic project',
+    pageGoal: '把当前系统从 semantic layer 推进到 agent design 的下一阶段讲清楚。',
+    mainCopy:
+      '当前项目已经从“参数 demo + 最近邻展示”推进到“带有 design state、反馈闭环、真实资产匹配和 early-round probing 实验的机制原型”。这一步最重要的变化不是系统终于“更像一个 agent”了，而是 rug-specific semantic layer 已经逐渐成形：用户输入、参考图、品牌 cue 和多轮反馈，第一次可以被压到同一组可比较、可收束的中间状态里。',
+    contentBlocks: [
+      {
+        type: 'shortParagraphs',
+        items: [
+          '也正因为这层结构开始稳定，agent 的下一步才第一次变得可被精确定义。它不再只是一个会话壳，也不只是负责理解泛化意图，而是要开始承担更清楚的 orchestration 工作：判断当前反馈落在哪个对象层级、区分 lane switch 与 same-lane refinement、识别哪些槽位已经收束成 locked DNA、决定这一轮应继续 exploration 还是进入 second-stage control，并在用户偏好与品牌 DNA 之间组织更稳定的 semantic reinforcement。',
+          '这部分工作的意义，不是回头证明“要不要用 agent”，而是基于现有系统状态，开始设计一个真正服务于 semantic control 的多轮 design agent。技术上，前一阶段已经把 intent recognition、semantic mapping、slot matching、brand cue retrieval 和 variation control 的基础对象做了出来；下一阶段要解决的，是 agent 如何调度这些对象，让一个方向在多轮过程中被持续解释、被策略化推进，并最终收束成更可控的设计判断。',
+        ],
+      },
+      {
+        type: 'bulletCluster',
+        title: '下一步 agent design 不再是泛化助手，而是 semantic orchestration layer',
+        items: [
+          'semantic layer 已经把用户输入、参考图、品牌 cue 和多轮反馈压成可操作的 design state。',
+          'agent 的职责开始清楚：解释当前反馈落点、管理阶段切换、选择 control mode、推动方向逐步收束。',
+          '技术重点不再只是生成更多结果，而是让 retrieval、semantic matching 和 variation control 形成连续的多轮策略层。',
+          '因此，下一阶段不是继续抽象讨论 agent，而是把它具体设计成一个服务于 semantic control 的 design orchestration system。',
+        ],
+      },
+    ],
+    visualBlocks: [],
+  },
+  {
     pageId: 'semantic-cue-brand-reinforcement',
-    pageTitle: 'Semantic cue：把品牌图像变成可调用的语义加强层',
+    pageTitle: 'Appendix A｜Semantic cue：把品牌图像变成可调用的语义加强层',
     pageGoal: '说明品牌图像在 second-stage 中不是做风格迁移，而是作为品牌边界内的 semantic reinforcement。',
     mainCopy:
       '这里的品牌图像不只是风格迁移用的 style reference。它们如果只被拿来做表面相似匹配，系统借到的通常只是“像不像”，而不是对 rug 真正有用的判断层。我更想做的是把这些品牌历史图像 reverse-read 成 semantic cues：它们在主体形成、组织逻辑、密度节奏、边缘处理和表面语言上，各自代表什么样的整体取向。',
@@ -294,60 +315,6 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageId: 'prompt-as-serialization-layer',
-    pageTitle: 'Prompt 只是最后一层：它在这里是 design state 的外部序列化结果',
-    pageGoal: '说明 prompt 不是创意起点，而是编译后的对模型指令。',
-    mainCopy:
-      '这个系统最终当然会落到生成指令，但 prompt 在这里并不承担“替代判断”的角色。它接收的是一条已经被组织好的方向假设：包括方向重心、槽位权重、rug-specific features 和负向约束。换句话说，prompt 只是 design state 面向图像模型时的一种外部表达。',
-    contentBlocks: [
-      {
-        type: 'comparisonCards',
-        title: '三层链路',
-        items: [
-          {
-            title: 'Layer 1｜semantic hypothesis',
-            body: '系统先确认这一轮的核心方向：例如更偏 organic flow、calm structure 或 tactile richness。',
-          },
-          {
-            title: 'Layer 2｜rug design language',
-            body: '再把方向翻译成 composition logic、motif behavior、color constraints、material cues、pile / relief relations。',
-          },
-          {
-            title: 'Layer 3｜generation instruction',
-            body: '最后才把这些状态组织成模型能执行的 prompt / control instruction，并加入 exclusion 与 variation boundary。',
-          },
-        ],
-      },
-      {
-        type: 'miniCaptions',
-        title: '这一步最重要的边界',
-        items: [
-          '它不是把中文翻译成英文。',
-          '它不是把一句 vague input 改写成更长的 prompt。',
-          '它是在把 design state 序列化成模型可以执行的结构化指令。',
-        ],
-      },
-    ],
-    visualBlocks: [
-      {
-        type: 'pipeline',
-        stages: ['semantic hypothesis', 'slot emphasis', 'rug-language features', 'negative constraints', 'prompt assembly', 'generated variant'],
-      },
-    ],
-  },
-  {
-    pageTitle: 'Appendix A｜模糊语义如何被展开成三个方向',
-    pageGoal: '说明第一轮不是随机给三张图，而是把模糊输入编译成三条可比较的设计假设。',
-    mainCopy:
-      '用户输入里的信息通常混着情绪、场景、结构倾向与材料期待。系统不会把这类输入直接翻译成一句 prompt，而会先识别哪些是相对明确的信号，哪些仍然模糊，再围绕同一组核心语义展开三条具有不同重点的 rug directions。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'semanticCompilationChain',
-      },
-    ],
-  },
-  {
     pageTitle: 'Appendix B｜三个方向如何落到地毯语言',
     pageGoal: '说明每个方向不是同义改写，而是通过不同的槽位权重和材料 / 工艺特征来分化。',
     mainCopy:
@@ -360,19 +327,7 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'Appendix C｜Prompt 只是 design state 的外部表达',
-    pageGoal: '说明 prompt 不是创意来源，而是 semantic hypothesis 与 rug language 编译后的最后一层。',
-    mainCopy:
-      '系统最终当然会输出 generation prompt，但 prompt 在这里不是起点，而是结果。前面几层真正做的是：把语义方向转成可执行的 rug design language，再把这些判断压成适合模型理解的指令结构。这样生成出来的，不是“翻译后的句子”，而是一个经过设计判断整理的方向。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'rugLanguagePromptBridge',
-      },
-    ],
-  },
-  {
-    pageTitle: 'Appendix D｜Slot-state 映射层',
+    pageTitle: 'Appendix C｜Slot-state 映射层',
     pageGoal: '把 bucket 到 slot-state 的作用链路讲清楚，但保持作品集附录的阅读感。',
     mainCopy:
       '这一页不试图把系统解释成一份规范文档。它只把最关键的一层展开：参考图如何先被解释成 semantic bucket，再继续压成可以进入生成系统的 slot-state，并最终影响方向生成与 refinement。',
@@ -559,13 +514,11 @@ function AgentThinking({
 }
 
 function IntroReveal({
-  pageIndex,
   pageTitle,
   mainCopy,
   isMobile,
   disabled,
 }: {
-  pageIndex: number;
   pageTitle: string;
   mainCopy: string;
   isMobile?: boolean;
@@ -584,12 +537,9 @@ function IntroReveal({
       }}
     >
       <div style={revealStyle(visible, 0)}>
-        <div style={{ color: '#8e7f68', fontSize: 11, letterSpacing: '0.22em' }}>{`${String(pageIndex + 1).padStart(2, '0')} / ${pages.length}`}</div>
-      </div>
-      <div style={revealStyle(visible, 80)}>
         <div style={pageTitleStyle(isMobile)}>{pageTitle}</div>
       </div>
-      <div style={revealStyle(visible, 150)}>
+      <div style={revealStyle(visible, 90)}>
         <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{mainCopy}</p>
       </div>
     </section>
@@ -668,102 +618,18 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
   }
 }
 
-function mediaFrame(src: string, crop = 'center') {
+function mediaFrame(src: string, crop = 'center', fit: 'cover' | 'contain' = 'cover') {
   return {
     width: '100%',
     aspectRatio: '1.28 / 1',
     borderRadius: 16,
     backgroundImage: `linear-gradient(180deg, rgba(8,6,4,0.08), rgba(8,6,4,0.24)), url(${src})`,
-    backgroundSize: 'cover',
+    backgroundSize: fit,
     backgroundPosition: crop,
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: 'rgba(8,6,4,0.72)',
     border: '1px solid rgba(200,169,110,0.1)',
   } as CSSProperties;
-}
-
-function rugJudgmentDiagram(kind: 'abstract' | 'led' | 'surface' | 'refinable', accentColor: string) {
-  const line = '1px solid rgba(200,169,110,0.16)';
-  const labelStyle: CSSProperties = {
-    color: '#9e8f76',
-    fontSize: 11,
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
-  };
-
-  switch (kind) {
-    case 'abstract':
-      return (
-        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-            <span style={labelStyle}>具象轮廓</span>
-            <span style={{ color: accentColor, fontSize: 14 }}>→</span>
-            <span style={labelStyle}>抽象单元 / 路径 / 格构</span>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
-            <div style={{ height: 54, borderRadius: 12, border: line, background: 'radial-gradient(circle at 30% 42%, rgba(255,255,255,0.08), transparent 30%), radial-gradient(circle at 62% 60%, rgba(255,255,255,0.06), transparent 26%)' }} />
-            <div style={{ height: 54, borderRadius: 12, border: line, background: 'linear-gradient(120deg, transparent 0 35%, rgba(255,255,255,0.06) 35% 39%, transparent 39% 100%), linear-gradient(150deg, transparent 0 55%, rgba(255,255,255,0.06) 55% 59%, transparent 59% 100%)' }} />
-            <div style={{ height: 54, borderRadius: 12, border: line, backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-          </div>
-        </div>
-      );
-    case 'led':
-      return (
-        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
-            {[
-              ['motif-led', '单一母题显影'],
-              ['structure-led', '骨架与路径先成立'],
-              ['density-led', '靠疏密与关系被读到'],
-            ].map(([title, desc]) => (
-              <div key={title} style={{ borderRadius: 12, border: line, padding: '10px 10px 12px', minHeight: 74 }}>
-                <div style={labelStyle}>{title}</div>
-                <div style={{ color: '#cdbfa8', fontSize: 13, lineHeight: 1.65, marginTop: 6 }}>{desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    case 'surface':
-      return (
-        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: 10 }}>
-            <div style={{ borderRadius: 12, border: line, minHeight: 86, background: 'linear-gradient(135deg, rgba(255,255,255,0.05), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.04), transparent 70%)' }} />
-            <div style={{ display: 'grid', gap: 8 }}>
-              <div style={{ borderRadius: 12, border: line, minHeight: 39 }} />
-              <div style={{ borderRadius: 12, border: line, minHeight: 39, backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
-            </div>
-            <div style={{ display: 'grid', gap: 8 }}>
-              <div style={{ borderRadius: 12, border: line, minHeight: 39, background: 'linear-gradient(180deg, rgba(255,255,255,0.05), transparent)' }} />
-              <div style={{ borderRadius: 12, border: line, minHeight: 39 }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 14, color: '#9e8f76', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            <span>边缘</span>
-            <span>密度</span>
-            <span>表面层次</span>
-          </div>
-        </div>
-      );
-    case 'refinable':
-      return (
-        <div className="narrative-card" style={{ borderRadius: 14, border: line, padding: '14px 14px 12px', background: 'rgba(255,255,255,0.015)', display: 'grid', gap: 10 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10, alignItems: 'center' }}>
-            {[
-              ['初始方向', 'loose'],
-              ['方向确认', 'stable'],
-              ['refinement', 'refinable'],
-            ].map(([title, state], index) => (
-              <div key={title} style={{ position: 'relative' }}>
-                <div style={{ borderRadius: 12, border: line, padding: '10px 10px 12px', minHeight: 72 }}>
-                  <div style={labelStyle}>{title}</div>
-                  <div style={{ color: '#cdbfa8', fontSize: 13, lineHeight: 1.65, marginTop: 6 }}>{state}</div>
-                </div>
-                {index < 2 ? <div style={{ position: 'absolute', right: -8, top: '50%', transform: 'translateY(-50%)', color: accentColor }}>→</div> : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-  }
 }
 
 function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
@@ -812,14 +678,19 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 16, alignItems: 'stretch' }}>
               {block.items.map((item, index) => (
                 <div key={item.title} className="narrative-card" style={{ borderRadius: 18, padding: '18px 18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)', display: 'grid', gap: 14, transitionDelay: `${index * 70}ms` }}>
+                  {item.src ? (
+                    <div
+                      className="narrative-media"
+                      style={{
+                        ...mediaFrame(item.src, item.crop ?? 'center', 'cover'),
+                        aspectRatio: '1 / 1',
+                      }}
+                    />
+                  ) : null}
                   <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.28 }}>{item.title}</div>
                   <div style={smallBodyStyle()}>{item.body}</div>
-                  {rugJudgmentDiagram(item.diagram, accentColor)}
                 </div>
               ))}
-            </div>
-            <div style={{ ...smallBodyStyle(), maxWidth: 980, margin: '0 auto', paddingTop: 6 }}>
-              {block.closing}
             </div>
           </div>
         </div>
@@ -845,9 +716,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: isMobile ? '1fr' : `repeat(${group.items.length}, minmax(0, 1fr))`,
-                    gap: isMobile ? 12 : 18,
+                    gridTemplateColumns: isMobile
+                      ? '1fr'
+                      : `repeat(${group.items.length}, minmax(0, 1fr))`,
+                    gap: isMobile ? 12 : 14,
                     alignItems: 'center',
+                    justifyContent: 'stretch',
+                    width: '100%',
                   }}
                 >
                   {group.items.map((item, index) => (
@@ -858,13 +733,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                         minWidth: 0,
                         display: 'flex',
                         justifyContent: 'center',
-                        paddingRight: !isMobile && index < group.items.length - 1 ? 28 : 0,
                       }}
                     >
                       <div
                         className="narrative-step"
                         style={{
-                          width: '100%',
+                          width: isMobile ? '100%' : 'auto',
+                          minWidth: 0,
                           minHeight: isMobile ? 82 : 108,
                           borderRadius: isMobile ? 24 : 28,
                           padding: isMobile ? '18px 16px' : '20px 18px',
@@ -880,50 +755,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                           fontSize: isMobile ? 18 : 20,
                           lineHeight: 1.45,
                           textAlign: 'center',
-                          wordBreak: 'break-word',
-                          overflowWrap: 'anywhere',
+                          whiteSpace: 'normal',
+                          wordBreak: 'normal',
+                          overflowWrap: 'normal',
                         }}
                       >
                         {item}
                       </div>
-                      {!isMobile && index < group.items.length - 1 ? (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            right: 0,
-                            width: 28,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: accentColor,
-                            opacity: 0.9,
-                            fontSize: 22,
-                            lineHeight: 1,
-                            transform: 'translateY(-50%)',
-                            pointerEvents: 'none',
-                          }}
-                        >
-                          →
-                        </div>
-                      ) : null}
-                      {isMobile && index < group.items.length - 1 ? (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            left: '50%',
-                            bottom: -11,
-                            color: accentColor,
-                            opacity: 0.9,
-                            fontSize: 18,
-                            lineHeight: 1,
-                            transform: 'translateX(-50%)',
-                            pointerEvents: 'none',
-                          }}
-                        >
-                          ↓
-                        </div>
-                      ) : null}
                     </div>
                   ))}
                 </div>
@@ -1122,7 +960,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                       transitionDelay: `${120 + index * 70}ms`,
                     }}
                   >
-                    <div className="narrative-media" style={{ ...mediaFrame(card.src, 'center'), aspectRatio: '0.9 / 1', marginBottom: 10 }} />
+                    <div className="narrative-media" style={{ ...mediaFrame(card.src, 'center', 'cover'), aspectRatio: '1 / 1', marginBottom: 10 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.65 }}>{card.body}</div>
                   </div>
@@ -1140,7 +978,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.14)', background: 'rgba(255,255,255,0.022)' }}>
             <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户选择后的主线确认</div>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr', gap: 14, alignItems: 'center' }}>
-              <div className="narrative-media" style={{ ...mediaFrame(lotusVerticalOrganicLattice, 'center'), aspectRatio: isMobile ? '1.15 / 1' : '1.35 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
+              <div className="narrative-media" style={{ ...mediaFrame(lotusVerticalOrganicLattice, 'center', 'cover'), aspectRatio: '1 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
               <div style={{ color: '#efe4d0', fontSize: isMobile ? 20 : 24, lineHeight: 1.55 }}>
                 在这个案例里，用户选中的并不只是“第二张图更好看”，而是一种更适合继续推进的成立方式。
               </div>
@@ -1223,7 +1061,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   ['Direction C｜打开的罩顶格场', '打开局部单元关系，让留白和呼吸感更明显。', lotusVerticalOrganicLattice4],
                 ].map(([title, body, src], index) => (
                   <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${140 + index * 60}ms` }}>
-                    <div className="narrative-media" style={{ ...mediaFrame(src as string, 'center'), aspectRatio: '1 / 0.82', marginBottom: 12 }} />
+                    <div className="narrative-media" style={{ ...mediaFrame(src as string, 'center', 'cover'), aspectRatio: '1 / 1', marginBottom: 12 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.75 }}>{body}</div>
                   </div>
@@ -1781,11 +1619,21 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 }
 
 export function hasFuliPlusCaseStudy(route: string, slideIndex = 0): boolean {
+  const pageIndex = getFuliPlusCaseStudyPageIndex(route, slideIndex);
+
   return (
-    (route === '/agentic-design-development/fuli-plus' || route === '/web-design-develop/fuli-plus') &&
-    slideIndex >= 0 &&
-    slideIndex < pages.length
+    pageIndex !== null &&
+    pageIndex >= 0 &&
+    pageIndex < pages.length
   );
+}
+
+function getFuliPlusCaseStudyPageIndex(route: string, slideIndex: number): number | null {
+  if (route === '/agentic-design-development/fuli-plus') return slideIndex;
+
+  if (route === '/web-design-develop/fuli-plus') return slideIndex;
+
+  return null;
 }
 
 export default function FuliPlusCaseStudy({
@@ -1803,12 +1651,12 @@ export default function FuliPlusCaseStudy({
 }) {
   if (!hasFuliPlusCaseStudy(route, slideIndex)) return null;
 
-  const page = pages[slideIndex];
+  const pageIndex = getFuliPlusCaseStudyPageIndex(route, slideIndex);
+  const page = pages[pageIndex ?? slideIndex];
 
   return (
     <div id={page.pageId} style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
       <IntroReveal
-        pageIndex={slideIndex}
         pageTitle={page.pageTitle}
         mainCopy={page.mainCopy}
         isMobile={isMobile}

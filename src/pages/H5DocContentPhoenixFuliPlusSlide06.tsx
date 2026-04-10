@@ -5,7 +5,7 @@ export function getPhoenixFuliPlusSlide06Sections(accentColor: string): SectionD
   return [
     {
       id: 'exploration-mechanism',
-      numeral: '07',
+      numeral: '',
       title: '探索机制：从 nearest ref 到 hypothesis carrier',
       blocks: [
         <>

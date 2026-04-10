@@ -5,7 +5,7 @@ export function getPhoenixFuliPlusSlide05Sections(accentColor: string): SectionD
   return [
     {
       id: 'slot-and-state',
-      numeral: '06',
+      numeral: '',
       title: '槽位 / design state / feedback loop',
       blocks: [
         <>

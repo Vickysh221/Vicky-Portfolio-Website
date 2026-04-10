@@ -24,7 +24,7 @@ export function getPhoenixFuliPlusSlide03Sections(accentColor: string): SectionD
   return [
     {
       id: 'fuli-plus-overview',
-      numeral: '03',
+      numeral: '',
       title: '项目总览 / PRD overview',
       blocks: [
         <>
@@ -54,7 +54,7 @@ export function getPhoenixFuliPlusSlide03Sections(accentColor: string): SectionD
     },
     {
       id: 'background-and-user-need',
-      numeral: '04',
+      numeral: '',
       title: '项目背景与用户诉求',
       blocks: [
         <>
