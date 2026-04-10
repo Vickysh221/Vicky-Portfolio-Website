@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import fuliHeroImage from '../images/fuli/slide01-img01.png';
 import fuliSystemImage from '../images/fuli/slide02-img01.png';
@@ -15,7 +16,9 @@ type ContentBlock =
   | { type: 'shortParagraphs'; title?: string; items: string[] }
   | { type: 'bulletCluster'; title?: string; items: string[] }
   | { type: 'comparisonCards'; title?: string; items: { title: string; body: string }[] }
-  | { type: 'miniCaptions'; title?: string; items: string[] };
+  | { type: 'miniCaptions'; title?: string; items: string[] }
+  | { type: 'codeBlock'; title?: string; code: string }
+  | { type: 'highlightParagraph'; title?: string; body: string };
 
 type VisualBlock =
   | { type: 'heroImage'; title?: string; src: string; caption: string }
@@ -36,7 +39,8 @@ type VisualBlock =
   | { type: 'semanticCompilationChain' }
   | { type: 'directionWeightMatrix' }
   | { type: 'rugLanguagePromptBridge' }
-  | { type: 'appendixC' };
+  | { type: 'appendixC' }
+  | { type: 'htmlEmbed'; title?: string; src: string; aspectRatio?: string };
 
 interface CaseStudyPage {
   pageId?: string;
@@ -266,8 +270,33 @@ const pages: CaseStudyPage[] = [
           '因此，下一阶段不是继续抽象讨论 agent，而是把它具体设计成一个服务于 semantic control 的 design orchestration system。',
         ],
       },
+      {
+        type: 'bulletCluster',
+        title: '如果把这套东西落到具体界面上',
+        items: [
+          '将当前的智驾播报升级为驾驶责任条，实时显示现在谁负责、系统状态、ODD / 能力边界、接管准备度。',
+          '把车机陪伴助手的信息显示升级，让它实时显示现在基于哪些偏好在工作、刚学到了什么、哪些记忆候选等待确认。',
+          '实时只出现 1 / 2 / 4 类回执，第 3 类尽量延后到低负荷时刻。',
+          '停车后再回放学习，不是边开边问，而是事后说，“今天观察到你在二级路更偏好提前两个路口变道，要不要保存？”',
+          '同时提供记忆工坊，让每条记忆都能看来源、场景、生效范围、上次使用、编辑 / 忘记 / 永不学习。',
+          '一旦进入高风险或低置信状态，所有 companion 式解释自动退场，只保留安全提示与接管信息。',
+        ],
+      },
+      {
+        type: 'highlightParagraph',
+        title: 'highlight',
+        body:
+          '这套界面落地的关键，不是把 agent 解释做得更“像陪伴”，而是把 responsibility、confidence、memory learning 和 interaction timing 放到同一个受驾驶负荷约束的 orchestration 逻辑里：高负荷时只留下安全与接管，低负荷或事后时刻再让学习、确认和偏好组织进入界面。',
+      },
     ],
-    visualBlocks: [],
+    visualBlocks: [
+      {
+        type: 'htmlEmbed',
+        title: 'orchestration flow',
+        src: '/orchestration_flow_semantic_control.html',
+        aspectRatio: '1.6 / 1',
+      },
+    ],
   },
   {
     pageId: 'semantic-cue-brand-reinforcement',
@@ -291,6 +320,30 @@ const pages: CaseStudyPage[] = [
         items: [
           '所以它服务的不是风格迁移，而是 brand-bounded design control：在品牌边界内，对一个已经被用户认可的方向做更可控的加强。这也让 second-stage variation 更像设计控制，而不只是继续多出几张图。',
         ],
+      },
+      {
+        type: 'codeBlock',
+        title: 'Prompt key points',
+        code: `Prompt key points
+- force strict JSON-only output
+- copy image_id exactly from input
+- reduce schema to core structural fields
+- prohibit broad style labels as semantic answers
+- require 1-2 sentence structural interpretation
+- require at least 2 visible structural cues
+- force one dominant answer per field
+- tie confidence to ambiguity handling`,
+      },
+      {
+        type: 'codeBlock',
+        title: 'Validation logic',
+        code: `Validation logic
+1. select a small batch of brand images
+2. run local VLM labeling with a lite semantic schema
+3. inspect raw outputs before trusting parsed results
+4. check prompt / schema / validator alignment together
+5. review outputs with an anti-generic rubric
+6. revise the protocol, not just the prompt`,
       },
     ],
     visualBlocks: [
@@ -615,6 +668,42 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
           </div>
         </div>
       );
+    case 'codeBlock':
+      return (
+        <div style={blockPanel}>
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          <pre
+            style={{
+              margin: 0,
+              padding: '16px 18px',
+              borderRadius: 14,
+              border: '1px solid rgba(200,169,110,0.1)',
+              background: 'rgba(255,255,255,0.02)',
+              color: '#d7cab5',
+              fontSize: 14,
+              lineHeight: 1.8,
+              fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {block.code}
+          </pre>
+        </div>
+      );
+    case 'highlightParagraph':
+      return (
+        <div
+          style={{
+            ...blockPanel,
+            padding: '18px 20px',
+            border: `1px solid ${accentColor}33`,
+            background: `linear-gradient(180deg, ${accentColor}14, rgba(10,8,6,0.94) 42%)`,
+          }}
+        >
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          <p style={{ ...paragraphStyle(), margin: 0, color: '#efe4d0' }}>{block.body}</p>
+        </div>
+      );
   }
 }
 
@@ -630,6 +719,134 @@ function mediaFrame(src: string, crop = 'center', fit: 'cover' | 'contain' = 'co
     backgroundColor: 'rgba(8,6,4,0.72)',
     border: '1px solid rgba(200,169,110,0.1)',
   } as CSSProperties;
+}
+
+function HtmlEmbedBlock({
+  title,
+  src,
+  aspectRatio = '1.6 / 1',
+  accentColor,
+}: {
+  title?: string;
+  src: string;
+  aspectRatio?: string;
+  accentColor: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  const frame = (
+    <iframe
+      src={src}
+      title={title ?? 'embedded-html'}
+      style={{
+        width: '100%',
+        height: '100%',
+        border: 'none',
+        display: 'block',
+        background: '#f3f5f8',
+      }}
+    />
+  );
+
+  return (
+    <>
+      <div
+        style={{
+          ...panelStyle(),
+          padding: 12,
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+          {title ? <div style={sectionLabelStyle(accentColor)}>{title}</div> : <div />}
+          <button
+            onClick={() => setExpanded(true)}
+            style={{
+              borderRadius: 6,
+              border: `1px solid ${accentColor}55`,
+              background: 'rgba(255,255,255,0.03)',
+              color: accentColor,
+              cursor: 'pointer',
+              padding: '6px 10px',
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}
+          >
+            expand
+          </button>
+        </div>
+        <div
+          style={{
+            width: '100%',
+            aspectRatio,
+            borderRadius: 14,
+            overflow: 'hidden',
+            border: '1px solid rgba(200,169,110,0.1)',
+            background: '#f3f5f8',
+          }}
+        >
+          {frame}
+        </div>
+      </div>
+      {expanded
+        ? createPortal(
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
+                background: 'rgba(8,6,4,0.92)',
+                backdropFilter: 'blur(8px)',
+                padding: 'clamp(20px, 4vw, 40px)',
+              }}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'grid',
+                  gridTemplateRows: 'auto minmax(0, 1fr)',
+                  gap: 12,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                  <div style={{ color: '#f0e8d8', fontSize: 14, letterSpacing: '0.12em', textTransform: 'uppercase' }}>{title ?? 'embedded-html'}</div>
+                  <button
+                    onClick={() => setExpanded(false)}
+                    style={{
+                      borderRadius: 6,
+                      border: `1px solid ${accentColor}55`,
+                      background: 'rgba(255,255,255,0.03)',
+                      color: accentColor,
+                      cursor: 'pointer',
+                      padding: '8px 12px',
+                      fontSize: 12,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    close
+                  </button>
+                </div>
+                <div
+                  style={{
+                    minHeight: 0,
+                    borderRadius: 16,
+                    overflow: 'hidden',
+                    border: '1px solid rgba(200,169,110,0.16)',
+                    background: '#f3f5f8',
+                  }}
+                >
+                  {frame}
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
+    </>
+  );
 }
 
 function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
@@ -1182,6 +1399,8 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           </div>
         </div>
       );
+    case 'htmlEmbed':
+      return <HtmlEmbedBlock title={block.title} src={block.src} aspectRatio={block.aspectRatio} accentColor={accentColor} />;
     case 'semanticCompilationChain': {
       const chainCards = [
         {

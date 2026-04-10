@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>编排流程：语义控制如何转化为多轮设计动作</title>
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --grid: rgba(65, 79, 96, 0.08);
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --line: #93a1b2;
+      --line-strong: #5d6b7c;
+      --text: #18212b;
+      --muted: #66758a;
+      --inputs: #eef1f5;
+      --interpret: #e9f0f8;
+      --state: #dde9f7;
+      --state-strong: #c4d8f1;
+      --orchestrate: #f5ead9;
+      --execute: #e8edf2;
+      --feedback: #edf1f5;
+      --accent: #406a9a;
+      --accent-warm: #9b6a2f;
+      --shadow: 0 16px 42px rgba(18, 29, 43, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --max: 1560px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+      background:
+        linear-gradient(0deg, var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        linear-gradient(180deg, #f7f9fb 0%, #f1f4f8 100%);
+      background-size: 24px 24px, 24px 24px, auto;
+      line-height: 1.45;
+    }
+
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 34px 24px 42px;
+    }
+
+    .hero {
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(24, 33, 43, 0.1);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(30px, 3.8vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      max-width: 1080px;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 1.7vw, 22px);
+      color: #46576c;
+      max-width: 980px;
+    }
+
+    .intro {
+      margin-top: 12px;
+      max-width: 1080px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .system-shell {
+      position: relative;
+      border: 1px solid rgba(24, 33, 43, 0.1);
+      border-radius: 28px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+      padding: 26px 22px 126px;
+      overflow: hidden;
+    }
+
+    .system-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent 28%);
+      pointer-events: none;
+    }
+
+    .main-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.04fr 1.12fr 1.52fr 1.18fr 1.08fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .module {
+      position: relative;
+      border: 1px solid rgba(24, 33, 43, 0.1);
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      min-height: 440px;
+      box-shadow: 0 10px 28px rgba(18, 29, 43, 0.05);
+      overflow: hidden;
+    }
+
+    .module.inputs { background: linear-gradient(180deg, var(--inputs), #ffffff 30%); }
+    .module.interpret { background: linear-gradient(180deg, var(--interpret), #ffffff 32%); }
+    .module.state { background: linear-gradient(180deg, var(--state-strong), #eef5fc 24%, #ffffff 58%); min-height: 510px; }
+    .module.orchestrate { background: linear-gradient(180deg, var(--orchestrate), #ffffff 32%); min-height: 470px; }
+    .module.execute { background: linear-gradient(180deg, var(--execute), #ffffff 32%); }
+
+    .module-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(24,33,43,0.08);
+      background: rgba(255,255,255,0.62);
+      font-size: 12px;
+      color: #516171;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .module-body {
+      padding: 16px;
+    }
+
+    .module-title {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .module-subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 28ch;
+    }
+
+    .io-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(24,33,43,0.08);
+      color: #536273;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .list-grid,
+    .stack-grid,
+    .decision-grid,
+    .exec-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .decision-grid,
+    .exec-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .node,
+    .mini-node,
+    .stack-node {
+      position: relative;
+      border: 1px solid rgba(24,33,43,0.1);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.86);
+      padding: 12px;
+    }
+
+    .node::before,
+    .mini-node::before,
+    .stack-node::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 14px 0 0 14px;
+      background: rgba(77, 102, 131, 0.18);
+    }
+
+    .orchestrate .mini-node::before { background: rgba(155, 106, 47, 0.22); }
+    .state .node::before { background: rgba(64, 106, 154, 0.24); }
+    .execute .mini-node::before { background: rgba(93, 107, 124, 0.22); }
+
+    .node-label,
+    .mini-label {
+      display: block;
+      font-size: 11px;
+      color: #6a7888;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .node-title,
+    .mini-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .node-desc,
+    .mini-desc {
+      font-size: 13px;
+      color: #526172;
+    }
+
+    .divider-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(24,33,43,0.14);
+      font-size: 12.5px;
+      color: #5d6d80;
+    }
+
+    .stack-grid {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .stack-grid::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(64,106,154,0.16), rgba(64,106,154,0.4), rgba(64,106,154,0.16));
+    }
+
+    .state-layout {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .state-zone {
+      border: 1px solid rgba(24,33,43,0.1);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.8);
+      padding: 14px;
+    }
+
+    .state-zone h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .state-zone ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 6px;
+      color: #445365;
+      font-size: 13px;
+    }
+
+    .state-core {
+      margin-top: 14px;
+      border: 1px solid rgba(64,106,154,0.14);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(196,216,241,0.84), rgba(255,255,255,0.94));
+      padding: 18px;
+    }
+
+    .state-core .core-title {
+      font-size: 12px;
+      color: #4b6481;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .state-core .core-main {
+      font-size: 22px;
+      line-height: 1.22;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      max-width: 24ch;
+    }
+
+    .state-core .core-sub {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #536579;
+      max-width: 48ch;
+    }
+
+    .conn-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .horizontal-line {
+      position: absolute;
+      top: 134px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(93,107,124,0.08), rgba(93,107,124,0.34), rgba(93,107,124,0.08));
+    }
+
+    .line-a { left: 16.1%; width: 9%; }
+    .line-b { left: 38.2%; width: 7.4%; }
+    .line-c { left: 59.3%; width: 7.3%; }
+    .line-d { left: 80.3%; width: 8.4%; }
+
+    .horizontal-line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid rgba(93,107,124,0.3);
+      border-right: 2px solid rgba(93,107,124,0.3);
+      transform: rotate(45deg);
+    }
+
+    .feedback-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      width: min(860px, calc(100% - 48px));
+      z-index: 2;
+    }
+
+    .feedback-box {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid rgba(24,33,43,0.1);
+      border-radius: 22px;
+      background: linear-gradient(180deg, var(--feedback), #ffffff 70%);
+      padding: 18px 20px;
+      box-shadow: 0 10px 24px rgba(18, 29, 43, 0.06);
+    }
+
+    .feedback-left .small {
+      font-size: 11px;
+      color: #687789;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .feedback-left .title {
+      font-size: 21px;
+      line-height: 1.14;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+    }
+
+    .feedback-right {
+      color: #506072;
+      font-size: 14px;
+    }
+
+    .loop-note {
+      position: absolute;
+      left: 12.5%;
+      bottom: 78px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(24,33,43,0.1);
+      background: rgba(255,255,255,0.92);
+      font-size: 12px;
+      color: #66758a;
+      z-index: 2;
+    }
+
+    .loop-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .footer-caption {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .footer-caption .box {
+      max-width: 560px;
+      border-left: 3px solid rgba(64,106,154,0.24);
+      padding-left: 16px;
+      color: #3e5065;
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+    }
+
+    .post-note {
+      margin-top: 24px;
+      max-width: 1020px;
+      color: #566679;
+      font-size: 15px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(24,33,43,0.08);
+      background: rgba(255,255,255,0.74);
+      color: #617183;
+      font-size: 12px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 1260px) {
+      .main-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .module.state {
+        grid-column: 1 / -1;
+      }
+      .conn-layer,
+      .loop-svg,
+      .loop-note {
+        display: none;
+      }
+      .system-shell {
+        padding-bottom: 160px;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .page { padding: 20px 14px 34px; }
+      .main-grid { grid-template-columns: 1fr; }
+      .module { min-height: auto !important; }
+      .decision-grid,
+      .exec-grid,
+      .state-layout,
+      .feedback-box {
+        grid-template-columns: 1fr;
+      }
+      .feedback-wrap {
+        width: calc(100% - 28px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">System Architecture Diagram</div>
+      <h1>编排流程：语义控制如何转化为多轮设计动作</h1>
+      <div class="subtitle">当 semantic layer 已经成形之后，agent 的角色不再是直接生成，而是接管多轮判断、策略切换与方向收束。</div>
+      <div class="intro">
+        这不是一次性生成流水线，而是一个以设计状态为核心对象的循环系统：用户反馈、已选方向、品牌线索与前轮状态会先被解释为可比较的语义状态，再由 agent 决定下一轮应该如何推进、试探、收束或切换。
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#d8e4f2"></span>状态层为核心控制对象</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f2e3cf"></span>编排层负责策略决策</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#e6ecf2"></span>执行层负责受控输出</div>
+      </div>
+    </section>
+
+    <section class="system-shell">
+      <div class="conn-layer" aria-hidden="true">
+        <div class="horizontal-line line-a"></div>
+        <div class="horizontal-line line-b"></div>
+        <div class="horizontal-line line-c"></div>
+        <div class="horizontal-line line-d"></div>
+      </div>
+
+      <svg class="loop-svg" viewBox="0 0 1560 900" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M1210,692 C1140,808 890,838 624,836 C370,834 174,810 142,720 C116,648 106,568 106,470"
+              fill="none"
+              stroke="rgba(93,107,124,0.28)"
+              stroke-width="2.5"
+              stroke-dasharray="8 8"
+              stroke-linecap="round" />
+        <path d="M108,470 L100,486 L116,482" fill="none" stroke="rgba(93,107,124,0.28)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="main-grid">
+        <article class="module inputs">
+          <div class="module-topbar">
+            <span>模块 01</span>
+            <span>系统输入</span>
+          </div>
+          <div class="module-body">
+            <h2 class="module-title">输入层</h2>
+            <div class="module-subtitle">系统在每一轮开始前读取的信号集合</div>
+            <div class="io-tag">Input Signals</div>
+
+            <div class="list-grid">
+              <div class="node">
+                <span class="node-label">A</span>
+                <div class="node-title">用户反馈</div>
+                <div class="node-desc">“更空一点 / 质感别丢 / 更像地毯一点”</div>
+              </div>
+              <div class="node">
+                <span class="node-label">B</span>
+                <div class="node-title">当前已选方向</div>
+                <div class="node-desc">用户当下偏好的图像、结构方向或语义路线</div>
+              </div>
+              <div class="node">
+                <span class="node-label">C</span>
+                <div class="node-title">品牌线索库</div>
+                <div class="node-desc">从历史设计中反向读取出的品牌语义 cues</div>
+              </div>
+              <div class="node">
+                <span class="node-label">D</span>
+                <div class="node-title">前轮状态</div>
+                <div class="node-desc">前轮选择、排斥项、已锁定倾向与继承约束</div>
+              </div>
+            </div>
+
+            <div class="divider-note">
+              系统并不是从空白 prompt 重新开始。每一轮都从语言、选择、品牌线索与前轮状态共同起步。
+            </div>
+          </div>
+        </article>
+
+        <article class="module interpret">
+          <div class="module-topbar">
+            <span>模块 02</span>
+            <span>语义解释</span>
+          </div>
+          <div class="module-body">
+            <h2 class="module-title">语义解释层</h2>
+            <div class="module-subtitle">将当前回合的混合信号转译为可比较的设计状态</div>
+            <div class="io-tag">Interpretation Layer</div>
+
+            <div class="stack-grid">
+              <div class="stack-node">
+                <span class="node-label">01</span>
+                <div class="node-title">意图识别</div>
+                <div class="node-desc">用户真正要改的是主题、材料、密度、构图，还是“更像地毯”的整体语法。</div>
+              </div>
+              <div class="stack-node">
+                <span class="node-label">02</span>
+                <div class="node-title">槽位映射</div>
+                <div class="node-desc">将变化落到 motif / arrangement / density / surface / material / cue 对齐等可控槽位。</div>
+              </div>
+              <div class="stack-node">
+                <span class="node-label">03</span>
+                <div class="node-title">状态更新</div>
+                <div class="node-desc">识别哪些倾向被加强、削弱，哪些变量是本轮新引入的。</div>
+              </div>
+              <div class="stack-node">
+                <span class="node-label">04</span>
+                <div class="node-title">线索匹配</div>
+                <div class="node-desc">判断当前方向真正对齐了哪些品牌语义 cues，而不是机械继承全部历史线索。</div>
+              </div>
+            </div>
+
+            <div class="divider-note">
+              这一层的职责不是生成结果，而是把模糊反馈转成结构化状态，为后续决策提供统一对象。
+            </div>
+          </div>
+        </article>
+
+        <article class="module state">
+          <div class="module-topbar">
+            <span>模块 03</span>
+            <span>核心状态对象</span>
+          </div>
+          <div class="module-body">
+            <h2 class="module-title">当前设计状态</h2>
+            <div class="module-subtitle">系统真正控制的不是 prompt，而是一个持续收敛中的 design state</div>
+            <div class="io-tag">Persistent State Object</div>
+
+            <div class="state-layout">
+              <section class="state-zone">
+                <h3>已锁定 DNA</h3>
+                <ul>
+                  <li>已建立的主题逻辑</li>
+                  <li>稳定的材质 / 表面倾向</li>
+                  <li>当前所处的语义路线</li>
+                  <li>受品牌边界约束的限制条件</li>
+                </ul>
+              </section>
+              <section class="state-zone">
+                <h3>可变字段</h3>
+                <ul>
+                  <li>构图开放度</li>
+                  <li>密度变化</li>
+                  <li>簇状分布方式</li>
+                  <li>运动路径</li>
+                  <li>线索强化强度</li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="state-core">
+              <div class="core-title">核心判断</div>
+              <div class="core-main">系统管理的不是 prompt，而是一个逐步收敛的设计状态。</div>
+              <div class="core-sub">prompt 只是执行封装。真正被解释、被比较、被继承、被调度的对象，是这个状态本身。</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="module orchestrate">
+          <div class="module-topbar">
+            <span>模块 04</span>
+            <span>Agent 编排</span>
+          </div>
+          <div class="module-body">
+            <h2 class="module-title">编排决策层</h2>
+            <div class="module-subtitle">决定这一轮应该做哪一种推进动作，而不是直接替代语义判断</div>
+            <div class="io-tag">Orchestration Logic</div>
+
+            <div class="decision-grid">
+              <div class="mini-node">
+                <span class="mini-label">Decision A</span>
+                <div class="mini-title">阶段识别</div>
+                <div class="mini-desc">判断当前处于探索、细化、路线切换，还是收敛阶段。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Decision B</span>
+                <div class="mini-title">策略选择</div>
+                <div class="mini-desc">决定是扩大试探、稳定当前方向、强化线索，还是缩窄变量空间。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Decision C</span>
+                <div class="mini-title">控制模式选择</div>
+                <div class="mini-desc">采用 compiler-led、reference-anchored，或 hybrid 控制方式。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Decision D</span>
+                <div class="mini-title">下一轮实验框架</div>
+                <div class="mini-desc">定义 A / B / C 三个变体各自测试什么变量，避免差异失控。</div>
+              </div>
+            </div>
+
+            <div class="divider-note">
+              Agent 的职责不是成为设计逻辑来源，而是决定语义系统下一步应该如何移动。
+            </div>
+          </div>
+        </article>
+
+        <article class="module execute">
+          <div class="module-topbar">
+            <span>模块 05</span>
+            <span>受控执行</span>
+          </div>
+          <div class="module-body">
+            <h2 class="module-title">执行层</h2>
+            <div class="module-subtitle">把策略翻译成下一轮可比较、可解释的输出</div>
+            <div class="io-tag">Controlled Execution</div>
+
+            <div class="exec-grid">
+              <div class="mini-node">
+                <span class="mini-label">Execution 1</span>
+                <div class="mini-title">控制指令组装</div>
+                <div class="mini-desc">把当前状态编译成可执行的 prompt / control instructions。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Execution 2</span>
+                <div class="mini-title">品牌线索注入</div>
+                <div class="mini-desc">只注入与当前方向一致的 brand-aligned semantic cues。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Execution 3</span>
+                <div class="mini-title">生成三组受控变体</div>
+                <div class="mini-desc">输出 3 个边界清晰的替代方案，而不是随机发散。</div>
+              </div>
+              <div class="mini-node">
+                <span class="mini-label">Execution 4</span>
+                <div class="mini-title">结构化对比说明</div>
+                <div class="mini-desc">清楚标记每个方向的差异来源与所测试变量。</div>
+              </div>
+            </div>
+
+            <div class="divider-note">
+              输出不是随机 alternatives，而是在锁定 DNA 与可变字段框架内被有意组织的下一轮动作。
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="loop-note">状态更新 → 重新解释 → 持续收敛</div>
+
+      <div class="feedback-wrap">
+        <div class="feedback-box">
+          <div class="feedback-left">
+            <div class="small">Feedback Loop</div>
+            <div class="title">用户评审与偏好信号</div>
+          </div>
+          <div class="feedback-right">
+            用户会选择、拒绝，或部分偏好某个方向。该反馈不会把系统带回空白起点，而是直接回写到下一轮的语义输入与状态更新中，形成持续收敛的多轮循环。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-caption">
+      <div class="box">这里被管理的不是 prompt，而是一个在多轮中逐步成形、逐步被收束的 design state。</div>
+    </div>
+
+    <section class="post-note">
+      只有当 semantic layer 已经存在，这种工作流才成立。因为只有当用户反馈、已选图像、品牌线索都能被翻译进同一个可比较的状态空间时，agent 才能真正承担“编排下一步动作”的职责，而不是退回到一次次重写 prompt 的低层循环。
+    </section>
+  </main>
+</body>
+</html>

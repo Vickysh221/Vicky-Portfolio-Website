@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Car Agent UX · 关系速览</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #141416;
+    --panel-2: #1b1c20;
+    --muted: #9b9ea6;
+    --text: #f2f3f5;
+    --line: #2b2e36;
+    --accent: #d9b26f;
+    --cap: #6bb6ff;
+    --beh: #ffb86b;
+    --scn: #8be28b;
+    --evd: #f7e38b;
+    --mem: #d69cff;
+    --pol: #ff8ea1;
+    --hmi: #8ce4d6;
+    --shadow: 0 8px 30px rgba(0,0,0,.25);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #080808 0%, #0f1114 100%);
+    color: var(--text);
+  }
+  .wrap { max-width: 1800px; margin: 0 auto; padding: 28px 28px 60px; }
+  .hero {
+    background: linear-gradient(135deg, rgba(217,178,111,.12), rgba(217,178,111,.03));
+    border: 1px solid rgba(217,178,111,.25);
+    border-radius: 24px;
+    padding: 28px 30px 24px;
+    box-shadow: var(--shadow);
+  }
+  h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.15; letter-spacing: .02em; }
+  .subtitle { color: #d7d8dc; font-size: 17px; line-height: 1.7; max-width: 1200px; }
+  .counts {
+    display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap: 12px;
+    margin-top: 22px;
+  }
+  .count-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .count-num { font-size: 28px; font-weight: 700; }
+  .count-label { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .toolbar {
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+    margin: 22px 0 18px;
+  }
+  .theme-btn {
+    border:1px solid var(--line); background: var(--panel); color: var(--text);
+    padding: 10px 14px; border-radius: 999px; cursor:pointer; font-size:14px;
+  }
+  .theme-btn.active {
+    background: rgba(217,178,111,.15); border-color: rgba(217,178,111,.45); color: #ffe8be;
+  }
+  .search {
+    margin-left:auto; min-width: 320px; flex:1 1 320px; display:flex; justify-content:flex-end;
+  }
+  .search input {
+    width:100%; max-width: 420px; background: var(--panel); border:1px solid var(--line);
+    border-radius: 999px; color:var(--text); padding: 12px 16px; outline:none;
+  }
+  .section {
+    background: rgba(17,18,21,.86);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-top: 18px;
+  }
+  .section h2 {
+    margin: 0 0 10px; font-size: 24px;
+  }
+  .section-desc {
+    color: #cfd2d8; line-height: 1.7; margin-bottom: 18px;
+  }
+  .lane-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(220px, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  .lane {
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 18px;
+    padding: 14px;
+    min-height: 280px;
+  }
+  .lane h3 {
+    margin: 0 0 12px;
+    font-size: 15px; letter-spacing: .04em; text-transform: none;
+    display:flex; align-items:center; justify-content:space-between;
+    color: #f5dfb6;
+  }
+  .lane small { color: var(--muted); font-weight: 500; }
+  .cards { display:flex; flex-direction:column; gap:10px; }
+  .node-card {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    background: rgba(255,255,255,.03);
+    padding: 10px 12px 11px;
+    cursor: pointer;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .node-card:hover { transform: translateY(-1px); border-color: rgba(217,178,111,.45); }
+  .node-card.active { border-color: rgba(217,178,111,.55); background: rgba(217,178,111,.08); }
+  .id { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+  .name { margin-top: 4px; font-size: 14px; line-height: 1.45; font-weight: 650; }
+  .meta { margin-top: 6px; font-size: 12px; color: #b6bcc8; line-height: 1.45; }
+  .dot {
+    display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;
+  }
+  .type-Behavior { background: var(--beh); }
+  .type-Scene { background: var(--scn); }
+  .type-Evidence { background: var(--evd); }
+  .type-Capability { background: var(--cap); }
+  .type-Memory { background: var(--mem); }
+  .type-Policy { background: var(--pol); }
+  .type-HMI { background: var(--hmi); }
+
+  .subgrid {
+    display:grid; grid-template-columns: 1.2fr 1fr; gap:18px; margin-top: 18px;
+  }
+  .detail-box, .workflow-box, .relation-box, .catalog-box {
+    background: rgba(255,255,255,.02);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius: 18px;
+    padding: 18px;
+  }
+  .detail-title {
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-bottom: 10px;
+  }
+  .pill {
+    border:1px solid rgba(255,255,255,.08); border-radius:999px; padding: 3px 10px; font-size: 12px; color: var(--muted);
+  }
+  .detail-desc { color:#d7dae0; line-height:1.7; }
+  .adj-list, .relation-list { display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+  .adj-item, .relation-item {
+    padding: 12px 13px; border-radius: 14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    line-height:1.55;
+  }
+  .relation-line { color:#e9eaf0; font-weight: 600; }
+  .meaning { color:#c7ccd5; font-size: 13px; margin-top: 4px; }
+  .workflow-cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+  .wf-card {
+    border: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.03);
+    border-radius: 18px; padding: 16px;
+  }
+  .wf-head { display:flex; gap:10px; align-items:flex-start; margin-bottom: 10px; }
+  .wf-id {
+    min-width: 58px; text-align:center; padding:5px 8px; border-radius:999px;
+    background: rgba(217,178,111,.14); color:#ffe7bc; font-size:12px; font-weight:700;
+    border:1px solid rgba(217,178,111,.3);
+  }
+  .wf-trigger { font-size: 16px; font-weight: 700; line-height: 1.45; }
+  .wf-note { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .wf-grid { display:grid; grid-template-columns: 120px 1fr; gap:8px 10px; margin-top: 8px; }
+  .wf-label { color:#f3d39a; font-size: 12px; }
+  .wf-value { color:#d7dbe3; line-height:1.5; font-size: 13px; }
+  .catalog-tools {
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom: 12px;
+  }
+  .catalog-tools input {
+    min-width:260px; flex:1 1 260px; background: var(--panel-2); border:1px solid var(--line);
+    border-radius: 12px; color:var(--text); padding:10px 12px;
+  }
+  table {
+    width:100%; border-collapse: collapse; font-size: 13px;
+  }
+  thead th {
+    text-align:left; padding: 10px 12px; color:#f1d49b; border-bottom:1px solid var(--line); position:sticky; top:0; background:#17181c;
+  }
+  tbody td {
+    padding: 10px 12px; border-bottom:1px solid rgba(255,255,255,.05); color:#d9dde6; vertical-align: top;
+  }
+  tbody tr:hover { background: rgba(255,255,255,.02); }
+  .small { color:var(--muted); font-size:12px; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; margin-top:16px; color:#cdd1da; font-size:13px; }
+  .embed-shell {
+    background: rgba(255,255,255,.02);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius: 18px;
+    padding: 12px;
+  }
+  .embed-head {
+    display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;
+  }
+  .embed-label {
+    color:#f1d49b; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  }
+  .embed-open {
+    border-radius: 6px;
+    border: 1px solid rgba(217,178,111,.45);
+    background: rgba(255,255,255,.03);
+    color: var(--accent);
+    cursor: pointer;
+    padding: 6px 10px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .embed-frame {
+    width:100%;
+    aspect-ratio: 1.68 / 1;
+    border-radius: 14px;
+    overflow:hidden;
+    border:1px solid rgba(200,169,110,.1);
+    background: #0f1114;
+  }
+  .embed-frame iframe {
+    width:100%;
+    height:100%;
+    border:none;
+    display:block;
+    background:#0f1114;
+  }
+  @media (max-width: 1400px) {
+    .lane-grid { grid-template-columns: repeat(3, minmax(220px, 1fr)); }
+    .subgrid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .counts { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    .lane-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Car Agent UX · 关系速览</h1>
+    <div class="subtitle">
+      我把原来的 workbook 转成了更适合快速看关联的方式：<strong>先按主题看 6 列链路</strong>（用户行为 → 场景 → 证据 → 能力 → 记忆/策略 → HMI），
+      再沿着具体 workflow 看系统如何从观察、判断走到执行与学习。底部保留了全量条目速查表，方便继续扩写成 vault / ontology / Figma flow。
+    </div>
+    <div class="counts">
+      <div class="count-card"><div class="count-num">86</div><div class="count-label">Capabilities</div></div>
+      <div class="count-card"><div class="count-num">56</div><div class="count-label">Behaviors</div></div>
+      <div class="count-card"><div class="count-num">64</div><div class="count-label">Scenes</div></div>
+      <div class="count-card"><div class="count-num">32</div><div class="count-label">Governance Nodes</div></div>
+      <div class="count-card"><div class="count-num">16</div><div class="count-label">Workflows</div></div>
+      <div class="count-card"><div class="count-num">41</div><div class="count-label">Explicit Relations</div></div>
+    </div>
+    <div class="legend">
+      <span><span class="dot type-Behavior"></span>用户行为</span>
+      <span><span class="dot type-Scene"></span>道路 / 旅程场景</span>
+      <span><span class="dot type-Evidence"></span>证据</span>
+      <span><span class="dot type-Capability"></span>系统能力</span>
+      <span><span class="dot type-Memory"></span>记忆</span>
+      <span><span class="dot type-Policy"></span>策略 / 权限</span>
+      <span><span class="dot type-HMI"></span>HMI</span>
+    </div>
+  </div>
+
+  <div class="toolbar" id="themeToolbar"></div>
+
+  <div class="section" id="themeSection">
+    <h2 id="themeTitle"></h2>
+    <div class="section-desc" id="themeDesc"></div>
+    <div class="lane-grid" id="laneGrid"></div>
+
+    <div class="subgrid">
+      <div class="detail-box">
+        <h2 style="font-size:20px; margin-bottom: 10px;">单项条目详情</h2>
+        <div id="nodeDetail" class="detail-desc">点击上方任意条目卡片，查看它的直接关系、约束和说明。</div>
+      </div>
+      <div class="relation-box">
+        <h2 style="font-size:20px; margin-bottom: 10px;">主题内显式关系</h2>
+        <div class="small">来自 06_Ontology_Relations，只显示当前主题里的关系边。</div>
+        <div id="themeRelations" class="relation-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>关键 Workflows</h2>
+    <div class="section-desc">同一主题下，用 workflow 看“触发 → 证据融合 → 默认动作 → 用户可见界面 → 用户可控项 → 记忆更新 → 安全/权限护栏”。</div>
+    <div id="workflowCards" class="workflow-cards"></div>
+  </div>
+
+  <div class="section catalog-box">
+    <h2>全量条目速查表</h2>
+    <div class="section-desc">适合继续做 ontology、Obsidian vault、状态机或高保真交互稿。这里改成了类似 canvas 的嵌入查看模式，支持在内层独立搜索，也可以展开成完整速查表视图。</div>
+    <div class="embed-shell">
+      <div class="embed-head">
+        <div class="embed-label">full catalog embed</div>
+        <a class="embed-open" id="catalogOpenLink" href="?view=catalog" target="_blank" rel="noreferrer">expand</a>
+      </div>
+      <div class="embed-frame">
+        <iframe id="catalogFrame" title="car-agent-relation-catalog" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = {"counts": {"Capability": 86, "Behavior": 56, "Scene": 64, "Governance": 32, "Workflow": 16, "Relation": 41}, "items": [{"id": "BEH-IMP-001", "name": "进入地库后低速轻刹", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "地库中缓慢减速", "extra": "可推断意图:可能在找车位或准备泊车｜适合学习:是｜风险:中"}, {"id": "BEH-IMP-002", "name": "头部/注视搜索车位", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "左右寻找空位", "extra": "可推断意图:停车位搜索｜适合学习:是｜风险:中"}, {"id": "BEH-IMP-003", "name": "切到环视/倒车视图", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "主动看近场环境", "extra": "可推断意图:准备泊车或避让｜适合学习:是｜风险:中"}, {"id": "BEH-IMP-004", "name": "接近目的地后减速并靠右", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "终点附近慢行", "extra": "可推断意图:可能准备停车/下客｜适合学习:是｜风险:中"}, {"id": "BEH-IMP-005", "name": "语音说‘我要泊车’", "type": "Behavior", "group": "停车意图", "subgroup": "显式", "desc": "语音触发找位/泊车", "extra": "可推断意图:明确停车目标｜适合学习:否｜风险:中"}, {"id": "BEH-PAR-001", "name": "增加跟车距离", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设置更大 time gap", "extra": "可推断意图:偏好更稳健｜适合学习:是｜风险:中"}, {"id": "BEH-PAR-002", "name": "减小跟车距离", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设置更小 time gap", "extra": "可推断意图:偏好更积极｜适合学习:是｜风险:中"}, {"id": "BEH-PAR-003", "name": "上调巡航速度", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "滚轮/拨杆加速", "extra": "可推断意图:偏好更高流速｜适合学习:是｜风险:中"}, {"id": "BEH-PAR-004", "name": "下调巡航速度", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "滚轮/拨杆减速", "extra": "可推断意图:偏好更保守｜适合学习:是｜风险:中"}, {"id": "BEH-PAR-005", "name": "选择稳健/标准/积极风格", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "切换驾驶风格档位", "extra": "可推断意图:全局风格偏好｜适合学习:是｜风险:中"}, {"id": "BEH-PAR-006", "name": "开启/关闭自动变道确认", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "调节确认机制", "extra": "可推断意图:信任与风险偏好｜适合学习:是｜风险:高"}, {"id": "BEH-PAR-007", "name": "设置最高限速偏好", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设定相对限速上限", "extra": "可推断意图:速度自由度偏好｜适合学习:是｜风险:高"}, {"id": "BEH-PAR-008", "name": "调节泊车最终停放位置", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "拖动停车框/微调目标位", "extra": "可推断意图:对停泊位置有偏好｜适合学习:是｜风险:中"}, {"id": "BEH-MED-001", "name": "播放音乐 / 指定歌单", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "媒体播放", "extra": "可推断意图:娱乐偏好｜适合学习:是｜风险:低"}, {"id": "BEH-MED-002", "name": "驻车时开启视频", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "看视频", "extra": "可推断意图:需要驻车内容场景｜适合学习:是｜风险:中"}, {"id": "BEH-MED-003", "name": "K歌 / 打开歌词", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "Karaoke 需求", "extra": "可推断意图:驻车娱乐偏好｜适合学习:是｜风险:低"}, {"id": "BEH-MED-004", "name": "副驾/后排发起内容播放", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "乘客媒体需求", "extra": "可推断意图:需要座位级权限和路由｜适合学习:是｜风险:低"}, {"id": "BEH-MED-005", "name": "要求多屏同播", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "全车共享内容", "extra": "可推断意图:家庭出行场景｜适合学习:是｜风险:低"}, {"id": "BEH-MED-006", "name": "收听播客/资讯摘要", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "获取陪伴式内容", "extra": "可推断意图:通勤信息消费偏好｜适合学习:是｜风险:低"}, {"id": "BEH-PRV-001", "name": "允许车内相机 analytics", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "打开分析权限", "extra": "可推断意图:允许更强人内感知｜适合学习:否｜风险:中"}, {"id": "BEH-PRV-002", "name": "关闭车内相机 analytics", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "关闭分析权限", "extra": "可推断意图:仅保留必要安全功能｜适合学习:否｜风险:中"}, {"id": "BEH-PRV-003", "name": "允许上云同步偏好", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "开启 cloud sync", "extra": "可推断意图:跨设备共享记忆｜适合学习:否｜风险:中"}, {"id": "BEH-PRV-004", "name": "删除一条已学习记忆", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "手动忘记", "extra": "可推断意图:否认其重要性｜适合学习:否｜风险:低"}, {"id": "BEH-PRV-005", "name": "固定 / 锁定某偏好", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "把偏好设为显式规则", "extra": "可推断意图:提升其权重｜适合学习:否｜风险:低"}, {"id": "BEH-ACT-001", "name": "手动驾驶", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "普通人工驾驶", "extra": "可推断意图:用户暂不托付系统｜适合学习:否｜风险:中"}, {"id": "BEH-ACT-002", "name": "主动激活 ACC", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "拨杆/按键开启 ACC", "extra": "可推断意图:托付纵向控制｜适合学习:否｜风险:中"}, {"id": "BEH-ACT-003", "name": "主动激活 LCC", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "拨杆/按键开启 LCC", "extra": "可推断意图:托付横纵向基础辅助｜适合学习:否｜风险:中"}, {"id": "BEH-ACT-004", "name": "主动激活 NOA/XNGP", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "进入路线级辅助", "extra": "可推断意图:愿意让系统按导航走｜适合学习:否｜风险:高"}, {"id": "BEH-ACT-005", "name": "用户主动退出辅助驾驶", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "上拨、踩刹车、关闭开关", "extra": "可推断意图:用户希望回到人工控制｜适合学习:否｜风险:高"}, {"id": "BEH-ACT-006", "name": "用户接受系统升级提示", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "同意从 ACC 升到 LCC/NOA", "extra": "可推断意图:用户在当前场景愿意加托付｜适合学习:否｜风险:高"}, {"id": "BEH-ACT-007", "name": "用户拒绝系统升级提示", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "忽略/取消升级", "extra": "可推断意图:当前不信任或不想升级｜适合学习:是｜风险:中"}, {"id": "BEH-DMS-001", "name": "长时间视线离路", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "看中控/手机/侧方", "extra": "可推断意图:注意力下降｜适合学习:否｜风险:高"}, {"id": "BEH-DMS-002", "name": "长时间手不在方向盘附近", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "手位不可见", "extra": "可推断意图:可接管性下降｜适合学习:否｜风险:高"}, {"id": "BEH-DMS-003", "name": "驾驶中离座/起身/平躺", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "姿态异常", "extra": "可推断意图:不满足可托付条件｜适合学习:否｜风险:高"}, {"id": "BEH-DMS-004", "name": "系/解安全带", "type": "Behavior", "group": "注意力/资格", "subgroup": "显式", "desc": "安全约束变化", "extra": "可推断意图:进入/退出可用条件｜适合学习:否｜风险:高"}, {"id": "BEH-COR-001", "name": "踩刹车取消变道或路口通过", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "系统动作中用户制动", "extra": "可推断意图:当前策略不被信任｜适合学习:是｜风险:高"}, {"id": "BEH-COR-002", "name": "踩刹车取消泊车", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "泊入/算路时踩下制动", "extra": "可推断意图:当前车位/轨迹/速度不满意｜适合学习:是｜风险:高"}, {"id": "BEH-COR-003", "name": "方向盘施加较大力矩", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "LCC/NOA 时人工修正", "extra": "可推断意图:横向轨迹/时机不满意｜适合学习:是｜风险:高"}, {"id": "BEH-COR-004", "name": "取消自动变道", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "系统发起后用户打断", "extra": "可推断意图:变道时机/目标车道不满意｜适合学习:是｜风险:高"}, {"id": "BEH-COR-005", "name": "在系统减速后补油门", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "如路口绿灯/汇入时人工加速", "extra": "可推断意图:系统过于保守｜适合学习:是｜风险:高"}, {"id": "BEH-COR-006", "name": "‘不是这个意思’式语音纠正", "type": "Behavior", "group": "纠正/接管", "subgroup": "显式", "desc": "否认系统意图", "extra": "可推断意图:当前推断错误｜适合学习:是｜风险:中"}, {"id": "BEH-ROU-001", "name": "总在两三个路口前就提前变道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "提早选道", "extra": "可推断意图:偏好早规划｜适合学习:是｜风险:中"}, {"id": "BEH-ROU-002", "name": "临近路口才变道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "最后时刻选道", "extra": "可推断意图:偏好晚决策｜适合学习:是｜风险:高"}, {"id": "BEH-ROU-003", "name": "倾向远离慢车道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "反复主动离开慢车道", "extra": "可推断意图:更重效率｜适合学习:是｜风险:中"}, {"id": "BEH-ROU-004", "name": "倾向保持中间车道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "很少主动变道", "extra": "可推断意图:更重稳定｜适合学习:是｜风险:中"}, {"id": "BEH-ROU-005", "name": "主动选择服务区/收费站", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "在特定节点偏好停车/补能", "extra": "可推断意图:路线意图偏好｜适合学习:是｜风险:中"}, {"id": "BEH-ROU-006", "name": "主动绕开拥堵/施工", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "人工改道", "extra": "可推断意图:对通行效率/风险的偏好｜适合学习:是｜风险:中"}, {"id": "BEH-CAB-001", "name": "说‘下雨了，开稳点’", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "模糊自然语言控车", "extra": "可推断意图:需要一组稳健策略编排｜适合学习:是｜风险:中"}, {"id": "BEH-CAB-002", "name": "调低空调温度", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "修改舱内舒适度", "extra": "可推断意图:热舒适偏好｜适合学习:是｜风险:低"}, {"id": "BEH-CAB-003", "name": "开启座椅通风/按摩", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "舒适功能开启", "extra": "可推断意图:场景舒适偏好｜适合学习:是｜风险:低"}, {"id": "BEH-CAB-004", "name": "手动提高雨刮挡位", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "增强雨刮频率", "extra": "可推断意图:天气感知/舒适偏好｜适合学习:是｜风险:低"}, {"id": "BEH-CAB-005", "name": "进入驾驶模式页调整悬架/驾驶体验", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "主动微调车辆风格", "extra": "可推断意图:底盘/舒适性偏好｜适合学习:是｜风险:中"}, {"id": "BEH-SPD-001", "name": "在空旷快速路反复手动加速", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "超过系统默认流速", "extra": "可推断意图:更高流速偏好｜适合学习:是｜风险:高"}, {"id": "BEH-SPD-002", "name": "在雨天主动降速明显", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "遇恶劣天气更保守", "extra": "可推断意图:天气谨慎偏好｜适合学习:是｜风险:中"}, {"id": "BEH-SPD-003", "name": "在弯道/匝道提前减速", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "对横向加速度更敏感", "extra": "可推断意图:舒适性偏好｜适合学习:是｜风险:中"}, {"id": "BEH-SPD-004", "name": "跟停后习惯更快起步", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "信号灯起步更积极", "extra": "可推断意图:起步时机偏好｜适合学习:是｜风险:高"}, {"id": "SCN-CTL-001", "name": "标准红绿灯路口", "type": "Scene", "group": "交通控制", "subgroup": "信号灯", "desc": "可见信号灯", "extra": "歧义:是否停/何时起步｜风险:高"}, {"id": "SCN-CTL-002", "name": "红绿灯被遮挡", "type": "Scene", "group": "交通控制", "subgroup": "信号灯", "desc": "大车/树/曲线遮挡", "extra": "歧义:保守停车还是跟车起步｜风险:高"}, {"id": "SCN-CTL-003", "name": "Stop Sign", "type": "Scene", "group": "交通控制", "subgroup": "停牌", "desc": "停牌或停车线", "extra": "歧义:保守策略为主｜风险:高"}, {"id": "SCN-CTL-004", "name": "礼让行人", "type": "Scene", "group": "交通控制", "subgroup": "人行横道", "desc": "有行人进入或即将进入", "extra": "歧义:礼让阈值/解释｜风险:高"}, {"id": "SCN-CTL-005", "name": "环岛进出", "type": "Scene", "group": "交通控制", "subgroup": "环岛", "desc": "入口礼让与出口路线选择", "extra": "歧义:高｜风险:你图里已有"}, {"id": "SCN-CTL-006", "name": "重点慢行区", "type": "Scene", "group": "交通控制", "subgroup": "学校/医院区域", "desc": "速度和注意力策略更保守", "extra": "歧义:高｜风险:上下学接送场景"}, {"id": "SCN-CTL-007", "name": "高速节点", "type": "Scene", "group": "交通控制", "subgroup": "收费站 / 服务区", "desc": "是否退出高阶辅助/提示接管", "extra": "歧义:高｜风险:你图里已有"}, {"id": "SCN-TRF-001", "name": "低密度畅通", "type": "Scene", "group": "交通流", "subgroup": "自由流", "desc": "前车稀少", "extra": "歧义:更能看出速度偏好｜风险:中"}, {"id": "SCN-TRF-002", "name": "走走停停", "type": "Scene", "group": "交通流", "subgroup": "拥堵", "desc": "频繁跟停起步", "extra": "歧义:跟停舒适性与车距偏好｜风险:高"}, {"id": "SCN-TRF-003", "name": "早晚高峰拥堵", "type": "Scene", "group": "交通流", "subgroup": "高峰", "desc": "博弈密度高", "extra": "歧义:是否更保守/更少变道｜风险:高"}, {"id": "SCN-TRF-004", "name": "机动车+非机动车+行人混合", "type": "Scene", "group": "交通流", "subgroup": "混合", "desc": "路权复杂", "extra": "歧义:高｜风险:亚洲城市典型"}, {"id": "SCN-TRF-005", "name": "慢车阻挡", "type": "Scene", "group": "交通流", "subgroup": "超车", "desc": "是否变道超车", "extra": "歧义:中｜风险:风格强相关"}, {"id": "SCN-WEA-001", "name": "小雨", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "路面附着下降", "extra": "歧义:是否切换稳健风格｜风险:中"}, {"id": "SCN-WEA-002", "name": "大雨", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "能见度显著下降", "extra": "歧义:是否降低限速/加大车距｜风险:高"}, {"id": "SCN-WEA-003", "name": "大雪/结冰", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "附着和感知双重受损", "extra": "歧义:是否直接禁用高阶能力｜风险:高"}, {"id": "SCN-WEA-004", "name": "浓雾", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "能见度低", "extra": "歧义:提示与降级策略｜风险:高"}, {"id": "SCN-WEA-005", "name": "夜间", "type": "Scene", "group": "天气与光照", "subgroup": "光照", "desc": "视觉弱化", "extra": "歧义:提示方式与可信度变化｜风险:中"}, {"id": "SCN-WEA-006", "name": "强逆光/炫光", "type": "Scene", "group": "天气与光照", "subgroup": "光照", "desc": "相机致盲风险", "extra": "歧义:是否保守/退出｜风险:高"}, {"id": "SCN-WEA-007", "name": "隧道", "type": "Scene", "group": "天气与光照", "subgroup": "特殊", "desc": "光照突变 / GPS 弱", "extra": "歧义:视角与可用性切换｜风险:高"}, {"id": "SCN-TRP-001", "name": "起点停车位出发", "type": "Scene", "group": "旅程阶段", "subgroup": "出发", "desc": "从静止到进入路线", "extra": "歧义:模式建议时机｜风险:中"}, {"id": "SCN-TRP-002", "name": "正常途中", "type": "Scene", "group": "旅程阶段", "subgroup": "途中", "desc": "一般道路行驶", "extra": "歧义:持续优化空间｜风险:中"}, {"id": "SCN-TRP-003", "name": "接近终点/途经点", "type": "Scene", "group": "旅程阶段", "subgroup": "近终点", "desc": "是否停车/下客/继续走", "extra": "歧义:中｜风险:意图歧义大"}, {"id": "SCN-TRP-004", "name": "进入停车场 / 地库入口", "type": "Scene", "group": "旅程阶段", "subgroup": "入库前", "desc": "从道路转泊车", "extra": "歧义:路线视角/路况视角切换｜风险:高"}, {"id": "SCN-TRP-005", "name": "正在找车位", "type": "Scene", "group": "旅程阶段", "subgroup": "搜位中", "desc": "低速、近场决策", "extra": "歧义:何时弹出泊车 UI｜风险:中"}, {"id": "SCN-TRP-006", "name": "已开始泊车", "type": "Scene", "group": "旅程阶段", "subgroup": "泊车中", "desc": "搜路/算路/执行", "extra": "歧义:用户制动如何解释｜风险:高"}, {"id": "SCN-TRP-007", "name": "补能驻车", "type": "Scene", "group": "旅程阶段", "subgroup": "充电中", "desc": "可进入娱乐/休息/预热冷却场景", "extra": "歧义:低｜风险:座舱典型"}, {"id": "SCN-MOD-001", "name": "普通手动驾驶", "type": "Scene", "group": "模式与状态", "subgroup": "基线", "desc": "无辅助激活", "extra": "歧义:系统只观察不主导｜风险:中"}, {"id": "SCN-MOD-002", "name": "ACC Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "车速/前车/条件满足", "extra": "歧义:是否建议用户激活｜风险:中"}, {"id": "SCN-MOD-003", "name": "LCC Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "车道线清晰、车辆居中", "extra": "歧义:是否自动升级/是否打扰用户｜风险:中"}, {"id": "SCN-MOD-004", "name": "NOA Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "路线可用、ODD 满足", "extra": "歧义:当前是否适合托付路线决策｜风险:高"}, {"id": "SCN-MOD-005", "name": "即将退出 PPA / HAVP", "type": "Scene", "group": "模式与状态", "subgroup": "退出", "desc": "接近边界或终点", "extra": "歧义:何时告知、如何接回用户｜风险:高"}, {"id": "SCN-MOD-006", "name": "系统原因自动退出", "type": "Scene", "group": "模式与状态", "subgroup": "退出", "desc": "故障/传感器受限/ODD 失效", "extra": "歧义:解释多少、何时接管｜风险:高"}, {"id": "SCN-CAB-001", "name": "驾驶员注意力在线", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "视线/手位正常", "extra": "歧义:可继续托付｜风险:中"}, {"id": "SCN-CAB-002", "name": "驾驶员注意力下降", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "看向中控/手机/侧方过久", "extra": "歧义:是否升级提醒｜风险:高"}, {"id": "SCN-CAB-003", "name": "驾驶员离座/异常姿态", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "起身/平躺", "extra": "歧义:是否立即降级/退出｜风险:高"}, {"id": "SCN-CAB-004", "name": "副驾发起语音或媒体请求", "type": "Scene", "group": "舱内状态", "subgroup": "乘客", "desc": "副驾需要内容/控车", "extra": "歧义:主驾注意力不该被夺走｜风险:中"}, {"id": "SCN-CAB-005", "name": "后排儿童娱乐中", "type": "Scene", "group": "舱内状态", "subgroup": "乘客", "desc": "后排看视频/听故事", "extra": "歧义:多屏权限与安全｜风险:低"}, {"id": "SCN-CAB-006", "name": "开门/后备厢打开", "type": "Scene", "group": "舱内状态", "subgroup": "舱门", "desc": "车辆状态变化", "extra": "歧义:泊车或辅助应退出/暂停｜风险:高"}, {"id": "SCN-LAN-001", "name": "多车道直行", "type": "Scene", "group": "车道结构", "subgroup": "基础", "desc": "普通多车道", "extra": "歧义:提前/临近变道策略差异｜风险:中"}, {"id": "SCN-LAN-002", "name": "车道变窄", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "施工或瓶颈", "extra": "歧义:是否提前避让或并线｜风险:高"}, {"id": "SCN-LAN-003", "name": "车道变宽", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "新车道出现", "extra": "歧义:是否主动选道｜风险:中"}, {"id": "SCN-LAN-004", "name": "合流到主路", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "辅路汇入主路", "extra": "歧义:加速时机与礼让博弈｜风险:高"}, {"id": "SCN-LAN-005", "name": "分流到辅路", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "主路进入辅路/匝道", "extra": "歧义:选错道的代价高｜风险:高"}, {"id": "SCN-LAN-006", "name": "匝道入口", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "高速/快速路入口", "extra": "歧义:进匝道准备时机｜风险:高"}, {"id": "SCN-LAN-007", "name": "匝道入口失败", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "未能进入匝道", "extra": "歧义:是否重新规划/降级/解释｜风险:高"}, {"id": "SCN-LAN-008", "name": "多匝道相邻", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "近距离多出口", "extra": "歧义:提前选道权重更高｜风险:高"}, {"id": "SCN-LAN-009", "name": "断线/杂线/乱线车道", "type": "Scene", "group": "车道结构", "subgroup": "弱语义", "desc": "标线不连续", "extra": "歧义:系统是否继续托付｜风险:高"}, {"id": "SCN-LAN-010", "name": "无清晰车位线区域", "type": "Scene", "group": "车道结构", "subgroup": "弱语义", "desc": "停车位线缺失", "extra": "歧义:是否允许随心画/自定义目标位｜风险:中"}, {"id": "SCN-ROD-001", "name": "封闭高速主路", "type": "Scene", "group": "道路类型", "subgroup": "高速", "desc": "清晰车道线、较高速度", "extra": "歧义:系统可托付性较高｜风险:高"}, {"id": "SCN-ROD-002", "name": "城市快速路", "type": "Scene", "group": "道路类型", "subgroup": "快速路", "desc": "匝道/高架/分叉多", "extra": "歧义:路线选择与博弈更复杂｜风险:高"}, {"id": "SCN-ROD-003", "name": "有信号灯多车道道路", "type": "Scene", "group": "道路类型", "subgroup": "城市主干路", "desc": "信号灯、加塞、行人共存", "extra": "歧义:高｜风险:城市 LCC/NOA 场景"}, {"id": "SCN-ROD-004", "name": "路口密集、车道变化频繁", "type": "Scene", "group": "道路类型", "subgroup": "城市次干路", "desc": "局部规则多、驾驶员意图模糊", "extra": "歧义:高｜风险:低速复杂"}, {"id": "SCN-ROD-005", "name": "车道语义弱、混合交通", "type": "Scene", "group": "道路类型", "subgroup": "支路/乡镇路", "desc": "系统边界更不稳定", "extra": "歧义:高｜风险:适合谨慎策略"}, {"id": "SCN-ROD-006", "name": "园区道路/非标准道路", "type": "Scene", "group": "道路类型", "subgroup": "园区/内部路", "desc": "标线、路权语义弱", "extra": "歧义:高｜风险:agent 意义更大"}, {"id": "SCN-ROD-007", "name": "弱图/无图/弱 GPS", "type": "Scene", "group": "道路类型", "subgroup": "地库/地下停车场", "desc": "路线和泊车强耦合", "extra": "歧义:高｜风险:你重点提到的场景"}, {"id": "SCN-ROD-008", "name": "开放停车场", "type": "Scene", "group": "道路类型", "subgroup": "地面停车场", "desc": "车位、行人、低速车辆密集", "extra": "歧义:中｜风险:泊车与娱乐可衔接"}, {"id": "SCN-ROD-009", "name": "沿路侧停车", "type": "Scene", "group": "道路类型", "subgroup": "路边停车区", "desc": "停车意图识别困难", "extra": "歧义:高｜风险:容易与临停混淆"}, {"id": "SCN-OBS-001", "name": "占道静止车", "type": "Scene", "group": "障碍与博弈", "subgroup": "静态障碍", "desc": "前方事故/故障车", "extra": "歧义:借道绕行还是停车等待｜风险:高"}, {"id": "SCN-OBS-002", "name": "施工改道/锥桶", "type": "Scene", "group": "障碍与博弈", "subgroup": "施工", "desc": "规则临时变化", "extra": "歧义:是否降级/绕行｜风险:高"}, {"id": "SCN-OBS-003", "name": "旁侧大车/压迫", "type": "Scene", "group": "障碍与博弈", "subgroup": "旁侧干扰", "desc": "是否旁侧避让", "extra": "歧义:高｜风险:舒适与安全平衡"}, {"id": "SCN-OBS-004", "name": "前方车辆加塞", "type": "Scene", "group": "障碍与博弈", "subgroup": "切入", "desc": "控距/减速风格差异", "extra": "歧义:高｜风险:通勤常见"}, {"id": "SCN-OBS-005", "name": "电动车/自行车密集", "type": "Scene", "group": "障碍与博弈", "subgroup": "非机动车", "desc": "是否借道/等待", "extra": "歧义:高｜风险:亚洲城市场景"}, {"id": "SCN-OBS-006", "name": "路边行人/鬼探头风险", "type": "Scene", "group": "障碍与博弈", "subgroup": "行人", "desc": "是否提前减速", "extra": "歧义:高｜风险:保守优先"}, {"id": "SCN-OBS-007", "name": "大车挡视野", "type": "Scene", "group": "障碍与博弈", "subgroup": "大车遮挡", "desc": "是否保守停车或延后动作", "extra": "歧义:高｜风险:解释很重要"}, {"id": "EVD-001", "name": "导航接近终点", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "路线信息显示车辆接近目的地/途经点/服务区", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-002", "name": "进入地库/弱图空间", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "GPS 变弱、地图语义弱、地库/园区识别", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-003", "name": "检测到可用车位", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "视觉/超声/环视识别出潜在车位", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-004", "name": "驾驶员注视搜索车位", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "舱内感知到用户搜索近场空间", "extra": "可见性:默认隐藏｜可编辑/授权:需授权"}, {"id": "EVD-005", "name": "用户轻刹且低速", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "低速制动输入", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-006", "name": "前方红绿灯可见", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "感知到信号灯", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-007", "name": "红绿灯被遮挡", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "信号灯不稳定或被遮挡", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-008", "name": "盲区有车/速度差大", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "邻车道不安全", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-009", "name": "天气恶化", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "雨雪雾/附着变差", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-010", "name": "DMS 注意力不足", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "视线/手位/姿态不满足", "extra": "可见性:系统内部｜可编辑/授权:否"}, {"id": "EVD-011", "name": "用户显式设置偏好", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "设置页/语音明确表达", "extra": "可见性:可见｜可编辑/授权:是"}, {"id": "EVD-012", "name": "重复接管/纠正记录", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "多次相似场景中接管", "extra": "可见性:默认隐藏｜可编辑/授权:可查看"}, {"id": "CAP-MED-001", "name": "Music Playback", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "音乐播放", "extra": "触发:用户/语音｜可学习:是｜风险:低"}, {"id": "CAP-MED-002", "name": "Video Streaming", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "驻车视频", "extra": "触发:用户操作｜可学习:否｜风险:中"}, {"id": "CAP-MED-003", "name": "Karaoke / Lyrics", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "K歌/歌词显示", "extra": "触发:用户操作｜可学习:是｜风险:低"}, {"id": "CAP-MED-004", "name": "Podcast / News Summary", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "播客/资讯解读", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, {"id": "CAP-MED-005", "name": "Games / Arcade", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "游戏", "extra": "触发:用户操作｜可学习:否｜风险:中"}, {"id": "CAP-MED-006", "name": "Multi-screen Playback", "type": "Capability", "group": "娱乐", "subgroup": "多屏", "desc": "多屏同播/跨屏歌词", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, {"id": "CAP-MED-007", "name": "App Launcher / Search", "type": "Capability", "group": "娱乐", "subgroup": "生态", "desc": "应用入口与搜索", "extra": "触发:用户/语音｜可学习:否｜风险:低"}, {"id": "CAP-LRN-001", "name": "Episode Capture", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "采集单次行为 episode", "extra": "触发:系统执行｜可学习:否｜风险:中"}, {"id": "CAP-LRN-002", "name": "Preference Abstraction", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "从 episode 抽象偏好", "extra": "触发:系统执行｜可学习:是｜风险:中"}, {"id": "CAP-LRN-003", "name": "Route Memory", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "路线记忆", "extra": "触发:系统执行｜可学习:是｜风险:中"}, {"id": "CAP-LRN-004", "name": "Memory Review / Edit / Delete", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "查看/编辑/删除记忆", "extra": "触发:用户操作｜可学习:否｜风险:低"}, {"id": "CAP-LRN-005", "name": "Permission: On-device Only", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "仅车端处理", "extra": "触发:用户设置｜可学习:否｜风险:低"}, {"id": "CAP-LRN-006", "name": "Permission: Cloud Sync", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "允许上云/跨设备同步", "extra": "触发:用户设置｜可学习:否｜风险:中"}, {"id": "CAP-LRN-007", "name": "Safety Envelope Enforcement", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "安全包络约束所有个性化", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LRN-008", "name": "Confidence Gate", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "低置信度不自动执行高风险动作", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LRN-009", "name": "Post-drive Review", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "行后总结与确认卡片", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-CAB-001", "name": "Wake Assistant", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "唤醒车载助手", "extra": "触发:语音/按键｜可学习:否｜风险:低"}, {"id": "CAP-CAB-002", "name": "Natural Language Vehicle Control", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "自然语言控车", "extra": "触发:语音｜可学习:是｜风险:中"}, {"id": "CAP-CAB-003", "name": "Navigation Query", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "语音搜索地点/路线", "extra": "触发:语音｜可学习:是｜风险:低"}, {"id": "CAP-CAB-004", "name": "Workflow Transparency", "type": "Capability", "group": "智能座舱", "subgroup": "代理", "desc": "显示助手感知/思考/处理过程", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-CAB-005", "name": "Scene Automation", "type": "Capability", "group": "智能座舱", "subgroup": "自动化", "desc": "条件触发动作链", "extra": "触发:用户配置 / 系统触发｜可学习:是｜风险:中"}, {"id": "CAP-CAB-006", "name": "Driver Profile / Identity Binding", "type": "Capability", "group": "智能座舱", "subgroup": "画像", "desc": "驾驶员身份识别与档案切换", "extra": "触发:系统/钥匙/账户｜可学习:是｜风险:中"}, {"id": "CAP-PRK-001", "name": "Parking Slot Search", "type": "Capability", "group": "泊车", "subgroup": "搜索", "desc": "找车位", "extra": "触发:系统执行｜可学习:否｜风险:中"}, {"id": "CAP-PRK-002", "name": "Parking Path Planning", "type": "Capability", "group": "泊车", "subgroup": "规划", "desc": "泊车算路", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-PRK-003", "name": "APA Start", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "自动泊车开始", "extra": "触发:用户确认｜可学习:否｜风险:高"}, {"id": "CAP-PRK-004", "name": "Parking Pause / Resume", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "泊车暂停/恢复", "extra": "触发:用户/系统｜可学习:否｜风险:高"}, {"id": "CAP-PRK-005", "name": "Brake-to-Cancel Parking", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "用户制动取消泊车", "extra": "触发:用户操作｜可学习:否｜风险:高"}, {"id": "CAP-PRK-006", "name": "Custom Parking Spot Draw", "type": "Capability", "group": "泊车", "subgroup": "目标", "desc": "无框/无位线自定义停车位", "extra": "触发:用户操作｜可学习:否｜风险:中"}, {"id": "CAP-PRK-007", "name": "Adjust Final Parking Position", "type": "Capability", "group": "泊车", "subgroup": "目标", "desc": "调节最终停泊位置", "extra": "触发:用户操作｜可学习:是｜风险:中"}, {"id": "CAP-PRK-008", "name": "Remote Park In", "type": "Capability", "group": "泊车", "subgroup": "车外监督", "desc": "离车泊入", "extra": "触发:用户在车外监督｜可学习:否｜风险:高"}, {"id": "CAP-PRK-009", "name": "Remote Park Out", "type": "Capability", "group": "泊车", "subgroup": "车外监督", "desc": "离车泊出/迎宾出库", "extra": "触发:用户在车外监督｜可学习:否｜风险:高"}, {"id": "CAP-PRK-010", "name": "Memory Parking Learn Route", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "学习泊车路线", "extra": "触发:用户示教｜可学习:是｜风险:中"}, {"id": "CAP-PRK-011", "name": "Memory Parking Replay", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "复用已学习泊车路线", "extra": "触发:系统执行｜可学习:是｜风险:高"}, {"id": "CAP-PRK-012", "name": "Cross-floor Parking Memory", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "跨楼层记忆泊车", "extra": "触发:系统执行｜可学习:是｜风险:高"}, {"id": "CAP-PRK-013", "name": "Vehicle Summon", "type": "Capability", "group": "泊车", "subgroup": "召唤", "desc": "车辆召唤到近处", "extra": "触发:用户在车外发起｜可学习:否｜风险:高"}, {"id": "CAP-PRK-014", "name": "Parking Overview HUD / Map", "type": "Capability", "group": "泊车", "subgroup": "视图", "desc": "泊车全览图", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-HMI-001", "name": "Driving Visualization", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "显示车道线、车辆、行人等感知结果", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-HMI-002", "name": "Route View", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "路线视角", "extra": "触发:系统/用户切换｜可学习:否｜风险:低"}, {"id": "CAP-HMI-003", "name": "Traffic Context View", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "路况视角", "extra": "触发:系统/用户切换｜可学习:否｜风险:低"}, {"id": "CAP-HMI-004", "name": "Reason Chip", "type": "Capability", "group": "界面", "subgroup": "解释", "desc": "一句话理由解释", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-HMI-005", "name": "Workflow Panel", "type": "Capability", "group": "界面", "subgroup": "解释", "desc": "工作流/推理轨迹展示", "extra": "触发:系统显示｜可学习:否｜风险:低"}, {"id": "CAP-HMI-006", "name": "Escalating Alerts", "type": "Capability", "group": "界面", "subgroup": "提示", "desc": "分级升级提示", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-VEH-001", "name": "Climate Setpoint", "type": "Capability", "group": "车控车设", "subgroup": "空调", "desc": "温度/风量/同步", "extra": "触发:用户/语音｜可学习:是｜风险:低"}, {"id": "CAP-VEH-002", "name": "Defrost / Recirculation", "type": "Capability", "group": "车控车设", "subgroup": "空调", "desc": "除雾/内循环", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, {"id": "CAP-VEH-003", "name": "Seat Position / Easy Entry", "type": "Capability", "group": "车控车设", "subgroup": "座椅", "desc": "座椅位置 / 便利进出", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, {"id": "CAP-VEH-004", "name": "Seat Heat / Vent / Massage", "type": "Capability", "group": "车控车设", "subgroup": "座椅", "desc": "座椅舒适功能", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, {"id": "CAP-VEH-005", "name": "Steering / Mirror Position", "type": "Capability", "group": "车控车设", "subgroup": "方向盘与后视镜", "desc": "方向盘/后视镜位置", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, {"id": "CAP-VEH-006", "name": "Lights Control", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "灯光控制", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, {"id": "CAP-VEH-007", "name": "Wiper Control", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "雨刮控制", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, {"id": "CAP-VEH-008", "name": "Windows / Doors / Trunk", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "门窗尾门控制", "extra": "触发:用户/系统｜可学习:是｜风险:中"}, {"id": "CAP-VEH-009", "name": "Charge Port / Start Stop Charge", "type": "Capability", "group": "车控车设", "subgroup": "充电", "desc": "充电口/开始停止充电", "extra": "触发:用户/语音/自动｜可学习:是｜风险:低"}, {"id": "CAP-VEH-010", "name": "Battery Precondition", "type": "Capability", "group": "车控车设", "subgroup": "充电", "desc": "充电前预冷预热", "extra": "触发:用户/系统｜可学习:部分｜风险:低"}, {"id": "CAP-VEH-011", "name": "Ride / Suspension Mode", "type": "Capability", "group": "车控车设", "subgroup": "底盘", "desc": "底盘/悬架模式", "extra": "触发:用户/系统｜可学习:是｜风险:中"}, {"id": "CAP-INT-001", "name": "Traffic Light Response", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "响应红绿灯启停", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-INT-002", "name": "Stop Sign Response", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "响应停牌", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-INT-003", "name": "Crosswalk Yield", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "礼让行人", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-INT-004", "name": "Roundabout Entry/Exit", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "环岛进出", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-INT-005", "name": "Intersection Straight Pass", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "路口直行通过", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-LAT-001", "name": "Lane Centering", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "保持车道居中", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-LAT-002", "name": "Lane Line Recovery", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "断线/杂线/弱线补线保持", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LAT-003", "name": "Auto Lane Change", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "系统发起变道", "extra": "触发:系统建议/执行｜可学习:是｜风险:高"}, {"id": "CAP-LAT-004", "name": "User-Confirmed Lane Change", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "用户打灯发起变道", "extra": "触发:用户发起｜可学习:是｜风险:高"}, {"id": "CAP-LAT-005", "name": "Lane Change Abort", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "变道取消/中止", "extra": "触发:用户/系统｜可学习:否｜风险:高"}, {"id": "CAP-LAT-006", "name": "Merge Main Road", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "汇入主路", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-LAT-007", "name": "Exit to Side Road / Ramp", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "进入辅路/匝道", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-LAT-008", "name": "Construction Bypass", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "施工绕行/借道绕行", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LAT-009", "name": "Adjacent Avoidance", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "旁侧避让", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LON-001", "name": "Set Cruise Speed", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "设定巡航速度", "extra": "触发:显式设置｜可学习:是｜风险:中"}, {"id": "CAP-LON-002", "name": "Speed Offset by Limit", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "按限速带偏移设置巡航", "extra": "触发:系统/设置｜可学习:是｜风险:高"}, {"id": "CAP-LON-003", "name": "Following Distance", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "跟车距离控制", "extra": "触发:显式设置 / 学习｜可学习:是｜风险:高"}, {"id": "CAP-LON-004", "name": "Stop & Go", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "跟停与起步", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LON-005", "name": "Curve / Narrow Lane Slowdown", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "弯道/窄道减速", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-LON-006", "name": "Weather Cautious Speed", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "雨雪雾谨慎限速", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-LON-007", "name": "Occluded Signal Hold", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "信号遮挡时保守停车/跟停", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-ROU-001", "name": "Route-based Lane Prep", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "为出口/转向提前选道", "extra": "触发:系统执行｜可学习:是｜风险:高"}, {"id": "CAP-ROU-002", "name": "Waypoint / Destination Arrival Prep", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "接近终点/途经点准备", "extra": "触发:系统执行｜可学习:是｜风险:中"}, {"id": "CAP-ROU-003", "name": "Service Area / Toll Station Handling", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "服务区/收费站处理", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, {"id": "CAP-ROU-004", "name": "Weak-map Area Transition", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "进入地库/园区等弱图空间的过渡", "extra": "触发:系统执行｜可学习:否｜风险:高"}, {"id": "CAP-DRV-001", "name": "Manual Driving", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "普通人工驾驶", "extra": "触发:用户直接控制｜可学习:否｜风险:中"}, {"id": "CAP-DRV-002", "name": "ACC Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活纵向巡航", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:中"}, {"id": "CAP-DRV-003", "name": "LCC Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活车道居中/横纵向辅助", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:中"}, {"id": "CAP-DRV-004", "name": "NOA / Route Assist Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活路线级辅助驾驶", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:高"}, {"id": "CAP-DRV-005", "name": "Auto Upgrade to LCC", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "从 ACC 自动升级到 LCC", "extra": "触发:系统判定｜可学习:否｜风险:高"}, {"id": "CAP-DRV-006", "name": "Auto Downgrade to ACC", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "从 LCC/NOA 自动降级到 ACC", "extra": "触发:系统判定｜可学习:否｜风险:高"}, {"id": "CAP-DRV-007", "name": "Exit to Manual", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "退出到人工驾驶", "extra": "触发:用户/系统退出｜可学习:否｜风险:高"}, {"id": "CAP-DRV-008", "name": "Assist Pause / Resume", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "辅助驾驶暂停与恢复", "extra": "触发:用户操作｜可学习:否｜风险:中"}, {"id": "MEM-001", "name": "Episode Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "单次事件记忆", "extra": "可见性:仅系统/行后可见｜可编辑/授权:可删"}, {"id": "MEM-002", "name": "Preference Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "偏好记忆（如跟车距、变道时机）", "extra": "可见性:默认可见｜可编辑/授权:可改/可锁定"}, {"id": "MEM-003", "name": "Route Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "路线记忆（通勤/泊车）", "extra": "可见性:默认可见｜可编辑/授权:可删/可停用"}, {"id": "MEM-004", "name": "Scene-bound Rule", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "场景绑定规则（如下雨自动更稳健）", "extra": "可见性:默认可见｜可编辑/授权:可开关"}, {"id": "MEM-005", "name": "Do-Not-Learn List", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "不应学习的行为列表", "extra": "可见性:默认可见｜可编辑/授权:可编辑"}, {"id": "POL-001", "name": "Safety Envelope", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "安全包络：任何个性化不得突破", "extra": "可见性:不对外细节｜可编辑/授权:不可编辑"}, {"id": "POL-002", "name": "Confidence Gate", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "低置信+高风险不自动执行", "extra": "可见性:可解释结论｜可编辑/授权:不可编辑"}, {"id": "POL-003", "name": "Parked-only Media", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "视频/部分娱乐需驻车", "extra": "可见性:可见｜可编辑/授权:不可编辑"}, {"id": "POL-004", "name": "On-device First", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "优先车端处理", "extra": "可见性:可见｜可编辑/授权:可配置"}, {"id": "POL-005", "name": "Cloud Sync Permission", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "是否允许跨设备同步", "extra": "可见性:可见｜可编辑/授权:可配置"}, {"id": "POL-006", "name": "Cabin-sensing Permission", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "是否允许非必要舱内感知用于学习", "extra": "可见性:可见｜可编辑/授权:可配置"}, {"id": "POL-007", "name": "Human-in-the-loop Requirement", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "紧急/高风险时必须让 human 保持主导", "extra": "可见性:可解释结论｜可编辑/授权:不可编辑"}, {"id": "HMI-001", "name": "Record-only Toast", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "已执行仅留痕", "extra": "可见性:轻提示｜可编辑/授权:否"}, {"id": "HMI-002", "name": "Need-to-know Banner", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "需要知晓但不打断", "extra": "可见性:中等显著｜可编辑/授权:否"}, {"id": "HMI-003", "name": "Confirmation Card", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "需要用户定方向的确认卡片", "extra": "可见性:可见｜可编辑/授权:用户可点选"}, {"id": "HMI-004", "name": "Escalating Takeover Alert", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "升级接管提示", "extra": "可见性:高显著｜可编辑/授权:否"}, {"id": "HMI-005", "name": "Post-drive Review Card", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "行后学习总结卡片", "extra": "可见性:行后可见｜可编辑/授权:可确认/删除"}, {"id": "HMI-006", "name": "Memory Manager", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "记忆管理器", "extra": "可见性:默认可见｜可编辑/授权:可编辑"}, {"id": "HMI-007", "name": "Workflow View", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "工作流视图/推理过程", "extra": "可见性:按需展开｜可编辑/授权:可开关"}, {"id": "HMI-008", "name": "Parking Overlay", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "泊车覆盖层/车位框/全览图", "extra": "可见性:泊车态可见｜可编辑/授权:部分可编辑"}], "itemMap": {"CAP-DRV-001": {"id": "CAP-DRV-001", "name": "Manual Driving", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "普通人工驾驶", "extra": "触发:用户直接控制｜可学习:否｜风险:中"}, "CAP-DRV-002": {"id": "CAP-DRV-002", "name": "ACC Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活纵向巡航", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:中"}, "CAP-DRV-003": {"id": "CAP-DRV-003", "name": "LCC Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活车道居中/横纵向辅助", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:中"}, "CAP-DRV-004": {"id": "CAP-DRV-004", "name": "NOA / Route Assist Engage", "type": "Capability", "group": "驾驶状态", "subgroup": "模式", "desc": "激活路线级辅助驾驶", "extra": "触发:手动激活 / 条件满足｜可学习:部分｜风险:高"}, "CAP-DRV-005": {"id": "CAP-DRV-005", "name": "Auto Upgrade to LCC", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "从 ACC 自动升级到 LCC", "extra": "触发:系统判定｜可学习:否｜风险:高"}, "CAP-DRV-006": {"id": "CAP-DRV-006", "name": "Auto Downgrade to ACC", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "从 LCC/NOA 自动降级到 ACC", "extra": "触发:系统判定｜可学习:否｜风险:高"}, "CAP-DRV-007": {"id": "CAP-DRV-007", "name": "Exit to Manual", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "退出到人工驾驶", "extra": "触发:用户/系统退出｜可学习:否｜风险:高"}, "CAP-DRV-008": {"id": "CAP-DRV-008", "name": "Assist Pause / Resume", "type": "Capability", "group": "驾驶状态", "subgroup": "升级/降级", "desc": "辅助驾驶暂停与恢复", "extra": "触发:用户操作｜可学习:否｜风险:中"}, "CAP-LON-001": {"id": "CAP-LON-001", "name": "Set Cruise Speed", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "设定巡航速度", "extra": "触发:显式设置｜可学习:是｜风险:中"}, "CAP-LON-002": {"id": "CAP-LON-002", "name": "Speed Offset by Limit", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "按限速带偏移设置巡航", "extra": "触发:系统/设置｜可学习:是｜风险:高"}, "CAP-LON-003": {"id": "CAP-LON-003", "name": "Following Distance", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "跟车距离控制", "extra": "触发:显式设置 / 学习｜可学习:是｜风险:高"}, "CAP-LON-004": {"id": "CAP-LON-004", "name": "Stop & Go", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "跟停与起步", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LON-005": {"id": "CAP-LON-005", "name": "Curve / Narrow Lane Slowdown", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "弯道/窄道减速", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-LON-006": {"id": "CAP-LON-006", "name": "Weather Cautious Speed", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "雨雪雾谨慎限速", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LON-007": {"id": "CAP-LON-007", "name": "Occluded Signal Hold", "type": "Capability", "group": "辅助驾驶", "subgroup": "纵向", "desc": "信号遮挡时保守停车/跟停", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LAT-001": {"id": "CAP-LAT-001", "name": "Lane Centering", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "保持车道居中", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-LAT-002": {"id": "CAP-LAT-002", "name": "Lane Line Recovery", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "断线/杂线/弱线补线保持", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LAT-003": {"id": "CAP-LAT-003", "name": "Auto Lane Change", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "系统发起变道", "extra": "触发:系统建议/执行｜可学习:是｜风险:高"}, "CAP-LAT-004": {"id": "CAP-LAT-004", "name": "User-Confirmed Lane Change", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "用户打灯发起变道", "extra": "触发:用户发起｜可学习:是｜风险:高"}, "CAP-LAT-005": {"id": "CAP-LAT-005", "name": "Lane Change Abort", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "变道取消/中止", "extra": "触发:用户/系统｜可学习:否｜风险:高"}, "CAP-LAT-006": {"id": "CAP-LAT-006", "name": "Merge Main Road", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "汇入主路", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-LAT-007": {"id": "CAP-LAT-007", "name": "Exit to Side Road / Ramp", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "进入辅路/匝道", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-LAT-008": {"id": "CAP-LAT-008", "name": "Construction Bypass", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "施工绕行/借道绕行", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LAT-009": {"id": "CAP-LAT-009", "name": "Adjacent Avoidance", "type": "Capability", "group": "辅助驾驶", "subgroup": "横向", "desc": "旁侧避让", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-INT-001": {"id": "CAP-INT-001", "name": "Traffic Light Response", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "响应红绿灯启停", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-INT-002": {"id": "CAP-INT-002", "name": "Stop Sign Response", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "响应停牌", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-INT-003": {"id": "CAP-INT-003", "name": "Crosswalk Yield", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "礼让行人", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-INT-004": {"id": "CAP-INT-004", "name": "Roundabout Entry/Exit", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "环岛进出", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-INT-005": {"id": "CAP-INT-005", "name": "Intersection Straight Pass", "type": "Capability", "group": "辅助驾驶", "subgroup": "路口", "desc": "路口直行通过", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-ROU-001": {"id": "CAP-ROU-001", "name": "Route-based Lane Prep", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "为出口/转向提前选道", "extra": "触发:系统执行｜可学习:是｜风险:高"}, "CAP-ROU-002": {"id": "CAP-ROU-002", "name": "Waypoint / Destination Arrival Prep", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "接近终点/途经点准备", "extra": "触发:系统执行｜可学习:是｜风险:中"}, "CAP-ROU-003": {"id": "CAP-ROU-003", "name": "Service Area / Toll Station Handling", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "服务区/收费站处理", "extra": "触发:系统执行｜可学习:部分｜风险:高"}, "CAP-ROU-004": {"id": "CAP-ROU-004", "name": "Weak-map Area Transition", "type": "Capability", "group": "辅助驾驶", "subgroup": "路线级", "desc": "进入地库/园区等弱图空间的过渡", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-PRK-001": {"id": "CAP-PRK-001", "name": "Parking Slot Search", "type": "Capability", "group": "泊车", "subgroup": "搜索", "desc": "找车位", "extra": "触发:系统执行｜可学习:否｜风险:中"}, "CAP-PRK-002": {"id": "CAP-PRK-002", "name": "Parking Path Planning", "type": "Capability", "group": "泊车", "subgroup": "规划", "desc": "泊车算路", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-PRK-003": {"id": "CAP-PRK-003", "name": "APA Start", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "自动泊车开始", "extra": "触发:用户确认｜可学习:否｜风险:高"}, "CAP-PRK-004": {"id": "CAP-PRK-004", "name": "Parking Pause / Resume", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "泊车暂停/恢复", "extra": "触发:用户/系统｜可学习:否｜风险:高"}, "CAP-PRK-005": {"id": "CAP-PRK-005", "name": "Brake-to-Cancel Parking", "type": "Capability", "group": "泊车", "subgroup": "执行", "desc": "用户制动取消泊车", "extra": "触发:用户操作｜可学习:否｜风险:高"}, "CAP-PRK-006": {"id": "CAP-PRK-006", "name": "Custom Parking Spot Draw", "type": "Capability", "group": "泊车", "subgroup": "目标", "desc": "无框/无位线自定义停车位", "extra": "触发:用户操作｜可学习:否｜风险:中"}, "CAP-PRK-007": {"id": "CAP-PRK-007", "name": "Adjust Final Parking Position", "type": "Capability", "group": "泊车", "subgroup": "目标", "desc": "调节最终停泊位置", "extra": "触发:用户操作｜可学习:是｜风险:中"}, "CAP-PRK-008": {"id": "CAP-PRK-008", "name": "Remote Park In", "type": "Capability", "group": "泊车", "subgroup": "车外监督", "desc": "离车泊入", "extra": "触发:用户在车外监督｜可学习:否｜风险:高"}, "CAP-PRK-009": {"id": "CAP-PRK-009", "name": "Remote Park Out", "type": "Capability", "group": "泊车", "subgroup": "车外监督", "desc": "离车泊出/迎宾出库", "extra": "触发:用户在车外监督｜可学习:否｜风险:高"}, "CAP-PRK-010": {"id": "CAP-PRK-010", "name": "Memory Parking Learn Route", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "学习泊车路线", "extra": "触发:用户示教｜可学习:是｜风险:中"}, "CAP-PRK-011": {"id": "CAP-PRK-011", "name": "Memory Parking Replay", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "复用已学习泊车路线", "extra": "触发:系统执行｜可学习:是｜风险:高"}, "CAP-PRK-012": {"id": "CAP-PRK-012", "name": "Cross-floor Parking Memory", "type": "Capability", "group": "泊车", "subgroup": "记忆", "desc": "跨楼层记忆泊车", "extra": "触发:系统执行｜可学习:是｜风险:高"}, "CAP-PRK-013": {"id": "CAP-PRK-013", "name": "Vehicle Summon", "type": "Capability", "group": "泊车", "subgroup": "召唤", "desc": "车辆召唤到近处", "extra": "触发:用户在车外发起｜可学习:否｜风险:高"}, "CAP-PRK-014": {"id": "CAP-PRK-014", "name": "Parking Overview HUD / Map", "type": "Capability", "group": "泊车", "subgroup": "视图", "desc": "泊车全览图", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "CAP-HMI-001": {"id": "CAP-HMI-001", "name": "Driving Visualization", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "显示车道线、车辆、行人等感知结果", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "CAP-HMI-002": {"id": "CAP-HMI-002", "name": "Route View", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "路线视角", "extra": "触发:系统/用户切换｜可学习:否｜风险:低"}, "CAP-HMI-003": {"id": "CAP-HMI-003", "name": "Traffic Context View", "type": "Capability", "group": "界面", "subgroup": "可视化", "desc": "路况视角", "extra": "触发:系统/用户切换｜可学习:否｜风险:低"}, "CAP-HMI-004": {"id": "CAP-HMI-004", "name": "Reason Chip", "type": "Capability", "group": "界面", "subgroup": "解释", "desc": "一句话理由解释", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "CAP-HMI-005": {"id": "CAP-HMI-005", "name": "Workflow Panel", "type": "Capability", "group": "界面", "subgroup": "解释", "desc": "工作流/推理轨迹展示", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "CAP-HMI-006": {"id": "CAP-HMI-006", "name": "Escalating Alerts", "type": "Capability", "group": "界面", "subgroup": "提示", "desc": "分级升级提示", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-VEH-001": {"id": "CAP-VEH-001", "name": "Climate Setpoint", "type": "Capability", "group": "车控车设", "subgroup": "空调", "desc": "温度/风量/同步", "extra": "触发:用户/语音｜可学习:是｜风险:低"}, "CAP-VEH-002": {"id": "CAP-VEH-002", "name": "Defrost / Recirculation", "type": "Capability", "group": "车控车设", "subgroup": "空调", "desc": "除雾/内循环", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, "CAP-VEH-003": {"id": "CAP-VEH-003", "name": "Seat Position / Easy Entry", "type": "Capability", "group": "车控车设", "subgroup": "座椅", "desc": "座椅位置 / 便利进出", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, "CAP-VEH-004": {"id": "CAP-VEH-004", "name": "Seat Heat / Vent / Massage", "type": "Capability", "group": "车控车设", "subgroup": "座椅", "desc": "座椅舒适功能", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, "CAP-VEH-005": {"id": "CAP-VEH-005", "name": "Steering / Mirror Position", "type": "Capability", "group": "车控车设", "subgroup": "方向盘与后视镜", "desc": "方向盘/后视镜位置", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, "CAP-VEH-006": {"id": "CAP-VEH-006", "name": "Lights Control", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "灯光控制", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, "CAP-VEH-007": {"id": "CAP-VEH-007", "name": "Wiper Control", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "雨刮控制", "extra": "触发:用户/系统｜可学习:部分｜风险:中"}, "CAP-VEH-008": {"id": "CAP-VEH-008", "name": "Windows / Doors / Trunk", "type": "Capability", "group": "车控车设", "subgroup": "车身", "desc": "门窗尾门控制", "extra": "触发:用户/系统｜可学习:是｜风险:中"}, "CAP-VEH-009": {"id": "CAP-VEH-009", "name": "Charge Port / Start Stop Charge", "type": "Capability", "group": "车控车设", "subgroup": "充电", "desc": "充电口/开始停止充电", "extra": "触发:用户/语音/自动｜可学习:是｜风险:低"}, "CAP-VEH-010": {"id": "CAP-VEH-010", "name": "Battery Precondition", "type": "Capability", "group": "车控车设", "subgroup": "充电", "desc": "充电前预冷预热", "extra": "触发:用户/系统｜可学习:部分｜风险:低"}, "CAP-VEH-011": {"id": "CAP-VEH-011", "name": "Ride / Suspension Mode", "type": "Capability", "group": "车控车设", "subgroup": "底盘", "desc": "底盘/悬架模式", "extra": "触发:用户/系统｜可学习:是｜风险:中"}, "CAP-CAB-001": {"id": "CAP-CAB-001", "name": "Wake Assistant", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "唤醒车载助手", "extra": "触发:语音/按键｜可学习:否｜风险:低"}, "CAP-CAB-002": {"id": "CAP-CAB-002", "name": "Natural Language Vehicle Control", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "自然语言控车", "extra": "触发:语音｜可学习:是｜风险:中"}, "CAP-CAB-003": {"id": "CAP-CAB-003", "name": "Navigation Query", "type": "Capability", "group": "智能座舱", "subgroup": "语音", "desc": "语音搜索地点/路线", "extra": "触发:语音｜可学习:是｜风险:低"}, "CAP-CAB-004": {"id": "CAP-CAB-004", "name": "Workflow Transparency", "type": "Capability", "group": "智能座舱", "subgroup": "代理", "desc": "显示助手感知/思考/处理过程", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "CAP-CAB-005": {"id": "CAP-CAB-005", "name": "Scene Automation", "type": "Capability", "group": "智能座舱", "subgroup": "自动化", "desc": "条件触发动作链", "extra": "触发:用户配置 / 系统触发｜可学习:是｜风险:中"}, "CAP-CAB-006": {"id": "CAP-CAB-006", "name": "Driver Profile / Identity Binding", "type": "Capability", "group": "智能座舱", "subgroup": "画像", "desc": "驾驶员身份识别与档案切换", "extra": "触发:系统/钥匙/账户｜可学习:是｜风险:中"}, "CAP-MED-001": {"id": "CAP-MED-001", "name": "Music Playback", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "音乐播放", "extra": "触发:用户/语音｜可学习:是｜风险:低"}, "CAP-MED-002": {"id": "CAP-MED-002", "name": "Video Streaming", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "驻车视频", "extra": "触发:用户操作｜可学习:否｜风险:中"}, "CAP-MED-003": {"id": "CAP-MED-003", "name": "Karaoke / Lyrics", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "K歌/歌词显示", "extra": "触发:用户操作｜可学习:是｜风险:低"}, "CAP-MED-004": {"id": "CAP-MED-004", "name": "Podcast / News Summary", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "播客/资讯解读", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, "CAP-MED-005": {"id": "CAP-MED-005", "name": "Games / Arcade", "type": "Capability", "group": "娱乐", "subgroup": "媒体", "desc": "游戏", "extra": "触发:用户操作｜可学习:否｜风险:中"}, "CAP-MED-006": {"id": "CAP-MED-006", "name": "Multi-screen Playback", "type": "Capability", "group": "娱乐", "subgroup": "多屏", "desc": "多屏同播/跨屏歌词", "extra": "触发:用户/系统｜可学习:是｜风险:低"}, "CAP-MED-007": {"id": "CAP-MED-007", "name": "App Launcher / Search", "type": "Capability", "group": "娱乐", "subgroup": "生态", "desc": "应用入口与搜索", "extra": "触发:用户/语音｜可学习:否｜风险:低"}, "CAP-LRN-001": {"id": "CAP-LRN-001", "name": "Episode Capture", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "采集单次行为 episode", "extra": "触发:系统执行｜可学习:否｜风险:中"}, "CAP-LRN-002": {"id": "CAP-LRN-002", "name": "Preference Abstraction", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "从 episode 抽象偏好", "extra": "触发:系统执行｜可学习:是｜风险:中"}, "CAP-LRN-003": {"id": "CAP-LRN-003", "name": "Route Memory", "type": "Capability", "group": "学习与治理", "subgroup": "记忆", "desc": "路线记忆", "extra": "触发:系统执行｜可学习:是｜风险:中"}, "CAP-LRN-004": {"id": "CAP-LRN-004", "name": "Memory Review / Edit / Delete", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "查看/编辑/删除记忆", "extra": "触发:用户操作｜可学习:否｜风险:低"}, "CAP-LRN-005": {"id": "CAP-LRN-005", "name": "Permission: On-device Only", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "仅车端处理", "extra": "触发:用户设置｜可学习:否｜风险:低"}, "CAP-LRN-006": {"id": "CAP-LRN-006", "name": "Permission: Cloud Sync", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "允许上云/跨设备同步", "extra": "触发:用户设置｜可学习:否｜风险:中"}, "CAP-LRN-007": {"id": "CAP-LRN-007", "name": "Safety Envelope Enforcement", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "安全包络约束所有个性化", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LRN-008": {"id": "CAP-LRN-008", "name": "Confidence Gate", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "低置信度不自动执行高风险动作", "extra": "触发:系统执行｜可学习:否｜风险:高"}, "CAP-LRN-009": {"id": "CAP-LRN-009", "name": "Post-drive Review", "type": "Capability", "group": "学习与治理", "subgroup": "治理", "desc": "行后总结与确认卡片", "extra": "触发:系统显示｜可学习:否｜风险:低"}, "BEH-ACT-001": {"id": "BEH-ACT-001", "name": "手动驾驶", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "普通人工驾驶", "extra": "可推断意图:用户暂不托付系统｜适合学习:否｜风险:中"}, "BEH-ACT-002": {"id": "BEH-ACT-002", "name": "主动激活 ACC", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "拨杆/按键开启 ACC", "extra": "可推断意图:托付纵向控制｜适合学习:否｜风险:中"}, "BEH-ACT-003": {"id": "BEH-ACT-003", "name": "主动激活 LCC", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "拨杆/按键开启 LCC", "extra": "可推断意图:托付横纵向基础辅助｜适合学习:否｜风险:中"}, "BEH-ACT-004": {"id": "BEH-ACT-004", "name": "主动激活 NOA/XNGP", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "进入路线级辅助", "extra": "可推断意图:愿意让系统按导航走｜适合学习:否｜风险:高"}, "BEH-ACT-005": {"id": "BEH-ACT-005", "name": "用户主动退出辅助驾驶", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "上拨、踩刹车、关闭开关", "extra": "可推断意图:用户希望回到人工控制｜适合学习:否｜风险:高"}, "BEH-ACT-006": {"id": "BEH-ACT-006", "name": "用户接受系统升级提示", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "同意从 ACC 升到 LCC/NOA", "extra": "可推断意图:用户在当前场景愿意加托付｜适合学习:否｜风险:高"}, "BEH-ACT-007": {"id": "BEH-ACT-007", "name": "用户拒绝系统升级提示", "type": "Behavior", "group": "模式控制", "subgroup": "显式", "desc": "忽略/取消升级", "extra": "可推断意图:当前不信任或不想升级｜适合学习:是｜风险:中"}, "BEH-PAR-001": {"id": "BEH-PAR-001", "name": "增加跟车距离", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设置更大 time gap", "extra": "可推断意图:偏好更稳健｜适合学习:是｜风险:中"}, "BEH-PAR-002": {"id": "BEH-PAR-002", "name": "减小跟车距离", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设置更小 time gap", "extra": "可推断意图:偏好更积极｜适合学习:是｜风险:中"}, "BEH-PAR-003": {"id": "BEH-PAR-003", "name": "上调巡航速度", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "滚轮/拨杆加速", "extra": "可推断意图:偏好更高流速｜适合学习:是｜风险:中"}, "BEH-PAR-004": {"id": "BEH-PAR-004", "name": "下调巡航速度", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "滚轮/拨杆减速", "extra": "可推断意图:偏好更保守｜适合学习:是｜风险:中"}, "BEH-PAR-005": {"id": "BEH-PAR-005", "name": "选择稳健/标准/积极风格", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "切换驾驶风格档位", "extra": "可推断意图:全局风格偏好｜适合学习:是｜风险:中"}, "BEH-PAR-006": {"id": "BEH-PAR-006", "name": "开启/关闭自动变道确认", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "调节确认机制", "extra": "可推断意图:信任与风险偏好｜适合学习:是｜风险:高"}, "BEH-PAR-007": {"id": "BEH-PAR-007", "name": "设置最高限速偏好", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "设定相对限速上限", "extra": "可推断意图:速度自由度偏好｜适合学习:是｜风险:高"}, "BEH-PAR-008": {"id": "BEH-PAR-008", "name": "调节泊车最终停放位置", "type": "Behavior", "group": "参数调节", "subgroup": "显式", "desc": "拖动停车框/微调目标位", "extra": "可推断意图:对停泊位置有偏好｜适合学习:是｜风险:中"}, "BEH-COR-001": {"id": "BEH-COR-001", "name": "踩刹车取消变道或路口通过", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "系统动作中用户制动", "extra": "可推断意图:当前策略不被信任｜适合学习:是｜风险:高"}, "BEH-COR-002": {"id": "BEH-COR-002", "name": "踩刹车取消泊车", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "泊入/算路时踩下制动", "extra": "可推断意图:当前车位/轨迹/速度不满意｜适合学习:是｜风险:高"}, "BEH-COR-003": {"id": "BEH-COR-003", "name": "方向盘施加较大力矩", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "LCC/NOA 时人工修正", "extra": "可推断意图:横向轨迹/时机不满意｜适合学习:是｜风险:高"}, "BEH-COR-004": {"id": "BEH-COR-004", "name": "取消自动变道", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "系统发起后用户打断", "extra": "可推断意图:变道时机/目标车道不满意｜适合学习:是｜风险:高"}, "BEH-COR-005": {"id": "BEH-COR-005", "name": "在系统减速后补油门", "type": "Behavior", "group": "纠正/接管", "subgroup": "隐式", "desc": "如路口绿灯/汇入时人工加速", "extra": "可推断意图:系统过于保守｜适合学习:是｜风险:高"}, "BEH-COR-006": {"id": "BEH-COR-006", "name": "‘不是这个意思’式语音纠正", "type": "Behavior", "group": "纠正/接管", "subgroup": "显式", "desc": "否认系统意图", "extra": "可推断意图:当前推断错误｜适合学习:是｜风险:中"}, "BEH-IMP-001": {"id": "BEH-IMP-001", "name": "进入地库后低速轻刹", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "地库中缓慢减速", "extra": "可推断意图:可能在找车位或准备泊车｜适合学习:是｜风险:中"}, "BEH-IMP-002": {"id": "BEH-IMP-002", "name": "头部/注视搜索车位", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "左右寻找空位", "extra": "可推断意图:停车位搜索｜适合学习:是｜风险:中"}, "BEH-IMP-003": {"id": "BEH-IMP-003", "name": "切到环视/倒车视图", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "主动看近场环境", "extra": "可推断意图:准备泊车或避让｜适合学习:是｜风险:中"}, "BEH-IMP-004": {"id": "BEH-IMP-004", "name": "接近目的地后减速并靠右", "type": "Behavior", "group": "停车意图", "subgroup": "隐式", "desc": "终点附近慢行", "extra": "可推断意图:可能准备停车/下客｜适合学习:是｜风险:中"}, "BEH-IMP-005": {"id": "BEH-IMP-005", "name": "语音说‘我要泊车’", "type": "Behavior", "group": "停车意图", "subgroup": "显式", "desc": "语音触发找位/泊车", "extra": "可推断意图:明确停车目标｜适合学习:否｜风险:中"}, "BEH-ROU-001": {"id": "BEH-ROU-001", "name": "总在两三个路口前就提前变道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "提早选道", "extra": "可推断意图:偏好早规划｜适合学习:是｜风险:中"}, "BEH-ROU-002": {"id": "BEH-ROU-002", "name": "临近路口才变道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "最后时刻选道", "extra": "可推断意图:偏好晚决策｜适合学习:是｜风险:高"}, "BEH-ROU-003": {"id": "BEH-ROU-003", "name": "倾向远离慢车道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "反复主动离开慢车道", "extra": "可推断意图:更重效率｜适合学习:是｜风险:中"}, "BEH-ROU-004": {"id": "BEH-ROU-004", "name": "倾向保持中间车道", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "很少主动变道", "extra": "可推断意图:更重稳定｜适合学习:是｜风险:中"}, "BEH-ROU-005": {"id": "BEH-ROU-005", "name": "主动选择服务区/收费站", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "在特定节点偏好停车/补能", "extra": "可推断意图:路线意图偏好｜适合学习:是｜风险:中"}, "BEH-ROU-006": {"id": "BEH-ROU-006", "name": "主动绕开拥堵/施工", "type": "Behavior", "group": "路线风格", "subgroup": "隐式", "desc": "人工改道", "extra": "可推断意图:对通行效率/风险的偏好｜适合学习:是｜风险:中"}, "BEH-SPD-001": {"id": "BEH-SPD-001", "name": "在空旷快速路反复手动加速", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "超过系统默认流速", "extra": "可推断意图:更高流速偏好｜适合学习:是｜风险:高"}, "BEH-SPD-002": {"id": "BEH-SPD-002", "name": "在雨天主动降速明显", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "遇恶劣天气更保守", "extra": "可推断意图:天气谨慎偏好｜适合学习:是｜风险:中"}, "BEH-SPD-003": {"id": "BEH-SPD-003", "name": "在弯道/匝道提前减速", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "对横向加速度更敏感", "extra": "可推断意图:舒适性偏好｜适合学习:是｜风险:中"}, "BEH-SPD-004": {"id": "BEH-SPD-004", "name": "跟停后习惯更快起步", "type": "Behavior", "group": "速度风格", "subgroup": "隐式", "desc": "信号灯起步更积极", "extra": "可推断意图:起步时机偏好｜适合学习:是｜风险:高"}, "BEH-DMS-001": {"id": "BEH-DMS-001", "name": "长时间视线离路", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "看中控/手机/侧方", "extra": "可推断意图:注意力下降｜适合学习:否｜风险:高"}, "BEH-DMS-002": {"id": "BEH-DMS-002", "name": "长时间手不在方向盘附近", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "手位不可见", "extra": "可推断意图:可接管性下降｜适合学习:否｜风险:高"}, "BEH-DMS-003": {"id": "BEH-DMS-003", "name": "驾驶中离座/起身/平躺", "type": "Behavior", "group": "注意力/资格", "subgroup": "隐式", "desc": "姿态异常", "extra": "可推断意图:不满足可托付条件｜适合学习:否｜风险:高"}, "BEH-DMS-004": {"id": "BEH-DMS-004", "name": "系/解安全带", "type": "Behavior", "group": "注意力/资格", "subgroup": "显式", "desc": "安全约束变化", "extra": "可推断意图:进入/退出可用条件｜适合学习:否｜风险:高"}, "BEH-CAB-001": {"id": "BEH-CAB-001", "name": "说‘下雨了，开稳点’", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "模糊自然语言控车", "extra": "可推断意图:需要一组稳健策略编排｜适合学习:是｜风险:中"}, "BEH-CAB-002": {"id": "BEH-CAB-002", "name": "调低空调温度", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "修改舱内舒适度", "extra": "可推断意图:热舒适偏好｜适合学习:是｜风险:低"}, "BEH-CAB-003": {"id": "BEH-CAB-003", "name": "开启座椅通风/按摩", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "舒适功能开启", "extra": "可推断意图:场景舒适偏好｜适合学习:是｜风险:低"}, "BEH-CAB-004": {"id": "BEH-CAB-004", "name": "手动提高雨刮挡位", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "增强雨刮频率", "extra": "可推断意图:天气感知/舒适偏好｜适合学习:是｜风险:低"}, "BEH-CAB-005": {"id": "BEH-CAB-005", "name": "进入驾驶模式页调整悬架/驾驶体验", "type": "Behavior", "group": "车控车设", "subgroup": "显式", "desc": "主动微调车辆风格", "extra": "可推断意图:底盘/舒适性偏好｜适合学习:是｜风险:中"}, "BEH-MED-001": {"id": "BEH-MED-001", "name": "播放音乐 / 指定歌单", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "媒体播放", "extra": "可推断意图:娱乐偏好｜适合学习:是｜风险:低"}, "BEH-MED-002": {"id": "BEH-MED-002", "name": "驻车时开启视频", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "看视频", "extra": "可推断意图:需要驻车内容场景｜适合学习:是｜风险:中"}, "BEH-MED-003": {"id": "BEH-MED-003", "name": "K歌 / 打开歌词", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "Karaoke 需求", "extra": "可推断意图:驻车娱乐偏好｜适合学习:是｜风险:低"}, "BEH-MED-004": {"id": "BEH-MED-004", "name": "副驾/后排发起内容播放", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "乘客媒体需求", "extra": "可推断意图:需要座位级权限和路由｜适合学习:是｜风险:低"}, "BEH-MED-005": {"id": "BEH-MED-005", "name": "要求多屏同播", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "全车共享内容", "extra": "可推断意图:家庭出行场景｜适合学习:是｜风险:低"}, "BEH-MED-006": {"id": "BEH-MED-006", "name": "收听播客/资讯摘要", "type": "Behavior", "group": "娱乐", "subgroup": "显式", "desc": "获取陪伴式内容", "extra": "可推断意图:通勤信息消费偏好｜适合学习:是｜风险:低"}, "BEH-PRV-001": {"id": "BEH-PRV-001", "name": "允许车内相机 analytics", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "打开分析权限", "extra": "可推断意图:允许更强人内感知｜适合学习:否｜风险:中"}, "BEH-PRV-002": {"id": "BEH-PRV-002", "name": "关闭车内相机 analytics", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "关闭分析权限", "extra": "可推断意图:仅保留必要安全功能｜适合学习:否｜风险:中"}, "BEH-PRV-003": {"id": "BEH-PRV-003", "name": "允许上云同步偏好", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "开启 cloud sync", "extra": "可推断意图:跨设备共享记忆｜适合学习:否｜风险:中"}, "BEH-PRV-004": {"id": "BEH-PRV-004", "name": "删除一条已学习记忆", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "手动忘记", "extra": "可推断意图:否认其重要性｜适合学习:否｜风险:低"}, "BEH-PRV-005": {"id": "BEH-PRV-005", "name": "固定 / 锁定某偏好", "type": "Behavior", "group": "权限与治理", "subgroup": "显式", "desc": "把偏好设为显式规则", "extra": "可推断意图:提升其权重｜适合学习:否｜风险:低"}, "SCN-MOD-001": {"id": "SCN-MOD-001", "name": "普通手动驾驶", "type": "Scene", "group": "模式与状态", "subgroup": "基线", "desc": "无辅助激活", "extra": "歧义:系统只观察不主导｜风险:中"}, "SCN-MOD-002": {"id": "SCN-MOD-002", "name": "ACC Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "车速/前车/条件满足", "extra": "歧义:是否建议用户激活｜风险:中"}, "SCN-MOD-003": {"id": "SCN-MOD-003", "name": "LCC Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "车道线清晰、车辆居中", "extra": "歧义:是否自动升级/是否打扰用户｜风险:中"}, "SCN-MOD-004": {"id": "SCN-MOD-004", "name": "NOA Ready", "type": "Scene", "group": "模式与状态", "subgroup": "准备态", "desc": "路线可用、ODD 满足", "extra": "歧义:当前是否适合托付路线决策｜风险:高"}, "SCN-MOD-005": {"id": "SCN-MOD-005", "name": "即将退出 PPA / HAVP", "type": "Scene", "group": "模式与状态", "subgroup": "退出", "desc": "接近边界或终点", "extra": "歧义:何时告知、如何接回用户｜风险:高"}, "SCN-MOD-006": {"id": "SCN-MOD-006", "name": "系统原因自动退出", "type": "Scene", "group": "模式与状态", "subgroup": "退出", "desc": "故障/传感器受限/ODD 失效", "extra": "歧义:解释多少、何时接管｜风险:高"}, "SCN-ROD-001": {"id": "SCN-ROD-001", "name": "封闭高速主路", "type": "Scene", "group": "道路类型", "subgroup": "高速", "desc": "清晰车道线、较高速度", "extra": "歧义:系统可托付性较高｜风险:高"}, "SCN-ROD-002": {"id": "SCN-ROD-002", "name": "城市快速路", "type": "Scene", "group": "道路类型", "subgroup": "快速路", "desc": "匝道/高架/分叉多", "extra": "歧义:路线选择与博弈更复杂｜风险:高"}, "SCN-ROD-003": {"id": "SCN-ROD-003", "name": "有信号灯多车道道路", "type": "Scene", "group": "道路类型", "subgroup": "城市主干路", "desc": "信号灯、加塞、行人共存", "extra": "歧义:高｜风险:城市 LCC/NOA 场景"}, "SCN-ROD-004": {"id": "SCN-ROD-004", "name": "路口密集、车道变化频繁", "type": "Scene", "group": "道路类型", "subgroup": "城市次干路", "desc": "局部规则多、驾驶员意图模糊", "extra": "歧义:高｜风险:低速复杂"}, "SCN-ROD-005": {"id": "SCN-ROD-005", "name": "车道语义弱、混合交通", "type": "Scene", "group": "道路类型", "subgroup": "支路/乡镇路", "desc": "系统边界更不稳定", "extra": "歧义:高｜风险:适合谨慎策略"}, "SCN-ROD-006": {"id": "SCN-ROD-006", "name": "园区道路/非标准道路", "type": "Scene", "group": "道路类型", "subgroup": "园区/内部路", "desc": "标线、路权语义弱", "extra": "歧义:高｜风险:agent 意义更大"}, "SCN-ROD-007": {"id": "SCN-ROD-007", "name": "弱图/无图/弱 GPS", "type": "Scene", "group": "道路类型", "subgroup": "地库/地下停车场", "desc": "路线和泊车强耦合", "extra": "歧义:高｜风险:你重点提到的场景"}, "SCN-ROD-008": {"id": "SCN-ROD-008", "name": "开放停车场", "type": "Scene", "group": "道路类型", "subgroup": "地面停车场", "desc": "车位、行人、低速车辆密集", "extra": "歧义:中｜风险:泊车与娱乐可衔接"}, "SCN-ROD-009": {"id": "SCN-ROD-009", "name": "沿路侧停车", "type": "Scene", "group": "道路类型", "subgroup": "路边停车区", "desc": "停车意图识别困难", "extra": "歧义:高｜风险:容易与临停混淆"}, "SCN-LAN-001": {"id": "SCN-LAN-001", "name": "多车道直行", "type": "Scene", "group": "车道结构", "subgroup": "基础", "desc": "普通多车道", "extra": "歧义:提前/临近变道策略差异｜风险:中"}, "SCN-LAN-002": {"id": "SCN-LAN-002", "name": "车道变窄", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "施工或瓶颈", "extra": "歧义:是否提前避让或并线｜风险:高"}, "SCN-LAN-003": {"id": "SCN-LAN-003", "name": "车道变宽", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "新车道出现", "extra": "歧义:是否主动选道｜风险:中"}, "SCN-LAN-004": {"id": "SCN-LAN-004", "name": "合流到主路", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "辅路汇入主路", "extra": "歧义:加速时机与礼让博弈｜风险:高"}, "SCN-LAN-005": {"id": "SCN-LAN-005", "name": "分流到辅路", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "主路进入辅路/匝道", "extra": "歧义:选错道的代价高｜风险:高"}, "SCN-LAN-006": {"id": "SCN-LAN-006", "name": "匝道入口", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "高速/快速路入口", "extra": "歧义:进匝道准备时机｜风险:高"}, "SCN-LAN-007": {"id": "SCN-LAN-007", "name": "匝道入口失败", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "未能进入匝道", "extra": "歧义:是否重新规划/降级/解释｜风险:高"}, "SCN-LAN-008": {"id": "SCN-LAN-008", "name": "多匝道相邻", "type": "Scene", "group": "车道结构", "subgroup": "变化", "desc": "近距离多出口", "extra": "歧义:提前选道权重更高｜风险:高"}, "SCN-LAN-009": {"id": "SCN-LAN-009", "name": "断线/杂线/乱线车道", "type": "Scene", "group": "车道结构", "subgroup": "弱语义", "desc": "标线不连续", "extra": "歧义:系统是否继续托付｜风险:高"}, "SCN-LAN-010": {"id": "SCN-LAN-010", "name": "无清晰车位线区域", "type": "Scene", "group": "车道结构", "subgroup": "弱语义", "desc": "停车位线缺失", "extra": "歧义:是否允许随心画/自定义目标位｜风险:中"}, "SCN-CTL-001": {"id": "SCN-CTL-001", "name": "标准红绿灯路口", "type": "Scene", "group": "交通控制", "subgroup": "信号灯", "desc": "可见信号灯", "extra": "歧义:是否停/何时起步｜风险:高"}, "SCN-CTL-002": {"id": "SCN-CTL-002", "name": "红绿灯被遮挡", "type": "Scene", "group": "交通控制", "subgroup": "信号灯", "desc": "大车/树/曲线遮挡", "extra": "歧义:保守停车还是跟车起步｜风险:高"}, "SCN-CTL-003": {"id": "SCN-CTL-003", "name": "Stop Sign", "type": "Scene", "group": "交通控制", "subgroup": "停牌", "desc": "停牌或停车线", "extra": "歧义:保守策略为主｜风险:高"}, "SCN-CTL-004": {"id": "SCN-CTL-004", "name": "礼让行人", "type": "Scene", "group": "交通控制", "subgroup": "人行横道", "desc": "有行人进入或即将进入", "extra": "歧义:礼让阈值/解释｜风险:高"}, "SCN-CTL-005": {"id": "SCN-CTL-005", "name": "环岛进出", "type": "Scene", "group": "交通控制", "subgroup": "环岛", "desc": "入口礼让与出口路线选择", "extra": "歧义:高｜风险:你图里已有"}, "SCN-CTL-006": {"id": "SCN-CTL-006", "name": "重点慢行区", "type": "Scene", "group": "交通控制", "subgroup": "学校/医院区域", "desc": "速度和注意力策略更保守", "extra": "歧义:高｜风险:上下学接送场景"}, "SCN-CTL-007": {"id": "SCN-CTL-007", "name": "高速节点", "type": "Scene", "group": "交通控制", "subgroup": "收费站 / 服务区", "desc": "是否退出高阶辅助/提示接管", "extra": "歧义:高｜风险:你图里已有"}, "SCN-OBS-001": {"id": "SCN-OBS-001", "name": "占道静止车", "type": "Scene", "group": "障碍与博弈", "subgroup": "静态障碍", "desc": "前方事故/故障车", "extra": "歧义:借道绕行还是停车等待｜风险:高"}, "SCN-OBS-002": {"id": "SCN-OBS-002", "name": "施工改道/锥桶", "type": "Scene", "group": "障碍与博弈", "subgroup": "施工", "desc": "规则临时变化", "extra": "歧义:是否降级/绕行｜风险:高"}, "SCN-OBS-003": {"id": "SCN-OBS-003", "name": "旁侧大车/压迫", "type": "Scene", "group": "障碍与博弈", "subgroup": "旁侧干扰", "desc": "是否旁侧避让", "extra": "歧义:高｜风险:舒适与安全平衡"}, "SCN-OBS-004": {"id": "SCN-OBS-004", "name": "前方车辆加塞", "type": "Scene", "group": "障碍与博弈", "subgroup": "切入", "desc": "控距/减速风格差异", "extra": "歧义:高｜风险:通勤常见"}, "SCN-OBS-005": {"id": "SCN-OBS-005", "name": "电动车/自行车密集", "type": "Scene", "group": "障碍与博弈", "subgroup": "非机动车", "desc": "是否借道/等待", "extra": "歧义:高｜风险:亚洲城市场景"}, "SCN-OBS-006": {"id": "SCN-OBS-006", "name": "路边行人/鬼探头风险", "type": "Scene", "group": "障碍与博弈", "subgroup": "行人", "desc": "是否提前减速", "extra": "歧义:高｜风险:保守优先"}, "SCN-OBS-007": {"id": "SCN-OBS-007", "name": "大车挡视野", "type": "Scene", "group": "障碍与博弈", "subgroup": "大车遮挡", "desc": "是否保守停车或延后动作", "extra": "歧义:高｜风险:解释很重要"}, "SCN-WEA-001": {"id": "SCN-WEA-001", "name": "小雨", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "路面附着下降", "extra": "歧义:是否切换稳健风格｜风险:中"}, "SCN-WEA-002": {"id": "SCN-WEA-002", "name": "大雨", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "能见度显著下降", "extra": "歧义:是否降低限速/加大车距｜风险:高"}, "SCN-WEA-003": {"id": "SCN-WEA-003", "name": "大雪/结冰", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "附着和感知双重受损", "extra": "歧义:是否直接禁用高阶能力｜风险:高"}, "SCN-WEA-004": {"id": "SCN-WEA-004", "name": "浓雾", "type": "Scene", "group": "天气与光照", "subgroup": "天气", "desc": "能见度低", "extra": "歧义:提示与降级策略｜风险:高"}, "SCN-WEA-005": {"id": "SCN-WEA-005", "name": "夜间", "type": "Scene", "group": "天气与光照", "subgroup": "光照", "desc": "视觉弱化", "extra": "歧义:提示方式与可信度变化｜风险:中"}, "SCN-WEA-006": {"id": "SCN-WEA-006", "name": "强逆光/炫光", "type": "Scene", "group": "天气与光照", "subgroup": "光照", "desc": "相机致盲风险", "extra": "歧义:是否保守/退出｜风险:高"}, "SCN-WEA-007": {"id": "SCN-WEA-007", "name": "隧道", "type": "Scene", "group": "天气与光照", "subgroup": "特殊", "desc": "光照突变 / GPS 弱", "extra": "歧义:视角与可用性切换｜风险:高"}, "SCN-TRF-001": {"id": "SCN-TRF-001", "name": "低密度畅通", "type": "Scene", "group": "交通流", "subgroup": "自由流", "desc": "前车稀少", "extra": "歧义:更能看出速度偏好｜风险:中"}, "SCN-TRF-002": {"id": "SCN-TRF-002", "name": "走走停停", "type": "Scene", "group": "交通流", "subgroup": "拥堵", "desc": "频繁跟停起步", "extra": "歧义:跟停舒适性与车距偏好｜风险:高"}, "SCN-TRF-003": {"id": "SCN-TRF-003", "name": "早晚高峰拥堵", "type": "Scene", "group": "交通流", "subgroup": "高峰", "desc": "博弈密度高", "extra": "歧义:是否更保守/更少变道｜风险:高"}, "SCN-TRF-004": {"id": "SCN-TRF-004", "name": "机动车+非机动车+行人混合", "type": "Scene", "group": "交通流", "subgroup": "混合", "desc": "路权复杂", "extra": "歧义:高｜风险:亚洲城市典型"}, "SCN-TRF-005": {"id": "SCN-TRF-005", "name": "慢车阻挡", "type": "Scene", "group": "交通流", "subgroup": "超车", "desc": "是否变道超车", "extra": "歧义:中｜风险:风格强相关"}, "SCN-TRP-001": {"id": "SCN-TRP-001", "name": "起点停车位出发", "type": "Scene", "group": "旅程阶段", "subgroup": "出发", "desc": "从静止到进入路线", "extra": "歧义:模式建议时机｜风险:中"}, "SCN-TRP-002": {"id": "SCN-TRP-002", "name": "正常途中", "type": "Scene", "group": "旅程阶段", "subgroup": "途中", "desc": "一般道路行驶", "extra": "歧义:持续优化空间｜风险:中"}, "SCN-TRP-003": {"id": "SCN-TRP-003", "name": "接近终点/途经点", "type": "Scene", "group": "旅程阶段", "subgroup": "近终点", "desc": "是否停车/下客/继续走", "extra": "歧义:中｜风险:意图歧义大"}, "SCN-TRP-004": {"id": "SCN-TRP-004", "name": "进入停车场 / 地库入口", "type": "Scene", "group": "旅程阶段", "subgroup": "入库前", "desc": "从道路转泊车", "extra": "歧义:路线视角/路况视角切换｜风险:高"}, "SCN-TRP-005": {"id": "SCN-TRP-005", "name": "正在找车位", "type": "Scene", "group": "旅程阶段", "subgroup": "搜位中", "desc": "低速、近场决策", "extra": "歧义:何时弹出泊车 UI｜风险:中"}, "SCN-TRP-006": {"id": "SCN-TRP-006", "name": "已开始泊车", "type": "Scene", "group": "旅程阶段", "subgroup": "泊车中", "desc": "搜路/算路/执行", "extra": "歧义:用户制动如何解释｜风险:高"}, "SCN-TRP-007": {"id": "SCN-TRP-007", "name": "补能驻车", "type": "Scene", "group": "旅程阶段", "subgroup": "充电中", "desc": "可进入娱乐/休息/预热冷却场景", "extra": "歧义:低｜风险:座舱典型"}, "SCN-CAB-001": {"id": "SCN-CAB-001", "name": "驾驶员注意力在线", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "视线/手位正常", "extra": "歧义:可继续托付｜风险:中"}, "SCN-CAB-002": {"id": "SCN-CAB-002", "name": "驾驶员注意力下降", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "看向中控/手机/侧方过久", "extra": "歧义:是否升级提醒｜风险:高"}, "SCN-CAB-003": {"id": "SCN-CAB-003", "name": "驾驶员离座/异常姿态", "type": "Scene", "group": "舱内状态", "subgroup": "驾驶员", "desc": "起身/平躺", "extra": "歧义:是否立即降级/退出｜风险:高"}, "SCN-CAB-004": {"id": "SCN-CAB-004", "name": "副驾发起语音或媒体请求", "type": "Scene", "group": "舱内状态", "subgroup": "乘客", "desc": "副驾需要内容/控车", "extra": "歧义:主驾注意力不该被夺走｜风险:中"}, "SCN-CAB-005": {"id": "SCN-CAB-005", "name": "后排儿童娱乐中", "type": "Scene", "group": "舱内状态", "subgroup": "乘客", "desc": "后排看视频/听故事", "extra": "歧义:多屏权限与安全｜风险:低"}, "SCN-CAB-006": {"id": "SCN-CAB-006", "name": "开门/后备厢打开", "type": "Scene", "group": "舱内状态", "subgroup": "舱门", "desc": "车辆状态变化", "extra": "歧义:泊车或辅助应退出/暂停｜风险:高"}, "EVD-001": {"id": "EVD-001", "name": "导航接近终点", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "路线信息显示车辆接近目的地/途经点/服务区", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-002": {"id": "EVD-002", "name": "进入地库/弱图空间", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "GPS 变弱、地图语义弱、地库/园区识别", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-003": {"id": "EVD-003", "name": "检测到可用车位", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "视觉/超声/环视识别出潜在车位", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-004": {"id": "EVD-004", "name": "驾驶员注视搜索车位", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "舱内感知到用户搜索近场空间", "extra": "可见性:默认隐藏｜可编辑/授权:需授权"}, "EVD-005": {"id": "EVD-005", "name": "用户轻刹且低速", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "低速制动输入", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-006": {"id": "EVD-006", "name": "前方红绿灯可见", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "感知到信号灯", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-007": {"id": "EVD-007", "name": "红绿灯被遮挡", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "信号灯不稳定或被遮挡", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-008": {"id": "EVD-008", "name": "盲区有车/速度差大", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "邻车道不安全", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-009": {"id": "EVD-009", "name": "天气恶化", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "雨雪雾/附着变差", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-010": {"id": "EVD-010", "name": "DMS 注意力不足", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "视线/手位/姿态不满足", "extra": "可见性:系统内部｜可编辑/授权:否"}, "EVD-011": {"id": "EVD-011", "name": "用户显式设置偏好", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "设置页/语音明确表达", "extra": "可见性:可见｜可编辑/授权:是"}, "EVD-012": {"id": "EVD-012", "name": "重复接管/纠正记录", "type": "Evidence", "group": "Evidence", "subgroup": "", "desc": "多次相似场景中接管", "extra": "可见性:默认隐藏｜可编辑/授权:可查看"}, "MEM-001": {"id": "MEM-001", "name": "Episode Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "单次事件记忆", "extra": "可见性:仅系统/行后可见｜可编辑/授权:可删"}, "MEM-002": {"id": "MEM-002", "name": "Preference Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "偏好记忆（如跟车距、变道时机）", "extra": "可见性:默认可见｜可编辑/授权:可改/可锁定"}, "MEM-003": {"id": "MEM-003", "name": "Route Memory", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "路线记忆（通勤/泊车）", "extra": "可见性:默认可见｜可编辑/授权:可删/可停用"}, "MEM-004": {"id": "MEM-004", "name": "Scene-bound Rule", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "场景绑定规则（如下雨自动更稳健）", "extra": "可见性:默认可见｜可编辑/授权:可开关"}, "MEM-005": {"id": "MEM-005", "name": "Do-Not-Learn List", "type": "Memory", "group": "Memory", "subgroup": "", "desc": "不应学习的行为列表", "extra": "可见性:默认可见｜可编辑/授权:可编辑"}, "POL-001": {"id": "POL-001", "name": "Safety Envelope", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "安全包络：任何个性化不得突破", "extra": "可见性:不对外细节｜可编辑/授权:不可编辑"}, "POL-002": {"id": "POL-002", "name": "Confidence Gate", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "低置信+高风险不自动执行", "extra": "可见性:可解释结论｜可编辑/授权:不可编辑"}, "POL-003": {"id": "POL-003", "name": "Parked-only Media", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "视频/部分娱乐需驻车", "extra": "可见性:可见｜可编辑/授权:不可编辑"}, "POL-004": {"id": "POL-004", "name": "On-device First", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "优先车端处理", "extra": "可见性:可见｜可编辑/授权:可配置"}, "POL-005": {"id": "POL-005", "name": "Cloud Sync Permission", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "是否允许跨设备同步", "extra": "可见性:可见｜可编辑/授权:可配置"}, "POL-006": {"id": "POL-006", "name": "Cabin-sensing Permission", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "是否允许非必要舱内感知用于学习", "extra": "可见性:可见｜可编辑/授权:可配置"}, "POL-007": {"id": "POL-007", "name": "Human-in-the-loop Requirement", "type": "Policy", "group": "Policy", "subgroup": "", "desc": "紧急/高风险时必须让 human 保持主导", "extra": "可见性:可解释结论｜可编辑/授权:不可编辑"}, "HMI-001": {"id": "HMI-001", "name": "Record-only Toast", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "已执行仅留痕", "extra": "可见性:轻提示｜可编辑/授权:否"}, "HMI-002": {"id": "HMI-002", "name": "Need-to-know Banner", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "需要知晓但不打断", "extra": "可见性:中等显著｜可编辑/授权:否"}, "HMI-003": {"id": "HMI-003", "name": "Confirmation Card", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "需要用户定方向的确认卡片", "extra": "可见性:可见｜可编辑/授权:用户可点选"}, "HMI-004": {"id": "HMI-004", "name": "Escalating Takeover Alert", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "升级接管提示", "extra": "可见性:高显著｜可编辑/授权:否"}, "HMI-005": {"id": "HMI-005", "name": "Post-drive Review Card", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "行后学习总结卡片", "extra": "可见性:行后可见｜可编辑/授权:可确认/删除"}, "HMI-006": {"id": "HMI-006", "name": "Memory Manager", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "记忆管理器", "extra": "可见性:默认可见｜可编辑/授权:可编辑"}, "HMI-007": {"id": "HMI-007", "name": "Workflow View", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "工作流视图/推理过程", "extra": "可见性:按需展开｜可编辑/授权:可开关"}, "HMI-008": {"id": "HMI-008", "name": "Parking Overlay", "type": "HMI", "group": "HMI", "subgroup": "", "desc": "泊车覆盖层/车位框/全览图", "extra": "可见性:泊车态可见｜可编辑/授权:部分可编辑"}}, "workflows": {"WF-001": {"id": "WF-001", "trigger": "用户主动激活 ACC / LCC / NOA", "evidence": "当前模式可用 + 车速/道路/车道条件满足", "default_action": "进入对应辅助模式", "visible_ui": "状态条 + 轻提示", "controls": "取消/恢复", "memory_update": "记录一次 mode preference episode", "guardrails": "如果 DMS 不满足则不给进入", "notes": "对应你图里的‘辅助驾驶升级/降级’"}, "WF-002": {"id": "WF-002", "trigger": "系统判断可从 ACC 升级到 LCC/NOA", "evidence": "车道线稳定 + 路线可用 + DMS 合格", "default_action": "只给建议，不直接默默升级", "visible_ui": "Need-to-know banner", "controls": "接受 / 忽略 / 暂不再提示", "memory_update": "记录本场景是否接受升级", "guardrails": "高时压场景不建议弹复杂卡片", "notes": "把升级看成权限而不是纯技术切换"}, "WF-003": {"id": "WF-003", "trigger": "系统需从 LCC/NOA 降级到 ACC", "evidence": "ODD 边界、弱线、感知受限、DMS 风险", "default_action": "先降级，再提示可能接管", "visible_ui": "升级告警 + 模式变化提示", "controls": "接管 / 继续 ACC", "memory_update": "记录降级原因 episode", "guardrails": "必要时直接接管，不讨论", "notes": "退出类核心"}, "WF-004": {"id": "WF-004", "trigger": "地库低速轻刹", "evidence": "近终点 + 弱图空间 + 车位证据 + gaze 搜位(可选)", "default_action": "进入短时证据融合窗口，不立刻弹泊车", "visible_ui": "泊车候选 chip / route view", "controls": "忽略 / 找位 / 直接继续", "memory_update": "若多次确认则形成停车入口偏好", "guardrails": "gaze 学习需权限；低置信不自动泊车", "notes": "减少误打扰"}, "WF-005": {"id": "WF-005", "trigger": "找车位过程中踩下制动", "evidence": "搜位/算路进行中 + 用户制动", "default_action": "暂停搜位或算路", "visible_ui": "泊车 overlay 上的暂停状态", "controls": "继续 / 退出 / 手动接管", "memory_update": "将本次 episode 标记为‘搜位节奏不满意’", "guardrails": "刹车视为高权重负反馈", "notes": "对应你图里的‘制动与确认机制’"}, "WF-006": {"id": "WF-006", "trigger": "APA 泊车中用户踩下制动", "evidence": "泊车执行中 + 用户制动", "default_action": "立即暂停泊车", "visible_ui": "泊车 overlay + 明确已暂停", "controls": "继续泊入 / 退出泊车", "memory_update": "负反馈写入该车位/该类车位 episode", "guardrails": "绝不在用户毫无预料下继续执行", "notes": "对应你图里的 APA 使用中用户制动"}, "WF-007": {"id": "WF-007", "trigger": "自动变道被取消", "evidence": "系统已建议/发起变道 + 用户取消", "default_action": "中止变道并保持当前车道", "visible_ui": "轻提示 + 可选理由 chip", "controls": "无需强制确认", "memory_update": "累计相似场景后更新变道时机偏好", "guardrails": "不可因此放松安全检查", "notes": "适合学习‘提前 vs 临近变道’"}, "WF-008": {"id": "WF-008", "trigger": "高速/城市路线中接近服务区/收费站/终点", "evidence": "路线节点 + 当前模式 + 交通状态", "default_action": "提前告知即将退出或即将到点", "visible_ui": "Need-to-know banner", "controls": "继续按路线 / 改目的地 / 手动接管", "memory_update": "记录该类节点的用户处理方式", "guardrails": "不要在最后一秒才打断", "notes": "对应你图里的退出类场景"}, "WF-009": {"id": "WF-009", "trigger": "红绿灯被遮挡导致停车", "evidence": "信号不稳定 + 前车/大车遮挡 + 路口风险", "default_action": "优先稳健停车或跟停", "visible_ui": "高显著提示，不长篇解释", "controls": "用户接管 / 通过油门确认", "memory_update": "episode 记录为 occluded-signal case", "guardrails": "高风险低置信，不做激进通过", "notes": "解释应服务于可预测性"}, "WF-010": {"id": "WF-010", "trigger": "进入匝道 / 汇入主路", "evidence": "路线要求 + 邻车道博弈 + 车速差", "default_action": "按安全包络完成汇入/汇出，否则放弃并重规划", "visible_ui": "状态条 + 简短理由", "controls": "用户可接管", "memory_update": "记录成功/失败 case", "guardrails": "失败时先稳健，再解释", "notes": "对应你图里的匝道/主辅路"}, "WF-011": {"id": "WF-011", "trigger": "用户反复在特定路况手动加速", "evidence": "相似道路 + 天气正常 + 交通自由流 + 多次正向样本", "default_action": "行后提出‘是否保存为该类道路流速偏好’", "visible_ui": "Post-drive review card", "controls": "保存 / 忽略 / 永不学习", "memory_update": "若确认则更新 speed preference memory", "guardrails": "不能直接学成违法或高风险策略", "notes": "从 episode 到 preference"}, "WF-012": {"id": "WF-012", "trigger": "用户反复提前两三个路口变道", "evidence": "相似导航结构 + 多次样本 + 安全前提", "default_action": "行后总结‘你似乎更喜欢提前选道’", "visible_ui": "Post-drive review card", "controls": "保存 / 改为只在高速生效 / 忽略", "memory_update": "更新 lane timing memory", "guardrails": "仅作为先验，不保证总执行", "notes": "高价值风格学习"}, "WF-013": {"id": "WF-013", "trigger": "进入弱图地库且已有记忆泊车路线", "evidence": "场景匹配 + 路线记忆存在", "default_action": "切换到路线视角并提示可用记忆泊车", "visible_ui": "Route view + Memory card", "controls": "开始记忆泊车 / 忽略", "memory_update": "记录本次是否调用", "guardrails": "未授权/低置信不自动开始", "notes": "对应 HAVP 学习/使用"}, "WF-014": {"id": "WF-014", "trigger": "用户画自定义车位", "evidence": "环视有效 + 车辆静止 + 目标位置可达", "default_action": "将车位框作为临时目标位并开始算路", "visible_ui": "Parking overlay", "controls": "调整 / 立即泊入 / 离车后泊入", "memory_update": "把最终停放位置可选记为偏好", "guardrails": "车位框若不安全则必须阻断", "notes": "车位随心画类"}, "WF-015": {"id": "WF-015", "trigger": "语音说‘下雨了，开稳点’", "evidence": "天气证据 + 当前辅助模式 + 可调用动作链", "default_action": "编排更大 time gap、更稳健限速、变道更保守", "visible_ui": "Reason chip + 已执行留痕", "controls": "恢复默认 / 细调", "memory_update": "记录一次场景绑定规则候选", "guardrails": "任何策略都受安全包络约束", "notes": "典型 agent 工作流"}, "WF-016": {"id": "WF-016", "trigger": "充电驻车时乘客发起内容需求", "evidence": "驻车 + 乘员身份 + 屏幕位置", "default_action": "进入娱乐场景或多屏同播", "visible_ui": "媒体卡片 / 多屏控制", "controls": "播放 / 切屏 / 关闭", "memory_update": "记录乘员级内容偏好", "guardrails": "视频等内容受 parked-only policy 约束", "notes": "把娱乐也放进 vault"}}, "themes": {"overview": {"label": "总览", "desc": "先按 6 条信息链看全局：用户行为 → 场景 → 证据 → 能力 → 记忆/策略 → HMI。再沿着具体 workflow 看条目如何串起来。", "lanes": {"用户行为": ["BEH-ACT-002", "BEH-ACT-005", "BEH-IMP-001", "BEH-COR-004", "BEH-CAB-001", "BEH-PRV-005"], "道路/旅程场景": ["SCN-MOD-003", "SCN-MOD-005", "SCN-ROD-007", "SCN-TRP-003", "SCN-TRP-006", "SCN-TRP-007"], "证据": ["EVD-001", "EVD-002", "EVD-003", "EVD-004", "EVD-005"], "系统能力": ["CAP-DRV-003", "CAP-ROU-004", "CAP-PRK-001", "CAP-LAT-003", "CAP-CAB-002", "CAP-MED-002"], "记忆 / 策略": ["MEM-001", "MEM-002", "POL-001", "POL-002", "POL-004", "POL-006"], "HMI": ["HMI-003", "HMI-004", "HMI-005", "HMI-006", "HMI-007", "HMI-008"]}, "workflow_ids": ["WF-002", "WF-004", "WF-007", "WF-015", "WF-016"], "node_ids": ["BEH-ACT-002", "BEH-ACT-005", "BEH-IMP-001", "BEH-COR-004", "BEH-CAB-001", "BEH-PRV-005", "SCN-MOD-003", "SCN-MOD-005", "SCN-ROD-007", "SCN-TRP-003", "SCN-TRP-006", "SCN-TRP-007", "EVD-001", "EVD-002", "EVD-003", "EVD-004", "EVD-005", "CAP-DRV-003", "CAP-ROU-004", "CAP-PRK-001", "CAP-LAT-003", "CAP-CAB-002", "CAP-MED-002", "MEM-001", "MEM-002", "POL-001", "POL-002", "POL-004", "POL-006", "HMI-003", "HMI-004", "HMI-005", "HMI-006", "HMI-007", "HMI-008"], "relations": [{"from": "BEH-IMP-001", "fromName": "进入地库后低速轻刹", "to": "EVD-005", "toName": "用户轻刹且低速", "relation": "supports", "meaning": "地库低速轻刹会形成停车相关证据", "weight": "中"}, {"from": "SCN-ROD-007", "fromName": "弱图/无图/弱 GPS", "to": "EVD-002", "toName": "进入地库/弱图空间", "relation": "supports", "meaning": "地库本身就是弱图空间证据", "weight": "高"}, {"from": "SCN-TRP-003", "fromName": "接近终点/途经点", "to": "EVD-001", "toName": "导航接近终点", "relation": "supports", "meaning": "接近终点属于停车候选上下文", "weight": "高"}, {"from": "EVD-001", "fromName": "导航接近终点", "to": "MEM-001", "toName": "Episode Memory", "relation": "contributes_to", "meaning": "接近终点事件可进入 episode", "weight": "低"}, {"from": "EVD-002", "fromName": "进入地库/弱图空间", "to": "CAP-ROU-004", "toName": "Weak-map Area Transition", "relation": "gates", "meaning": "弱图空间过渡能力受其驱动", "weight": "高"}, {"from": "EVD-003", "fromName": "检测到可用车位", "to": "CAP-PRK-001", "toName": "Parking Slot Search", "relation": "enables", "meaning": "发现车位后可进入找位/泊车流程", "weight": "高"}, {"from": "EVD-004", "fromName": "驾驶员注视搜索车位", "to": "CAP-PRK-001", "toName": "Parking Slot Search", "relation": "raises_confidence_of", "meaning": "注视搜索车位提升泊车意图置信度", "weight": "中"}, {"from": "BEH-COR-004", "fromName": "取消自动变道", "to": "MEM-002", "toName": "Preference Memory", "relation": "writes_negative_signal_to", "meaning": "自动变道被取消可写入变道风格记忆", "weight": "中"}, {"from": "POL-001", "fromName": "Safety Envelope", "to": "CAP-LAT-003", "toName": "Auto Lane Change", "relation": "constrains", "meaning": "安全包络约束自动变道", "weight": "高"}, {"from": "POL-002", "fromName": "Confidence Gate", "to": "CAP-LAT-003", "toName": "Auto Lane Change", "relation": "blocks", "meaning": "低置信高风险时禁止系统主动变道", "weight": "高"}, {"from": "POL-004", "fromName": "On-device First", "to": "EVD-004", "toName": "驾驶员注视搜索车位", "relation": "limits_use_of", "meaning": "车端优先策略限制舱内感知用途", "weight": "中"}, {"from": "POL-006", "fromName": "Cabin-sensing Permission", "to": "EVD-004", "toName": "驾驶员注视搜索车位", "relation": "gates", "meaning": "非必要 gaze 学习需用户授权", "weight": "高"}, {"from": "SCN-MOD-005", "fromName": "即将退出 PPA / HAVP", "to": "HMI-004", "toName": "Escalating Takeover Alert", "relation": "requires", "meaning": "即将退出高阶辅助时需接管提示", "weight": "高"}, {"from": "SCN-TRP-006", "fromName": "已开始泊车", "to": "HMI-008", "toName": "Parking Overlay", "relation": "suggests_use_of", "meaning": "泊车中应以覆盖层为主界面", "weight": "高"}, {"from": "SCN-TRP-007", "fromName": "补能驻车", "to": "CAP-MED-002", "toName": "Video Streaming", "relation": "allows", "meaning": "充电驻车允许视频播放", "weight": "高"}, {"from": "BEH-PRV-005", "fromName": "固定 / 锁定某偏好", "to": "MEM-002", "toName": "Preference Memory", "relation": "locks", "meaning": "用户可将偏好锁定为显式规则", "weight": "中"}, {"from": "BEH-CAB-001", "fromName": "说‘下雨了，开稳点’", "to": "CAP-CAB-002", "toName": "Natural Language Vehicle Control", "relation": "expands_to", "meaning": "‘下雨了开稳点’应编排一组车控与辅助策略", "weight": "高"}, {"from": "HMI-005", "fromName": "Post-drive Review Card", "to": "MEM-002", "toName": "Preference Memory", "relation": "writes_confirmation_to", "meaning": "行后确认卡可把 episode 升级为偏好", "weight": "中"}, {"from": "HMI-006", "fromName": "Memory Manager", "to": "MEM-002", "toName": "Preference Memory", "relation": "manages", "meaning": "记忆管理器负责可见/可删/可控", "weight": "高"}]}, "upgrade": {"label": "升级 / 降级 / 接管", "desc": "把“辅助驾驶升级/降级、退出类场景、红绿灯遮挡、匝道/主辅路”放在一条链里看：这里最重要的不是解释多少，而是何时提示、何时接管、何时收敛。", "lanes": {"用户行为": ["BEH-ACT-002", "BEH-ACT-003", "BEH-ACT-004", "BEH-ACT-005", "BEH-ACT-006", "BEH-ACT-007"], "道路/旅程场景": ["SCN-MOD-002", "SCN-MOD-003", "SCN-MOD-004", "SCN-MOD-005", "SCN-MOD-006", "SCN-CTL-002"], "证据": ["EVD-001", "EVD-007", "EVD-008", "EVD-010"], "系统能力": ["CAP-DRV-002", "CAP-DRV-003", "CAP-DRV-004", "CAP-DRV-005", "CAP-DRV-006", "CAP-ROU-001"], "记忆 / 策略": ["MEM-001", "MEM-003", "POL-001", "POL-002"], "HMI": ["HMI-002", "HMI-004", "HMI-007"]}, "workflow_ids": ["WF-001", "WF-002", "WF-003", "WF-008", "WF-009", "WF-010"], "node_ids": ["BEH-ACT-002", "BEH-ACT-003", "BEH-ACT-004", "BEH-ACT-005", "BEH-ACT-006", "BEH-ACT-007", "SCN-MOD-002", "SCN-MOD-003", "SCN-MOD-004", "SCN-MOD-005", "SCN-MOD-006", "SCN-CTL-002", "EVD-001", "EVD-007", "EVD-008", "EVD-010", "CAP-DRV-002", "CAP-DRV-003", "CAP-DRV-004", "CAP-DRV-005", "CAP-DRV-006", "CAP-ROU-001", "MEM-001", "MEM-003", "POL-001", "POL-002", "HMI-002", "HMI-004", "HMI-007"], "relations": [{"from": "EVD-001", "fromName": "导航接近终点", "to": "MEM-001", "toName": "Episode Memory", "relation": "contributes_to", "meaning": "接近终点事件可进入 episode", "weight": "低"}, {"from": "SCN-MOD-005", "fromName": "即将退出 PPA / HAVP", "to": "HMI-004", "toName": "Escalating Takeover Alert", "relation": "requires", "meaning": "即将退出高阶辅助时需接管提示", "weight": "高"}, {"from": "SCN-MOD-006", "fromName": "系统原因自动退出", "to": "HMI-004", "toName": "Escalating Takeover Alert", "relation": "requires", "meaning": "系统原因退出时需升级提示", "weight": "高"}, {"from": "SCN-CTL-002", "fromName": "红绿灯被遮挡", "to": "HMI-004", "toName": "Escalating Takeover Alert", "relation": "suggests_use_of", "meaning": "红绿灯被遮挡不应长篇解释，应先安全提示", "weight": "高"}]}, "parking": {"label": "地库 / 泊车 / 弱图空间", "desc": "把“地库轻刹、搜位/算路、APA/HAVP、弱图空间、车位随心画”放在一张图里。这里的核心不是更快弹窗，而是先凑齐证据，再决定要不要打扰人。", "lanes": {"用户行为": ["BEH-IMP-001", "BEH-IMP-002", "BEH-IMP-003", "BEH-COR-002"], "道路/旅程场景": ["SCN-ROD-007", "SCN-TRP-003", "SCN-TRP-005", "SCN-TRP-006"], "证据": ["EVD-001", "EVD-002", "EVD-003", "EVD-004", "EVD-005"], "系统能力": ["CAP-ROU-004", "CAP-PRK-001", "CAP-PRK-002", "CAP-PRK-003", "CAP-PRK-006", "CAP-PRK-010", "CAP-PRK-011"], "记忆 / 策略": ["MEM-001", "MEM-002", "MEM-003", "POL-001", "POL-002", "POL-006"], "HMI": ["HMI-003", "HMI-005", "HMI-008"]}, "workflow_ids": ["WF-004", "WF-005", "WF-006", "WF-013", "WF-014"], "node_ids": ["BEH-IMP-001", "BEH-IMP-002", "BEH-IMP-003", "BEH-COR-002", "SCN-ROD-007", "SCN-TRP-003", "SCN-TRP-005", "SCN-TRP-006", "EVD-001", "EVD-002", "EVD-003", "EVD-004", "EVD-005", "CAP-ROU-004", "CAP-PRK-001", "CAP-PRK-002", "CAP-PRK-003", "CAP-PRK-006", "CAP-PRK-010", "CAP-PRK-011", "MEM-001", "MEM-002", "MEM-003", "POL-001", "POL-002", "POL-006", "HMI-003", "HMI-005", "HMI-008"], "relations": [{"from": "BEH-IMP-001", "fromName": "进入地库后低速轻刹", "to": "EVD-005", "toName": "用户轻刹且低速", "relation": "supports", "meaning": "地库低速轻刹会形成停车相关证据", "weight": "中"}, {"from": "BEH-IMP-002", "fromName": "头部/注视搜索车位", "to": "EVD-004", "toName": "驾驶员注视搜索车位", "relation": "supports", "meaning": "搜索车位注视形成近场停车证据", "weight": "中"}, {"from": "SCN-ROD-007", "fromName": "弱图/无图/弱 GPS", "to": "EVD-002", "toName": "进入地库/弱图空间", "relation": "supports", "meaning": "地库本身就是弱图空间证据", "weight": "高"}, {"from": "SCN-TRP-003", "fromName": "接近终点/途经点", "to": "EVD-001", "toName": "导航接近终点", "relation": "supports", "meaning": "接近终点属于停车候选上下文", "weight": "高"}, {"from": "EVD-001", "fromName": "导航接近终点", "to": "MEM-001", "toName": "Episode Memory", "relation": "contributes_to", "meaning": "接近终点事件可进入 episode", "weight": "低"}, {"from": "EVD-002", "fromName": "进入地库/弱图空间", "to": "CAP-ROU-004", "toName": "Weak-map Area Transition", "relation": "gates", "meaning": "弱图空间过渡能力受其驱动", "weight": "高"}, {"from": "EVD-003", "fromName": "检测到可用车位", "to": "CAP-PRK-001", "toName": "Parking Slot Search", "relation": "enables", "meaning": "发现车位后可进入找位/泊车流程", "weight": "高"}, {"from": "EVD-004", "fromName": "驾驶员注视搜索车位", "to": "CAP-PRK-001", "toName": "Parking Slot Search", "relation": "raises_confidence_of", "meaning": "注视搜索车位提升泊车意图置信度", "weight": "中"}, {"from": "BEH-COR-002", "fromName": "踩刹车取消泊车", "to": "CAP-PRK-003", "toName": "APA Start", "relation": "cancels", "meaning": "用户踩刹车可取消自动泊车", "weight": "高"}, {"from": "BEH-COR-002", "fromName": "踩刹车取消泊车", "to": "MEM-001", "toName": "Episode Memory", "relation": "writes_negative_signal_to", "meaning": "本次泊车 episode 记为负反馈", "weight": "高"}, {"from": "POL-002", "fromName": "Confidence Gate", "to": "CAP-PRK-003", "toName": "APA Start", "relation": "blocks", "meaning": "低置信情况下不应自动开始泊车", "weight": "高"}, {"from": "POL-006", "fromName": "Cabin-sensing Permission", "to": "EVD-004", "toName": "驾驶员注视搜索车位", "relation": "gates", "meaning": "非必要 gaze 学习需用户授权", "weight": "高"}, {"from": "SCN-TRP-005", "fromName": "正在找车位", "to": "HMI-003", "toName": "Confirmation Card", "relation": "suggests_use_of", "meaning": "搜位中可用确认卡片消解泊车歧义", "weight": "中"}, {"from": "SCN-TRP-006", "fromName": "已开始泊车", "to": "HMI-008", "toName": "Parking Overlay", "relation": "suggests_use_of", "meaning": "泊车中应以覆盖层为主界面", "weight": "高"}, {"from": "HMI-005", "fromName": "Post-drive Review Card", "to": "MEM-002", "toName": "Preference Memory", "relation": "writes_confirmation_to", "meaning": "行后确认卡可把 episode 升级为偏好", "weight": "中"}]}, "learning": {"label": "风格学习 / 个性化", "desc": "把“跟车距、限速偏好、变道时机、雨天稳健、记忆编辑与授权”放在一条学习链里：从 event 到 preference，再到策略参数，但始终被安全包络与置信门控约束。", "lanes": {"用户行为": ["BEH-PAR-001", "BEH-PAR-007", "BEH-COR-004", "BEH-ROU-001", "BEH-ROU-002", "BEH-SPD-001", "BEH-CAB-001", "BEH-PRV-004", "BEH-PRV-005"], "道路/旅程场景": ["SCN-CTL-003", "SCN-ROD-003", "SCN-ROD-006", "SCN-TRP-001"], "证据": ["EVD-007", "EVD-008", "EVD-009", "EVD-011", "EVD-012"], "系统能力": ["CAP-LON-002", "CAP-LON-003", "CAP-LON-006", "CAP-LAT-003", "CAP-VEH-007", "CAP-CAB-002", "CAP-CAB-005"], "记忆 / 策略": ["MEM-001", "MEM-002", "MEM-004", "MEM-005", "POL-001", "POL-002", "POL-004", "POL-005", "POL-006"], "HMI": ["HMI-001", "HMI-005", "HMI-006", "HMI-007"]}, "workflow_ids": ["WF-007", "WF-011", "WF-012", "WF-015"], "node_ids": ["BEH-PAR-001", "BEH-PAR-007", "BEH-COR-004", "BEH-ROU-001", "BEH-ROU-002", "BEH-SPD-001", "BEH-CAB-001", "BEH-PRV-004", "BEH-PRV-005", "SCN-CTL-003", "SCN-ROD-003", "SCN-ROD-006", "SCN-TRP-001", "EVD-007", "EVD-008", "EVD-009", "EVD-011", "EVD-012", "CAP-LON-002", "CAP-LON-003", "CAP-LON-006", "CAP-LAT-003", "CAP-VEH-007", "CAP-CAB-002", "CAP-CAB-005", "MEM-001", "MEM-002", "MEM-004", "MEM-005", "POL-001", "POL-002", "POL-004", "POL-005", "POL-006", "HMI-001", "HMI-005", "HMI-006", "HMI-007"], "relations": [{"from": "BEH-COR-004", "fromName": "取消自动变道", "to": "MEM-002", "toName": "Preference Memory", "relation": "writes_negative_signal_to", "meaning": "自动变道被取消可写入变道风格记忆", "weight": "中"}, {"from": "BEH-ROU-001", "fromName": "总在两三个路口前就提前变道", "to": "MEM-002", "toName": "Preference Memory", "relation": "abstracts_to", "meaning": "反复提前变道可抽象为早规划偏好", "weight": "中"}, {"from": "BEH-ROU-002", "fromName": "临近路口才变道", "to": "MEM-002", "toName": "Preference Memory", "relation": "abstracts_to", "meaning": "临近路口再变道可抽象为晚规划偏好", "weight": "中"}, {"from": "BEH-SPD-001", "fromName": "在空旷快速路反复手动加速", "to": "MEM-002", "toName": "Preference Memory", "relation": "abstracts_to", "meaning": "空旷快速路反复加速可形成流速偏好", "weight": "中"}, {"from": "MEM-002", "fromName": "Preference Memory", "to": "CAP-LON-002", "toName": "Speed Offset by Limit", "relation": "modulates", "meaning": "速度偏好影响 offset 策略", "weight": "中"}, {"from": "MEM-002", "fromName": "Preference Memory", "to": "CAP-LON-003", "toName": "Following Distance", "relation": "modulates", "meaning": "跟车距偏好影响 time gap", "weight": "中"}, {"from": "POL-001", "fromName": "Safety Envelope", "to": "CAP-LON-002", "toName": "Speed Offset by Limit", "relation": "constrains", "meaning": "安全包络约束 speed offset", "weight": "高"}, {"from": "POL-001", "fromName": "Safety Envelope", "to": "CAP-LAT-003", "toName": "Auto Lane Change", "relation": "constrains", "meaning": "安全包络约束自动变道", "weight": "高"}, {"from": "POL-002", "fromName": "Confidence Gate", "to": "CAP-LAT-003", "toName": "Auto Lane Change", "relation": "blocks", "meaning": "低置信高风险时禁止系统主动变道", "weight": "高"}, {"from": "BEH-PRV-004", "fromName": "删除一条已学习记忆", "to": "MEM-002", "toName": "Preference Memory", "relation": "deletes", "meaning": "用户可删除一条偏好记忆", "weight": "高"}, {"from": "BEH-PRV-005", "fromName": "固定 / 锁定某偏好", "to": "MEM-002", "toName": "Preference Memory", "relation": "locks", "meaning": "用户可将偏好锁定为显式规则", "weight": "中"}, {"from": "BEH-CAB-001", "fromName": "说‘下雨了，开稳点’", "to": "CAP-CAB-002", "toName": "Natural Language Vehicle Control", "relation": "expands_to", "meaning": "‘下雨了开稳点’应编排一组车控与辅助策略", "weight": "高"}, {"from": "CAP-CAB-002", "fromName": "Natural Language Vehicle Control", "to": "CAP-LON-003", "toName": "Following Distance", "relation": "may_trigger", "meaning": "自然语言控车可能改写跟车距", "weight": "中"}, {"from": "CAP-CAB-002", "fromName": "Natural Language Vehicle Control", "to": "CAP-LON-006", "toName": "Weather Cautious Speed", "relation": "may_trigger", "meaning": "自然语言控车可能切换雨天谨慎限速", "weight": "中"}, {"from": "CAP-CAB-002", "fromName": "Natural Language Vehicle Control", "to": "CAP-VEH-007", "toName": "Wiper Control", "relation": "may_trigger", "meaning": "自然语言控车可能调高雨刮", "weight": "中"}, {"from": "CAP-CAB-005", "fromName": "Scene Automation", "to": "MEM-004", "toName": "Scene-bound Rule", "relation": "reads", "meaning": "场景自动化读取场景绑定规则", "weight": "中"}, {"from": "HMI-005", "fromName": "Post-drive Review Card", "to": "MEM-002", "toName": "Preference Memory", "relation": "writes_confirmation_to", "meaning": "行后确认卡可把 episode 升级为偏好", "weight": "中"}, {"from": "HMI-006", "fromName": "Memory Manager", "to": "MEM-002", "toName": "Preference Memory", "relation": "manages", "meaning": "记忆管理器负责可见/可删/可控", "weight": "高"}]}, "media": {"label": "智能座舱 / 娱乐 / 权限", "desc": "把“自然语言车控、工作流透明、多屏娱乐、parked-only、分层授权”放在一起看。这里不是驾驶逻辑的附属，而是 agent companion 的另一半：权限、身份、内容与注意力分配。", "lanes": {"用户行为": ["BEH-CAB-001", "BEH-CAB-002", "BEH-CAB-003", "BEH-MED-001", "BEH-MED-003", "BEH-MED-004", "BEH-PRV-001", "BEH-PRV-003"], "道路/旅程场景": ["SCN-TRP-007", "SCN-CAB-001", "SCN-CAB-003"], "证据": ["EVD-009", "EVD-011"], "系统能力": ["CAP-CAB-001", "CAP-CAB-002", "CAP-CAB-004", "CAP-CAB-005", "CAP-MED-001", "CAP-MED-002", "CAP-MED-006", "CAP-VEH-001", "CAP-VEH-004"], "记忆 / 策略": ["MEM-002", "MEM-004", "POL-003", "POL-004", "POL-005", "POL-006"], "HMI": ["HMI-001", "HMI-006", "HMI-007"]}, "workflow_ids": ["WF-015", "WF-016"], "node_ids": ["BEH-CAB-001", "BEH-CAB-002", "BEH-CAB-003", "BEH-MED-001", "BEH-MED-003", "BEH-MED-004", "BEH-PRV-001", "BEH-PRV-003", "SCN-TRP-007", "SCN-CAB-001", "SCN-CAB-003", "EVD-009", "EVD-011", "CAP-CAB-001", "CAP-CAB-002", "CAP-CAB-004", "CAP-CAB-005", "CAP-MED-001", "CAP-MED-002", "CAP-MED-006", "CAP-VEH-001", "CAP-VEH-004", "MEM-002", "MEM-004", "POL-003", "POL-004", "POL-005", "POL-006", "HMI-001", "HMI-006", "HMI-007"], "relations": [{"from": "SCN-TRP-007", "fromName": "补能驻车", "to": "CAP-MED-002", "toName": "Video Streaming", "relation": "allows", "meaning": "充电驻车允许视频播放", "weight": "高"}, {"from": "POL-003", "fromName": "Parked-only Media", "to": "CAP-MED-002", "toName": "Video Streaming", "relation": "constrains", "meaning": "视频功能受驻车策略约束", "weight": "高"}, {"from": "BEH-CAB-001", "fromName": "说‘下雨了，开稳点’", "to": "CAP-CAB-002", "toName": "Natural Language Vehicle Control", "relation": "expands_to", "meaning": "‘下雨了开稳点’应编排一组车控与辅助策略", "weight": "高"}, {"from": "CAP-CAB-005", "fromName": "Scene Automation", "to": "MEM-004", "toName": "Scene-bound Rule", "relation": "reads", "meaning": "场景自动化读取场景绑定规则", "weight": "中"}, {"from": "HMI-006", "fromName": "Memory Manager", "to": "MEM-002", "toName": "Preference Memory", "relation": "manages", "meaning": "记忆管理器负责可见/可删/可控", "weight": "高"}, {"from": "HMI-007", "fromName": "Workflow View", "to": "CAP-CAB-004", "toName": "Workflow Transparency", "relation": "explains", "meaning": "工作流视图承载 agent reasoning trace", "weight": "中"}]}}, "adj": {"BEH-IMP-001": [{"direction": "out", "relation": "supports", "other": "EVD-005", "meaning": "地库低速轻刹会形成停车相关证据", "weight": "中"}], "EVD-005": [{"direction": "in", "relation": "supports", "other": "BEH-IMP-001", "meaning": "地库低速轻刹会形成停车相关证据", "weight": "中"}], "BEH-IMP-002": [{"direction": "out", "relation": "supports", "other": "EVD-004", "meaning": "搜索车位注视形成近场停车证据", "weight": "中"}], "EVD-004": [{"direction": "in", "relation": "supports", "other": "BEH-IMP-002", "meaning": "搜索车位注视形成近场停车证据", "weight": "中"}, {"direction": "out", "relation": "raises_confidence_of", "other": "CAP-PRK-001", "meaning": "注视搜索车位提升泊车意图置信度", "weight": "中"}, {"direction": "in", "relation": "limits_use_of", "other": "POL-004", "meaning": "车端优先策略限制舱内感知用途", "weight": "中"}, {"direction": "in", "relation": "gates", "other": "POL-006", "meaning": "非必要 gaze 学习需用户授权", "weight": "高"}], "SCN-ROD-007": [{"direction": "out", "relation": "supports", "other": "EVD-002", "meaning": "地库本身就是弱图空间证据", "weight": "高"}], "EVD-002": [{"direction": "in", "relation": "supports", "other": "SCN-ROD-007", "meaning": "地库本身就是弱图空间证据", "weight": "高"}, {"direction": "out", "relation": "gates", "other": "CAP-ROU-004", "meaning": "弱图空间过渡能力受其驱动", "weight": "高"}], "SCN-TRP-003": [{"direction": "out", "relation": "supports", "other": "EVD-001", "meaning": "接近终点属于停车候选上下文", "weight": "高"}], "EVD-001": [{"direction": "in", "relation": "supports", "other": "SCN-TRP-003", "meaning": "接近终点属于停车候选上下文", "weight": "高"}, {"direction": "out", "relation": "contributes_to", "other": "MEM-001", "meaning": "接近终点事件可进入 episode", "weight": "低"}], "MEM-001": [{"direction": "in", "relation": "contributes_to", "other": "EVD-001", "meaning": "接近终点事件可进入 episode", "weight": "低"}, {"direction": "in", "relation": "writes_negative_signal_to", "other": "BEH-COR-002", "meaning": "本次泊车 episode 记为负反馈", "weight": "高"}], "CAP-ROU-004": [{"direction": "in", "relation": "gates", "other": "EVD-002", "meaning": "弱图空间过渡能力受其驱动", "weight": "高"}], "EVD-003": [{"direction": "out", "relation": "enables", "other": "CAP-PRK-001", "meaning": "发现车位后可进入找位/泊车流程", "weight": "高"}], "CAP-PRK-001": [{"direction": "in", "relation": "enables", "other": "EVD-003", "meaning": "发现车位后可进入找位/泊车流程", "weight": "高"}, {"direction": "in", "relation": "raises_confidence_of", "other": "EVD-004", "meaning": "注视搜索车位提升泊车意图置信度", "weight": "中"}], "BEH-COR-002": [{"direction": "out", "relation": "cancels", "other": "CAP-PRK-003", "meaning": "用户踩刹车可取消自动泊车", "weight": "高"}, {"direction": "out", "relation": "writes_negative_signal_to", "other": "MEM-001", "meaning": "本次泊车 episode 记为负反馈", "weight": "高"}], "CAP-PRK-003": [{"direction": "in", "relation": "cancels", "other": "BEH-COR-002", "meaning": "用户踩刹车可取消自动泊车", "weight": "高"}, {"direction": "in", "relation": "blocks", "other": "POL-002", "meaning": "低置信情况下不应自动开始泊车", "weight": "高"}], "BEH-COR-004": [{"direction": "out", "relation": "writes_negative_signal_to", "other": "MEM-002", "meaning": "自动变道被取消可写入变道风格记忆", "weight": "中"}], "MEM-002": [{"direction": "in", "relation": "writes_negative_signal_to", "other": "BEH-COR-004", "meaning": "自动变道被取消可写入变道风格记忆", "weight": "中"}, {"direction": "in", "relation": "abstracts_to", "other": "BEH-ROU-001", "meaning": "反复提前变道可抽象为早规划偏好", "weight": "中"}, {"direction": "in", "relation": "abstracts_to", "other": "BEH-ROU-002", "meaning": "临近路口再变道可抽象为晚规划偏好", "weight": "中"}, {"direction": "in", "relation": "abstracts_to", "other": "BEH-SPD-001", "meaning": "空旷快速路反复加速可形成流速偏好", "weight": "中"}, {"direction": "out", "relation": "modulates", "other": "CAP-ROU-001", "meaning": "变道时机偏好影响路线选道策略", "weight": "中"}, {"direction": "out", "relation": "modulates", "other": "CAP-LON-002", "meaning": "速度偏好影响 offset 策略", "weight": "中"}, {"direction": "out", "relation": "modulates", "other": "CAP-LON-003", "meaning": "跟车距偏好影响 time gap", "weight": "中"}, {"direction": "in", "relation": "deletes", "other": "BEH-PRV-004", "meaning": "用户可删除一条偏好记忆", "weight": "高"}, {"direction": "in", "relation": "locks", "other": "BEH-PRV-005", "meaning": "用户可将偏好锁定为显式规则", "weight": "中"}, {"direction": "in", "relation": "writes_confirmation_to", "other": "HMI-005", "meaning": "行后确认卡可把 episode 升级为偏好", "weight": "中"}, {"direction": "in", "relation": "manages", "other": "HMI-006", "meaning": "记忆管理器负责可见/可删/可控", "weight": "高"}], "BEH-ROU-001": [{"direction": "out", "relation": "abstracts_to", "other": "MEM-002", "meaning": "反复提前变道可抽象为早规划偏好", "weight": "中"}], "BEH-ROU-002": [{"direction": "out", "relation": "abstracts_to", "other": "MEM-002", "meaning": "临近路口再变道可抽象为晚规划偏好", "weight": "中"}], "BEH-SPD-001": [{"direction": "out", "relation": "abstracts_to", "other": "MEM-002", "meaning": "空旷快速路反复加速可形成流速偏好", "weight": "中"}], "CAP-ROU-001": [{"direction": "in", "relation": "modulates", "other": "MEM-002", "meaning": "变道时机偏好影响路线选道策略", "weight": "中"}], "CAP-LON-002": [{"direction": "in", "relation": "modulates", "other": "MEM-002", "meaning": "速度偏好影响 offset 策略", "weight": "中"}, {"direction": "in", "relation": "constrains", "other": "POL-001", "meaning": "安全包络约束 speed offset", "weight": "高"}], "CAP-LON-003": [{"direction": "in", "relation": "modulates", "other": "MEM-002", "meaning": "跟车距偏好影响 time gap", "weight": "中"}, {"direction": "in", "relation": "may_trigger", "other": "CAP-CAB-002", "meaning": "自然语言控车可能改写跟车距", "weight": "中"}], "POL-001": [{"direction": "out", "relation": "constrains", "other": "CAP-LON-002", "meaning": "安全包络约束 speed offset", "weight": "高"}, {"direction": "out", "relation": "constrains", "other": "CAP-LAT-003", "meaning": "安全包络约束自动变道", "weight": "高"}], "CAP-LAT-003": [{"direction": "in", "relation": "constrains", "other": "POL-001", "meaning": "安全包络约束自动变道", "weight": "高"}, {"direction": "in", "relation": "blocks", "other": "POL-002", "meaning": "低置信高风险时禁止系统主动变道", "weight": "高"}], "POL-002": [{"direction": "out", "relation": "blocks", "other": "CAP-LAT-003", "meaning": "低置信高风险时禁止系统主动变道", "weight": "高"}, {"direction": "out", "relation": "blocks", "other": "CAP-PRK-003", "meaning": "低置信情况下不应自动开始泊车", "weight": "高"}], "POL-004": [{"direction": "out", "relation": "limits_use_of", "other": "EVD-004", "meaning": "车端优先策略限制舱内感知用途", "weight": "中"}], "POL-005": [{"direction": "out", "relation": "gates", "other": "MEM-003", "meaning": "上云同步权限决定路线记忆是否跨设备", "weight": "中"}], "MEM-003": [{"direction": "in", "relation": "gates", "other": "POL-005", "meaning": "上云同步权限决定路线记忆是否跨设备", "weight": "中"}], "POL-006": [{"direction": "out", "relation": "gates", "other": "EVD-004", "meaning": "非必要 gaze 学习需用户授权", "weight": "高"}], "SCN-MOD-005": [{"direction": "out", "relation": "requires", "other": "HMI-004", "meaning": "即将退出高阶辅助时需接管提示", "weight": "高"}], "HMI-004": [{"direction": "in", "relation": "requires", "other": "SCN-MOD-005", "meaning": "即将退出高阶辅助时需接管提示", "weight": "高"}, {"direction": "in", "relation": "requires", "other": "SCN-MOD-006", "meaning": "系统原因退出时需升级提示", "weight": "高"}, {"direction": "in", "relation": "suggests_use_of", "other": "SCN-CTL-002", "meaning": "红绿灯被遮挡不应长篇解释，应先安全提示", "weight": "高"}], "SCN-MOD-006": [{"direction": "out", "relation": "requires", "other": "HMI-004", "meaning": "系统原因退出时需升级提示", "weight": "高"}], "SCN-CTL-002": [{"direction": "out", "relation": "suggests_use_of", "other": "HMI-004", "meaning": "红绿灯被遮挡不应长篇解释，应先安全提示", "weight": "高"}], "SCN-TRP-005": [{"direction": "out", "relation": "suggests_use_of", "other": "HMI-003", "meaning": "搜位中可用确认卡片消解泊车歧义", "weight": "中"}], "HMI-003": [{"direction": "in", "relation": "suggests_use_of", "other": "SCN-TRP-005", "meaning": "搜位中可用确认卡片消解泊车歧义", "weight": "中"}], "SCN-TRP-006": [{"direction": "out", "relation": "suggests_use_of", "other": "HMI-008", "meaning": "泊车中应以覆盖层为主界面", "weight": "高"}], "HMI-008": [{"direction": "in", "relation": "suggests_use_of", "other": "SCN-TRP-006", "meaning": "泊车中应以覆盖层为主界面", "weight": "高"}], "SCN-TRP-007": [{"direction": "out", "relation": "allows", "other": "CAP-MED-002", "meaning": "充电驻车允许视频播放", "weight": "高"}], "CAP-MED-002": [{"direction": "in", "relation": "allows", "other": "SCN-TRP-007", "meaning": "充电驻车允许视频播放", "weight": "高"}, {"direction": "in", "relation": "constrains", "other": "POL-003", "meaning": "视频功能受驻车策略约束", "weight": "高"}], "POL-003": [{"direction": "out", "relation": "constrains", "other": "CAP-MED-002", "meaning": "视频功能受驻车策略约束", "weight": "高"}], "BEH-PRV-004": [{"direction": "out", "relation": "deletes", "other": "MEM-002", "meaning": "用户可删除一条偏好记忆", "weight": "高"}], "BEH-PRV-005": [{"direction": "out", "relation": "locks", "other": "MEM-002", "meaning": "用户可将偏好锁定为显式规则", "weight": "中"}], "BEH-CAB-001": [{"direction": "out", "relation": "expands_to", "other": "CAP-CAB-002", "meaning": "‘下雨了开稳点’应编排一组车控与辅助策略", "weight": "高"}], "CAP-CAB-002": [{"direction": "in", "relation": "expands_to", "other": "BEH-CAB-001", "meaning": "‘下雨了开稳点’应编排一组车控与辅助策略", "weight": "高"}, {"direction": "out", "relation": "may_trigger", "other": "CAP-LON-003", "meaning": "自然语言控车可能改写跟车距", "weight": "中"}, {"direction": "out", "relation": "may_trigger", "other": "CAP-LON-006", "meaning": "自然语言控车可能切换雨天谨慎限速", "weight": "中"}, {"direction": "out", "relation": "may_trigger", "other": "CAP-VEH-007", "meaning": "自然语言控车可能调高雨刮", "weight": "中"}], "CAP-LON-006": [{"direction": "in", "relation": "may_trigger", "other": "CAP-CAB-002", "meaning": "自然语言控车可能切换雨天谨慎限速", "weight": "中"}], "CAP-VEH-007": [{"direction": "in", "relation": "may_trigger", "other": "CAP-CAB-002", "meaning": "自然语言控车可能调高雨刮", "weight": "中"}], "CAP-CAB-005": [{"direction": "out", "relation": "reads", "other": "MEM-004", "meaning": "场景自动化读取场景绑定规则", "weight": "中"}], "MEM-004": [{"direction": "in", "relation": "reads", "other": "CAP-CAB-005", "meaning": "场景自动化读取场景绑定规则", "weight": "中"}], "HMI-005": [{"direction": "out", "relation": "writes_confirmation_to", "other": "MEM-002", "meaning": "行后确认卡可把 episode 升级为偏好", "weight": "中"}], "HMI-006": [{"direction": "out", "relation": "manages", "other": "MEM-002", "meaning": "记忆管理器负责可见/可删/可控", "weight": "高"}], "HMI-007": [{"direction": "out", "relation": "explains", "other": "CAP-CAB-004", "meaning": "工作流视图承载 agent reasoning trace", "weight": "中"}], "CAP-CAB-004": [{"direction": "in", "relation": "explains", "other": "HMI-007", "meaning": "工作流视图承载 agent reasoning trace", "weight": "中"}]}};
+
+const toolbar = document.getElementById('themeToolbar');
+const laneGrid = document.getElementById('laneGrid');
+const themeTitle = document.getElementById('themeTitle');
+const themeDesc = document.getElementById('themeDesc');
+const themeRelations = document.getElementById('themeRelations');
+const workflowCards = document.getElementById('workflowCards');
+const nodeDetail = document.getElementById('nodeDetail');
+const globalSearchInput = document.createElement('div');
+globalSearchInput.className = 'search';
+globalSearchInput.innerHTML = '<input id="globalSearch" placeholder="在当前主题里快速定位条目，例如：泊车、ACC、记忆、变道、视频..." />';
+toolbar.appendChild(globalSearchInput);
+
+let currentTheme = 'parking';
+let activeNode = null;
+
+function esc(s) {
+  return (s ?? '').toString()
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function typeClass(type) {
+  return 'type-' + type;
+}
+
+function renderToolbar() {
+  const btnWrap = document.createElement('div');
+  btnWrap.style.display = 'flex';
+  btnWrap.style.gap = '12px';
+  btnWrap.style.flexWrap = 'wrap';
+  const ordered = ['overview','upgrade','parking','learning','media'];
+  ordered.forEach(key => {
+    const t = DATA.themes[key];
+    const btn = document.createElement('button');
+    btn.className = 'theme-btn' + (key === currentTheme ? ' active' : '');
+    btn.textContent = t.label;
+    btn.onclick = () => {
+      currentTheme = key;
+      activeNode = null;
+      renderAll();
+    };
+    btnWrap.appendChild(btn);
+  });
+  toolbar.prepend(btnWrap);
+}
+
+function cardHTML(item, searchTerm='') {
+  const hay = `${item.id} ${item.name} ${item.desc} ${item.extra} ${item.group} ${item.subgroup}`.toLowerCase();
+  const visible = !searchTerm || hay.includes(searchTerm.toLowerCase());
+  if (!visible) return '';
+  return `
+    <div class="node-card ${activeNode===item.id ? 'active' : ''}" data-id="${esc(item.id)}">
+      <div class="id"><span class="dot ${typeClass(item.type)}"></span>${esc(item.id)} · ${esc(item.type)}</div>
+      <div class="name">${esc(item.name)}</div>
+      <div class="meta">${esc(item.group)}${item.subgroup ? ' / ' + esc(item.subgroup) : ''}</div>
+    </div>`;
+}
+
+function renderTheme() {
+  const theme = DATA.themes[currentTheme];
+  themeTitle.textContent = theme.label;
+  themeDesc.textContent = theme.desc;
+  const searchTerm = (document.getElementById('globalSearch')?.value || '').trim().toLowerCase();
+
+  laneGrid.innerHTML = '';
+  Object.entries(theme.lanes).forEach(([laneName, ids], idx) => {
+    const lane = document.createElement('div');
+    lane.className = 'lane';
+    const filteredHtml = ids.map(id => cardHTML(DATA.itemMap[id], searchTerm)).join('');
+    lane.innerHTML = `<h3>${esc(laneName)} <small>${ids.length} 项</small></h3><div class="cards">${filteredHtml || '<div class="small">无匹配项</div>'}</div>`;
+    laneGrid.appendChild(lane);
+  });
+
+  document.querySelectorAll('.node-card').forEach(card => {
+    card.addEventListener('click', () => {
+      activeNode = card.dataset.id;
+      renderNodeDetail(activeNode);
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    });
+  });
+
+  themeRelations.innerHTML = '';
+  const filteredRelations = theme.relations.filter(r => {
+    if (!searchTerm) return true;
+    const hay = `${r.fromName} ${r.toName} ${r.relation} ${r.meaning}`.toLowerCase();
+    return hay.includes(searchTerm);
+  });
+  if (!filteredRelations.length) {
+    themeRelations.innerHTML = '<div class="adj-item small">当前主题下暂无匹配的显式关系边。</div>';
+  } else {
+    filteredRelations.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'relation-item';
+      div.innerHTML = `
+        <div class="relation-line">${esc(r.fromName)} → ${esc(r.toName)} <span class="pill">${esc(r.relation)}</span></div>
+        <div class="meaning">${esc(r.meaning)} · 权重：${esc(r.weight)}</div>
+      `;
+      themeRelations.appendChild(div);
+    });
+  }
+
+  workflowCards.innerHTML = '';
+  theme.workflow_ids.forEach(id => {
+    const w = DATA.workflows[id];
+    const div = document.createElement('div');
+    div.className = 'wf-card';
+    div.innerHTML = `
+      <div class="wf-head">
+        <div class="wf-id">${esc(w.id)}</div>
+        <div>
+          <div class="wf-trigger">${esc(w.trigger)}</div>
+          <div class="wf-note">${esc(w.notes)}</div>
+        </div>
+      </div>
+      <div class="wf-grid">
+        <div class="wf-label">证据融合</div><div class="wf-value">${esc(w.evidence)}</div>
+        <div class="wf-label">系统默认动作</div><div class="wf-value">${esc(w.default_action)}</div>
+        <div class="wf-label">用户可见界面</div><div class="wf-value">${esc(w.visible_ui)}</div>
+        <div class="wf-label">用户可控项</div><div class="wf-value">${esc(w.controls)}</div>
+        <div class="wf-label">记忆更新</div><div class="wf-value">${esc(w.memory_update)}</div>
+        <div class="wf-label">护栏</div><div class="wf-value">${esc(w.guardrails)}</div>
+      </div>
+    `;
+    workflowCards.appendChild(div);
+  });
+}
+
+function renderNodeDetail(id) {
+  const item = DATA.itemMap[id];
+  if (!item) {
+    nodeDetail.innerHTML = '未找到条目。';
+    return;
+  }
+  const theme = DATA.themes[currentTheme];
+  const related = (DATA.adj[id] || []).filter(x => theme.node_ids.includes(x.other));
+  const relatedHtml = related.length ? related.map(r => {
+    const other = DATA.itemMap[r.other];
+    return `
+      <div class="adj-item">
+        <div class="relation-line">${r.direction === 'out' ? '→' : '←'} <span class="dot ${typeClass(other.type)}"></span>${esc(other.name)} <span class="pill">${esc(r.relation)}</span></div>
+        <div class="meaning">${esc(r.meaning)} · 权重：${esc(r.weight)}</div>
+      </div>`;
+  }).join('') : '<div class="adj-item small">当前主题下暂无直接显式关系。可结合下方 workflow 理解它在链路中的角色。</div>';
+
+  // lightweight workflow match: include current theme workflows containing item name or group keywords
+  const wfMatches = DATA.themes[currentTheme].workflow_ids.map(id => DATA.workflows[id]).filter(w => {
+    const hay = `${w.trigger} ${w.evidence} ${w.default_action} ${w.visible_ui} ${w.controls} ${w.memory_update} ${w.guardrails} ${w.notes}`.toLowerCase();
+    const name = item.name.toLowerCase();
+    const tokens = name.split(/[^\u4e00-\u9fa5a-zA-Z0-9]+/).filter(t => t.length >= 2).slice(0,3);
+    return hay.includes(name) || tokens.some(t => hay.includes(t));
+  });
+  const wfHtml = wfMatches.length ? wfMatches.map(w => `<span class="pill">${esc(w.id)} · ${esc(w.trigger)}</span>`).join(' ') : '<span class="pill">当前主题下未自动匹配到 workflow</span>';
+
+  nodeDetail.innerHTML = `
+    <div class="detail-title">
+      <span class="dot ${typeClass(item.type)}"></span>
+      <strong style="font-size:22px;">${esc(item.name)}</strong>
+      <span class="pill">${esc(item.id)}</span>
+      <span class="pill">${esc(item.type)}</span>
+      <span class="pill">${esc(item.group)}${item.subgroup ? ' / ' + esc(item.subgroup) : ''}</span>
+    </div>
+    <div class="detail-desc">${esc(item.desc)}</div>
+    <div class="small" style="margin-top:8px;">${esc(item.extra)}</div>
+    <div style="margin-top:14px; font-size:14px; color:#f1d49b;">主题内直接关系</div>
+    <div class="adj-list">${relatedHtml}</div>
+    <div style="margin-top:14px; font-size:14px; color:#f1d49b;">自动匹配到的主题 workflow</div>
+    <div class="detail-desc" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">${wfHtml}</div>
+  `;
+}
+
+function buildCatalogSrcdoc() {
+  const doc = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #0f1114;
+    --panel: #17181c;
+    --panel-2: #1b1c20;
+    --line: #2b2e36;
+    --text: #f2f3f5;
+    --muted: #9b9ea6;
+    --accent: #d9b26f;
+    --cap: #6bb6ff;
+    --beh: #ffb86b;
+    --scn: #8be28b;
+    --evd: #f7e38b;
+    --mem: #d69cff;
+    --pol: #ff8ea1;
+    --hmi: #8ce4d6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  }
+  .tools {
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom: 12px;
+  }
+  .tools input {
+    min-width:260px; flex:1 1 260px; background: var(--panel-2); border:1px solid var(--line);
+    border-radius: 12px; color:var(--text); padding:10px 12px; outline:none;
+  }
+  .hint { color: #cfd2d8; line-height: 1.65; font-size: 13px; margin-bottom: 12px; }
+  .table-wrap {
+    max-height: calc(100vh - 116px);
+    overflow: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.06);
+    background: rgba(255,255,255,.02);
+  }
+  table { width:100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align:left; padding: 10px 12px; color:#f1d49b; border-bottom:1px solid var(--line); position:sticky; top:0; background:#17181c;
+  }
+  tbody td {
+    padding: 10px 12px; border-bottom:1px solid rgba(255,255,255,.05); color:#d9dde6; vertical-align: top;
+  }
+  tbody tr:hover { background: rgba(255,255,255,.02); }
+  .small { color:var(--muted); font-size:12px; }
+  .dot {
+    display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;
+  }
+  .type-Behavior { background: var(--beh); }
+  .type-Scene { background: var(--scn); }
+  .type-Evidence { background: var(--evd); }
+  .type-Capability { background: var(--cap); }
+  .type-Memory { background: var(--mem); }
+  .type-Policy { background: var(--pol); }
+  .type-HMI { background: var(--hmi); }
+  @media (max-width: 900px) {
+    body { padding: 12px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+  <div class="hint">内嵌速查表支持独立搜索，适合快速扫全量 ontology 条目；需要更大视野时可用外层的 expand。</div>
+  <div class="tools">
+    <input id="catalogSearch" placeholder="搜索 ID / 名称 / 描述，例如：变道、泊车、弱图、限速、雨天、HMI..." />
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 120px;">Type</th>
+          <th style="width: 150px;">ID</th>
+          <th style="width: 260px;">Name</th>
+          <th style="width: 180px;">Group</th>
+          <th>Description</th>
+          <th>Extra</th>
+        </tr>
+      </thead>
+      <tbody id="catalogBody"></tbody>
+    </table>
+  </div>
+<script>
+  const DATA = window.parent.DATA;
+  const catalogBody = document.getElementById('catalogBody');
+  function esc(s) {
+    return (s ?? '').toString()
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function typeClass(type) {
+    return 'type-' + type;
+  }
+  function renderCatalog() {
+    const q = (document.getElementById('catalogSearch')?.value || '').trim().toLowerCase();
+    catalogBody.innerHTML = '';
+    DATA.items.filter(item => {
+      if (!q) return true;
+      const hay = \`\${item.id} \${item.name} \${item.type} \${item.group} \${item.subgroup} \${item.desc} \${item.extra}\`.toLowerCase();
+      return hay.includes(q);
+    }).forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = \`
+        <td><span class="dot \${typeClass(item.type)}"></span>\${esc(item.type)}</td>
+        <td>\${esc(item.id)}</td>
+        <td><strong>\${esc(item.name)}</strong></td>
+        <td>\${esc(item.group)}\${item.subgroup ? '<div class="small">' + esc(item.subgroup) + '</div>' : ''}</td>
+        <td>\${esc(item.desc)}</td>
+        <td class="small">\${esc(item.extra)}</td>
+      \`;
+      catalogBody.appendChild(tr);
+    });
+  }
+  document.getElementById('catalogSearch').addEventListener('input', renderCatalog);
+  renderCatalog();
+<\/script>
+</body>
+</html>`;
+  return doc;
+}
+
+function buildStandaloneCatalogView() {
+  document.body.innerHTML = `
+    <div class="wrap" style="max-width: 1880px;">
+      <div class="hero" style="margin-bottom: 18px;">
+        <h1>Car Agent UX · 全量条目速查表</h1>
+        <div class="subtitle">独立视图只保留全量 ontology catalog，适合放大查看、长时间筛选和继续整理结构。</div>
+      </div>
+      <div class="section catalog-box">
+        <div class="catalog-tools">
+          <input id="standaloneCatalogSearch" placeholder="搜索 ID / 名称 / 描述，例如：变道、泊车、弱图、限速、雨天、HMI..." />
+        </div>
+        <div style="max-height: calc(100vh - 220px); overflow:auto; border-radius: 14px;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 120px;">Type</th>
+                <th style="width: 150px;">ID</th>
+                <th style="width: 260px;">Name</th>
+                <th style="width: 180px;">Group</th>
+                <th>Description</th>
+                <th>Extra</th>
+              </tr>
+            </thead>
+            <tbody id="standaloneCatalogBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const body = document.getElementById('standaloneCatalogBody');
+  const input = document.getElementById('standaloneCatalogSearch');
+  const render = () => {
+    const q = (input?.value || '').trim().toLowerCase();
+    body.innerHTML = '';
+    DATA.items.filter(item => {
+      if (!q) return true;
+      const hay = `${item.id} ${item.name} ${item.type} ${item.group} ${item.subgroup} ${item.desc} ${item.extra}`.toLowerCase();
+      return hay.includes(q);
+    }).forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="dot ${typeClass(item.type)}"></span>${esc(item.type)}</td>
+        <td>${esc(item.id)}</td>
+        <td><strong>${esc(item.name)}</strong></td>
+        <td>${esc(item.group)}${item.subgroup ? '<div class="small">' + esc(item.subgroup) + '</div>' : ''}</td>
+        <td>${esc(item.desc)}</td>
+        <td class="small">${esc(item.extra)}</td>
+      `;
+      body.appendChild(tr);
+    });
+  };
+  input.addEventListener('input', render);
+  render();
+}
+
+function renderAll() {
+  toolbar.innerHTML = '';
+  renderToolbar();
+  renderTheme();
+  const theme = DATA.themes[currentTheme];
+  const firstId = activeNode && theme.node_ids.includes(activeNode) ? activeNode : theme.node_ids[0];
+  activeNode = firstId;
+  renderNodeDetail(firstId);
+  document.querySelectorAll('.node-card').forEach(c => {
+    if (c.dataset.id === firstId) c.classList.add('active');
+  });
+  document.getElementById('globalSearch').addEventListener('input', renderTheme);
+  document.getElementById('catalogFrame').srcdoc = buildCatalogSrcdoc();
+}
+
+const params = new URLSearchParams(window.location.search);
+if (params.get('view') === 'catalog') {
+  buildStandaloneCatalogView();
+} else {
+  renderAll();
+}
+</script>
+</body>
+</html>

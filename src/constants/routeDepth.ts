@@ -256,7 +256,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#8b7db5",
     subPages: [
       { route: "/agentic-design-development/driving-authority-contracts/main", label: "分权机制与交互合同", numeral: "I" },
-      { route: "/agentic-design-development/driving-authority-contracts/ux-case-example", label: "UX case example：上一项目的 UX 思考", numeral: "II" },
+      { route: "/agentic-design-development/driving-authority-contracts/ux-case-example", label: "安全、权限与学习界面", numeral: "II" },
     ],
   },
   "/agentic-design-development/driving-authority-contracts/main": {
@@ -268,10 +268,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#8b7db5",
   },
   "/agentic-design-development/driving-authority-contracts/ux-case-example": {
-    title: "UX case example：上一项目的 UX 思考",
-    subtitle: "Driving UX · Evidence Fusion, Habit Learning, Memory Governance",
+    title: "把车载 HMI 从驾驶界面，推进成安全界面、权限界面和学习界面",
+    subtitle: "Driving UX · Trust Allocation, Memory Governance, Agent Collaboration",
     year: "2025",
-    desc: "把上一项目中关于习惯学习、歧义消解、升级接管、可解释性与记忆治理的完整 UX 思考单独收成子页面，作为这一章的 case example。",
+    desc: "以车载 Agent 为前提，重新定义 HMI 的三重职责：在高风险时承担安全界面，在自动判断时成为权限界面，在系统学习用户时变成学习界面，把判断过程本身设计成可被信任的协作。",
     parent: "/agentic-design-development/driving-authority-contracts",
     color: "#8b7db5",
   },
