@@ -147,7 +147,7 @@ export const PAGE_META: Record<string, PageMeta> = {
       { route: "/web-design-develop/overview", label: "项目概览", numeral: "I" },
       { route: "/web-design-develop/component-framework", label: "组件框架", numeral: "II" },
       { route: "/web-design-develop/key-pages", label: "关键页面", numeral: "III" },
-      { route: "/web-design-develop/semantic-system", label: "语义系统", numeral: "IV" },
+      { route: "/web-design-develop/semantic-system", label: "Method Appendix", numeral: "IV" },
       { route: "/web-design-develop/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "V" },
     ],
   },
