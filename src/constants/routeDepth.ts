@@ -176,10 +176,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#7a9e8e",
   },
   "/web-design-develop/semantic-system": {
-    title: "Semantic System",
-    subtitle: "Web Design Develop · UI Language",
+    title: "Method Appendix",
+    subtitle: "Web Design Develop · Semantic Compilation Logic",
     year: "2025",
-    desc: "Semantic token system and visual language for AI-generated content states — loading, success, error, and intervention feedback across the product.",
+    desc: "Method appendix for the rug-generation system — how vague user input is compiled into three comparable design directions, translated into rug language, and only then serialized into prompts.",
     parent: "/web-design-develop",
     color: "#7a9e8e",
   },

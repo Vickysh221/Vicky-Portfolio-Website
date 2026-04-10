@@ -19,6 +19,8 @@ import { getPhoenixOverviewSlide01Sections } from './H5DocContentPhoenixOverview
 import { getPhoenixComponentFrameworkSlide01Sections } from './H5DocContentPhoenixComponentFrameworkSlide01';
 import { getPhoenixKeyPagesSlide01Sections } from './H5DocContentPhoenixKeyPagesSlide01';
 import { getPhoenixSemanticSystemSlide01Sections } from './H5DocContentPhoenixSemanticSystemSlide01';
+import { getPhoenixSemanticSystemSlide02Sections } from './H5DocContentPhoenixSemanticSystemSlide02';
+import { getPhoenixSemanticSystemSlide03Sections } from './H5DocContentPhoenixSemanticSystemSlide03';
 import { getPhoenixFuliPlusSlide01Sections } from './H5DocContentPhoenixFuliPlusSlide01';
 import { getPhoenixFuliPlusSlide02Sections } from './H5DocContentPhoenixFuliPlusSlide02';
 import { getPhoenixFuliPlusSlide03Sections } from './H5DocContentPhoenixFuliPlusSlide03';
@@ -83,6 +85,8 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,
   '/web-design-develop/key-pages:0': getPhoenixKeyPagesSlide01Sections,
   '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
+  '/web-design-develop/semantic-system:1': getPhoenixSemanticSystemSlide02Sections,
+  '/web-design-develop/semantic-system:2': getPhoenixSemanticSystemSlide03Sections,
   '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
   '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
