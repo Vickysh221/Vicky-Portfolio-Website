@@ -291,7 +291,43 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'Appendix A｜Slot-state 映射层',
+    pageTitle: 'Appendix A｜模糊语义如何被展开成三个方向',
+    pageGoal: '说明第一轮不是随机给三张图，而是把模糊输入编译成三条可比较的设计假设。',
+    mainCopy:
+      '用户输入里的信息通常混着情绪、场景、结构倾向与材料期待。系统不会把这类输入直接翻译成一句 prompt，而会先识别哪些是相对明确的信号，哪些仍然模糊，再围绕同一组核心语义展开三条具有不同重点的 rug directions。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'semanticCompilationChain',
+      },
+    ],
+  },
+  {
+    pageTitle: 'Appendix B｜三个方向如何落到地毯语言',
+    pageGoal: '说明每个方向不是同义改写，而是通过不同的槽位权重和材料 / 工艺特征来分化。',
+    mainCopy:
+      '三条方向共享同一个语义起点，但不会平均地改所有维度。系统会为每条方向分配不同的 slot emphasis，让有的方向更强调 arrangement 和 movement，有的更强调 calm structure，有的更强调 tactile richness。真正拉开差异的，不是修辞，而是 rug-specific 的组织、表面与工艺特征。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'directionWeightMatrix',
+      },
+    ],
+  },
+  {
+    pageTitle: 'Appendix C｜Prompt 只是 design state 的外部表达',
+    pageGoal: '说明 prompt 不是创意来源，而是 semantic hypothesis 与 rug language 编译后的最后一层。',
+    mainCopy:
+      '系统最终当然会输出 generation prompt，但 prompt 在这里不是起点，而是结果。前面几层真正做的是：把语义方向转成可执行的 rug design language，再把这些判断压成适合模型理解的指令结构。这样生成出来的，不是“翻译后的句子”，而是一个经过设计判断整理的方向。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'rugLanguagePromptBridge',
+      },
+    ],
+  },
+  {
+    pageTitle: 'Appendix D｜Slot-state 映射层',
     pageGoal: '把 bucket 到 slot-state 的作用链路讲清楚，但保持作品集附录的阅读感。',
     mainCopy:
       '这一页不试图把系统解释成一份规范文档。它只把最关键的一层展开：参考图如何先被解释成 semantic bucket，再继续压成可以进入生成系统的 slot-state，并最终影响方向生成与 refinement。',
@@ -1263,6 +1299,207 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           </div>
         </div>
       );
+    case 'semanticCompilationChain': {
+      const chainCards = [
+        {
+          title: 'semantic intake',
+          body: '先把用户输入里的信息拆开：哪些是情绪和 impression，哪些是在暗示 arrangement、motif、color warmth、material feel 或场景约束。',
+        },
+        {
+          title: 'certainty vs ambiguity',
+          body: '系统不会假装所有词都同样明确，而是先区分哪些维度已经相对清楚，哪些仍然模糊、冲突或需要继续 probing。',
+        },
+        {
+          title: 'three direction hypotheses',
+          body: '第一轮不是三张随机图，而是三条围绕同一语义起点展开的方向假设：共享核心 DNA，但在重点维度上故意拉开。',
+        },
+        {
+          title: 'per-direction state weighting',
+          body: '每条方向都会获得不同的 slot emphasis，因此分化来自设计判断，而不是一句 prompt 的修辞变化。',
+        },
+        {
+          title: 'rug-language translation',
+          body: '方向不会直接落成普通图像风格词，而会先转成地毯能承载的 composition、motif behavior、density、surface 与 material cues。',
+        },
+        {
+          title: 'generation prompt assembly',
+          body: 'prompt 只负责把已经确定的方向组织成模型可执行的外部表达。真正的方法，发生在 prompt 之前。',
+        },
+      ];
+
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 22px' : '24px 24px 28px', display: 'grid', gap: 18 }}>
+          <div className="narrative-card" style={{ borderRadius: 18, padding: isMobile ? '18px 16px' : '20px 20px 22px', border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.9 }}>semantic-to-rug compilation chain</div>
+            <div style={{ color: '#f0e8d8', fontSize: isMobile ? 22 : 28, lineHeight: 1.24, marginBottom: 12 }}>第一轮的 3 个方向，其实是 3 条被编译出来的设计假设</div>
+            <div style={smallBodyStyle()}>
+              同一句“温暖一点、自然一点、不要太甜”的输入里，系统看到的不是一条完整 specification，而是一组仍在形成中的偏好信号。第一轮的任务，就是把这些信号整理成几条真正可比较的方向，而不是草率地给出一个答案。
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gap: 12 }}>
+            {chainCards.map((card, index) => (
+              <div key={card.title} style={{ position: 'relative', minWidth: 0, paddingBottom: index < chainCards.length - 1 ? 18 : 0 }}>
+                <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 15px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+                  <div style={{ color: '#8e7f68', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 8 }}>{String(index + 1).padStart(2, '0')}</div>
+                  <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>{card.title}</div>
+                  <div style={smallBodyStyle()}>{card.body}</div>
+                </div>
+                {index < chainCards.length - 1 ? (
+                  <div style={{ position: 'absolute', left: 18, bottom: -2, color: accentColor, fontSize: 18, lineHeight: 1 }}>↓</div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+            {[
+              ['Direction A', '保留 warm / natural 的总体气质，但把重点放在 organic flow 和更明显的 movement path 上。'],
+              ['Direction B', '保留同样的情绪起点，但压到更 calm、more architectural 的结构秩序里。'],
+              ['Direction C', '保留自然感来源，但把重点转到 tactile richness、surface relief 与材料表现上。'],
+            ].map(([title, body]) => (
+              <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+                <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 8 }}>{title}</div>
+                <div style={smallBodyStyle()}>{body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    case 'directionWeightMatrix': {
+      const columns = ['Direction A｜Organic Flow', 'Direction B｜Calm Structure', 'Direction C｜Tactile Richness'];
+      const rows = [
+        ['arrangement / movement path', 'High', 'High', 'Medium'],
+        ['motif abstraction', 'Medium', 'Low–Medium', 'Medium–High'],
+        ['color restraint', 'Medium', 'High', 'Medium'],
+        ['surface / relief', 'Medium', 'Medium', 'High'],
+        ['pile / material cue', 'Medium', 'Medium', 'High'],
+      ];
+      const featureGroups = [
+        {
+          title: 'Direction A｜强调 flow',
+          items: ['更明显的 band / path 走向', '更大的开合节奏与 breathing pockets', '更柔和的 contour transition'],
+        },
+        {
+          title: 'Direction B｜强调 structure',
+          items: ['更稳定的组织骨架', '更克制的 motif density', '更安静的色彩角色分工'],
+        },
+        {
+          title: 'Direction C｜强调 tactile richness',
+          items: ['更强的 pile height contrast', '更明显的 carved relief / mixed-pile cues', '更细的 tuft density rhythm'],
+        },
+      ];
+
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 22px' : '24px 24px 28px', display: 'grid', gap: 18 }}>
+          <div className="narrative-card" style={{ borderRadius: 18, padding: isMobile ? '18px 16px' : '20px 20px 22px', border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.9 }}>direction differentiation</div>
+            <div style={{ color: '#f0e8d8', fontSize: isMobile ? 22 : 28, lineHeight: 1.24, marginBottom: 12 }}>三个方向的差异，不在修辞上，而在主导权重上</div>
+            <div style={smallBodyStyle()}>
+              同样一个语义起点，系统不会平均改所有槽位。真正起作用的是：每条方向优先推动哪个维度，哪些维度保持支持层，哪些维度暂时被压低。这样出来的 3 个方向才会既相关，又足够有区分度。
+            </div>
+          </div>
+
+          <div className="narrative-card" style={{ borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1.1fr repeat(3, minmax(90px, 1fr))' : '1.25fr repeat(3, minmax(0, 1fr))' }}>
+              <div style={{ padding: '14px 12px', color: '#8e7f68', fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase', borderBottom: '1px solid rgba(200,169,110,0.1)' }}>slot / emphasis</div>
+              {columns.map((column) => (
+                <div key={column} style={{ padding: '14px 12px', color: '#f0e8d8', fontSize: 14, lineHeight: 1.5, borderBottom: '1px solid rgba(200,169,110,0.1)', borderLeft: '1px solid rgba(200,169,110,0.08)' }}>{column}</div>
+              ))}
+              {rows.map((row) => (
+                <>
+                  <div key={`${row[0]}-label`} style={{ padding: '14px 12px', color: '#d8ccb7', fontSize: 14, lineHeight: 1.6, borderBottom: '1px solid rgba(200,169,110,0.08)' }}>{row[0]}</div>
+                  {row.slice(1).map((value, idx) => (
+                    <div key={`${row[0]}-${idx}`} style={{ padding: '14px 12px', color: value === 'High' ? '#f0e8d8' : '#b8a78e', fontSize: 14, lineHeight: 1.6, borderBottom: '1px solid rgba(200,169,110,0.08)', borderLeft: '1px solid rgba(200,169,110,0.08)' }}>{value}</div>
+                  ))}
+                </>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+            {featureGroups.map((group) => (
+              <div key={group.title} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+                <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 10 }}>{group.title}</div>
+                <div style={{ display: 'grid', gap: 8 }}>
+                  {group.items.map((item) => (
+                    <div key={item} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
+                      <span style={{ color: accentColor }}>•</span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    case 'rugLanguagePromptBridge': {
+      const bridgeColumns = [
+        {
+          title: 'Layer 1｜semantic hypothesis',
+          items: ['warm but not sweet', 'natural but not illustrative', '适合大面积空间落地', '更像一种成立方式，而不是一张图的风格'],
+        },
+        {
+          title: 'Layer 2｜rug design language',
+          items: ['restrained warm-earth palette', 'branching organic flow with open breathing areas', 'mixed-pile relief and hand-tufted softness', 'less figurative motif, more surface rhythm'],
+        },
+        {
+          title: 'Layer 3｜generation instruction',
+          items: ['composition logic', 'motif behavior + density rule', 'material / pile / relief cues', 'negative constraints and exclusions'],
+        },
+      ];
+
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '18px 16px 22px' : '24px 24px 28px', display: 'grid', gap: 18 }}>
+          <div className="narrative-card" style={{ borderRadius: 18, padding: isMobile ? '18px 16px' : '20px 20px 22px', border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.9 }}>prompt is the last layer</div>
+            <div style={{ color: '#f0e8d8', fontSize: isMobile ? 22 : 28, lineHeight: 1.24, marginBottom: 12 }}>Prompt 在这个系统里，不是创意来源，而是 design state 的外部序列化</div>
+            <div style={smallBodyStyle()}>
+              系统最终确实会交付 prompt，但它不是把中文直接翻译成英文那么简单。前面的工作已经把方向假设、槽位权重、材质工艺特征和负向约束整理好了；prompt 只是把这些判断压成模型能执行的结构化指令。
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+            {bridgeColumns.map((column, index) => (
+              <div key={column.title} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < bridgeColumns.length - 1 ? 24 : 0 }}>
+                <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 15px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', height: '100%' }}>
+                  <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 10 }}>{column.title}</div>
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    {column.items.map((item) => (
+                      <div key={item} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
+                        <span style={{ color: accentColor }}>•</span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {!isMobile && index < bridgeColumns.length - 1 ? (
+                  <div style={{ position: 'absolute', right: 0, top: '50%', width: 24, color: accentColor, textAlign: 'center', transform: 'translateY(-50%)', opacity: 0.85 }}>→</div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
+            <div className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 8 }}>系统真正保留下来的是什么</div>
+              <div style={smallBodyStyle()}>
+                真正可复用的资产不是一句 prompt，而是一组 design state：哪些维度已经被确认，哪些材质关系必须保留，哪些变量下一轮仍然开放。prompt 只是这些状态面向模型的一种外部表达。
+              </div>
+            </div>
+            <div className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+              <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 8 }}>为什么这比直接写 prompt 更重要</div>
+              <div style={smallBodyStyle()}>
+                因为直接写 prompt 很容易把模糊语义误压成普通风格词；而先经过 semantic hypothesis 和 rug language translation，系统才能保证模型接收到的是一个更接近地毯设计判断的方向，而不是表层修辞。
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     case 'appendixC': {
       const schemaCards = [
         { zh: '主体形成方式', en: 'subjectFormationMode', body: '它描述主体不是“像什么”，而是靠什么关系被看见。', values: ['显影成立', '局部聚拢', '边界浮现'] },
