@@ -221,6 +221,103 @@ Takeaway:
 
 ---
 
+## UX and Interaction Layer Notes
+
+This chapter should not stop at the strategy question.
+It should also show what this judgment changes in product behavior.
+
+### Core UX line
+
+**车载 Agent 的 UX，不是“更会对话”，而是在歧义里做判断，并把判断过程变成可被人信任的协作。**
+
+This is the interaction-level thesis.
+If kept, it can become one of the chapter's strongest lines.
+
+### 1. Habit learning: from manual settings to learned style
+
+One of the most useful implications from personalization research is that driving preference does not live only in a settings page. It also appears in takeovers, corrections, repeated micro-adjustments, and the timing of interventions.
+
+A useful product interpretation:
+- explicit signals: user-selected “稳健 / 激进”, preferred speed margin, lane-change tendency
+- implicit signals: where the user repeatedly accelerates, slows, takes over, or rejects a maneuver
+- memory path: **event memory → preference abstraction → strategy parameterization**
+
+What this proves:
+- personalization should not be framed as “more knobs for the user”
+- it should be framed as the system gradually learning driving style through interaction traces
+
+### 2. Ambiguity resolution: do not interrupt too early
+
+For scenarios like parking-garage braking, a more agentic system should not immediately pop a parking module.
+Instead, it should enter a short evidence-fusion window.
+
+Suggested signal groups:
+- **outside the car**: parking slot geometry, wall proximity, parking-line cues, empty-slot likelihood
+- **navigation context**: destination arrival, parking-lot POI, route completion state
+- **inside the car**: head pose / gaze as weak evidence of searching behavior
+
+Important interaction rule:
+- cabin sensing is not there to look impressive
+- it is there to reduce unnecessary interruption and support better timing
+
+### 3. Escalation and takeover: make “driver online” a system capability
+
+For L2 / near-L2 systems, trust often depends less on perfect automation than on:
+- how credibly the system monitors driver availability
+- how early, clear, and consistent it escalates in edge cases
+
+Product meaning:
+- takeover is not a failure-state afterthought
+- it is part of the UX architecture
+- “driver online” should be designed as an operating condition, not as a disclaimer sentence
+
+### 4. Explainability: not persuasion, but predictability
+
+In driving, explanation matters less because it justifies the system, and more because it helps the user predict what the system will do next.
+
+This suggests a more grounded explanation model:
+- explain action constraints, not abstract reasons
+- examples:
+  - “我没有变道，因为盲区车速差过大”
+  - “我在减速，因为雨天附着下降且前车急刹风险升高”
+- pair explanation with controllable preference levers when appropriate
+
+Key takeaway:
+- explainability should reduce tension and misunderstanding
+- the goal is not rhetoric, but operational legibility
+
+### 5. Privacy and memory control: personalization requires memory governance
+
+A vehicle agent that learns behavior inevitably touches sensitive data:
+- cabin camera data
+- recurring routes
+- calendars / destinations
+- family-member preferences
+
+So a mature UX should include:
+- memory visibility: what the system remembers
+- deletion / export controls
+- layered authorization: on-device only / cloud allowed / cross-device allowed
+- minimal-by-default settings
+
+This is not only a compliance requirement.
+It is part of the trust contract.
+
+### Where these UX notes fit in the chapter
+
+Recommended use:
+- Page 3 can absorb parts of **habit learning** and **ambiguity resolution**
+- Page 4 or 5 can absorb **takeover / explainability / privacy governance**
+- if the chapter grows beyond 6 pages, these can become a separate **UX appendix**
+
+### Best lines worth preserving
+
+- **车载 Agent 的 UX，不是“更会对话”，而是在歧义里做判断，并把判断过程变成可被人信任的协作。**
+- **个性化偏好不只存在于设置页，也存在于接管、纠正和反复微调里。**
+- **解释在驾驶场景里最重要的用途不是说服用户，而是让用户能预测系统下一步。**
+- **“驾驶员在线”应当被做成系统能力，而不是一句免责声明。**
+- **个性化成立的前提，不只是记忆能力，而是记忆治理。**
+
 ## Notes for Future Implementation
 
 When this chapter is implemented into the site:
@@ -229,6 +326,7 @@ When this chapter is implemented into the site:
 - avoid too many automotive-company examples on the final page
 - keep the literature citation lightweight and supportive
 - do not overload with dataset names unless a method appendix is added later
+- do not reduce the UX section into generic “AI assistant” language; keep it driving-specific
 
 Possible future route label:
 - `/agentic-design-development/driving-agent`
