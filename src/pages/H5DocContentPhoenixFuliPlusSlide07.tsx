@@ -29,7 +29,7 @@ export function getPhoenixFuliPlusSlide07Sections(accentColor: string): SectionD
           </div>
           <h2 style={h2Style(accentColor)}>semantic cue：把品牌图像变成可调用的语义加强层</h2>
           <p style={paragraphStyle()}>
-            这里的品牌图像不只是 style reference。它们如果只被拿来做表面相似匹配，系统借到的通常只是“像不像”，而不是对 rug 真正有用的判断层。我更想做的是把这些品牌历史图像 reverse-read 成 semantic cues：它们在主体形成、组织逻辑、密度节奏、边缘处理和表面语言上，各自代表什么样的整体取向。
+            这里的品牌图像不只是风格迁移用的 style reference。它们如果只被拿来做表面相似匹配，系统借到的通常只是“像不像”，而不是对 rug 真正有用的判断层。我更想做的是把这些品牌历史图像 reverse-read 成 semantic cues：它们在主体形成、组织逻辑、密度节奏、边缘处理和表面语言上，各自代表什么样的整体取向。
           </p>
           <div style={documentCardStyle()}>
             <div style={smallMetaStyle()}>semantic cue module 在 second-stage 的作用</div>

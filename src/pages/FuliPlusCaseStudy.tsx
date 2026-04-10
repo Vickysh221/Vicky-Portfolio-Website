@@ -8,7 +8,7 @@ import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 9;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 10;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -79,6 +79,28 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
+    pageTitle: '项目被重构成一个两阶段的 AI 协作工作流',
+    pageGoal: '清楚展示系统框架。',
+    mainCopy:
+      '在这个判断之上，项目被重构成一个两阶段系统。第一阶段负责把模糊输入翻译成方向空间，先给出几条足够有差异、但仍在同一问题域内的起点；第二阶段负责沿已选方向继续长，避免每一轮都从头开始。',
+    contentBlocks: [
+      {
+        type: 'shortParagraphs',
+        title: '两阶段分工',
+        items: [
+          '第一阶段负责把模糊输入翻译成方向空间。',
+          '第二阶段负责沿已选方向继续长，而不是每次重新开始。',
+        ],
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'pipeline',
+        stages: ['输入（文本 / 参考图 / 混合输入 / 用户反馈）', '第一阶段：方向规划', '3 个初始方向', '用户选择', '第二阶段：受控变体', 'case 累积与回流'],
+      },
+    ],
+  },
+  {
     pageTitle: '我们需要一个懂地毯，懂品牌的「专家」',
     pageGoal: '具体展示为什么 generic image generation 在这个场景里不够用。',
     mainCopy:
@@ -111,28 +133,6 @@ const pages: CaseStudyPage[] = [
         ],
         closing:
           '地毯设计里，真正重要的判断往往不只落在题材上。画面怎么被组织起来，主体靠什么成立，表面和工艺有没有进入，方向有没有后续 refinement 的空间——这些层一起成立了，一张图才真正开始像一张 rug。',
-      },
-    ],
-  },
-  {
-    pageTitle: '项目被重构成一个两阶段的 AI 协作工作流',
-    pageGoal: '清楚展示系统框架。',
-    mainCopy:
-      '在这个判断之上，项目被重构成一个两阶段系统。第一阶段负责把模糊输入翻译成方向空间，先给出几条足够有差异、但仍在同一问题域内的起点；第二阶段负责沿已选方向继续长，避免每一轮都从头开始。',
-    contentBlocks: [
-      {
-        type: 'shortParagraphs',
-        title: '两阶段分工',
-        items: [
-          '第一阶段负责把模糊输入翻译成方向空间。',
-          '第二阶段负责沿已选方向继续长，而不是每次重新开始。',
-        ],
-      },
-    ],
-    visualBlocks: [
-      {
-        type: 'pipeline',
-        stages: ['输入（文本 / 参考图 / 混合输入 / 用户反馈）', '第一阶段：方向规划', '3 个初始方向', '用户选择', '第二阶段：受控变体', 'case 累积与回流'],
       },
     ],
   },
@@ -245,6 +245,51 @@ const pages: CaseStudyPage[] = [
         title: '从模糊语义到 rug-specific design language',
         before: ['温暖自然', '有流动感', '不要太甜', '适合客厅'],
         after: ['restrained warm-earth palette', 'branching organic path', 'open breathing areas', 'soft contour transitions', 'mixed-pile hand-tufted relief'],
+      },
+    ],
+  },
+  {
+    pageId: 'semantic-cue-brand-reinforcement',
+    pageTitle: 'Semantic cue：把品牌图像变成可调用的语义加强层',
+    pageGoal: '说明品牌图像在 second-stage 中不是做风格迁移，而是作为品牌边界内的 semantic reinforcement。',
+    mainCopy:
+      '这里的品牌图像不只是风格迁移用的 style reference。它们如果只被拿来做表面相似匹配，系统借到的通常只是“像不像”，而不是对 rug 真正有用的判断层。我更想做的是把这些品牌历史图像 reverse-read 成 semantic cues：它们在主体形成、组织逻辑、密度节奏、边缘处理和表面语言上，各自代表什么样的整体取向。',
+    contentBlocks: [
+      {
+        type: 'bulletCluster',
+        title: 'semantic cue module 在 second-stage 的作用',
+        items: [
+          '系统先根据用户描述与当前选中的意向，确定这一轮已经被认可的方向。',
+          '再去品牌匹配库里找那些 slot parameter vectors 整体取向接近、DNA 同向的案例。',
+          '匹配目标不是视觉相似，而是 semantic structure 是否同向。',
+          '这些 cues 会作为 prompt 组装前的一层 reinforcement，帮助下一轮 variation 更稳定地收束。',
+        ],
+      },
+      {
+        type: 'shortParagraphs',
+        items: [
+          '所以它服务的不是风格迁移，而是 brand-bounded design control：在品牌边界内，对一个已经被用户认可的方向做更可控的加强。这也让 second-stage variation 更像设计控制，而不只是继续多出几张图。',
+        ],
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'assetMap',
+        title: '从品牌历史图像到可调用 cues',
+        columns: [
+          {
+            title: 'brand image',
+            items: ['历史图像', '案例资产', '品牌视觉经验'],
+          },
+          {
+            title: 'semantic read',
+            items: ['主体形成', '组织逻辑', '密度节奏', '边缘处理', '表面语言'],
+          },
+          {
+            title: 'reinforcement',
+            items: ['slot vector 同向', 'DNA 同向', 'variation 收束', 'brand-bounded control'],
+          },
+        ],
       },
     ],
   },
