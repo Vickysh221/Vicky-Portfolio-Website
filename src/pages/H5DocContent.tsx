@@ -27,6 +27,7 @@ import { getPhoenixFuliPlusSlide03Sections } from './H5DocContentPhoenixFuliPlus
 import { getPhoenixFuliPlusSlide04Sections } from './H5DocContentPhoenixFuliPlusSlide04';
 import { getPhoenixFuliPlusSlide05Sections } from './H5DocContentPhoenixFuliPlusSlide05';
 import { getPhoenixFuliPlusSlide06Sections } from './H5DocContentPhoenixFuliPlusSlide06';
+import { getPhoenixFuliPlusSlide07Sections } from './H5DocContentPhoenixFuliPlusSlide07';
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
 import { getPersonalCompanionsSlideSections } from './H5DocContentPersonalCompanions';
@@ -44,6 +45,10 @@ import {
   getAgenticDrivingPersonalizationSlide06Sections,
   getAgenticDrivingPersonalizationSlide07Sections,
 } from './H5DocContentAgenticDrivingPersonalization';
+import {
+  getDrivingAuthorityContractsMainSections,
+  getDrivingAuthorityContractsUxSubpageSections,
+} from './H5DocContentDrivingAuthorityContracts';
 import type { SectionData } from './H5DocContentSlideFactory';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 
@@ -102,6 +107,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/web-design-develop/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
   '/web-design-develop/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
   '/web-design-develop/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
+  '/web-design-develop/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
@@ -109,6 +115,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
   '/agentic-design-development/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
   '/agentic-design-development/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
+  '/agentic-design-development/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
@@ -124,6 +131,8 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/agentic-driving:4': getAgenticDrivingPersonalizationSlide05Sections,
   '/agentic-design-development/agentic-driving:5': getAgenticDrivingPersonalizationSlide06Sections,
   '/agentic-design-development/agentic-driving:6': getAgenticDrivingPersonalizationSlide07Sections,
+  '/agentic-design-development/driving-authority-contracts/main:0': getDrivingAuthorityContractsMainSections,
+  '/agentic-design-development/driving-authority-contracts/ux-case-example:0': getDrivingAuthorityContractsUxSubpageSections,
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {

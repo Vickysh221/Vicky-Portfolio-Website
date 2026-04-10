@@ -47,7 +47,8 @@ const projectData: ProjectCardData[] = [
       { route: '/agentic-design-development/language-diary', label: 'A Ritual of Expression - 语言学习陪伴多智能体系统', numeral: 'II' },
       { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'III' },
       { route: '/agentic-design-development/agentic-driving', label: '驾驶专家，还是个性化驾驶员？', numeral: 'IV' },
-      { route: '/web-design-develop', label: 'AI coding 网页设计和开发', numeral: 'V' },
+      { route: '/agentic-design-development/driving-authority-contracts', label: '当车开始像同伴一样观察人时', numeral: 'V' },
+      { route: '/web-design-develop', label: 'AI coding 网页设计和开发', numeral: 'VI' },
     ],
   },
   {
