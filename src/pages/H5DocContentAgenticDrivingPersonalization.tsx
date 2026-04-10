@@ -102,24 +102,128 @@ function SplitWorldVisual({ accentColor }: { accentColor: string }) {
 }
 
 function VendorMatrix({ accentColor }: { accentColor: string }) {
+  const headers = [
+    '厂商 / 平台',
+    'Agent 面向的核心对象',
+    '记忆 / 个性化（公开）',
+    '自动化等级语境（公开 / 可推断）',
+    '传感与融合侧重',
+    '执行 / 线控与跨域融合',
+    '延迟 / 实时性主张（公开）',
+    '合规 / 监管“就绪度”线索',
+  ];
+
   const rows = [
-    ['智己', '舱驾底盘一体的意图到动作链路', '记忆系统公开展开较少', '融合架构与执行'],
-    ['千里科技', '记忆与个性化成长', '长短期全场景记忆', '车端与移动端连续'],
-    ['特斯拉', '清晰责任边界内的 L2 执行', '个性化不是公开重点', 'FSD Supervised'],
-    ['Waymo', 'ODD 内可运营的 L4 Driver', '面向服务部署', '系统能否运营'],
-    ['Mobileye', '可解释安全驾驶系统', 'RSS 与冗余感知', '安全方法学'],
-    ['蔚来 / 小鹏 / 华为乾崑', '智驾、大模型、车控、座舱整合', '个性化驾驶员模型仍不系统', '体验与生态整合'],
-    ['博世 / 大陆', 'agent 的技术承载层', '车内感知与法规路线图', '平台与量产准备'],
+    [
+      '智己（IM Ultra Agent / IM Fusion Nova）',
+      '舱驾底盘一体：意图 → 动作',
+      '未公开细节；强调“专属司机助理”',
+      '以 L2 / L3 / L4 叙事表达“迈向具身智能”；具体 ODD / 责任边界未在该通告内展开',
+      '未公开传感配置',
+      '强调线控底盘 + 舱驾一体融合架构',
+      '未公开量化；强调底层打通减少系统延迟（表述性）',
+      '暂以发布信息为主，后续仍需看准入 / 试点文件',
+    ],
+    [
+      '千里科技（Agent OS / 千里智驾）',
+      '座舱 Agent OS + 智驾路线图',
+      '明确“长短期全场景记忆、车端-移动端打通、自我训练成长”',
+      '智驾 1.0 面向 L2+；公布 L3 / L4 路线图，但时间节点仍属于规划',
+      '“全融合地图”：导航 3D 车道级 + 智驾 SR 融合',
+      '宣称端云一体；未公开线控集成细节',
+      '座舱语音宣称“毫秒级端到端”',
+      '路线图与试点 / 准入仍待验证',
+    ],
+    [
+      '特斯拉（FSD Supervised）',
+      '辅助驾驶功能集 + 路线导航',
+      '个性化细节未公开',
+      '明确需驾驶员全程注意、随时接管；不使车辆自动驾驶，属于典型 L2 责任边界',
+      '车端感知细节不在该手册段落中展开',
+      '执行由车辆控制系统完成；是否跨域融合未在该来源展开',
+      '舱内摄像头监测注意力，主要是与安全相关的“协同”',
+      '以用户手册方式强调责任与限制，合规表达非常清晰',
+    ],
+    [
+      'Waymo（Waymo Driver）',
+      'L4 自动驾驶系统（商业运营 ODD 内）',
+      '个性化不是主要公开点',
+      '公开 rider-only 里程与人类基准对比；研究中以“无驾驶员在座”口径讨论 ADS',
+      '多传感融合；公开页面未逐项列传感器，但以 ADS 运营与评估为核心',
+      '运营与安全方法学强调系统级测试与场景验证',
+      '以事故率 / 索赔率等结果指标对外呈现，而非“毫秒”口径',
+      '以运营数据与同行评估框架回应“可部署性”',
+    ],
+    [
+      'Mobileye（SuperVision / Chauffeur / Drive）',
+      '传感冗余与安全模型方法学',
+      '个性化不是主要公开点',
+      '产品线覆盖从 ADAS 到更高阶自动驾驶，具体等级依产品不同而变化',
+      '“True Redundancy”：相机子系统 + 雷达 / 激光子系统双栈冗余',
+      '安全方法学（RSS）强调形式化规则与可解释安全模型',
+      '未公开系统级端到端延迟指标',
+      '强调“可供行业与政府形成共同安全定义”的模型取向',
+    ],
+    [
+      '蔚来（NOP+ / NOMI GPT / NWM）',
+      '智驾 + 座舱大模型并行',
+      'NOMI GPT 强调多模态感知 / 认知 / 情感引擎；智驾强调持续迭代',
+      'NOP+ 为辅助驾驶；并公开 NWM / NADArch 2.0，但等级不等同法规意义上的 L3',
+      '未公开完整传感配置',
+      '披露 steer-by-wire 获得量产许可，执行层能力增强',
+      '未公开毫秒级口径',
+      '在中国试点政策环境下持续推进，仍受准入 / ODD 约束',
+    ],
+    [
+      '小鹏（XNGP / 端到端大模型）',
+      '智驾大模型 + 全国覆盖体验',
+      '个性化维度未系统披露',
+      '以“辅助驾驶体验”叙事，公开端到端大模型组合',
+      '方案细节以视觉 / 模型为重点；该新闻页未列传感清单',
+      '未公开线控融合细节',
+      '强调高频 OTA 迭代节奏，即软件交付能力',
+      '仍处于辅助驾驶语境；法规 L3 仍需对应准入与限定 ODD',
+    ],
+    [
+      '华为乾崑（ADS / HarmonySpace）',
+      '智驾 + 车控 + 座舱生态',
+      '个性化细节依车型 / 生态而异',
+      '合作车型页面强调“辅助驾驶非自动驾驶、驾驶员完全责任人”',
+      '未在当前页面展开',
+      '未在当前页面展开',
+      '未公开毫秒级口径',
+      '在中国 L3 准入报道中出现“搭载 ADS”的试点车型线索',
+    ],
+    [
+      '博世（AI cockpit / interior sensing）',
+      '座舱 AI 助手 + 车内感知',
+      '强调理解习惯 / 偏好 / 语境；车内摄像头用于个性化与注视检测示例',
+      '更偏座舱语境，并非直接自动驾驶系统',
+      '车内 DMS / OMS + 雷达组合，覆盖分心 / 困倦 / 无响应、个性化等',
+      '未公开跨域运动控制；更强调快速升级现有座舱系统',
+      '以“快速升级 / 更快实现新功能”描述，而非精确延迟指标',
+      '明确把 UNECE R157 的 driver availability recognition（L3）纳入法规路线图',
+    ],
+    [
+      '大陆集团（跨域 HPC / 生成式语音）',
+      'cockpit + vehicle functions 的跨域承载',
+      '未把“记忆系统”作为主要公开卖点',
+      '更偏供应链平台型表达，等级取决于 OEM 如何使用',
+      '跨域 HPC 承载驾驶安全与泊车等功能',
+      '明确“holistic motion control”与跨域部署',
+      '以“简化开发与维护、加速交付”表达，而非精确实时性指标',
+      '与大厂云合作引入生成式语音交互，并给出量产准备时间目标',
+    ],
   ];
 
   return (
     <QuietPanel>
       <div style={{ ...blockLabelStyle(), color: accentColor }}>Representative Industry Split</div>
       <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 680 }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 1480 }}>
           <thead>
             <tr>
-              {['厂商 / 平台', 'Agent 面向的核心对象', '记忆 / 个性化（公开）', '执行 / 融合重点'].map((head) => (
+              {headers.map((head) => (
                 <th
                   key={head}
                   style={{
@@ -130,6 +234,8 @@ function VendorMatrix({ accentColor }: { accentColor: string }) {
                     textAlign: 'left',
                     padding: '8px 10px',
                     borderBottom: '1px solid rgba(200,169,110,0.16)',
+                    verticalAlign: 'top',
+                    whiteSpace: 'normal',
                   }}
                 >
                   {head}
@@ -150,6 +256,8 @@ function VendorMatrix({ accentColor }: { accentColor: string }) {
                       padding: '8px 10px',
                       borderBottom: '1px solid rgba(200,169,110,0.08)',
                       verticalAlign: 'top',
+                      whiteSpace: 'normal',
+                      minWidth: idx === 0 ? 180 : 220,
                     }}
                   >
                     {cell}
@@ -161,7 +269,7 @@ function VendorMatrix({ accentColor }: { accentColor: string }) {
         </table>
       </div>
       <p style={{ ...captionStyle(), marginTop: 10 }}>
-        这个比较不是为了做市场分析，而是说明：行业虽然都在谈 agent，但并没有统一 agent 在车里到底面向什么对象。
+        这个比较不是为了做市场分析，而是说明：行业虽然都在谈 agent，但并没有统一 agent 在车里到底面向什么对象。也正因为如此，这一章的问题才成立：分歧不只是能力差异，而是 agent definition 本身尚未收敛。
       </p>
     </QuietPanel>
   );
