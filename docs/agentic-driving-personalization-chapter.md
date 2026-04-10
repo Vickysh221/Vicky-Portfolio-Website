@@ -121,14 +121,45 @@ Takeaway:
 
 Goal:
 - show that real-world driving contains ambiguity, context, and user-dependent behavior
+- show that the industry is not even aiming agents at the same object
 
 Content focus:
 - complex roads
 - scene-dependent interpretation
 - braking / slowing / parking ambiguity
+- vendor comparison: who is optimizing for what
 
 Takeaway:
 - behavior interpretation is structurally different from command execution
+- “driving agent” is not one category yet; different vendors are building toward different agent objects
+
+#### Optional comparison block for Page 2
+
+Use this block as a visual support panel, not as the page's main body.
+The point is not to dump market research. The point is to show that the industry itself is split on what an in-car agent is actually for.
+
+**What the comparison should reveal**
+- some players are still centered on assisted-driving execution within clear driver-responsibility boundaries
+- some are pushing toward cockpit memory, habit understanding, and multi-device continuity
+- some are framing the system as L4 operational autonomy rather than personal collaboration
+- some are emphasizing safety method, redundancy, and regulatory legibility over personalization
+
+**Suggested interpretation line**
+> 厂商们虽然都在谈 agent，但它们面向的“核心对象”并不一样：有的在做驾驶执行，有的在做座舱记忆，有的在做运营级自动驾驶，有的在做形式化安全框架。也正因此，“agent”在车里的意义还没有被行业统一定义。
+
+**Condensed vendor reading for Page 2**
+- **智己（IM Ultra Agent / IM Fusion Nova）**：更像在讲舱驾底盘一体，把“意图 → 动作”作为整体链路，强调线控底盘与融合架构，但公开材料里对记忆系统、传感配置和合规边界展开不多。
+- **千里科技（Agent OS / 千里智驾）**：更明确地把 agent 指向记忆与个性化，公开强调长短期全场景记忆、车端—移动端打通、自我训练成长；但其 L3/L4 仍更多停留在路线图叙事上。
+- **特斯拉（FSD Supervised）**：重点不在个性化，而在功能边界与责任边界的清晰表达；它代表的是一个合规意义上非常明确的 L2 assisted-driving agent，而不是“替你驾驶”的个性化协作者。
+- **Waymo（Waymo Driver）**：核心对象不是车主个体，而是 ODD 内可运营的 L4 自动驾驶系统；它回答的是“系统能否部署”，不是“系统是否越来越懂你”。
+- **Mobileye**：强调冗余感知与 RSS 安全方法学，更接近“可解释安全驾驶系统”的构建，而非个体化驾驶行为学习。
+- **蔚来 / 小鹏 / 华为乾崑**：都在把智驾、大模型、车控或座舱能力放到同一个叙事里，但公开表达里对“个性化驾驶员模型”本身仍不够系统，更多还是辅助驾驶体验、架构演进或生态整合。
+- **博世 / 大陆**：从供应链与平台侧切入，更强调 cockpit AI、车内感知、跨域 HPC、法规路线图和量产准备，它们提供的是 agent 的技术承载层，而不直接回答“agent 是专家还是分身”。
+
+**What this comparison helps Page 2 conclude**
+- real-road complexity is only one half of the problem
+- the other half is that the industry has not converged on what kind of agent the car is becoming
+- therefore the chapter's question is valid: the unresolved issue is not just capability, but the definition of the agent itself
 
 ### Page 3 — What current systems do well, and where they stop
 
