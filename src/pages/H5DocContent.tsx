@@ -35,6 +35,14 @@ import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalL
 import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
 import { getPersonalLanguageDiarySlide04Sections } from './H5DocContentPersonalLanguageDiarySlide04';
 import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
+import {
+  getAgenticDrivingPersonalizationSlide01Sections,
+  getAgenticDrivingPersonalizationSlide02Sections,
+  getAgenticDrivingPersonalizationSlide03Sections,
+  getAgenticDrivingPersonalizationSlide04Sections,
+  getAgenticDrivingPersonalizationSlide05Sections,
+  getAgenticDrivingPersonalizationSlide06Sections,
+} from './H5DocContentAgenticDrivingPersonalization';
 import type { SectionData } from './H5DocContentSlideFactory';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 
@@ -108,6 +116,12 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,
   '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04Sections,
   '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05Sections,
+  '/agentic-design-development/agentic-driving:0': getAgenticDrivingPersonalizationSlide01Sections,
+  '/agentic-design-development/agentic-driving:1': getAgenticDrivingPersonalizationSlide02Sections,
+  '/agentic-design-development/agentic-driving:2': getAgenticDrivingPersonalizationSlide03Sections,
+  '/agentic-design-development/agentic-driving:3': getAgenticDrivingPersonalizationSlide04Sections,
+  '/agentic-design-development/agentic-driving:4': getAgenticDrivingPersonalizationSlide05Sections,
+  '/agentic-design-development/agentic-driving:5': getAgenticDrivingPersonalizationSlide06Sections,
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {

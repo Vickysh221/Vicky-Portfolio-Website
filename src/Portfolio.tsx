@@ -66,6 +66,7 @@ const projects: Project[] = [
       { route: "/agentic-design-development/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "I" },
       { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "II" },
       { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "III" },
+      { route: "/agentic-design-development/agentic-driving", label: "驾驶专家，还是个性化驾驶员？", numeral: "IV" },
     ],
   },
   {
