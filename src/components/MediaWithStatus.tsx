@@ -7,6 +7,11 @@ const wrapperStyle: CSSProperties = {
   width: '100%',
 };
 
+const videoWrapperStyle: CSSProperties = {
+  ...wrapperStyle,
+  height: '100%',
+};
+
 const statusOverlayStyle: CSSProperties = {
   position: 'absolute',
   inset: 0,
@@ -92,7 +97,13 @@ type VideoWithStatusProps = Omit<VideoHTMLAttributes<HTMLVideoElement>, 'childre
   activePlayback?: boolean;
 };
 
-export function VideoWithStatus({ onLoadedData, onError, sources, activePlayback = true, ...props }: VideoWithStatusProps) {
+export function VideoWithStatus({
+  onLoadedData,
+  onError,
+  sources,
+  activePlayback = true,
+  ...props
+}: VideoWithStatusProps) {
   const [status, setStatus] = useState<Status>('loading');
   const [playbackRate, setPlaybackRate] = useState(1);
   const hasSources = Array.isArray(sources) && sources.length > 0;
@@ -128,7 +139,7 @@ export function VideoWithStatus({ onLoadedData, onError, sources, activePlayback
   }
 
   return (
-    <div style={wrapperStyle}>
+    <div style={videoWrapperStyle}>
       <div style={playbackRailStyle}>
         {playbackRates.map((rate) => (
           <button key={rate} type="button" style={playbackButtonStyle(playbackRate === rate)} onClick={() => applyPlaybackRate(rate)}>

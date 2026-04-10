@@ -112,7 +112,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
-  if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 6) return true;
+  if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 8) return true;
   return `${route}:${slideIndex}` in sectionMap;
 }
 
