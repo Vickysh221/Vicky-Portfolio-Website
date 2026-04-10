@@ -8,7 +8,7 @@ import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 6;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 9;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -33,6 +33,9 @@ type VisualBlock =
   | { type: 'closingPoints'; title?: string; items: string[] }
   | { type: 'appendixDiagram'; title?: string; groups: { title: string; items: string[] }[] }
   | { type: 'assetMap'; title?: string; columns: { title: string; items: string[] }[] }
+  | { type: 'semanticCompilationChain' }
+  | { type: 'directionWeightMatrix' }
+  | { type: 'rugLanguagePromptBridge' }
   | { type: 'appendixC' };
 
 interface CaseStudyPage {
@@ -156,6 +159,134 @@ const pages: CaseStudyPage[] = [
     visualBlocks: [
       {
         type: 'case05SelectionConvergence',
+      },
+    ],
+  },
+  {
+    pageId: 'semantic-compilation-chain',
+    pageTitle: '模糊语义不是 prompt：它先被编译成三条可比较的方向',
+    pageGoal: '解释第一轮为什么是方向假设，而不是三张随机图。',
+    mainCopy:
+      '用户给出的通常不是一份完整 brief，而是一组混合着情绪、场景、审美倾向和局部限制的模糊语义。系统的第一步不是把这些话直接翻成一句 prompt，而是先判断哪些信号已经足够明确，哪些仍然含混，然后围绕同一个输入展开三条可以比较的设计方向。',
+    contentBlocks: [
+      {
+        type: 'comparisonCards',
+        title: '第一轮真正要解决的不是“生成”，而是“展开方向空间”',
+        items: [
+          {
+            title: 'semantic intake',
+            body: '先把“温暖、自然、别太甜、适合客厅”这种混合输入拆成 impression、arrangement、motif、color restraint、material expectation 等不同层的信号。',
+          },
+          {
+            title: 'ambiguity detection',
+            body: '判断哪些维度已经相对明确，哪些维度仍然冲突或空白；第一轮的价值就在于替用户把这些未定部分展开。',
+          },
+          {
+            title: 'three-lane hypothesis',
+            body: '系统产出的不是三个 prompt 版本，而是三条共享同一输入来源、但强调点不同的设计假设。',
+          },
+        ],
+      },
+      {
+        type: 'bulletCluster',
+        title: '为什么必须是“方向”而不是“答案”',
+        items: [
+          '因为用户最擅长的是比较，而不是一开始就给出完整 specification。',
+          '因为模糊语义里经常同时混着 mood、结构倾向和材料期待，不能一次性压成单一路径。',
+          '因为第一轮要建立的是可继续 refinement 的判断基础，而不是一次命中。',
+        ],
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'pipeline',
+        stages: ['user vague input', 'semantic intake', 'certainty / ambiguity split', 'three direction hypotheses', 'direction-specific slot weighting', 'rug-language translation', 'prompt assembly', '3 first-round variants'],
+      },
+    ],
+  },
+  {
+    pageId: 'direction-weighting-and-rug-language',
+    pageTitle: '从语义方向到地毯语言：每条方向都通过不同的槽位重心成立',
+    pageGoal: '把三方向的差异解释成可控的设计维度，而不是同义改写。',
+    mainCopy:
+      '同一句输入下，三个方向不会平均地改所有变量。系统会给每条方向分配不同的主导维度：有的让 arrangement 先成立，有的把 material feel 拉到前台，有的把 color restraint 和 motif abstraction 作为主轴。这样，差异才不是“看起来有点不同”，而是“成立方式不同”。',
+    contentBlocks: [
+      {
+        type: 'comparisonCards',
+        title: '同一输入下的三种方向重心',
+        items: [
+          {
+            title: 'Direction A｜organic flow',
+            body: '重点放在 arrangement、movement path 与 breathing pocket。它更像让图案先通过流动路径成立，再决定 motif 如何附着进去。',
+          },
+          {
+            title: 'Direction B｜calm structure',
+            body: '重点放在 arrangement、style restraint 与 motif abstraction。它压低叙事性，让结构秩序和整体克制感更先被读到。',
+          },
+          {
+            title: 'Direction C｜tactile richness',
+            body: '重点放在 material feel、surface depth 与 local cluster texture。它不是单纯“更丰富”，而是把 rug 的表面关系推到前台。',
+          },
+        ],
+      },
+      {
+        type: 'bulletCluster',
+        title: '这里的“地毯语言”到底指什么',
+        items: [
+          '不是普通视觉风格词，而是可以进入 rug 判断的表面、结构与工艺特征。',
+          '例如 pile height contrast、tuft density rhythm、edge softness、carved relief、cluster spread、surface sheen bias。',
+          '语义词必须先被翻译成这些 rug-specific features，系统才有办法稳定地控制生成。',
+        ],
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'beforeAfter',
+        title: '从模糊语义到 rug-specific design language',
+        before: ['温暖自然', '有流动感', '不要太甜', '适合客厅'],
+        after: ['restrained warm-earth palette', 'branching organic path', 'open breathing areas', 'soft contour transitions', 'mixed-pile hand-tufted relief'],
+      },
+    ],
+  },
+  {
+    pageId: 'prompt-as-serialization-layer',
+    pageTitle: 'Prompt 只是最后一层：它在这里是 design state 的外部序列化结果',
+    pageGoal: '说明 prompt 不是创意起点，而是编译后的对模型指令。',
+    mainCopy:
+      '这个系统最终当然会落到生成指令，但 prompt 在这里并不承担“替代判断”的角色。它接收的是一条已经被组织好的方向假设：包括方向重心、槽位权重、rug-specific features 和负向约束。换句话说，prompt 只是 design state 面向图像模型时的一种外部表达。',
+    contentBlocks: [
+      {
+        type: 'comparisonCards',
+        title: '三层链路',
+        items: [
+          {
+            title: 'Layer 1｜semantic hypothesis',
+            body: '系统先确认这一轮的核心方向：例如更偏 organic flow、calm structure 或 tactile richness。',
+          },
+          {
+            title: 'Layer 2｜rug design language',
+            body: '再把方向翻译成 composition logic、motif behavior、color constraints、material cues、pile / relief relations。',
+          },
+          {
+            title: 'Layer 3｜generation instruction',
+            body: '最后才把这些状态组织成模型能执行的 prompt / control instruction，并加入 exclusion 与 variation boundary。',
+          },
+        ],
+      },
+      {
+        type: 'miniCaptions',
+        title: '这一步最重要的边界',
+        items: [
+          '它不是把中文翻译成英文。',
+          '它不是把一句 vague input 改写成更长的 prompt。',
+          '它是在把 design state 序列化成模型可以执行的结构化指令。',
+        ],
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'pipeline',
+        stages: ['semantic hypothesis', 'slot emphasis', 'rug-language features', 'negative constraints', 'prompt assembly', 'generated variant'],
       },
     ],
   },
