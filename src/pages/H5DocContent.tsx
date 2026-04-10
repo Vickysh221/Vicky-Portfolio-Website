@@ -42,6 +42,7 @@ import {
   getAgenticDrivingPersonalizationSlide04Sections,
   getAgenticDrivingPersonalizationSlide05Sections,
   getAgenticDrivingPersonalizationSlide06Sections,
+  getAgenticDrivingPersonalizationSlide07Sections,
 } from './H5DocContentAgenticDrivingPersonalization';
 import type { SectionData } from './H5DocContentSlideFactory';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
@@ -122,6 +123,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/agentic-design-development/agentic-driving:3': getAgenticDrivingPersonalizationSlide04Sections,
   '/agentic-design-development/agentic-driving:4': getAgenticDrivingPersonalizationSlide05Sections,
   '/agentic-design-development/agentic-driving:5': getAgenticDrivingPersonalizationSlide06Sections,
+  '/agentic-design-development/agentic-driving:6': getAgenticDrivingPersonalizationSlide07Sections,
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {

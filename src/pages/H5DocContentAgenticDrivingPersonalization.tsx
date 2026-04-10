@@ -374,8 +374,58 @@ export function getAgenticDrivingPersonalizationSlide04Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide05Sections(accentColor: string): SectionData[] {
   return [
     {
-      id: 'agentic-driving-literature',
+      id: 'agentic-driving-ux-case-example',
       numeral: '05',
+      title: '交互与 UX 模式：在歧义里做判断，并把判断过程变成可被人信任的协作',
+      blocks: [
+        <>
+          <P>
+            车载 Agent 的 UX，不是“更会对话”这么简单，而是更难的东西：在歧义里做判断，并且把判断过程变成可被人信任的协作。
+          </P>
+          <h2 style={h2Style(accentColor)}>习惯学习：从“用户调参数”到“系统学风格”</h2>
+          <P>
+            个性化研究里最有启发的一点是：驾驶偏好并不只存在于“设置页”，它更存在于接管、纠正、反复微调里。以个性化 ACC 为例，已有工作用逆强化学习在云端学到跟车间距偏好，并在在线阶段利用接管轨迹与反馈增量更新；结果是在仿真 HITL 实验中显著降低干预频次。
+          </P>
+          <P>
+            如果把这个思路迁移到“限速偏好”“提前变道还是临时变道”，产品上就需要两种信号：一类是显式信号，例如用户选择了“稳健 / 激进”“最高限速偏好”；另一类是隐式信号，例如用户在什么路况下总会手动加速、减速、改道，以及接管的时机与原因。这恰好对应“事件记忆 → 偏好抽象 → 策略参数化”的三层记忆路径。
+          </P>
+          <h2 style={h2Style(accentColor)}>歧义消解：别急着弹窗，先把“证据”凑齐</h2>
+          <P>
+            以地库刹车这个例子来说，一个更“Agentic”的做法不是立刻弹泊车组件，而是进入一个短时证据融合窗口，时长可能是几百毫秒到几秒，取决于速度与风险。系统需要同时看车外是否靠近车位 / 墙体、是否进入车位区域、是否有泊车线或空位；看导航是否到达目的地、是否进入停车场 POI；也看车内驾驶员头部 / 注视是否在找车位。
+          </P>
+          <P>
+            这里“注视 / 车内感知”不是为了炫技，而是为了减少打扰。像博世的材料里就把 gaze detection 用于识别驾驶员正在看的目标，并把面部识别用于座椅偏好自动调整；同一套传感也用于分心 / 困倦检测。
+          </P>
+          <h2 style={h2Style(accentColor)}>升级与接管：把“驾驶员在线”做成系统能力，而不是一句免责声明</h2>
+          <P>
+            L2 系统能否被托付，往往取决于两点：一是驾驶员参与度监测（DMS / Hands-on 等）的可信度；二是系统在边界场景里能否更早、更清晰、更一致地提示。特斯拉手册明确写到系统会发出逐级升级的警告并监测注意力，这是一种把“人机共驾责任”产品化的方式。
+          </P>
+          <P>
+            从供应链视角看，DMS / OMS 被放进法规路线图讨论也说明：在更高阶辅助驾驶 / 自动驾驶到来前，“人是否可接管、可否安全接管”会越来越像硬指标。
+          </P>
+          <h2 style={h2Style(accentColor)}>可解释性：解释不是“理由”，而是“可预测性”</h2>
+          <P>
+            解释在驾驶场景里最重要的用途不是说服用户，而是让用户能预测系统下一步，从而降低紧张与误解。学术上 DriveGPT4 等工作强调用大模型做可解释端到端驾驶的可能性；工程上更现实的做法是：把解释聚焦在可操作的约束上——“我为什么不变道（盲区车速差）”“我为什么减速（雨天附着 / 前车急刹风险）”，同时给用户提供“可控的偏好旋钮”。
+          </P>
+          <h2 style={h2Style(accentColor)}>隐私控制：车内 Agent 必须允许“记忆开关”与“分层授权”</h2>
+          <P>
+            车载个性化天然触及敏感数据：舱内摄像头、日程、常跑路线、家庭成员偏好。中国的个人信息保护法与汽车数据安全规定（试行）提供了基本合规框架：合法、正当、必要；敏感信息更严格；汽车数据处理也有额外安全要求。
+          </P>
+          <P>
+            因此一个更成熟的产品形态应包含：记忆可视化（我记住了什么）+ 可删除 / 可导出 + 可分层授权（仅车端 / 可上云 / 可跨设备）+ 默认最小化。这既是合规，也是信任基础。
+          </P>
+          <Takeaway accentColor={accentColor}>这不是一页“交互技巧”总结，而是一个 case example：当 agent 真正面向驾驶行为理解时，UX 会被迫从命令响应转向证据融合、习惯学习、接管机制、可预测性与记忆治理。</Takeaway>
+        </>,
+      ],
+    },
+  ];
+}
+
+export function getAgenticDrivingPersonalizationSlide06Sections(accentColor: string): SectionData[] {
+  return [
+    {
+      id: 'agentic-driving-literature',
+      numeral: '06',
       title: '文献给出的提醒：个性化驾驶真正难的，是行为数据如何被获取和组织',
       blocks: [
         <>
@@ -406,11 +456,11 @@ export function getAgenticDrivingPersonalizationSlide05Sections(accentColor: str
   ];
 }
 
-export function getAgenticDrivingPersonalizationSlide06Sections(accentColor: string): SectionData[] {
+export function getAgenticDrivingPersonalizationSlide07Sections(accentColor: string): SectionData[] {
   return [
     {
       id: 'agentic-driving-judgment',
-      numeral: '06',
+      numeral: '07',
       title: '我的判断：agent 不是车主分身，也不是纯粹驾驶专家',
       blocks: [
         <>
