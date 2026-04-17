@@ -454,6 +454,7 @@ export class SceneManager {
 
     // Bring active card to center, slightly in front of others
     gsap.to(data.css3dObj.position, { x: 0, y: 0, z: 40, duration: 0.75, ease: 'power3.inOut' });
+    gsap.to(data.css3dObj.rotation, { x: 0, y: 0, z: 0, duration: 0.75, ease: 'power3.inOut' });
     gsap.to(data.css3dObj.scale, { x: 1, y: 1, z: 1, duration: 0.75, ease: 'power3.inOut' });
 
     // Enable pointer events on inner div so detail panel is interactive
