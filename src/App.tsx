@@ -15,6 +15,7 @@ export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
   const css3dRef = useRef<HTMLDivElement>(null);
   const orbitCardInners = useRef<HTMLDivElement[]>([]);
+  const activeCardRef = useRef<number | null>(null);
   const [initialized, setInitialized] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
@@ -27,6 +28,10 @@ export default function App() {
   useRouteTransition();
 
   useEffect(() => {
+    activeCardRef.current = activeCard;
+  }, [activeCard]);
+
+  useEffect(() => {
     if (!webglRef.current || !css3dRef.current) return;
 
     const sm = SceneManager.instance;
@@ -34,6 +39,16 @@ export default function App() {
 
     const inners = sm.createOrbitCards(PROJECT_ROUTES.length);
     orbitCardInners.current = inners;
+    inners.forEach((inner, i) => {
+      const outer = inner.parentElement as HTMLDivElement | null;
+      if (!outer) return;
+      outer.style.pointerEvents = 'auto';
+      outer.style.cursor = 'pointer';
+      outer.onclick = () => {
+        if (activeCardRef.current !== null) return;
+        handleProjectClick(i);
+      };
+    });
 
     setInitialized(true);
 
@@ -75,6 +90,7 @@ export default function App() {
         activeCard={activeCard}
         onProjectClick={handleProjectClick}
         onCloseCard={handleCloseCard}
+        showProjectDirectory={false}
       />
 
       {/* Sub-page DOM overlay — shown for all non-home routes (chapter pages) */}
@@ -188,7 +204,12 @@ export default function App() {
           const el = orbitCardInners.current[i];
           if (!el) return null;
           return createPortal(
-            <ProjectCard index={i} isActive={activeCard === i} onClose={handleCloseCard} />,
+            <ProjectCard
+              index={i}
+              isActive={activeCard === i}
+              onClose={handleCloseCard}
+              onOpen={() => handleProjectClick(i)}
+            />,
             el,
             `orbit-${i}`,
           );

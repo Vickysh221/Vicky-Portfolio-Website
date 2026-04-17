@@ -329,9 +329,10 @@ interface PortfolioProps {
   activeCard: number | null;
   onProjectClick: (i: number) => void;
   onCloseCard: () => void;
+  showProjectDirectory?: boolean;
 }
 
-export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps) {
+export default function Portfolio({ activeCard, onProjectClick, showProjectDirectory = true }: PortfolioProps) {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -581,7 +582,7 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
       </div>
 
       {/* ── CENTER: Project Directory ── */}
-      <div
+      {showProjectDirectory && <div
         className="absolute z-20"
         style={{
           top: "50%",
@@ -690,7 +691,7 @@ export default function Portfolio({ activeCard, onProjectClick }: PortfolioProps
             />
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* ── Experience Detail Panel ── */}
       {activeExp !== null && isHome && (

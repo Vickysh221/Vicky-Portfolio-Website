@@ -148,14 +148,11 @@ export const PAGE_META: Record<string, PageMeta> = {
     subtitle: "Web Design Develop",
     year: "2025",
     desc: "Architected a generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback mechanisms, multi-tenant asset isolation.",
-    parent: "/agentic-design-development",
+    parent: null,
     color: "#7a9e8e",
     subPages: [
-      { route: "/web-design-develop/overview", label: "项目概览", numeral: "I" },
       { route: "/web-design-develop/component-framework", label: "组件框架", numeral: "II" },
       { route: "/web-design-develop/key-pages", label: "关键页面", numeral: "III" },
-      { route: "/web-design-develop/semantic-system", label: "Method Appendix", numeral: "IV" },
-      { route: "/web-design-develop/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "V" },
     ],
   },
   "/web-design-develop/overview": {
@@ -195,8 +192,8 @@ export const PAGE_META: Record<string, PageMeta> = {
     subtitle: "Agentic Design & Development · AI Agent",
     year: "2025",
     desc: "把用户模糊语言、参考图和反馈转译成可比较、可迭代 rug 设计方向的 AI 语义编译与 refinement 系统。",
-    parent: "/agentic-design-development",
-    color: "#8b7db5",
+    parent: "/web-design-develop",
+    color: "#7a9e8e",
   },
 
   "/agentic-design-development": {
@@ -207,11 +204,11 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "I" },
-      { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "II" },
-      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "III" },
+      { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "I" },
+      { route: "/agentic-design-development/fuli-plus", label: "面向地毯生成的AI协作设计系统", numeral: "II" },
+      { route: "/agentic-design-development/driving-authority-contracts", label: "当车开始像同伴一样观察人时", numeral: "III" },
       { route: "/agentic-design-development/agentic-driving", label: "驾驶专家，还是个性化驾驶员？", numeral: "IV" },
-      { route: "/agentic-design-development/driving-authority-contracts", label: "当车开始像同伴一样观察人时", numeral: "V" },
+      { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "V" },
       { route: "/web-design-develop", label: "AI coding 网页设计和开发", numeral: "VI" },
     ],
   },

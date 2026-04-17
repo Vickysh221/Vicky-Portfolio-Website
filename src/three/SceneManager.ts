@@ -3,13 +3,12 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import gsap from 'gsap';
 import { ROUTE_DEPTH } from '../constants/routeDepth';
 
-// Orbit layout constants
-const ORBIT_X_RADIUS = 400;
-const ORBIT_Y_RADIUS = 70;
-const ORBIT_Z_RADIUS = 100; // 增大 z 轴半径，让面板离屏幕更远
-const ORBIT_PHASE = Math.PI / 6; // 30° offset so panels start left/right spread
-const ORBIT_SCALE = 0.15; // 减小缩放，让面板更小
-const ORBIT_SPEED = 0.10;
+const ORBIT_SCALE = 0.15;
+const HOME_CARD_LAYOUT = [
+  { position: new THREE.Vector3(0, -10, 140), rotationY: 0 },
+  { position: new THREE.Vector3(560, -8, 30), rotationY: -0.06 },
+  { position: new THREE.Vector3(-560, -8, 30), rotationY: 0.06 },
+] as const;
 
 interface OrbitCardData {
   css3dObj: CSS3DObject;
@@ -31,7 +30,6 @@ export class SceneManager {
   private _orbitCards: OrbitCardData[] = [];
   private _activeCardIndex: number | null = null;
   private _frameId = 0;
-  private _t = 0;
   private _currentRoute = '/';
   private _wheelDebounce: ReturnType<typeof setTimeout> | null = null;
 
@@ -108,14 +106,11 @@ export class SceneManager {
     }
   }
 
-  /** Initial world position for orbit card i out of count total. */
   private _getOrbitPosition(i: number, count: number): THREE.Vector3 {
-    const angle = (i / count) * Math.PI * 2 + ORBIT_PHASE;
-    return new THREE.Vector3(
-      Math.cos(angle) * ORBIT_X_RADIUS,
-      Math.sin(angle) * ORBIT_Y_RADIUS,
-      Math.sin(angle * 0.5) * ORBIT_Z_RADIUS,
-    );
+    if (count === HOME_CARD_LAYOUT.length) {
+      return HOME_CARD_LAYOUT[i].position.clone();
+    }
+    return new THREE.Vector3((i - (count - 1) / 2) * 520, 0, 40);
   }
 
   private _createCards(count: number) {
@@ -123,9 +118,8 @@ export class SceneManager {
       const group = new THREE.Group();
       const pos = this._getOrbitPosition(i, count);
       group.position.copy(pos);
-      // Store baseAngle including phase offset so animation stays in sync
+      group.rotation.y = count === HOME_CARD_LAYOUT.length ? HOME_CARD_LAYOUT[i].rotationY : 0;
       group.userData = {
-        baseAngle: (i / count) * Math.PI * 2 + ORBIT_PHASE,
         index: i,
         isActive: false,
       };
@@ -177,6 +171,7 @@ export class SceneManager {
       const pos = this._getOrbitPosition(i, count);
       obj.position.copy(pos);
       obj.scale.set(ORBIT_SCALE, ORBIT_SCALE, ORBIT_SCALE);
+      obj.rotation.y = count === HOME_CARD_LAYOUT.length ? HOME_CARD_LAYOUT[i].rotationY : 0;
       this.scene.add(obj);
 
       // Force synchronous render so divs are in DOM before React portals target them
@@ -266,7 +261,6 @@ export class SceneManager {
 
   private _animateLoop = () => {
     this._frameId = requestAnimationFrame(this._animateLoop);
-    this._t += 0.0015;
 
     // Mouse parallax: gently shift camera X/Y — disabled when card is docked or off home
     const applyParallax = this._activeCardIndex === null && this._currentRoute === '/';
@@ -274,19 +268,6 @@ export class SceneManager {
     const targetCamY = applyParallax ? this._mouseNormY * 40 : 0;
     this.camera.position.x += (targetCamX - this.camera.position.x) * 0.04;
     this.camera.position.y += (targetCamY - this.camera.position.y) * 0.04;
-
-    this._cards.forEach((card, i) => {
-      const baseAngle = (card.userData.baseAngle as number) + this._t * ORBIT_SPEED;
-      const targetX = Math.cos(baseAngle) * ORBIT_X_RADIUS;
-      const targetY = Math.sin(baseAngle) * ORBIT_Y_RADIUS;
-      const targetZ = Math.sin(baseAngle * 0.5) * ORBIT_Z_RADIUS + 100; // 增加 z 轴偏移，让面板离屏幕更远
-
-      card.position.x += (targetX - card.position.x) * 0.025;
-      card.position.y += (targetY + Math.sin(this._t * 2 + i) * 5 - card.position.y) * 0.04;
-      card.position.z += (targetZ - card.position.z) * 0.025;
-
-      card.rotation.y = Math.sin(this._t * 0.4 + i) * 0.06;
-    });
 
     // Sync CSS3D orbit cards with WebGL card positions each frame
     this._orbitCards.forEach((data, i) => {
