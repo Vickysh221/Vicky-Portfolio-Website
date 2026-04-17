@@ -67,6 +67,7 @@ export interface PageMeta {
   parent: string | null;
   color: string;
   subPages?: { route: string; label: string; numeral: string; disabled?: boolean }[];
+  inlineChildRoute?: string;
 }
 
 export const PAGE_META: Record<string, PageMeta> = {
@@ -280,6 +281,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     desc: "Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.",
     parent: null,
     color: "#6f8f92",
+    inlineChildRoute: "/academic-gamification/companions",
     subPages: [
       { route: "/academic-gamification/companions", label: "进入伙伴们的音乐世界吧", numeral: "I" },
     ],

@@ -67,6 +67,13 @@ export default function App() {
     SceneManager.instance.undockCard();
   };
 
+  const handleBackToHomeFromCard = () => {
+    setActiveCard(null);
+    const sceneManager = SceneManager.instance;
+    sceneManager.undockCard();
+    sceneManager.setHomeSceneState('home-idle');
+  };
+
   return (
     <div
       style={{
@@ -192,7 +199,7 @@ export default function App() {
           <PageTemplate
             route={PROJECT_ROUTES[activeCard]}
             isMobile
-            onBackOverride={handleCloseCard}
+            onBackOverride={handleBackToHomeFromCard}
             onNavigateAway={handleCloseCard}
           />
         </div>
@@ -207,7 +214,7 @@ export default function App() {
             <ProjectCard
               index={i}
               isActive={activeCard === i}
-              onClose={handleCloseCard}
+              onClose={handleBackToHomeFromCard}
               onOpen={() => handleProjectClick(i)}
             />,
             el,

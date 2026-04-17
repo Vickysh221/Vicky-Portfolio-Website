@@ -39,15 +39,14 @@ export const PROJECTS: ProjectEntry[] = [
   {
     id: '03',
     title: 'Have a cup of tea with AI',
-    subtitle: 'Web Design Develop',
-    year: '2025',
-    tags: ['AI Pipeline', 'SaaS', 'Three.js', 'Vue3', 'Agent UX'],
-    desc: 'Generative 3D interior design pipeline — upload, analyze, edit, render. Async task polling, rollback, multi-tenant asset isolation, and Fuli+ carpet agent.',
-    color: '#7a9e8e',
-    route: '/web-design-develop',
+    subtitle: '进入伙伴们的音乐世界吧',
+    year: '2024',
+    tags: ['Game Systems', 'Simulation', 'Spatial Design', 'Prototype'],
+    desc: 'Academic and exploratory works focused on game systems, simulated worlds, and spatial interaction prototypes developed through a gamification lens.',
+    color: '#6f8f92',
+    route: '/academic-gamification',
     subPages: [
-      { route: '/web-design-develop/component-framework', label: '组件框架', numeral: 'II' },
-      { route: '/web-design-develop/key-pages', label: '关键页面', numeral: 'III' },
+      { route: '/academic-gamification/companions', label: '进入伙伴们的音乐世界吧', numeral: 'I' },
     ],
   },
   {

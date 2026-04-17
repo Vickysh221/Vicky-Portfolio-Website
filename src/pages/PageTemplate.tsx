@@ -300,8 +300,9 @@ function PanelContent({
 
   const isLevel1 = meta.parent === null;
   const hasChildChapters = !!meta.subPages && meta.subPages.length > 0;
+  const hasInlineChildContent = !!meta.inlineChildRoute;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
-  const isReadingMode = isExpanded && !isMobile;
+  const isReadingMode = (isExpanded || hasInlineChildContent) && !isMobile;
   const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
 
   useEffect(() => {
@@ -452,7 +453,14 @@ function PanelContent({
         className="panel-scroll portfolio-scroll"
       >
         {shouldScrollTitleBlock && titleBlock}
-        {hasChildChapters ? (
+        {hasInlineChildContent ? (
+          <H5DocContent
+            route={meta.inlineChildRoute!}
+            accentColor={accentColor}
+            isMobile={isMobile}
+            enableNarrativeMotion={isReadingMode}
+          />
+        ) : hasChildChapters ? (
           <>
             <div
               style={{

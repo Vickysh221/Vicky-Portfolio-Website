@@ -2,19 +2,19 @@ import * as THREE from 'three';
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import gsap from 'gsap';
 import { ROUTE_DEPTH } from '../constants/routeDepth';
-
-const ORBIT_SCALE = 0.15;
-const HOME_CARD_LAYOUT = [
-  { position: new THREE.Vector3(0, -10, 140), rotationY: 0 },
-  { position: new THREE.Vector3(560, -8, 30), rotationY: -0.06 },
-  { position: new THREE.Vector3(-560, -8, 30), rotationY: 0.06 },
-] as const;
+import { getHomeScenePreset, type HomeScenePreset, type HomeSceneStateKey } from './homePanelLayout';
 
 interface OrbitCardData {
   css3dObj: CSS3DObject;
   inner: HTMLDivElement;
   isOrbiting: boolean;
 }
+
+const DOCKED_HOME_SCENE_STATES = [
+  'home-docked-0',
+  'home-docked-1',
+  'home-docked-2',
+] as const satisfies readonly HomeSceneStateKey[];
 
 export class SceneManager {
   private static _instance: SceneManager | null = null;
@@ -32,6 +32,13 @@ export class SceneManager {
   private _frameId = 0;
   private _currentRoute = '/';
   private _wheelDebounce: ReturnType<typeof setTimeout> | null = null;
+  private _homeSceneState: HomeSceneStateKey = 'home-idle';
+  private _homeCameraBasePosition = new THREE.Vector3();
+  private _homeCameraBaseRotation = new THREE.Euler();
+  private _interactionOffset = new THREE.Vector3();
+  private _interactionRotationOffset = new THREE.Euler(0, 0, 0);
+  private _idleRestoreTimer: ReturnType<typeof setTimeout> | null = null;
+  private _lastInteractionAt = 0;
 
   // Mouse parallax state
   private _mouseNormX = 0;
@@ -47,6 +54,81 @@ export class SceneManager {
   get focalLength(): number {
     const fovRad = (this.camera.fov * Math.PI) / 180;
     return (window.innerHeight * 0.5) / Math.tan(fovRad / 2);
+  }
+
+  get currentHomeSceneState(): HomeSceneStateKey {
+    return this._homeSceneState;
+  }
+
+  private _getHomeOrbitLayoutPreset(count: number): HomeScenePreset | null {
+    const homePreset = getHomeScenePreset(this._homeSceneState);
+    return homePreset.panels.length === count ? homePreset : null;
+  }
+
+  private _getHomeCameraBaseZ(homePreset: HomeScenePreset): number {
+    return homePreset.camera.position.z;
+  }
+
+  private _getHomeCameraTargetZ(depth: number, homePreset: HomeScenePreset): number {
+    return depth + this.focalLength + this._getHomeCameraBaseZ(homePreset);
+  }
+
+  private _getCurrentRouteDepth(): number {
+    return ROUTE_DEPTH[this._currentRoute] ?? 0;
+  }
+
+  private _getDockedHomeSceneState(index: number): HomeSceneStateKey | null {
+    if (!Number.isInteger(index) || index < 0 || index >= DOCKED_HOME_SCENE_STATES.length) {
+      return null;
+    }
+    return DOCKED_HOME_SCENE_STATES[index];
+  }
+
+  private _canApplyHomeInteraction(): boolean {
+    return this._currentRoute === '/' && this._activeCardIndex === null;
+  }
+
+  private _clearInteractionIdleRestoreTimer() {
+    if (this._idleRestoreTimer) {
+      clearTimeout(this._idleRestoreTimer);
+      this._idleRestoreTimer = null;
+    }
+  }
+
+  private _resetInteractionOffset(immediate = true) {
+    this._clearInteractionIdleRestoreTimer();
+    this._lastInteractionAt = 0;
+    gsap.killTweensOf(this._interactionOffset);
+    gsap.killTweensOf(this._interactionRotationOffset);
+    if (immediate) {
+      this._interactionOffset.set(0, 0, 0);
+      this._interactionRotationOffset.set(0, 0, 0);
+      return;
+    }
+    gsap.to(this._interactionOffset, {
+      x: 0,
+      y: 0,
+      z: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+    });
+    gsap.to(this._interactionRotationOffset, {
+      x: 0,
+      y: 0,
+      z: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+    });
+  }
+
+  private _scheduleInteractionIdleRestore() {
+    const interactionAt = Date.now();
+    this._lastInteractionAt = interactionAt;
+    this._clearInteractionIdleRestoreTimer();
+    this._idleRestoreTimer = setTimeout(() => {
+      if (this._lastInteractionAt !== interactionAt) return;
+      this._resetInteractionOffset(false);
+    }, 3000);
   }
 
   init(
@@ -65,7 +147,12 @@ export class SceneManager {
       1,
       100000,
     );
-    this.camera.position.z = this.focalLength;
+    const homePreset = getHomeScenePreset(this._homeSceneState);
+    this._homeCameraBasePosition.copy(homePreset.camera.position);
+    this._homeCameraBaseRotation.copy(homePreset.camera.rotation);
+    this.camera.position.copy(homePreset.camera.position);
+    this.camera.position.z += this.focalLength;
+    this.camera.rotation.copy(homePreset.camera.rotation);
 
     // WebGL renderer
     this.webglRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -89,7 +176,7 @@ export class SceneManager {
     dir.position.set(300, 500, 500);
     this.scene.add(dir);
 
-    this._createCards(projectColors.length);
+    this._createCards(projectColors.length, this._getHomeOrbitLayoutPreset(projectColors.length));
     this._createParticles();
 
     window.addEventListener('resize', this._handleResize);
@@ -106,19 +193,28 @@ export class SceneManager {
     }
   }
 
-  private _getOrbitPosition(i: number, count: number): THREE.Vector3 {
-    if (count === HOME_CARD_LAYOUT.length) {
-      return HOME_CARD_LAYOUT[i].position.clone();
+  private _getOrbitPosition(i: number, count: number, homePreset: HomeScenePreset | null): THREE.Vector3 {
+    const panel = homePreset?.panels[i];
+    if (panel) {
+      return panel.position.clone();
     }
     return new THREE.Vector3((i - (count - 1) / 2) * 520, 0, 40);
   }
 
-  private _createCards(count: number) {
+  private _getCardScale(i: number, homePreset: HomeScenePreset | null): number {
+    const panel = homePreset?.panels[i];
+    if (panel) {
+      return panel.scale;
+    }
+    return 0.15;
+  }
+
+  private _createCards(count: number, homePreset: HomeScenePreset | null) {
     for (let i = 0; i < count; i++) {
       const group = new THREE.Group();
-      const pos = this._getOrbitPosition(i, count);
+      const pos = this._getOrbitPosition(i, count, homePreset);
       group.position.copy(pos);
-      group.rotation.y = count === HOME_CARD_LAYOUT.length ? HOME_CARD_LAYOUT[i].rotationY : 0;
+      group.rotation.y = homePreset?.panels[i]?.rotationY ?? 0;
       group.userData = {
         index: i,
         isActive: false,
@@ -153,6 +249,7 @@ export class SceneManager {
    */
   createOrbitCards(count: number): HTMLDivElement[] {
     const inners: HTMLDivElement[] = [];
+    const homePreset = this._getHomeOrbitLayoutPreset(count);
     for (let i = 0; i < count; i++) {
       const outer = document.createElement('div');
       outer.style.width = '820px';
@@ -168,10 +265,11 @@ export class SceneManager {
       outer.appendChild(inner);
 
       const obj = new CSS3DObject(outer);
-      const pos = this._getOrbitPosition(i, count);
+      const pos = this._getOrbitPosition(i, count, homePreset);
       obj.position.copy(pos);
-      obj.scale.set(ORBIT_SCALE, ORBIT_SCALE, ORBIT_SCALE);
-      obj.rotation.y = count === HOME_CARD_LAYOUT.length ? HOME_CARD_LAYOUT[i].rotationY : 0;
+      const scale = this._getCardScale(i, homePreset);
+      obj.scale.set(scale, scale, scale);
+      obj.rotation.y = homePreset?.panels[i]?.rotationY ?? 0;
       this.scene.add(obj);
 
       // Force synchronous render so divs are in DOM before React portals target them
@@ -189,9 +287,116 @@ export class SceneManager {
     });
   }
 
-  dockCard(index: number) {
+  private _applyHomeScenePreset(state: HomeSceneStateKey, onComplete?: () => void) {
+    if (!this._initialized) return;
+
+    const preset = getHomeScenePreset(state);
+    const cardCount = Math.min(preset.panels.length, this._cards.length);
+    const activeIndex = this._activeCardIndex;
+    const routeDepth = this._getCurrentRouteDepth();
+    this._homeCameraBasePosition.copy(preset.camera.position);
+    const applyHomeRotation = this._currentRoute === '/';
+    if (applyHomeRotation) {
+      this._homeCameraBaseRotation.copy(preset.camera.rotation);
+    }
+
+    gsap.killTweensOf(this.camera.position);
+    if (applyHomeRotation) {
+      gsap.killTweensOf(this.camera.rotation);
+    }
+
+    for (let i = 0; i < cardCount; i++) {
+      const panel = preset.panels[i];
+      const card = this._cards[i];
+      const orbitCard = this._orbitCards[i];
+
+      if (card) {
+        gsap.killTweensOf(card.position);
+        gsap.killTweensOf(card.rotation);
+        gsap.to(card.position, {
+          x: panel.position.x,
+          y: panel.position.y,
+          z: panel.position.z,
+          duration: preset.duration,
+          ease: preset.ease,
+        });
+        gsap.to(card.rotation, {
+          y: panel.rotationY,
+          duration: preset.duration,
+          ease: preset.ease,
+        });
+      }
+
+      if (orbitCard && i !== activeIndex) {
+        gsap.killTweensOf(orbitCard.css3dObj.position);
+        gsap.killTweensOf(orbitCard.css3dObj.rotation);
+        gsap.killTweensOf(orbitCard.css3dObj.scale);
+        gsap.to(orbitCard.css3dObj.position, {
+          x: panel.position.x,
+          y: panel.position.y,
+          z: panel.position.z,
+          duration: preset.duration,
+          ease: preset.ease,
+        });
+        gsap.to(orbitCard.css3dObj.rotation, {
+          y: panel.rotationY,
+          duration: preset.duration,
+          ease: preset.ease,
+        });
+        gsap.to(orbitCard.css3dObj.scale, {
+          x: panel.scale,
+          y: panel.scale,
+          z: panel.scale,
+          duration: preset.duration,
+          ease: preset.ease,
+        });
+        orbitCard.isOrbiting = true;
+      }
+    }
+
+    gsap.to(this.camera.position, {
+      x: this._homeCameraBasePosition.x,
+      y: this._homeCameraBasePosition.y,
+      z: this._getHomeCameraTargetZ(routeDepth, preset),
+      duration: preset.duration,
+      ease: preset.ease,
+      onComplete,
+    });
+
+    if (applyHomeRotation) {
+      gsap.to(this.camera.rotation, {
+        x: this._homeCameraBaseRotation.x,
+        y: this._homeCameraBaseRotation.y,
+        z: this._homeCameraBaseRotation.z,
+        duration: preset.duration,
+        ease: preset.ease,
+      });
+    }
+  }
+
+  setHomeSceneState(state: HomeSceneStateKey, onComplete?: () => void) {
+    this._homeSceneState = state;
+    if (!this._initialized) return;
+    this._applyHomeScenePreset(state, onComplete);
+  }
+
+  private _setActiveOrbitCard(index: number | null) {
     this._activeCardIndex = index;
+    this._orbitCards.forEach((data, i) => {
+      if (index !== null && i === index) {
+        data.isOrbiting = false;
+      }
+    });
+  }
+
+  dockCard(index: number) {
     const data = this._orbitCards[index];
+    const dockedState = this._getDockedHomeSceneState(index);
+    if (!data || !dockedState) return;
+
+    this._setActiveOrbitCard(index);
+    this._resetInteractionOffset();
+    this.setHomeSceneState(dockedState);
     data.isOrbiting = false;
 
     // Bring active card to center, slightly in front of others
@@ -212,24 +417,20 @@ export class SceneManager {
 
   undockCard() {
     const prev = this._activeCardIndex;
-    this._activeCardIndex = null;
+    if (prev === null) {
+      this._resetInteractionOffset();
+      this.setHomeSceneState('home-idle');
+      this._cards.forEach(c => {
+        c.userData.isActive = false;
+      });
+      return;
+    }
 
-    this._orbitCards.forEach((data, i) => {
-      if (i === prev) {
-        data.inner.style.pointerEvents = 'none';
-        // Animate back to the WebGL card's current orbit position
-        const pos = this._cards[i].position;
-        gsap.to(data.css3dObj.position, {
-          x: pos.x, y: pos.y, z: pos.z,
-          duration: 0.6, ease: 'power3.inOut',
-          onComplete: () => { data.isOrbiting = true; },
-        });
-        gsap.to(data.css3dObj.scale, { x: ORBIT_SCALE, y: ORBIT_SCALE, z: ORBIT_SCALE, duration: 0.6, ease: 'power3.inOut' });
-      } else {
-        gsap.to(data.css3dObj.scale, { x: ORBIT_SCALE, y: ORBIT_SCALE, z: ORBIT_SCALE, duration: 0.6, ease: 'power3.inOut' });
-      }
-    });
-
+    const data = this._orbitCards[prev];
+    data.inner.style.pointerEvents = 'none';
+    this._setActiveOrbitCard(null);
+    this._resetInteractionOffset();
+    this.setHomeSceneState('home-idle');
     this._cards.forEach(c => { c.userData.isActive = false; });
   }
 
@@ -239,8 +440,10 @@ export class SceneManager {
       return;
     }
     this._currentRoute = route;
+    this._resetInteractionOffset();
     const depth = ROUTE_DEPTH[route] ?? 0;
-    const targetZ = depth + this.focalLength;
+    const homePreset = getHomeScenePreset(this._homeSceneState);
+    const targetZ = this._getHomeCameraTargetZ(depth, homePreset);
 
     // Show orbit cards only on home; hide them for all other routes
     this._setOrbitCardsVisible(route === '/');
@@ -253,7 +456,9 @@ export class SceneManager {
     });
 
     gsap.to(this.camera.rotation, {
-      x: route === '/' ? 0 : -0.025,
+      x: route === '/' ? homePreset.camera.rotation.x : -0.025,
+      y: homePreset.camera.rotation.y,
+      z: homePreset.camera.rotation.z,
       duration: 1.4,
       ease: 'power3.inOut',
     });
@@ -263,9 +468,9 @@ export class SceneManager {
     this._frameId = requestAnimationFrame(this._animateLoop);
 
     // Mouse parallax: gently shift camera X/Y — disabled when card is docked or off home
-    const applyParallax = this._activeCardIndex === null && this._currentRoute === '/';
-    const targetCamX = applyParallax ? this._mouseNormX * 85 : 0;
-    const targetCamY = applyParallax ? this._mouseNormY * 40 : 0;
+    const applyParallax = this._canApplyHomeInteraction();
+    const targetCamX = this._homeCameraBasePosition.x + (applyParallax ? this._interactionOffset.x : 0);
+    const targetCamY = this._homeCameraBasePosition.y + (applyParallax ? this._interactionOffset.y : 0);
     this.camera.position.x += (targetCamX - this.camera.position.x) * 0.04;
     this.camera.position.y += (targetCamY - this.camera.position.y) * 0.04;
 
@@ -281,8 +486,22 @@ export class SceneManager {
   };
 
   private _handleMouseMove = (e: MouseEvent) => {
+    if (!this._canApplyHomeInteraction()) return;
+
     this._mouseNormX = (e.clientX / window.innerWidth) * 2 - 1;   // -1 (left) to +1 (right)
     this._mouseNormY = -((e.clientY / window.innerHeight) * 2 - 1); // +1 (top) to -1 (bottom)
+
+    const targetX = this._mouseNormX * 85;
+    const targetY = this._mouseNormY * 40;
+    gsap.killTweensOf(this._interactionOffset);
+    gsap.to(this._interactionOffset, {
+      x: targetX,
+      y: targetY,
+      z: 0,
+      duration: 0.25,
+      ease: 'power3.out',
+    });
+    this._scheduleInteractionIdleRestore();
   };
 
   private _handleResize = () => {
@@ -299,7 +518,6 @@ export class SceneManager {
     if (this._activeCardIndex !== null) return;
 
     const depth = ROUTE_DEPTH[this._currentRoute] ?? 0;
-    const dockedZ = depth + this.focalLength;
 
     gsap.killTweensOf(this.camera.position);
     gsap.to(this.camera.position, {
@@ -310,8 +528,9 @@ export class SceneManager {
 
     if (this._wheelDebounce) clearTimeout(this._wheelDebounce);
     this._wheelDebounce = setTimeout(() => {
+      const homePreset = getHomeScenePreset(this._homeSceneState);
       gsap.to(this.camera.position, {
-        z: dockedZ,
+        z: this._getHomeCameraTargetZ(depth, homePreset),
         duration: 0.8,
         ease: 'elastic.out(1, 0.5)',
       });
@@ -325,8 +544,11 @@ export class SceneManager {
     window.removeEventListener('wheel', this._handleWheel);
     window.removeEventListener('mousemove', this._handleMouseMove);
     if (this._wheelDebounce) clearTimeout(this._wheelDebounce);
+    this._clearInteractionIdleRestoreTimer();
     gsap.killTweensOf(this.camera.position);
     gsap.killTweensOf(this.camera.rotation);
+    gsap.killTweensOf(this._interactionOffset);
+    gsap.killTweensOf(this._interactionRotationOffset);
     this.webglRenderer.dispose();
     this.scene.clear();
     this._cards = [];
