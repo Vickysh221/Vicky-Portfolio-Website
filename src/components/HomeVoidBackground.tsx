@@ -6,7 +6,10 @@ type VoidPhase = {
   desc: string;
   geometryFactory: () => THREE.BufferGeometry;
   noise: number;
+  isGeometric: number;
   camZ: number;
+  rotationSpeed: number;
+  fragmentIntensityPower: number;
 };
 
 type ExperienceState = {
@@ -32,7 +35,17 @@ export interface HomeVoidBackgroundProps {
   onPhaseChange?: (nextPhaseIndex: number) => void;
   onBackgroundActivate?: (nextPhaseIndex: number) => void;
   interactive?: boolean;
+  chromeVisible?: boolean;
+  visualState?: {
+    cameraZOffset?: number;
+    noiseMultiplier?: number;
+    starOpacity?: number;
+    rotationScale?: number;
+  };
 }
+
+const DEFAULT_PHASE_INDEX = 1;
+const PHASE_AXIS_NDC_X = -0.5;
 
 const vertexShader = `
 varying vec3 vNormal;
@@ -40,6 +53,13 @@ varying vec3 vPosition;
 uniform float uTime;
 uniform float uExplosion;
 uniform float uNoiseStrength;
+uniform float uIsGeometric;
+
+mat2 rotate2D(float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat2(c, -s, s, c);
+}
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -91,10 +111,40 @@ float snoise(vec3 v){
 
 void main() {
     vNormal = normal;
-    float n = snoise(position * 1.0 + uTime * 0.25);
+    vec3 basePos = position;
+    float n = snoise(basePos * 1.0 + uTime * 0.25);
     float disp = n * uNoiseStrength;
     float breathing = 1.0 + sin(uTime * 0.8) * 0.03;
-    vec3 newPos = position * breathing + normal * (disp + uExplosion * 4.0);
+    vec3 newPos = basePos * breathing + normal * (disp + uExplosion * 4.0);
+
+    if (uIsGeometric > 0.5) {
+        vec3 pos = basePos;
+        float t = uTime * 0.4;
+        float cycle = mod(t, 4.0);
+
+        vec3 cube = pos * (1.2 / max(abs(pos.x), max(abs(pos.y), abs(pos.z))));
+        vec3 octa = pos * (1.2 / (abs(pos.x) + abs(pos.y) + abs(pos.z) + 0.0001));
+        vec3 star = mix(cube, octa, 0.5) * (1.0 + 0.8 * abs(sin(t * 2.0)));
+
+        if (cycle < 1.0) {
+            pos = mix(cube, star, smoothstep(0.0, 1.0, cycle));
+        } else if (cycle < 2.0) {
+            pos = mix(star, octa, smoothstep(1.0, 2.0, cycle));
+        } else if (cycle < 3.0) {
+            pos = mix(octa, cube, smoothstep(2.0, 3.0, cycle));
+        } else {
+            pos = cube;
+        }
+
+        float distFromCenter = length(pos);
+        pos.xy *= rotate2D(distFromCenter * 0.5 * sin(uTime * 0.5));
+        pos.xz *= rotate2D(distFromCenter * 0.3 * cos(uTime * 0.7));
+
+        pos *= 2.5 + 0.5 * sin(uTime * 1.5);
+        newPos = pos + normal * (disp * 0.6 + uExplosion * 4.0);
+        n = snoise(newPos * 0.24 + uTime * 0.3);
+    }
+
     vPosition = newPos;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
     gl_PointSize = (3.5 + n * 1.5) * (1.0 + uExplosion * 0.8);
@@ -106,11 +156,12 @@ varying vec3 vNormal;
 varying vec3 vPosition;
 uniform float uTime;
 uniform vec3 uColor;
+uniform float uIntensityPower;
 
 void main() {
     float dist = length(vPosition);
     float intensity = 1.35 / (1.0 + dist * 0.12);
-    intensity = pow(intensity, 2.0);
+    intensity = pow(intensity, uIntensityPower);
 
     vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
     float fresnel = pow(1.0 - abs(dot(normalize(vNormal), viewDir)), 3.0);
@@ -132,16 +183,30 @@ function disposeGeometry(geometry: THREE.BufferGeometry) {
   geometry.dispose();
 }
 
+function applyProjectionOffset(camera: THREE.PerspectiveCamera) {
+  camera.updateProjectionMatrix();
+  camera.projectionMatrix.elements[8] = PHASE_AXIS_NDC_X;
+  camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+}
+
 export default function HomeVoidBackground({
   phaseIndex,
   onPhaseChange,
   onBackgroundActivate,
   interactive = true,
+  chromeVisible = true,
+  visualState,
 }: HomeVoidBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const experienceRef = useRef<ExperienceState | null>(null);
+  const visualTargetsRef = useRef({
+    cameraZOffset: 0,
+    noiseMultiplier: 1,
+    starOpacity: 0.12,
+    rotationScale: 1,
+  });
   const controlledPhase = typeof phaseIndex === 'number';
-  const [internalPhaseIndex, setInternalPhaseIndex] = useState(0);
+  const [internalPhaseIndex, setInternalPhaseIndex] = useState(DEFAULT_PHASE_INDEX);
   const [overlayVisible, setOverlayVisible] = useState(true);
 
   const phases = useMemo<VoidPhase[]>(() => [
@@ -150,46 +215,64 @@ export default function HomeVoidBackground({
       desc: '秩序核心：稀疏化晶格，增强通透感',
       geometryFactory: () => new THREE.IcosahedronGeometry(2.2, 40),
       noise: 0.1,
+      isGeometric: 0.0,
       camZ: 10,
+      rotationSpeed: 0.1,
+      fragmentIntensityPower: 2.0,
     },
     {
       name: 'AETHER WEAVE // 以太翻绳',
       desc: '舒展意象：保留高细分星索，维持连接感',
       geometryFactory: () => new THREE.TorusKnotGeometry(3.6, 0.05, 512, 64, 3, 8),
       noise: 0.2,
+      isGeometric: 0.0,
       camZ: 14,
+      rotationSpeed: 0.1,
+      fragmentIntensityPower: 2.0,
     },
     {
       name: 'CELESTIAL BEING // 灵态生命',
       desc: '有机演化：稀疏点阵，呈现轻盈脉动',
       geometryFactory: () => new THREE.IcosahedronGeometry(2.6, 50),
       noise: 0.8,
+      isGeometric: 0.0,
       camZ: 12,
+      rotationSpeed: 0.1,
+      fragmentIntensityPower: 2.0,
     },
     {
       name: 'UNIVERSAL HARMONY // 万象和谐',
       desc: '聚拢平衡：低密度球体，强调颗粒美学',
       geometryFactory: () => new THREE.SphereGeometry(2.3, 80, 80),
       noise: 0.05,
+      isGeometric: 0.0,
       camZ: 11,
+      rotationSpeed: 0.1,
+      fragmentIntensityPower: 2.0,
     },
     {
-      name: 'GEOMETRIC PULSE // 棱角律动',
-      desc: '几何发射：稀疏立方矩阵，体现大尺度结构',
-      geometryFactory: () => new THREE.BoxGeometry(4.5, 4.5, 4.5, 28, 28, 28),
+      name: 'MORPHIC PULSE // 几何发射',
+      desc: '幅度进化：在超维立方与星体间剧烈重构',
+      geometryFactory: () => new THREE.SphereGeometry(2.0, 50, 50),
       noise: 0.0,
-      camZ: 16,
+      isGeometric: 1.0,
+      camZ: 18,
+      rotationSpeed: 0.4,
+      fragmentIntensityPower: 2.2,
     },
     {
       name: 'VOID COLLAPSE // 虚空坍缩',
       desc: '极度聚拢：能量坍缩形成的原始质点',
       geometryFactory: () => new THREE.TetrahedronGeometry(1.5, 32),
       noise: 0.4,
+      isGeometric: 0.0,
       camZ: 9,
+      rotationSpeed: 0.1,
+      fragmentIntensityPower: 2.0,
     },
   ], []);
 
-  const activePhaseIndex = controlledPhase ? (phaseIndex ?? 0) : internalPhaseIndex;
+  const activePhaseIndex = controlledPhase ? (phaseIndex ?? DEFAULT_PHASE_INDEX) : internalPhaseIndex;
   const activePhase = phases[((activePhaseIndex % phases.length) + phases.length) % phases.length];
 
   useEffect(() => {
@@ -201,6 +284,9 @@ export default function HomeVoidBackground({
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    applyProjectionOffset(camera);
+
+    const initialPhase = phases[DEFAULT_PHASE_INDEX];
 
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -208,15 +294,17 @@ export default function HomeVoidBackground({
       uniforms: {
         uTime: { value: 0 },
         uExplosion: { value: 0 },
-        uNoiseStrength: { value: phases[0].noise },
+        uNoiseStrength: { value: initialPhase.noise },
         uColor: { value: new THREE.Color(0x7d724e) },
+        uIsGeometric: { value: initialPhase.isGeometric },
+        uIntensityPower: { value: initialPhase.fragmentIntensityPower },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
 
-    const monolith = new THREE.Points(phases[0].geometryFactory(), material);
+    const monolith = new THREE.Points(initialPhase.geometryFactory(), material);
     scene.add(monolith);
 
     const starGeo = new THREE.BufferGeometry();
@@ -238,7 +326,7 @@ export default function HomeVoidBackground({
     );
     scene.add(starfield);
 
-    camera.position.z = 12;
+    camera.position.z = initialPhase.camZ;
 
     const experience: ExperienceState = {
       scene,
@@ -251,7 +339,7 @@ export default function HomeVoidBackground({
       monolith,
       starfield,
       phases,
-      phaseIndex: 0,
+      phaseIndex: DEFAULT_PHASE_INDEX,
       explosion: 0,
       targetExplosion: 0,
       phaseSwapTimer: null,
@@ -263,7 +351,7 @@ export default function HomeVoidBackground({
       const current = experienceRef.current;
       if (!current) return;
       current.camera.aspect = window.innerWidth / window.innerHeight;
-      current.camera.updateProjectionMatrix();
+      applyProjectionOffset(current.camera);
       current.renderer.setSize(window.innerWidth, window.innerHeight);
       current.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     };
@@ -287,14 +375,19 @@ export default function HomeVoidBackground({
       current.explosion += (current.targetExplosion - current.explosion) * 0.1;
       current.material.uniforms.uExplosion.value = current.explosion;
 
-      const targetZ = current.phases[current.phaseIndex].camZ;
+      const targetZ = current.phases[current.phaseIndex].camZ + visualTargetsRef.current.cameraZOffset;
       current.camera.position.z += (targetZ - current.camera.position.z) * 0.04;
 
-      current.monolith.rotation.y = elapsed * 0.1 + current.mouse.x * 0.4;
+      const phase = current.phases[current.phaseIndex];
+      current.monolith.rotation.y = elapsed * phase.rotationSpeed * visualTargetsRef.current.rotationScale + current.mouse.x * 0.4;
       current.monolith.rotation.x = current.mouse.y * 0.2;
-      current.monolith.rotation.z = elapsed * 0.03;
+      current.monolith.rotation.z = elapsed * phase.rotationSpeed * 0.25 * visualTargetsRef.current.rotationScale;
 
       current.starfield.rotation.y = elapsed * 0.005;
+      const starMaterial = current.starfield.material;
+      if (!Array.isArray(starMaterial)) {
+        starMaterial.opacity += (visualTargetsRef.current.starOpacity - starMaterial.opacity) * 0.06;
+      }
       current.camera.position.x += (current.mouse.x * 2.5 - current.camera.position.x) * 0.04;
       current.camera.position.y += (current.mouse.y * 2.5 - current.camera.position.y) * 0.04;
       current.camera.lookAt(0, 0, 0);
@@ -353,13 +446,36 @@ export default function HomeVoidBackground({
       const nextPhase = current.phases[activePhaseIndex];
       const previousGeometry = current.monolith.geometry;
       current.monolith.geometry = nextPhase.geometryFactory();
-      current.material.uniforms.uNoiseStrength.value = nextPhase.noise;
+      current.material.uniforms.uNoiseStrength.value = nextPhase.noise * visualTargetsRef.current.noiseMultiplier;
+      current.material.uniforms.uIsGeometric.value = nextPhase.isGeometric;
+      current.material.uniforms.uIntensityPower.value = nextPhase.fragmentIntensityPower;
       current.phaseIndex = activePhaseIndex;
       current.targetExplosion = 0;
       disposeGeometry(previousGeometry);
       current.phaseSwapTimer = null;
     }, 350);
   }, [activePhaseIndex]);
+
+  useEffect(() => {
+    visualTargetsRef.current = {
+      cameraZOffset: visualState?.cameraZOffset ?? 0,
+      noiseMultiplier: visualState?.noiseMultiplier ?? 1,
+      starOpacity: visualState?.starOpacity ?? 0.12,
+      rotationScale: visualState?.rotationScale ?? 1,
+    };
+
+    const current = experienceRef.current;
+    if (!current) return;
+    const phase = current.phases[current.phaseIndex];
+    current.material.uniforms.uNoiseStrength.value = phase.noise * visualTargetsRef.current.noiseMultiplier;
+    current.material.uniforms.uIsGeometric.value = phase.isGeometric;
+    current.material.uniforms.uIntensityPower.value = phase.fragmentIntensityPower;
+  }, [
+    visualState?.cameraZOffset,
+    visualState?.noiseMultiplier,
+    visualState?.rotationScale,
+    visualState?.starOpacity,
+  ]);
 
   const cyclePhase = () => {
     if (!interactive) return;
@@ -402,7 +518,7 @@ export default function HomeVoidBackground({
           inset: 0,
           zIndex: 1,
           pointerEvents: 'none',
-          display: 'flex',
+          display: chromeVisible ? 'flex' : 'none',
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '50px',
