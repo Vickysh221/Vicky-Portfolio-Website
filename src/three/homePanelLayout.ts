@@ -44,6 +44,26 @@ const HOME_BASE_CAMERA_POSE: CameraPose = {
   rotation: new THREE.Euler(0, 0, 0),
 };
 
+const HOME_RETURN_CAMERA_POSE: CameraPose = {
+  position: new THREE.Vector3(0, 20, 140),
+  rotation: new THREE.Euler(-0.018, 0, 0),
+};
+
+const HOME_DOCKED_CAMERA_POSES: Record<0 | 1 | 2, CameraPose> = {
+  0: {
+    position: new THREE.Vector3(0, 12, -120),
+    rotation: new THREE.Euler(0.008, 0, 0),
+  },
+  1: {
+    position: new THREE.Vector3(120, 10, -90),
+    rotation: new THREE.Euler(0.006, -0.05, 0),
+  },
+  2: {
+    position: new THREE.Vector3(-120, 10, -90),
+    rotation: new THREE.Euler(0.006, 0.05, 0),
+  },
+};
+
 function createHomePanelTransform(spec: (typeof HOME_PANEL_SPECS)[number]): HomePanelTransform {
   return {
     position: new THREE.Vector3(...spec.position),
@@ -100,19 +120,27 @@ const HOME_PRESET_FACTORIES: Record<HomeSceneStateKey, () => HomeScenePreset> = 
   'home-idle': () => createHomeScenePreset(),
   'home-return-from-route': () =>
     createHomeScenePreset({
-      duration: 0.95,
+      camera: HOME_RETURN_CAMERA_POSE,
+      duration: 1.05,
+      ease: 'power4.out',
     }),
   'home-docked-0': () => createHomeScenePreset({
     panels: createDockedPanels(0),
-    duration: 0.4,
+    camera: HOME_DOCKED_CAMERA_POSES[0],
+    duration: 0.55,
+    ease: 'power3.inOut',
   }),
   'home-docked-1': () => createHomeScenePreset({
     panels: createDockedPanels(1),
-    duration: 0.32,
+    camera: HOME_DOCKED_CAMERA_POSES[1],
+    duration: 0.5,
+    ease: 'power3.inOut',
   }),
   'home-docked-2': () => createHomeScenePreset({
     panels: createDockedPanels(2),
-    duration: 0.32,
+    camera: HOME_DOCKED_CAMERA_POSES[2],
+    duration: 0.5,
+    ease: 'power3.inOut',
   }),
 };
 
