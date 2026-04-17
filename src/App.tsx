@@ -9,9 +9,7 @@ import Portfolio from './Portfolio';
 import ProjectCard from './pages/ProjectCard';
 import PageTemplate from './pages/PageTemplate';
 import SubPageCarousel from './pages/SubPageCarousel';
-
-const PROJECT_COLORS = ['#c8a96e', '#8b7db5', '#6f8f92'];
-const PROJECT_ROUTES = ['/jidu-hmi', '/agentic-design-development', '/academic-gamification'];
+import { PROJECT_COLORS, PROJECT_ROUTES } from './projectRegistry';
 
 export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
