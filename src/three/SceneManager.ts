@@ -32,7 +32,7 @@ export class SceneManager {
   private _frameId = 0;
   private _currentRoute = '/';
   private _wheelDebounce: ReturnType<typeof setTimeout> | null = null;
-  private _homeSceneState: HomeSceneStateKey = 'home-idle';
+  private _homeSceneState: HomeSceneStateKey = 'home-intro';
   private _homeCameraBasePosition = new THREE.Vector3();
   private _homeCameraBaseRotation = new THREE.Euler();
   private _interactionOffset = new THREE.Vector3();
@@ -43,6 +43,7 @@ export class SceneManager {
   // Mouse parallax state
   private _mouseNormX = 0;
   private _mouseNormY = 0;
+  private _homeIntroConsumed = false;
 
   static get instance(): SceneManager {
     if (!SceneManager._instance) {
@@ -498,7 +499,8 @@ export class SceneManager {
       card.userData.isActive = false;
     });
     this._resetInteractionOffset();
-    this._applyHomeScenePresetImmediately('home-idle');
+    this._homeIntroConsumed = false;
+    this._applyHomeScenePresetImmediately('home-intro');
   }
 
   flyTo(route: string, onComplete?: () => void) {
@@ -583,6 +585,14 @@ export class SceneManager {
   private _handleWheel = (e: WheelEvent) => {
     if (!this._initialized) return;
     if (this._activeCardIndex !== null) return;
+
+    if (this._currentRoute === '/' && !this._homeIntroConsumed) {
+      if (e.deltaY > 0) {
+        this._homeIntroConsumed = true;
+        this.setHomeSceneState('home-idle');
+      }
+      return;
+    }
 
     const depth = ROUTE_DEPTH[this._currentRoute] ?? 0;
 

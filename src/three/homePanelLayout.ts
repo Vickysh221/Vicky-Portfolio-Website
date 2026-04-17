@@ -21,6 +21,7 @@ export interface HomeScenePreset {
 }
 
 export type HomeSceneStateKey =
+  | 'home-intro'
   | 'home-idle'
   | 'home-return-from-route'
   | 'home-docked-0'
@@ -39,9 +40,20 @@ const HIDDEN_PANEL_SPECS = [
   { position: [-980, -8, -120] as const, rotationY: 0.22, scale: 0.04 },
 ] as const;
 
+const INTRO_PANEL_SPECS = [
+  { position: [0, -36, -1200] as const, rotationY: 0, scale: 0.01 },
+  { position: [1240, -92, -980] as const, rotationY: -0.26, scale: 0.02 },
+  { position: [-1240, -92, -980] as const, rotationY: 0.26, scale: 0.02 },
+] as const;
+
 const HOME_BASE_CAMERA_POSE: CameraPose = {
   position: new THREE.Vector3(0, 0, 0),
   rotation: new THREE.Euler(0, 0, 0),
+};
+
+const HOME_INTRO_CAMERA_POSE: CameraPose = {
+  position: new THREE.Vector3(0, 0, 280),
+  rotation: new THREE.Euler(-0.01, 0, 0),
 };
 
 const HOME_RETURN_CAMERA_POSE: CameraPose = {
@@ -63,6 +75,14 @@ function createHomePanelTransform(spec: (typeof HOME_PANEL_SPECS)[number]): Home
 }
 
 function createHiddenHomePanelTransform(spec: (typeof HIDDEN_PANEL_SPECS)[number]): HomePanelTransform {
+  return {
+    position: new THREE.Vector3(...spec.position),
+    rotationY: spec.rotationY,
+    scale: spec.scale,
+  };
+}
+
+function createIntroHomePanelTransform(spec: (typeof INTRO_PANEL_SPECS)[number]): HomePanelTransform {
   return {
     position: new THREE.Vector3(...spec.position),
     rotationY: spec.rotationY,
@@ -107,6 +127,13 @@ function cloneHomeScenePreset(preset: HomeScenePreset): HomeScenePreset {
 }
 
 const HOME_PRESET_FACTORIES: Record<HomeSceneStateKey, () => HomeScenePreset> = {
+  'home-intro': () =>
+    createHomeScenePreset({
+      panels: INTRO_PANEL_SPECS.map(createIntroHomePanelTransform) as HomePanelTuple,
+      camera: HOME_INTRO_CAMERA_POSE,
+      duration: 0.95,
+      ease: 'power3.out',
+    }),
   'home-idle': () => createHomeScenePreset(),
   'home-return-from-route': () =>
     createHomeScenePreset({

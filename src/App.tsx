@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
+import HomeVoidBackground from './components/HomeVoidBackground';
 import { SceneManager } from './three/SceneManager';
 import { useRouteTransition } from './hooks/useRouteTransition';
 import { PAGE_META, getSlideCount } from './constants/routeDepth';
@@ -30,9 +31,23 @@ export default function App() {
   const focusProjectRoute = typeof locationState?.focusProjectRoute === 'string'
     ? locationState.focusProjectRoute
     : null;
+  const isHome = location.pathname === '/';
   const isProjectRootPath = isProjectRootRoute(location.pathname);
   // Show PageTemplate overlay for any non-home route with known meta
   const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname] && !isProjectRootPath;
+
+  function handleProjectClick(i: number) {
+    setActiveCard(i);
+    SceneManager.instance.dockCard(i);
+  }
+
+  const handleBackgroundActivate = () => {
+    if (!isHome || activeCard !== null) return;
+    const sceneManager = SceneManager.instance;
+    if (sceneManager.currentHomeSceneState === 'home-intro') {
+      sceneManager.setHomeSceneState('home-idle');
+    }
+  };
 
   // Drive camera on route changes (sub-page navigation)
   useRouteTransition();
@@ -95,11 +110,6 @@ export default function App() {
     SceneManager.instance.resetToHomeIdle();
   }, [activeCard, focusProjectRoute, initialized, location.pathname]);
 
-  const handleProjectClick = (i: number) => {
-    setActiveCard(i);
-    SceneManager.instance.dockCard(i);
-  };
-
   const handleCloseCard = () => {
     suppressCardOpenUntilRef.current = Date.now() + 250;
     activeCardRef.current = null;
@@ -125,13 +135,15 @@ export default function App() {
         overflow: 'hidden',
       }}
     >
+      {isHome && <HomeVoidBackground onBackgroundActivate={handleBackgroundActivate} />}
+
       {/* WebGL canvas layer */}
-      <div ref={webglRef} style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
+      <div ref={webglRef} style={{ position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none' }} />
 
       {/* CSS3D layer — z:30 when card docked so it renders above Portfolio z:20 */}
       <div
         ref={css3dRef}
-        style={{ position: 'absolute', inset: 0, zIndex: activeCard !== null ? 30 : 1 }}
+        style={{ position: 'absolute', inset: 0, zIndex: activeCard !== null ? 30 : 6, pointerEvents: 'none' }}
       />
 
       {/* Home UI — fades when a card is docked or on sub-routes */}
