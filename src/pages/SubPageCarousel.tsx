@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ChapterArrowButton from '../components/ChapterArrowButton';
 import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
+import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus';
 import H5DocContent, { hasSectionContent } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
@@ -518,7 +519,11 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
 
   const handleBack = () => {
     if (meta?.parent) {
-      navigate(meta.parent);
+      if (isProjectRootRoute(meta.parent)) {
+        navigate('/', { replace: true, state: buildHomeFocusState(meta.parent) });
+      } else {
+        navigate(meta.parent);
+      }
     } else {
       navigate('/');
     }

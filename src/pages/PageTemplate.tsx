@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ChapterArrowButton from '../components/ChapterArrowButton';
 import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
+import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus';
 import H5DocContent from './H5DocContent';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
 
@@ -542,7 +543,11 @@ export default function PageTemplate({ route, isMobile, onBackOverride, onNaviga
       return;
     }
     if (meta.parent) {
-      navigate(meta.parent);
+      if (isProjectRootRoute(meta.parent)) {
+        navigate('/', { replace: true, state: buildHomeFocusState(meta.parent) });
+      } else {
+        navigate(meta.parent);
+      }
     } else {
       navigate('/');
     }

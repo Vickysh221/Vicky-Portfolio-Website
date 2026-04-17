@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { useLocation } from 'react-router-dom';
+import { createPortal, flushSync } from 'react-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SceneManager } from './three/SceneManager';
 import { useRouteTransition } from './hooks/useRouteTransition';
 import { PAGE_META, getSlideCount } from './constants/routeDepth';
 import { useIsMobile } from './hooks/useIsMobile';
+import { buildHomeFocusState, getProjectIndexForRoute, isProjectRootRoute, type HomeFocusLocationState } from './navigation/homeFocus';
 import Portfolio from './Portfolio';
 import ProjectCard from './pages/ProjectCard';
 import PageTemplate from './pages/PageTemplate';
@@ -16,13 +17,22 @@ export default function App() {
   const css3dRef = useRef<HTMLDivElement>(null);
   const orbitCardInners = useRef<HTMLDivElement[]>([]);
   const activeCardRef = useRef<number | null>(null);
+  const suppressCardOpenUntilRef = useRef(0);
   const [initialized, setInitialized] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const locationState = (typeof location.state === 'object' && location.state
+    ? location.state as HomeFocusLocationState
+    : null);
+  const focusProjectRoute = typeof locationState?.focusProjectRoute === 'string'
+    ? locationState.focusProjectRoute
+    : null;
+  const isProjectRootPath = isProjectRootRoute(location.pathname);
   // Show PageTemplate overlay for any non-home route with known meta
-  const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname];
+  const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname] && !isProjectRootPath;
 
   // Drive camera on route changes (sub-page navigation)
   useRouteTransition();
@@ -45,6 +55,7 @@ export default function App() {
       outer.style.pointerEvents = 'auto';
       outer.style.cursor = 'pointer';
       outer.onclick = () => {
+        if (Date.now() < suppressCardOpenUntilRef.current) return;
         if (activeCardRef.current !== null) return;
         handleProjectClick(i);
       };
@@ -57,21 +68,52 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isProjectRootPath) return;
+    navigate('/', {
+      replace: true,
+      state: buildHomeFocusState(location.pathname),
+    });
+  }, [isProjectRootPath, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (!initialized || location.pathname !== '/' || !focusProjectRoute) return;
+
+    const projectIndex = getProjectIndexForRoute(focusProjectRoute);
+    if (projectIndex === null) {
+      navigate('/', { replace: true, state: null });
+      return;
+    }
+
+    setActiveCard(projectIndex);
+    SceneManager.instance.dockCard(projectIndex);
+    navigate('/', { replace: true, state: null });
+  }, [focusProjectRoute, initialized, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (!initialized || location.pathname !== '/' || activeCard !== null || focusProjectRoute) return;
+    SceneManager.instance.resetToHomeIdle();
+  }, [activeCard, focusProjectRoute, initialized, location.pathname]);
+
   const handleProjectClick = (i: number) => {
     setActiveCard(i);
     SceneManager.instance.dockCard(i);
   };
 
   const handleCloseCard = () => {
+    suppressCardOpenUntilRef.current = Date.now() + 250;
+    activeCardRef.current = null;
     setActiveCard(null);
     SceneManager.instance.undockCard();
   };
 
   const handleBackToHomeFromCard = () => {
-    setActiveCard(null);
-    const sceneManager = SceneManager.instance;
-    sceneManager.undockCard();
-    sceneManager.setHomeSceneState('home-idle');
+    suppressCardOpenUntilRef.current = Date.now() + 250;
+    activeCardRef.current = null;
+    flushSync(() => {
+      setActiveCard(null);
+    });
+    SceneManager.instance.resetToHomeIdle();
   };
 
   return (

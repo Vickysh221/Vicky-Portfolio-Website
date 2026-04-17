@@ -380,6 +380,59 @@ export class SceneManager {
     this._applyHomeScenePreset(state, onComplete);
   }
 
+  private _applyHomeScenePresetImmediately(state: HomeSceneStateKey) {
+    if (!this._initialized) return;
+
+    const preset = getHomeScenePreset(state);
+    const cardCount = Math.min(preset.panels.length, this._cards.length);
+    const routeDepth = this._getCurrentRouteDepth();
+    this._homeSceneState = state;
+    this._homeCameraBasePosition.copy(preset.camera.position);
+    if (this._currentRoute === '/') {
+      this._homeCameraBaseRotation.copy(preset.camera.rotation);
+    }
+
+    gsap.killTweensOf(this.camera.position);
+    gsap.killTweensOf(this.camera.rotation);
+
+    for (let i = 0; i < cardCount; i++) {
+      const panel = preset.panels[i];
+      const card = this._cards[i];
+      const orbitCard = this._orbitCards[i];
+
+      if (card) {
+        gsap.killTweensOf(card.position);
+        gsap.killTweensOf(card.rotation);
+        card.position.copy(panel.position);
+        card.rotation.y = panel.rotationY;
+      }
+
+      if (orbitCard) {
+        gsap.killTweensOf(orbitCard.css3dObj.position);
+        gsap.killTweensOf(orbitCard.css3dObj.rotation);
+        gsap.killTweensOf(orbitCard.css3dObj.scale);
+        orbitCard.css3dObj.position.copy(panel.position);
+        orbitCard.css3dObj.rotation.y = panel.rotationY;
+        orbitCard.css3dObj.scale.set(panel.scale, panel.scale, panel.scale);
+        orbitCard.isOrbiting = true;
+      }
+    }
+
+    this.camera.position.set(
+      this._homeCameraBasePosition.x,
+      this._homeCameraBasePosition.y,
+      this._getHomeCameraTargetZ(routeDepth, preset),
+    );
+
+    if (this._currentRoute === '/') {
+      this.camera.rotation.set(
+        this._homeCameraBaseRotation.x,
+        this._homeCameraBaseRotation.y,
+        this._homeCameraBaseRotation.z,
+      );
+    }
+  }
+
   private _setActiveOrbitCard(index: number | null) {
     this._activeCardIndex = index;
     this._orbitCards.forEach((data, i) => {
@@ -432,6 +485,19 @@ export class SceneManager {
     this._resetInteractionOffset();
     this.setHomeSceneState('home-idle');
     this._cards.forEach(c => { c.userData.isActive = false; });
+  }
+
+  resetToHomeIdle() {
+    this._setActiveOrbitCard(null);
+    this._orbitCards.forEach((data) => {
+      data.inner.style.pointerEvents = 'none';
+      data.isOrbiting = true;
+    });
+    this._cards.forEach((card) => {
+      card.userData.isActive = false;
+    });
+    this._resetInteractionOffset();
+    this._applyHomeScenePresetImmediately('home-idle');
   }
 
   flyTo(route: string, onComplete?: () => void) {

@@ -33,6 +33,12 @@ const HOME_PANEL_SPECS = [
   { position: [-640, 24, 95] as const, rotationY: 0.15, scale: 0.36 },
 ] as const;
 
+const HIDDEN_PANEL_SPECS = [
+  { position: [0, 10, -260] as const, rotationY: 0, scale: 0.02 },
+  { position: [980, -8, -120] as const, rotationY: -0.22, scale: 0.04 },
+  { position: [-980, -8, -120] as const, rotationY: 0.22, scale: 0.04 },
+] as const;
+
 const HOME_BASE_CAMERA_POSE: CameraPose = {
   position: new THREE.Vector3(0, 0, 0),
   rotation: new THREE.Euler(0, 0, 0),
@@ -46,17 +52,32 @@ function createHomePanelTransform(spec: (typeof HOME_PANEL_SPECS)[number]): Home
   };
 }
 
+function createHiddenHomePanelTransform(spec: (typeof HIDDEN_PANEL_SPECS)[number]): HomePanelTransform {
+  return {
+    position: new THREE.Vector3(...spec.position),
+    rotationY: spec.rotationY,
+    scale: spec.scale,
+  };
+}
+
 function createHomeScenePreset(overrides?: {
   camera?: CameraPose;
   duration?: number;
   ease?: string;
+  panels?: HomePanelTuple;
 }): HomeScenePreset {
   return {
-    panels: HOME_PANEL_SPECS.map(createHomePanelTransform) as HomePanelTuple,
+    panels: overrides?.panels ?? (HOME_PANEL_SPECS.map(createHomePanelTransform) as HomePanelTuple),
     camera: overrides?.camera ?? HOME_BASE_CAMERA_POSE,
     duration: overrides?.duration ?? 0.75,
     ease: overrides?.ease ?? 'power3.inOut',
   };
+}
+
+function createDockedPanels(activeIndex: 0 | 1 | 2): HomePanelTuple {
+  return HOME_PANEL_SPECS.map((spec, index) => (
+    index === activeIndex ? createHomePanelTransform(spec) : createHiddenHomePanelTransform(HIDDEN_PANEL_SPECS[index])
+  )) as HomePanelTuple;
 }
 
 function cloneHomeScenePreset(preset: HomeScenePreset): HomeScenePreset {
@@ -81,9 +102,18 @@ const HOME_PRESET_FACTORIES: Record<HomeSceneStateKey, () => HomeScenePreset> = 
     createHomeScenePreset({
       duration: 0.95,
     }),
-  'home-docked-0': () => createHomeScenePreset(),
-  'home-docked-1': () => createHomeScenePreset(),
-  'home-docked-2': () => createHomeScenePreset(),
+  'home-docked-0': () => createHomeScenePreset({
+    panels: createDockedPanels(0),
+    duration: 0.4,
+  }),
+  'home-docked-1': () => createHomeScenePreset({
+    panels: createDockedPanels(1),
+    duration: 0.32,
+  }),
+  'home-docked-2': () => createHomeScenePreset({
+    panels: createDockedPanels(2),
+    duration: 0.32,
+  }),
 };
 
 export function getHomeScenePreset(state: HomeSceneStateKey): HomeScenePreset {
