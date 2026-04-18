@@ -1,21 +1,22 @@
-import { PROJECTS, type ProjectEntry } from '../projectRegistry';
-import type { HomeSceneKey, HomeStateKey } from '../home/homeScenes';
+import { HOME_INDEX_SECTIONS, type HomeIndexSection, type HomeSectionKey, type HomeStateKey } from '../home/homeScenes';
 
 interface HomeSceneOverlayProps {
-  sceneKey: HomeSceneKey;
   stateKey: HomeStateKey;
-  project: ProjectEntry;
+  section: HomeIndexSection | null;
   onAdvance: () => void;
-  onSelectProject: (route: string) => void;
+  onSelectSection: (sectionKey: HomeSectionKey) => void;
   onOpenChapter: (route: string) => void;
 }
 
+const sectionList = Object.values(HOME_INDEX_SECTIONS);
+const TYPE_SCALE = 1.6;
+const scalePx = (value: number) => `${value * TYPE_SCALE}px`;
+
 export default function HomeSceneOverlay({
-  sceneKey,
   stateKey,
-  project,
+  section,
   onAdvance,
-  onSelectProject,
+  onSelectSection,
   onOpenChapter,
 }: HomeSceneOverlayProps) {
   const isCover = stateKey === 'cover';
@@ -43,34 +44,6 @@ export default function HomeSceneOverlay({
         }}
       />
 
-      <div
-        className="absolute top-8 left-8 z-30"
-        style={{
-          opacity: 1,
-          transition: 'opacity 360ms cubic-bezier(0.16,1,0.3,1), transform 360ms cubic-bezier(0.16,1,0.3,1)',
-          transform: isCover ? 'translateY(0)' : 'translateY(-2px)',
-        }}
-      >
-        <div style={{ color: '#c8a96e', fontSize: '10px', letterSpacing: '0.25em', marginBottom: '6px' }}>
-          PORTFOLIO · 2025
-        </div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}>
-          <div style={{ color: '#f0e8d8', fontSize: '28px', lineHeight: 1.1, fontStyle: 'italic' }}>
-            寿心悦
-          </div>
-          <div style={{ color: 'rgba(157,142,102,0.52)', fontSize: '12px', letterSpacing: '0.42em' }}>
-            MONOLITH
-          </div>
-        </div>
-        <div style={{ color: '#a09070', fontSize: '11px', letterSpacing: '0.12em', marginTop: '4px' }}>
-          Xinyue Shou
-        </div>
-        <div style={{ width: '32px', height: '1px', background: '#c8a96e', margin: '10px 0', opacity: 0.6 }} />
-        <div style={{ color: '#6d624f', fontSize: '9px', letterSpacing: '0.24em' }}>
-          {sceneKey.replace('-', ' ').toUpperCase()}
-        </div>
-      </div>
-
       {isCover ? (
         <div
           className="absolute inset-0 z-20"
@@ -88,7 +61,7 @@ export default function HomeSceneOverlay({
               border: 'none',
               background: 'none',
               color: 'rgba(255,255,255,0.24)',
-              fontSize: '10px',
+              fontSize: scalePx(10),
               letterSpacing: '0.65em',
               textTransform: 'uppercase',
               cursor: 'pointer',
@@ -104,111 +77,158 @@ export default function HomeSceneOverlay({
           style={{
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'center',
-            padding: '96px 40px 40px',
+            justifyContent: 'flex-start',
+            padding: '72px 0 40px',
           }}
         >
           <div
             style={{
-              width: '100%',
-              maxWidth: '880px',
-              pointerEvents: 'auto',
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '0 24px',
             }}
           >
-            {PROJECTS.map((entry) => {
-              const isActive = entry.route === project.route;
-              return (
-                <div key={entry.route} style={{ marginBottom: isActive ? '18px' : '14px' }}>
-                  <button
-                    onClick={() => onSelectProject(entry.route)}
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      textAlign: 'left',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: isActive ? '#f0e8d8' : '#5e5039',
-                      fontSize: isActive ? '18px' : '14px',
-                      fontStyle: isActive ? 'italic' : 'normal',
-                      letterSpacing: isActive ? '0' : '0.04em',
-                      lineHeight: 1.35,
-                      opacity: entry.disabled ? 0.32 : 1,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: isActive ? entry.color : '#403421',
-                        fontSize: '8px',
-                        letterSpacing: '0.24em',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      {entry.id}
-                    </div>
-                    {entry.title}
-                  </button>
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '680px',
+                pointerEvents: 'auto',
+              }}
+            >
+              <div
+                style={{
+                  opacity: 1,
+                  transition: 'opacity 360ms cubic-bezier(0.16,1,0.3,1), transform 360ms cubic-bezier(0.16,1,0.3,1)',
+                  transform: 'translateY(-2px)',
+                  marginBottom: '34px',
+                }}
+              >
+                <div style={{ color: '#c8a96e', fontSize: scalePx(10), letterSpacing: '0.25em', marginBottom: '6px' }}>
+                  PORTFOLIO · 2025
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', flexWrap: 'wrap' }}>
+                  <div style={{ color: '#f0e8d8', fontSize: scalePx(28), lineHeight: 1.1, fontStyle: 'italic' }}>
+                    寿心悦
+                  </div>
+                </div>
+                <div style={{ color: '#a09070', fontSize: scalePx(11), letterSpacing: '0.12em', marginTop: '4px' }}>
+                  Xinyue Shou
+                </div>
+                <div style={{ width: '32px', height: '1px', background: '#c8a96e', margin: '10px 0', opacity: 0.6 }} />
+              </div>
 
-                  {isActive && (
-                    <div
-                      className="mini-panel-enter"
+              {sectionList.map((entry) => {
+                const isActive = entry.key === section?.key;
+                return (
+                  <div key={entry.key} style={{ marginBottom: isActive ? '24px' : '16px' }}>
+                    <button
+                      onClick={() => onSelectSection(entry.key)}
                       style={{
-                        marginTop: '12px',
-                        marginLeft: '10px',
-                        maxWidth: '520px',
-                        border: '1px solid rgba(200,169,110,0.1)',
-                        background: 'rgba(10,8,6,0.52)',
-                        backdropFilter: 'blur(3px)',
-                        boxShadow: '0 18px 44px rgba(0,0,0,0.14)',
-                        padding: '12px 14px 14px',
+                        display: 'block',
+                        width: '100%',
+                        textAlign: 'left',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: isActive ? '#f0e8d8' : '#5e5039',
+                        padding: 0,
                       }}
                     >
-                      <div style={{ color: '#6f5b92', fontSize: '9px', letterSpacing: '0.24em', marginBottom: '6px' }}>
-                        CHAPTERS
+                      <div
+                        style={{
+                          color: isActive ? '#c8a96e' : '#403421',
+                          fontSize: scalePx(10),
+                          letterSpacing: '0.26em',
+                          marginBottom: '6px',
+                        }}
+                      >
+                        {entry.title}
                       </div>
-                      <div style={{ border: '1px solid rgba(200,169,110,0.08)' }}>
-                        {entry.subPages.map((subPage) => (
-                          <button
-                            key={subPage.route}
-                            onClick={() => {
-                              if (!subPage.disabled) {
-                                onOpenChapter(subPage.route);
-                              }
-                            }}
-                            style={{
-                              width: '100%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '12px',
-                              border: 'none',
-                              borderBottom: '1px solid rgba(200,169,110,0.05)',
-                              background: 'rgba(0,0,0,0.03)',
-                              color: subPage.disabled ? '#4e412d' : '#7f6a49',
-                              padding: '9px 12px',
-                              textAlign: 'left',
-                              cursor: subPage.disabled ? 'default' : 'pointer',
-                            }}
-                          >
-                            <span
+                      <div
+                        style={{
+                          fontSize: isActive ? scalePx(20) : scalePx(15),
+                          fontStyle: isActive ? 'italic' : 'normal',
+                          letterSpacing: isActive ? '0' : '0.03em',
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {entry.subtitle}
+                      </div>
+                    </button>
+
+                    {isActive && (
+                      <div
+                        className="mini-panel-enter"
+                        style={{
+                          marginTop: '14px',
+                          marginLeft: '10px',
+                          width: 'calc(100% + 200px)',
+                          maxWidth: '840px',
+                          border: '1px solid rgba(200,169,110,0.08)',
+                          background: 'rgba(10,8,6,0.44)',
+                          backdropFilter: 'blur(3px)',
+                          boxShadow: '0 18px 44px rgba(0,0,0,0.12)',
+                          padding: '14px 16px 16px',
+                        }}
+                      >
+                        <div style={{ color: '#8b7db5', fontSize: scalePx(9), letterSpacing: '0.22em', marginBottom: '8px' }}>
+                          {entry.descriptionTitle}
+                        </div>
+                        <p
+                          style={{
+                            margin: 0,
+                            color: '#8a7552',
+                            fontSize: '12px',
+                            lineHeight: 1.9,
+                          }}
+                        >
+                          {entry.body}
+                        </p>
+
+                        <div style={{ color: '#6f5b92', fontSize: scalePx(9), letterSpacing: '0.24em', marginTop: '14px', marginBottom: '6px' }}>
+                          RELATED PROJECTS
+                        </div>
+                        <div style={{ border: '1px solid rgba(200,169,110,0.08)' }}>
+                          {entry.chapters.map((chapter, index) => (
+                            <button
+                              key={chapter.route}
+                              onClick={() => onOpenChapter(chapter.route)}
+                              style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                border: 'none',
+                                borderBottom: index === entry.chapters.length - 1 ? 'none' : '1px solid rgba(200,169,110,0.05)',
+                                background: 'rgba(0,0,0,0.03)',
+                                color: '#7f6a49',
+                                padding: '10px 12px',
+                                textAlign: 'left',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <span
                               style={{
                                 width: '16px',
                                 color: '#4f422f',
-                                fontSize: '9px',
+                                fontSize: scalePx(9),
                                 fontStyle: 'italic',
                                 flexShrink: 0,
                               }}
                             >
-                              {subPage.numeral}
+                              {chapter.numeral}
                             </span>
-                            <span style={{ fontSize: '10px', lineHeight: 1.4 }}>{subPage.label}</span>
-                          </button>
-                        ))}
+                              <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}

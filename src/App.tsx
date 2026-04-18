@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import HomeSceneOverlay from './components/HomeSceneOverlay';
 import HomeVoidBackground from './components/HomeVoidBackground';
 import { PAGE_META, getSlideCount } from './constants/routeDepth';
-import { getHomeProjectPhaseIndex, getHomeSceneConfig, getProjectByRoute, resolveHomeAction, type HomeActionType, type HomeSceneKey, type HomeStateKey } from './home/homeScenes';
+import { getHomeProjectPhaseIndex, getHomeSceneConfig, getHomeSection, getHomeSectionByProjectRoute, resolveHomeAction, type HomeActionType, type HomeSceneKey, type HomeSectionKey, type HomeStateKey } from './home/homeScenes';
 import { useIsMobile } from './hooks/useIsMobile';
 import { useRouteTransition } from './hooks/useRouteTransition';
 import { buildHomeFocusState, isProjectRootRoute, type HomeFocusLocationState } from './navigation/homeFocus';
@@ -17,7 +17,7 @@ export default function App() {
   const css3dRef = useRef<HTMLDivElement>(null);
   const [homeSceneKey] = useState<HomeSceneKey>('aether-weave');
   const [homeStateKey, setHomeStateKey] = useState<HomeStateKey>('cover');
-  const [selectedProjectRoute, setSelectedProjectRoute] = useState<string>(() => getHomeSceneConfig('aether-weave').defaultProjectRoute);
+  const [selectedSectionKey, setSelectedSectionKey] = useState<HomeSectionKey | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,13 +31,15 @@ export default function App() {
   const isHome = location.pathname === '/';
   const isProjectRootPath = isProjectRootRoute(location.pathname);
   const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname] && !isProjectRootPath;
-  const focusedProject = focusProjectRoute ? getProjectByRoute(focusProjectRoute) : null;
 
   const homeScene = getHomeSceneConfig(homeSceneKey);
-  const selectedProject = focusedProject ?? getProjectByRoute(selectedProjectRoute) ?? getProjectByRoute(homeScene.defaultProjectRoute)!;
-  const effectiveHomeStateKey: HomeStateKey = focusedProject ? 'index' : homeStateKey;
+  const focusedSection = focusProjectRoute ? getHomeSectionByProjectRoute(focusProjectRoute) : null;
+  const selectedSection = focusedSection ?? (selectedSectionKey ? getHomeSection(selectedSectionKey) : null);
+  const fallbackSection = getHomeSection(homeScene.defaultSectionKey);
+  const activeSection = selectedSection ?? fallbackSection;
+  const effectiveHomeStateKey: HomeStateKey = focusedSection ? 'index' : homeStateKey;
   const activeVisualState = homeScene.states[effectiveHomeStateKey].visual;
-  const activePhaseIndex = getHomeProjectPhaseIndex(selectedProject.route);
+  const activePhaseIndex = getHomeProjectPhaseIndex(activeSection.phaseProjectRoute);
 
   useRouteTransition();
 
@@ -62,12 +64,8 @@ export default function App() {
 
   useEffect(() => {
     if (location.pathname !== '/' || !focusProjectRoute) return;
-    if (!focusedProject) {
-      navigate('/', { replace: true, state: null });
-      return;
-    }
     navigate('/', { replace: true, state: null });
-  }, [focusProjectRoute, focusedProject, location.pathname, navigate]);
+  }, [focusProjectRoute, location.pathname, navigate]);
 
   useEffect(() => {
     if (location.pathname !== '/' || focusProjectRoute) return;
@@ -106,12 +104,11 @@ export default function App() {
 
       {isHome && (
         <HomeSceneOverlay
-          sceneKey={homeSceneKey}
           stateKey={effectiveHomeStateKey}
-          project={selectedProject}
+          section={selectedSection}
           onAdvance={() => dispatchHomeAction('advance')}
-          onSelectProject={(route) => {
-            setSelectedProjectRoute(route);
+          onSelectSection={(sectionKey) => {
+            setSelectedSectionKey((current) => (current === sectionKey ? null : sectionKey));
             dispatchHomeAction('open-project');
           }}
           onOpenChapter={(route) => navigate(route)}
