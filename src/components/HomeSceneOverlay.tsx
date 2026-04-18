@@ -107,13 +107,8 @@ export default function HomeSceneOverlay({
                   marginBottom: '34px',
                 }}
               >
-                <div style={{ color: '#c8a96e', fontSize: scalePx(10), letterSpacing: '0.25em', marginBottom: '6px' }}>
-                  PORTFOLIO · 2025
-                </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', flexWrap: 'wrap' }}>
-                  <div style={{ color: '#f0e8d8', fontSize: scalePx(28), lineHeight: 1.1, fontStyle: 'italic' }}>
-                    寿心悦
-                  </div>
+                <div style={{ color: '#c8a96e', fontSize: scalePx(10), letterSpacing: '0.25em', marginBottom: '8px' }}>
+                  PORTFOLIO
                 </div>
                 <div style={{ color: '#a09070', fontSize: scalePx(11), letterSpacing: '0.12em', marginTop: '4px' }}>
                   Xinyue Shou

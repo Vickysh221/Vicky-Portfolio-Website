@@ -17,7 +17,7 @@ export default function App() {
   const css3dRef = useRef<HTMLDivElement>(null);
   const [homeSceneKey] = useState<HomeSceneKey>('aether-weave');
   const [homeStateKey, setHomeStateKey] = useState<HomeStateKey>('cover');
-  const [selectedSectionKey, setSelectedSectionKey] = useState<HomeSectionKey | null>(null);
+  const [selectedSectionKey, setSelectedSectionKey] = useState<HomeSectionKey | null>(() => getHomeSceneConfig('aether-weave').defaultSectionKey);
 
   const location = useLocation();
   const navigate = useNavigate();
