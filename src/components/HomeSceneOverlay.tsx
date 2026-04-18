@@ -30,7 +30,7 @@ export default function HomeSceneOverlay({
     ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
     : sectionList;
 
-  const { hoveredChapter, onChapterEnter, onChapterLeave, dismiss } = useChapterHover();
+  const { hoveredChapter, onChapterEnter, onChapterMove, onChapterLeave, dismiss } = useChapterHover();
 
   useEffect(() => {
     onChapterHoverChange?.(hoveredChapter?.route ?? null);
@@ -233,8 +233,12 @@ export default function HomeSceneOverlay({
                                     projectTitle,
                                     chapterIndex: index,
                                     chapterTotal: entry.chapters.length,
-                                    anchorEl: e.currentTarget,
+                                    pointerX: e.clientX,
+                                    pointerY: e.clientY,
                                   });
+                                }}
+                                onMouseMove={(e) => {
+                                  onChapterMove(chapter.route, e.clientX, e.clientY);
                                 }}
                                 onMouseLeave={() => onChapterLeave(chapter.route)}
                                 style={{

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { HoveredChapter } from '../hooks/useChapterHover';
 import type { SubPagePreviewMedia } from '../projectRegistry';
+import { computePointerPlacement } from './chapterPreviewPlacement';
 
 interface ChapterHologramPreviewProps {
   chapter: HoveredChapter | null;
@@ -10,28 +11,26 @@ interface ChapterHologramPreviewProps {
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 190;
 const GAP_FROM_ANCHOR = 20;
+const VIEWPORT_MARGIN = 16;
 
 type Placement = {
   left: number;
   top: number;
-  flipped: boolean;
+  flippedX: boolean;
+  flippedY: boolean;
 };
 
-function computePlacement(rect: DOMRect): Placement {
-  const preferredLeft = rect.right + GAP_FROM_ANCHOR;
-  const rightOverflow = preferredLeft + CARD_WIDTH - window.innerWidth + 24;
-  const flipped = rightOverflow > 0 && rect.left - CARD_WIDTH - GAP_FROM_ANCHOR > 16;
-  const left = flipped
-    ? rect.left - CARD_WIDTH - GAP_FROM_ANCHOR
-    : Math.min(preferredLeft, window.innerWidth - CARD_WIDTH - 16);
-
-  const verticalCenter = rect.top + rect.height / 2 - CARD_HEIGHT / 2;
-  const top = Math.max(
-    16,
-    Math.min(verticalCenter, window.innerHeight - CARD_HEIGHT - 16),
-  );
-
-  return { left, top, flipped };
+function computePlacement(pointerX: number, pointerY: number): Placement {
+  return computePointerPlacement({
+    pointerX,
+    pointerY,
+    viewportWidth: window.innerWidth,
+    viewportHeight: window.innerHeight,
+    cardWidth: CARD_WIDTH,
+    cardHeight: CARD_HEIGHT,
+    gap: GAP_FROM_ANCHOR,
+    margin: VIEWPORT_MARGIN,
+  });
 }
 
 function hexWithAlpha(hex: string, alpha: number): string {
@@ -62,7 +61,7 @@ export default function ChapterHologramPreview({
       lastRouteRef.current = null;
       return;
     }
-    setPlacement(computePlacement(chapter.anchorRect));
+    setPlacement(computePlacement(chapter.pointerX, chapter.pointerY));
     if (lastRouteRef.current !== chapter.route) {
       lastRouteRef.current = chapter.route;
       setCrossfadeKey((k) => k + 1);
@@ -95,7 +94,7 @@ export default function ChapterHologramPreview({
         pointerEvents: 'none',
         opacity: visible ? 1 : 0,
         transform: enterTransform,
-        transformOrigin: placement.flipped ? '100% 50%' : '0% 50%',
+        transformOrigin: `${placement.flippedX ? '100%' : '0%'} ${placement.flippedY ? '100%' : '0%'}`,
         transition:
           'opacity 320ms cubic-bezier(0.16,1,0.3,1), transform 320ms cubic-bezier(0.16,1,0.3,1), left 220ms cubic-bezier(0.16,1,0.3,1), top 220ms cubic-bezier(0.16,1,0.3,1)',
         filter: `drop-shadow(0 18px 42px ${hexWithAlpha(accent, 0.22)})`,

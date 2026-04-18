@@ -8,7 +8,8 @@ export interface HoveredChapter {
   projectTitle: string;
   chapterIndex: number;
   chapterTotal: number;
-  anchorRect: DOMRect;
+  pointerX: number;
+  pointerY: number;
 }
 
 interface PendingChapter {
@@ -19,7 +20,8 @@ interface PendingChapter {
   projectTitle: string;
   chapterIndex: number;
   chapterTotal: number;
-  anchorEl: HTMLElement;
+  pointerX: number;
+  pointerY: number;
 }
 
 const ENTER_DELAY_MS = 0;
@@ -59,7 +61,6 @@ export function useChapterHover() {
   }, []);
 
   const commit = useCallback((pending: PendingChapter) => {
-    const rect = pending.anchorEl.getBoundingClientRect();
     activeRouteRef.current = pending.route;
     setHoveredChapter({
       route: pending.route,
@@ -69,7 +70,8 @@ export function useChapterHover() {
       projectTitle: pending.projectTitle,
       chapterIndex: pending.chapterIndex,
       chapterTotal: pending.chapterTotal,
-      anchorRect: rect,
+      pointerX: pending.pointerX,
+      pointerY: pending.pointerY,
     });
   }, []);
 
@@ -121,10 +123,33 @@ export function useChapterHover() {
     clearLeave();
   }, [clearEnter, clearLeave]);
 
+  const onChapterMove = useCallback((route: string, pointerX: number, pointerY: number) => {
+    if (pendingRef.current?.route === route) {
+      pendingRef.current = {
+        ...pendingRef.current,
+        pointerX,
+        pointerY,
+      };
+    }
+
+    if (activeRouteRef.current === route) {
+      setHoveredChapter((current) => (
+        current && current.route === route
+          ? {
+            ...current,
+            pointerX,
+            pointerY,
+          }
+          : current
+      ));
+    }
+  }, []);
+
   return useMemo(() => ({
     hoveredChapter,
     onChapterEnter,
+    onChapterMove,
     onChapterLeave,
     dismiss,
-  }), [hoveredChapter, onChapterEnter, onChapterLeave, dismiss]);
+  }), [hoveredChapter, onChapterEnter, onChapterMove, onChapterLeave, dismiss]);
 }
