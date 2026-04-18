@@ -20,6 +20,9 @@ export default function HomeSceneOverlay({
   onOpenChapter,
 }: HomeSceneOverlayProps) {
   const isCover = stateKey === 'cover';
+  const orderedSections = section
+    ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
+    : sectionList;
 
   return (
     <div
@@ -118,7 +121,7 @@ export default function HomeSceneOverlay({
                 <div style={{ width: '32px', height: '1px', background: '#c8a96e', margin: '10px 0', opacity: 0.6 }} />
               </div>
 
-              {sectionList.map((entry) => {
+              {orderedSections.map((entry) => {
                 const isActive = entry.key === section?.key;
                 return (
                   <div key={entry.key} style={{ marginBottom: isActive ? '24px' : '16px' }}>
