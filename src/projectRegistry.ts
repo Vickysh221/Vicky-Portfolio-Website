@@ -1,8 +1,31 @@
+// ── Chapter preview placeholders (static images sourced from existing assets).
+// Replace each entry with a dedicated cover later; the shape is stable.
+import diaryAgentPreview from './images/diary-agent/slide02-img01.png';
+import fuliPreview from './images/fuli/slide01-img01.png';
+import driverInfoPreview from './images/driver-info/slide01-img03.png';
+import jiduAgentPreview from './images/jiduagent/slide01-img01.png';
+import phoenixPreview from './images/phoenix/slide01-img01.png';
+import companionsPreviewVideo from './images/companions/dancing.mp4';
+import unityCameraPreview from './images/unity3d-camera/slide01-img01.png';
+import map3d2dPreview from './images/3d-2dmap/slide03-img01.png';
+import avpPreview from './images/avp/slide01-img01.png';
+import dashboardPreview from './images/dashboard layout/O-MID.png';
+import slamPreview from './images/slam/slide01-img01.png';
+import gesturePreview from './images/gesture/slide01-img01.png';
+import activeSafetyPreview from './images/地图和仪表元素设计/主动安全 01.png';
+
+export interface SubPagePreviewMedia {
+  src: string;
+  type: 'image' | 'video';
+  poster?: string;
+}
+
 export interface SubPage {
   route: string;
   label: string;
   numeral: string;
   disabled?: boolean;
+  previewMedia?: SubPagePreviewMedia;
 }
 
 export interface ProjectEntry {
@@ -29,11 +52,11 @@ export const PROJECTS: ProjectEntry[] = [
     color: '#8b7db5',
     route: '/agentic-design-development',
     subPages: [
-      { route: '/agentic-design-development/language-diary', label: 'A Ritual of Expression - 语言学习陪伴多智能体系统', numeral: 'I' },
-      { route: '/agentic-design-development/fuli-plus', label: '面向地毯生成的AI协作设计系统', numeral: 'II' },
-      { route: '/agentic-design-development/driving-authority-contracts', label: '当车开始像同伴一样观察人时', numeral: 'III' },
-      { route: '/agentic-design-development/agentic-driving', label: '驾驶专家，还是个性化驾驶员？', numeral: 'IV' },
-      { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'V' },
+      { route: '/agentic-design-development/language-diary', label: 'A Ritual of Expression - 语言学习陪伴多智能体系统', numeral: 'I', previewMedia: { src: diaryAgentPreview, type: 'image' } },
+      { route: '/agentic-design-development/fuli-plus', label: '面向地毯生成的AI协作设计系统', numeral: 'II', previewMedia: { src: fuliPreview, type: 'image' } },
+      { route: '/agentic-design-development/driving-authority-contracts', label: '当车开始像同伴一样观察人时', numeral: 'III', previewMedia: { src: driverInfoPreview, type: 'image' } },
+      { route: '/agentic-design-development/agentic-driving', label: '驾驶专家，还是个性化驾驶员？', numeral: 'IV', previewMedia: { src: jiduAgentPreview, type: 'image' } },
+      { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'V', previewMedia: { src: phoenixPreview, type: 'image' } },
     ],
   },
   {
@@ -46,7 +69,7 @@ export const PROJECTS: ProjectEntry[] = [
     color: '#6f8f92',
     route: '/academic-gamification',
     subPages: [
-      { route: '/academic-gamification/companions', label: '进入伙伴们的音乐世界吧', numeral: 'I' },
+      { route: '/academic-gamification/companions', label: '进入伙伴们的音乐世界吧', numeral: 'I', previewMedia: { src: companionsPreviewVideo, type: 'video' } },
     ],
   },
   {
@@ -59,13 +82,13 @@ export const PROJECTS: ProjectEntry[] = [
     color: '#c8a96e',
     route: '/jidu-hmi',
     subPages: [
-      { route: '/jidu-hmi/unity3d-camera', label: '3D地图一镜到底系统', numeral: 'I' },
-      { route: '/jidu-hmi/3d-map', label: '2/3D地图融合策略概念', numeral: 'II' },
-      { route: '/jidu-hmi/avp', label: 'AVP自动泊车体设计和原型开发', numeral: 'III' },
-      { route: '/jidu-hmi/dashboard-layout', label: '驾驶区布局和驾驶状态原型设计', numeral: 'IV' },
-      { route: '/jidu-hmi/minimap-camera', label: 'SLAM小地图策略', numeral: 'V' },
-      { route: '/jidu-hmi/3d-map-gesture', label: '3D地图手势系统', numeral: 'VI' },
-      { route: '/jidu-hmi/3d-map-driving-component-states', label: '3D地图和驾驶组件状态设计', numeral: 'VII' },
+      { route: '/jidu-hmi/unity3d-camera', label: '3D地图一镜到底系统', numeral: 'I', previewMedia: { src: unityCameraPreview, type: 'image' } },
+      { route: '/jidu-hmi/3d-map', label: '2/3D地图融合策略概念', numeral: 'II', previewMedia: { src: map3d2dPreview, type: 'image' } },
+      { route: '/jidu-hmi/avp', label: 'AVP自动泊车体设计和原型开发', numeral: 'III', previewMedia: { src: avpPreview, type: 'image' } },
+      { route: '/jidu-hmi/dashboard-layout', label: '驾驶区布局和驾驶状态原型设计', numeral: 'IV', previewMedia: { src: dashboardPreview, type: 'image' } },
+      { route: '/jidu-hmi/minimap-camera', label: 'SLAM小地图策略', numeral: 'V', previewMedia: { src: slamPreview, type: 'image' } },
+      { route: '/jidu-hmi/3d-map-gesture', label: '3D地图手势系统', numeral: 'VI', previewMedia: { src: gesturePreview, type: 'image' } },
+      { route: '/jidu-hmi/3d-map-driving-component-states', label: '3D地图和驾驶组件状态设计', numeral: 'VII', previewMedia: { src: activeSafetyPreview, type: 'image' } },
     ],
   },
 ];

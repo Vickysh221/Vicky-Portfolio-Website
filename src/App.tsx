@@ -18,6 +18,7 @@ export default function App() {
   const [homeSceneKey] = useState<HomeSceneKey>('aether-weave');
   const [homeStateKey, setHomeStateKey] = useState<HomeStateKey>('cover');
   const [selectedSectionKey, setSelectedSectionKey] = useState<HomeSectionKey | null>(() => getHomeSceneConfig('aether-weave').defaultSectionKey);
+  const [hoveredChapterRoute, setHoveredChapterRoute] = useState<string | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -99,8 +100,13 @@ export default function App() {
         />
       )}
 
-      <div ref={webglRef} style={{ position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none' }} />
-      <div ref={css3dRef} style={{ position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none' }} />
+      <div
+        className={`three-host${isHome && hoveredChapterRoute ? ' is-receded' : ''}`}
+        style={{ position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none' }}
+      >
+        <div ref={webglRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
+        <div ref={css3dRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
+      </div>
 
       {isHome && (
         <HomeSceneOverlay
@@ -112,6 +118,7 @@ export default function App() {
             dispatchHomeAction('open-project');
           }}
           onOpenChapter={(route) => navigate(route)}
+          onChapterHoverChange={setHoveredChapterRoute}
         />
       )}
 

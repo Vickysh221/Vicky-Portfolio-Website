@@ -1,4 +1,8 @@
-import { HOME_INDEX_SECTIONS, type HomeIndexSection, type HomeSectionKey, type HomeStateKey } from '../home/homeScenes';
+import { useEffect } from 'react';
+import { HOME_INDEX_SECTIONS, getProjectByRoute, type HomeIndexSection, type HomeSectionKey, type HomeStateKey } from '../home/homeScenes';
+import { useChapterHover } from '../hooks/useChapterHover';
+import ChapterHologramPreview from './ChapterHologramPreview';
+import ChapterTerminal from './ChapterTerminal';
 
 interface HomeSceneOverlayProps {
   stateKey: HomeStateKey;
@@ -6,6 +10,7 @@ interface HomeSceneOverlayProps {
   onAdvance: () => void;
   onSelectSection: (sectionKey: HomeSectionKey) => void;
   onOpenChapter: (route: string) => void;
+  onChapterHoverChange?: (route: string | null) => void;
 }
 
 const sectionList = Object.values(HOME_INDEX_SECTIONS);
@@ -18,11 +23,33 @@ export default function HomeSceneOverlay({
   onAdvance,
   onSelectSection,
   onOpenChapter,
+  onChapterHoverChange,
 }: HomeSceneOverlayProps) {
   const isCover = stateKey === 'cover';
   const orderedSections = section
     ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
     : sectionList;
+
+  const { hoveredChapter, onChapterEnter, onChapterLeave, dismiss } = useChapterHover();
+
+  useEffect(() => {
+    onChapterHoverChange?.(hoveredChapter?.route ?? null);
+  }, [hoveredChapter, onChapterHoverChange]);
+
+  // Reset hover state whenever the overlay itself changes cover/index
+  useEffect(() => {
+    if (isCover) dismiss();
+  }, [isCover, dismiss]);
+
+  const hoveredPreviewMedia = (() => {
+    if (!hoveredChapter) return null;
+    for (const proj of Object.values(HOME_INDEX_SECTIONS)) {
+      const source = getProjectByRoute(proj.phaseProjectRoute);
+      const found = source?.subPages.find((sp) => sp.route === hoveredChapter.route);
+      if (found) return found.previewMedia ?? null;
+    }
+    return null;
+  })();
 
   return (
     <div
@@ -188,38 +215,59 @@ export default function HomeSceneOverlay({
                           RELATED PROJECTS
                         </div>
                         <div style={{ border: '1px solid rgba(200,169,110,0.08)' }}>
-                          {entry.chapters.map((chapter, index) => (
-                            <button
-                              key={chapter.route}
-                              onClick={() => onOpenChapter(chapter.route)}
-                              style={{
-                                width: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '12px',
-                                border: 'none',
-                                borderBottom: index === entry.chapters.length - 1 ? 'none' : '1px solid rgba(200,169,110,0.05)',
-                                background: 'rgba(0,0,0,0.03)',
-                                color: '#7f6a49',
-                                padding: '10px 12px',
-                                textAlign: 'left',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              <span
-                              style={{
-                                width: '16px',
-                                color: '#4f422f',
-                                fontSize: scalePx(9),
-                                fontStyle: 'italic',
-                                flexShrink: 0,
-                              }}
-                            >
-                              {chapter.numeral}
-                            </span>
-                              <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
-                            </button>
-                          ))}
+                          {entry.chapters.map((chapter, index) => {
+                            const sourceProject = getProjectByRoute(entry.phaseProjectRoute);
+                            const projectColor = sourceProject?.color ?? '#c8a96e';
+                            const projectTitle = sourceProject?.title ?? entry.subtitle;
+                            const isHovered = hoveredChapter?.route === chapter.route;
+                            return (
+                              <button
+                                key={chapter.route}
+                                onClick={() => onOpenChapter(chapter.route)}
+                                onMouseEnter={(e) => {
+                                  onChapterEnter({
+                                    route: chapter.route,
+                                    numeral: chapter.numeral,
+                                    label: chapter.label,
+                                    projectColor,
+                                    projectTitle,
+                                    chapterIndex: index,
+                                    chapterTotal: entry.chapters.length,
+                                    anchorEl: e.currentTarget,
+                                  });
+                                }}
+                                onMouseLeave={() => onChapterLeave(chapter.route)}
+                                style={{
+                                  width: '100%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '12px',
+                                  border: 'none',
+                                  borderBottom: index === entry.chapters.length - 1 ? 'none' : '1px solid rgba(200,169,110,0.05)',
+                                  background: isHovered ? 'rgba(200,169,110,0.06)' : 'rgba(0,0,0,0.03)',
+                                  color: isHovered ? '#d4c4a0' : '#7f6a49',
+                                  padding: '10px 12px',
+                                  textAlign: 'left',
+                                  cursor: 'pointer',
+                                  transition: 'background 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1)',
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    width: '16px',
+                                    color: isHovered ? projectColor : '#4f422f',
+                                    fontSize: scalePx(9),
+                                    fontStyle: 'italic',
+                                    flexShrink: 0,
+                                    transition: 'color 220ms cubic-bezier(0.16,1,0.3,1)',
+                                  }}
+                                >
+                                  {chapter.numeral}
+                                </span>
+                                <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -230,6 +278,12 @@ export default function HomeSceneOverlay({
           </div>
         </div>
       )}
+
+      <ChapterHologramPreview
+        chapter={hoveredChapter}
+        previewMedia={hoveredPreviewMedia}
+      />
+      <ChapterTerminal chapter={hoveredChapter} />
     </div>
   );
 }
