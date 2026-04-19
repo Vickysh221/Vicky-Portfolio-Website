@@ -89,6 +89,7 @@ export const HOME_INDEX_SECTIONS: Record<HomeSectionKey, HomeIndexSection> = {
     chapters: [
       getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/fuli-plus'),
       getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/simo-agent-system'),
+      getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/ai-interior-system'),
     ],
   },
   trust: {

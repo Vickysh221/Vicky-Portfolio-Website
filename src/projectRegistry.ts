@@ -1,18 +1,19 @@
 // ── Chapter preview placeholders (static images sourced from existing assets).
 // Replace each entry with a dedicated cover later; the shape is stable.
-import diaryAgentPreview from './images/diary-agent/slide02-img01.png';
-import fuliPreview from './images/fuli/slide01-img01.png';
-import driverInfoPreview from './images/driver-info/slide01-img03.png';
-import jiduAgentPreview from './images/jiduagent/slide01-img01.png';
-import phoenixPreview from './images/phoenix/slide01-img01.png';
-import companionsPreviewVideo from './images/companions/dancing.mp4';
-import unityCameraPreview from './images/unity3d-camera/slide01-img01.png';
-import map3d2dPreview from './images/3d-2dmap/slide03-img01.png';
-import avpPreview from './images/avp/slide01-img01.png';
-import dashboardPreview from './images/dashboard layout/O-MID.png';
-import slamPreview from './images/slam/slide01-img01.png';
-import gesturePreview from './images/gesture/slide01-img01.png';
-import activeSafetyPreview from './images/地图和仪表元素设计/主动安全 01.png';
+const diaryAgentPreview = new URL('./images/diary-agent/slide02-img01.png', import.meta.url).href;
+const fuliPreview = new URL('./images/fuli/slide01-img01.png', import.meta.url).href;
+const driverInfoPreview = new URL('./images/driver-info/slide01-img03.png', import.meta.url).href;
+const jiduAgentPreview = new URL('./images/jiduagent/slide01-img01.png', import.meta.url).href;
+const phoenixPreview = new URL('./images/phoenix/slide01-img01.png', import.meta.url).href;
+const companionsPreviewVideo = new URL('./images/companions/dancing.mp4', import.meta.url).href;
+const unityCameraPreview = new URL('./images/unity3d-camera/slide01-img01.png', import.meta.url).href;
+const map3d2dPreview = new URL('./images/3d-2dmap/slide03-img01.png', import.meta.url).href;
+const avpPreview = new URL('./images/avp/slide01-img01.png', import.meta.url).href;
+const dashboardPreview = new URL('./images/dashboard layout/O-MID.png', import.meta.url).href;
+const slamPreview = new URL('./images/slam/slide01-img01.png', import.meta.url).href;
+const gesturePreview = new URL('./images/gesture/slide01-img01.png', import.meta.url).href;
+const activeSafetyPreview = new URL('./images/地图和仪表元素设计/主动安全 01.png', import.meta.url).href;
+const interiorPreview = new URL('./images/covers/cover-interior.png', import.meta.url).href;
 
 export interface SubPagePreviewMedia {
   src: string;
@@ -57,6 +58,7 @@ export const PROJECTS: ProjectEntry[] = [
       { route: '/agentic-design-development/driving-authority-contracts', label: '当车开始像同伴一样观察人时', numeral: 'III', previewMedia: { src: driverInfoPreview, type: 'image' } },
       { route: '/agentic-design-development/agentic-driving', label: '驾驶专家，还是个性化驾驶员？', numeral: 'IV', previewMedia: { src: jiduAgentPreview, type: 'image' } },
       { route: '/agentic-design-development/simo-agent-system', label: 'SIMO Agent System 概念设计', numeral: 'V', previewMedia: { src: phoenixPreview, type: 'image' } },
+      { route: '/agentic-design-development/ai-interior-system', label: 'AI 室内设计系统的问题重构与交互定义', numeral: 'VI', previewMedia: { src: interiorPreview, type: 'image' } },
     ],
   },
   {

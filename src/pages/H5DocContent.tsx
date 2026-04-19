@@ -50,6 +50,7 @@ import {
   getDrivingAuthorityContractsUxSubpageSections,
 } from './H5DocContentDrivingAuthorityContracts';
 import type { SectionData } from './H5DocContentSlideFactory';
+import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 
 interface H5DocContentProps {
@@ -137,6 +138,7 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
+  if (hasAiInteriorSystemCaseStudy(route, slideIndex)) return true;
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
   if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 8) return true;
   return `${route}:${slideIndex}` in sectionMap;
@@ -164,6 +166,18 @@ export default function H5DocContent({
   enableNarrativeMotion,
   shouldPlayMedia,
 }: H5DocContentProps) {
+  if (hasAiInteriorSystemCaseStudy(route, slideIndex)) {
+    return (
+      <AiInteriorSystemCaseStudy
+        route={route}
+        accentColor={accentColor}
+        slideIndex={slideIndex}
+        isMobile={isMobile}
+        enableMotion={enableNarrativeMotion}
+      />
+    );
+  }
+
   if (hasFuliPlusCaseStudy(route, slideIndex)) {
     return (
       <FuliPlusCaseStudy
