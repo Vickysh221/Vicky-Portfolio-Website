@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { HOME_INDEX_SECTIONS, getProjectByRoute, type HomeIndexSection, type HomeSectionKey, type HomeStateKey } from '../home/homeScenes';
 import { useChapterHover } from '../hooks/useChapterHover';
+import { PROJECTS, type SubPagePreviewMedia } from '../projectRegistry';
 import ChapterHologramPreview from './ChapterHologramPreview';
 import ChapterTerminal from './ChapterTerminal';
 
@@ -15,6 +16,14 @@ interface HomeSceneOverlayProps {
 const sectionList = Object.values(HOME_INDEX_SECTIONS);
 const TYPE_SCALE = 1.6;
 const scalePx = (value: number) => `${value * TYPE_SCALE}px`;
+
+function getSectionPreviewMedia(sourceSection: HomeIndexSection | null): SubPagePreviewMedia[] {
+  if (!sourceSection) return [];
+
+  return sourceSection.chapters
+    .map((chapter) => getProjectByRoute(sourceSection.phaseProjectRoute)?.subPages.find((subPage) => subPage.route === chapter.route)?.previewMedia)
+    .filter((media): media is SubPagePreviewMedia => Boolean(media));
+}
 
 export default function HomeSceneOverlay({
   stateKey,
@@ -36,6 +45,77 @@ export default function HomeSceneOverlay({
   useEffect(() => {
     if (stateKey === 'cover') dismiss();
   }, [dismiss, stateKey]);
+
+  useEffect(() => {
+    const activeSection = section ?? HOME_INDEX_SECTIONS.relations;
+    const prioritizedMedia = getSectionPreviewMedia(activeSection);
+    const deferredMedia = PROJECTS.flatMap((project) => project.subPages)
+      .map((subPage) => subPage.previewMedia)
+      .filter((media): media is SubPagePreviewMedia => Boolean(media))
+      .filter((media) => !prioritizedMedia.includes(media));
+
+    const imagePreloads = new Map<string, HTMLImageElement>();
+    const videoPreloads = new Map<string, HTMLVideoElement>();
+    let idleCallbackId: number | null = null;
+    let timeoutId: number | null = null;
+
+    const preloadMediaList = (mediaList: SubPagePreviewMedia[]) => {
+      mediaList.forEach((media) => {
+        if (media.type === 'image') {
+          if (imagePreloads.has(media.src)) return;
+          const image = new Image();
+          image.decoding = 'async';
+          image.src = media.src;
+          imagePreloads.set(media.src, image);
+          return;
+        }
+
+        if (media.poster && !imagePreloads.has(media.poster)) {
+          const poster = new Image();
+          poster.decoding = 'async';
+          poster.src = media.poster;
+          imagePreloads.set(media.poster, poster);
+        }
+
+        if (videoPreloads.has(media.src)) return;
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.muted = true;
+        video.playsInline = true;
+        video.src = media.src;
+        video.load();
+        videoPreloads.set(media.src, video);
+      });
+    };
+
+    preloadMediaList(prioritizedMedia);
+
+    const preloadDeferred = () => preloadMediaList(deferredMedia);
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      idleCallbackId = window.requestIdleCallback(preloadDeferred, { timeout: 1200 });
+    } else {
+      timeoutId = globalThis.setTimeout(preloadDeferred, 500);
+    }
+
+    return () => {
+      if (idleCallbackId !== null && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+      if (timeoutId !== null) {
+        globalThis.clearTimeout(timeoutId);
+      }
+
+      imagePreloads.forEach((image) => {
+        image.src = '';
+      });
+      videoPreloads.forEach((video) => {
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      });
+    };
+  }, [section]);
 
   const hoveredPreviewMedia = (() => {
     if (!hoveredChapter) return null;
