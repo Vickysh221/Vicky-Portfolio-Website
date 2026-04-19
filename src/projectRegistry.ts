@@ -1,20 +1,21 @@
 // ── Chapter preview placeholders (static images sourced from existing assets).
 // Replace each entry with a dedicated cover later; the shape is stable.
-const diaryAgentPreview = new URL('./images/covers/cover-lang.png', import.meta.url).href;
-const fuliPreview = new URL('./images/covers/cover-fuli.png', import.meta.url).href;
-const driverInfoPreview = new URL('./images/driver-info/slide01-img03.png', import.meta.url).href;
-const jiduAgentPreview = new URL('./images/jiduagent/slide01-img01.png', import.meta.url).href;
-const phoenixPreview = new URL('./images/covers/cover-simo.png', import.meta.url).href;
-const companionsPreviewVideo = new URL('./images/companions/dancing.mp4', import.meta.url).href;
-const unityCameraPreview = new URL('./images/covers/cover-cam.png', import.meta.url).href;
-const map3d2dPreview = new URL('./images/covers/2d3d.mov', import.meta.url).href;
-const map3d2dPreviewPoster = new URL('./images/3d-2dmap/slide03-img01.png', import.meta.url).href;
-const avpPreview = new URL('./images/covers/cover-avp.png', import.meta.url).href;
-const dashboardPreview = new URL('./images/covers/cover-drv.png', import.meta.url).href;
-const slamPreview = new URL('./images/covers/cover-slam.png', import.meta.url).href;
-const gesturePreview = new URL('./images/covers/cover-gesture.png', import.meta.url).href;
-const activeSafetyPreview = new URL('./images/covers/cover-components.png', import.meta.url).href;
-const interiorPreview = new URL('./images/covers/cover-interior.png', import.meta.url).href;
+const diaryAgentPreview = new URL('./images/covers/thumbs/cover-lang.jpg', import.meta.url).href;
+const fuliPreview = new URL('./images/covers/thumbs/cover-fuli.jpg', import.meta.url).href;
+const driverInfoPreview = new URL('./images/covers/thumbs/cover-driver-info.jpg', import.meta.url).href;
+const jiduAgentPreview = new URL('./images/covers/thumbs/cover-jidu-agent.jpg', import.meta.url).href;
+const phoenixPreview = new URL('./images/covers/thumbs/cover-simo.jpg', import.meta.url).href;
+const companionsPreviewVideo = new URL('./images/covers/previews/companions-dancing-preview.mp4', import.meta.url).href;
+const companionsPreviewPoster = new URL('./images/covers/previews/companions-dancing-poster.jpg', import.meta.url).href;
+const unityCameraPreview = new URL('./images/covers/thumbs/cover-cam.jpg', import.meta.url).href;
+const map3d2dPreview = new URL('./images/covers/previews/2d3d-preview.mp4', import.meta.url).href;
+const map3d2dPreviewPoster = new URL('./images/covers/previews/2d3d-poster.jpg', import.meta.url).href;
+const avpPreview = new URL('./images/covers/thumbs/cover-avp.jpg', import.meta.url).href;
+const dashboardPreview = new URL('./images/covers/thumbs/cover-drv.jpg', import.meta.url).href;
+const slamPreview = new URL('./images/covers/thumbs/cover-slam.jpg', import.meta.url).href;
+const gesturePreview = new URL('./images/covers/thumbs/cover-gesture.jpg', import.meta.url).href;
+const activeSafetyPreview = new URL('./images/covers/thumbs/cover-components.jpg', import.meta.url).href;
+const interiorPreview = new URL('./images/covers/thumbs/cover-interior.jpg', import.meta.url).href;
 
 export interface SubPagePreviewMedia {
   src: string;
@@ -72,7 +73,7 @@ export const PROJECTS: ProjectEntry[] = [
     color: '#6f8f92',
     route: '/academic-gamification',
     subPages: [
-      { route: '/academic-gamification/companions', label: '进入伙伴们的音乐世界吧', numeral: 'I', previewMedia: { src: companionsPreviewVideo, type: 'video' } },
+      { route: '/academic-gamification/companions', label: '进入伙伴们的音乐世界吧', numeral: 'I', previewMedia: { src: companionsPreviewVideo, type: 'video', poster: companionsPreviewPoster } },
     ],
   },
   {
