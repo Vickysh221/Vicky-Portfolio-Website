@@ -11,6 +11,7 @@ import { getAvpSlide1Sections } from './H5DocContentAvpSlide01';
 import { getDashboardLayoutSlide01Sections } from './H5DocContentDashboardLayoutSlide01';
 import { getMinimapCameraSlide01Sections } from './H5DocContentMinimapCameraSlide01';
 import { get3dMapGestureSlide01Sections } from './H5DocContent3dMapGestureSlide01';
+import { getSimoAgentParksSlide00Sections } from './H5DocContentSimoAgentParksSlide00';
 import { getSimoAgentParksSlide01Sections } from './H5DocContentSimoAgentParksSlide01';
 import { get3dMapDrivingComponentStatesSlide01Sections } from './H5DocContent3dMapDrivingComponentStatesSlide01';
 import { get3dMapDrivingComponentStatesSlide02Sections } from './H5DocContent3dMapDrivingComponentStatesSlide02';
@@ -94,7 +95,8 @@ const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
   '/jidu-hmi/3d-map-driving-component-states:0': get3dMapDrivingComponentStatesSlide01Sections,
   '/jidu-hmi/3d-map-driving-component-states:1': get3dMapDrivingComponentStatesSlide02Sections,
   '/jidu-hmi/3d-map-driving-component-states:2': get3dMapDrivingComponentStatesSlide03Sections,
-  '/agentic-design-development/simo-agent-system:0': getSimoAgentParksSlide01Sections,
+  '/agentic-design-development/simo-agent-system:0': getSimoAgentParksSlide00Sections,
+  '/agentic-design-development/simo-agent-system:1': getSimoAgentParksSlide01Sections,
 
   '/web-design-develop/overview:0': getPhoenixOverviewSlide01Sections,
   '/web-design-develop/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,

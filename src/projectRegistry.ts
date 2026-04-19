@@ -1,10 +1,10 @@
 // ── Chapter preview placeholders (static images sourced from existing assets).
 // Replace each entry with a dedicated cover later; the shape is stable.
-const diaryAgentPreview = new URL('./images/diary-agent/slide02-img01.png', import.meta.url).href;
-const fuliPreview = new URL('./images/fuli/slide01-img01.png', import.meta.url).href;
+const diaryAgentPreview = new URL('./images/covers/cover-lang.png', import.meta.url).href;
+const fuliPreview = new URL('./images/covers/cover-fuli.png', import.meta.url).href;
 const driverInfoPreview = new URL('./images/driver-info/slide01-img03.png', import.meta.url).href;
 const jiduAgentPreview = new URL('./images/jiduagent/slide01-img01.png', import.meta.url).href;
-const phoenixPreview = new URL('./images/phoenix/slide01-img01.png', import.meta.url).href;
+const phoenixPreview = new URL('./images/covers/cover-simo.png', import.meta.url).href;
 const companionsPreviewVideo = new URL('./images/companions/dancing.mp4', import.meta.url).href;
 const unityCameraPreview = new URL('./images/covers/cover-cam.png', import.meta.url).href;
 const map3d2dPreview = new URL('./images/covers/2d3d.mov', import.meta.url).href;
