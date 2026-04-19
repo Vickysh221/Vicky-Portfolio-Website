@@ -252,7 +252,7 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
   );
 }
 
-function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
+function renderVisualBlock(block: VisualBlock, accentColor: string) {
   switch (block.type) {
     case 'videoFeature':
       return (
@@ -351,7 +351,7 @@ export default function AiInteriorSystemCaseStudy({
       {page.visualBlocks.length ? (
         <section style={{ display: 'grid', gap: 14 }}>
           {page.visualBlocks.map((block) => (
-            <div key={block.title ?? block.caption ?? block.src}>{renderVisualBlock(block, accentColor, isMobile)}</div>
+            <div key={block.title ?? block.caption ?? block.src}>{renderVisualBlock(block, accentColor)}</div>
           ))}
         </section>
       ) : null}

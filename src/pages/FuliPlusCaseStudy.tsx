@@ -732,20 +732,6 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
   }
 }
 
-function mediaFrame(src: string, crop = 'center', fit: 'cover' | 'contain' = 'cover') {
-  return {
-    width: '100%',
-    aspectRatio: '1.28 / 1',
-    borderRadius: 16,
-    backgroundImage: `linear-gradient(180deg, rgba(8,6,4,0.08), rgba(8,6,4,0.24)), url(${src})`,
-    backgroundSize: fit,
-    backgroundPosition: crop,
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: 'rgba(8,6,4,0.72)',
-    border: '1px solid rgba(200,169,110,0.1)',
-  } as CSSProperties;
-}
-
 function imageFrameStyle(): CSSProperties {
   return {
     display: 'block',
@@ -1434,7 +1420,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${block.items.length}, minmax(0, 1fr))`, gap: 12 }}>
-            {block.items.map((item, index) => (
+            {block.items.map((item) => (
               <div key={item.title} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
                 <img src={item.src} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
                 <div style={{ color: '#f0e8d8', fontSize: 16 }}>{item.title}</div>

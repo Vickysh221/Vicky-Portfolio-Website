@@ -49,6 +49,7 @@ export default function ChapterHologramPreview({
   previewMedia,
 }: ChapterHologramPreviewProps) {
   const [visible, setVisible] = useState(false);
+  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
   const [placement, setPlacement] = useState<Placement | null>(null);
   const lastRouteRef = useRef<string | null>(null);
   const [crossfadeKey, setCrossfadeKey] = useState(0);
@@ -58,6 +59,7 @@ export default function ChapterHologramPreview({
     if (!chapter) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(false);
+      setShouldPlayVideo(false);
       lastRouteRef.current = null;
       return;
     }
@@ -65,11 +67,20 @@ export default function ChapterHologramPreview({
     if (lastRouteRef.current !== chapter.route) {
       lastRouteRef.current = chapter.route;
       setCrossfadeKey((k) => k + 1);
+      setShouldPlayVideo(false);
     }
     // Next tick so the initial transform applies.
     const id = window.requestAnimationFrame(() => setVisible(true));
     return () => window.cancelAnimationFrame(id);
   }, [chapter]);
+
+  useEffect(() => {
+    if (!chapter || previewMedia?.type !== 'video') {
+      setShouldPlayVideo(false);
+      return;
+    }
+    setShouldPlayVideo(true);
+  }, [chapter, previewMedia, crossfadeKey]);
 
   const accent = chapter?.projectColor ?? '#c8a96e';
   const glow = useMemo(() => hexWithAlpha(accent, 0.35), [accent]);
@@ -165,20 +176,42 @@ export default function ChapterHologramPreview({
           }}
         >
           {previewMedia?.type === 'video' ? (
-            <video
-              src={previewMedia.src}
-              poster={previewMedia.poster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                filter: 'saturate(0.9) contrast(1.05)',
-              }}
-            />
+            shouldPlayVideo ? (
+              <video
+                src={previewMedia.src}
+                poster={previewMedia.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="none"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'saturate(0.9) contrast(1.05)',
+                }}
+              />
+            ) : previewMedia.poster ? (
+              <img
+                src={previewMedia.poster}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'saturate(0.9) contrast(1.05)',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  background: `linear-gradient(135deg, ${hexWithAlpha(accent, 0.16)}, rgba(0,0,0,0.72))`,
+                }}
+              />
+            )
           ) : previewMedia ? (
             <img
               src={previewMedia.src}

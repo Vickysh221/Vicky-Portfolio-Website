@@ -8,6 +8,7 @@ const phoenixPreview = new URL('./images/covers/cover-simo.png', import.meta.url
 const companionsPreviewVideo = new URL('./images/companions/dancing.mp4', import.meta.url).href;
 const unityCameraPreview = new URL('./images/covers/cover-cam.png', import.meta.url).href;
 const map3d2dPreview = new URL('./images/covers/2d3d.mov', import.meta.url).href;
+const map3d2dPreviewPoster = new URL('./images/3d-2dmap/slide03-img01.png', import.meta.url).href;
 const avpPreview = new URL('./images/covers/cover-avp.png', import.meta.url).href;
 const dashboardPreview = new URL('./images/covers/cover-drv.png', import.meta.url).href;
 const slamPreview = new URL('./images/covers/cover-slam.png', import.meta.url).href;
@@ -85,7 +86,7 @@ export const PROJECTS: ProjectEntry[] = [
     route: '/jidu-hmi',
     subPages: [
       { route: '/jidu-hmi/unity3d-camera', label: '3D地图一镜到底系统', numeral: 'I', previewMedia: { src: unityCameraPreview, type: 'image' } },
-      { route: '/jidu-hmi/3d-map', label: '2/3D地图融合策略概念', numeral: 'II', previewMedia: { src: map3d2dPreview, type: 'video' } },
+      { route: '/jidu-hmi/3d-map', label: '2/3D地图融合策略概念', numeral: 'II', previewMedia: { src: map3d2dPreview, type: 'video', poster: map3d2dPreviewPoster } },
       { route: '/jidu-hmi/avp', label: 'AVP自动泊车体设计和原型开发', numeral: 'III', previewMedia: { src: avpPreview, type: 'image' } },
       { route: '/jidu-hmi/dashboard-layout', label: '驾驶区布局和驾驶状态原型设计', numeral: 'IV', previewMedia: { src: dashboardPreview, type: 'image' } },
       { route: '/jidu-hmi/minimap-camera', label: 'SLAM小地图策略', numeral: 'V', previewMedia: { src: slamPreview, type: 'image' } },
