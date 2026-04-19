@@ -1,4 +1,4 @@
-import { PROJECTS, type ProjectEntry } from '../projectRegistry';
+import { PROJECTS, type ProjectEntry } from '../projectRegistry.ts';
 
 export type HomeSceneKey = 'aether-weave';
 export type HomeStateKey = 'cover' | 'index';
@@ -110,7 +110,7 @@ export const HOME_INDEX_SECTIONS: Record<HomeSectionKey, HomeIndexSection> = {
 export const HOME_SCENES: Record<HomeSceneKey, HomeSceneConfig> = {
   'aether-weave': {
     key: 'aether-weave',
-    defaultState: 'cover',
+    defaultState: 'index',
     defaultSectionKey: 'relations',
     states: {
       cover: {
@@ -135,7 +135,6 @@ export const HOME_SCENES: Record<HomeSceneKey, HomeSceneConfig> = {
           rotationScale: 0.78,
         },
         actions: {
-          back: 'cover',
           'open-project': 'index',
           'background-activate': 'index',
         },

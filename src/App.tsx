@@ -16,7 +16,7 @@ export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
   const css3dRef = useRef<HTMLDivElement>(null);
   const [homeSceneKey] = useState<HomeSceneKey>('aether-weave');
-  const [homeStateKey, setHomeStateKey] = useState<HomeStateKey>('cover');
+  const [homeStateKey, setHomeStateKey] = useState<HomeStateKey>('index');
   const [selectedSectionKey, setSelectedSectionKey] = useState<HomeSectionKey | null>(() => getHomeSceneConfig('aether-weave').defaultSectionKey);
   const [hoveredChapterRoute, setHoveredChapterRoute] = useState<string | null>(null);
 
@@ -112,7 +112,6 @@ export default function App() {
         <HomeSceneOverlay
           stateKey={effectiveHomeStateKey}
           section={selectedSection}
-          onAdvance={() => dispatchHomeAction('advance')}
           onSelectSection={(sectionKey) => {
             setSelectedSectionKey((current) => (current === sectionKey ? null : sectionKey));
             dispatchHomeAction('open-project');

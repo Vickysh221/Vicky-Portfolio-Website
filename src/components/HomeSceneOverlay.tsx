@@ -7,7 +7,6 @@ import ChapterTerminal from './ChapterTerminal';
 interface HomeSceneOverlayProps {
   stateKey: HomeStateKey;
   section: HomeIndexSection | null;
-  onAdvance: () => void;
   onSelectSection: (sectionKey: HomeSectionKey) => void;
   onOpenChapter: (route: string) => void;
   onChapterHoverChange?: (route: string | null) => void;
@@ -20,12 +19,10 @@ const scalePx = (value: number) => `${value * TYPE_SCALE}px`;
 export default function HomeSceneOverlay({
   stateKey,
   section,
-  onAdvance,
   onSelectSection,
   onOpenChapter,
   onChapterHoverChange,
 }: HomeSceneOverlayProps) {
-  const isCover = stateKey === 'cover';
   const orderedSections = section
     ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
     : sectionList;
@@ -36,10 +33,9 @@ export default function HomeSceneOverlay({
     onChapterHoverChange?.(hoveredChapter?.route ?? null);
   }, [hoveredChapter, onChapterHoverChange]);
 
-  // Reset hover state whenever the overlay itself changes cover/index
   useEffect(() => {
-    if (isCover) dismiss();
-  }, [isCover, dismiss]);
+    if (stateKey === 'cover') dismiss();
+  }, [dismiss, stateKey]);
 
   const hoveredPreviewMedia = (() => {
     if (!hoveredChapter) return null;
@@ -74,214 +70,185 @@ export default function HomeSceneOverlay({
         }}
       />
 
-      {isCover ? (
+      <div
+        className="absolute inset-0 z-20"
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          padding: '72px 0 40px',
+        }}
+      >
         <div
-          className="absolute inset-0 z-20"
           style={{
+            width: '50%',
             display: 'flex',
-            alignItems: 'flex-end',
             justifyContent: 'center',
-            paddingBottom: '56px',
-          }}
-        >
-          <button
-            onClick={onAdvance}
-            style={{
-              pointerEvents: 'auto',
-              border: 'none',
-              background: 'none',
-              color: 'rgba(255,255,255,0.24)',
-              fontSize: scalePx(10),
-              letterSpacing: '0.65em',
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              padding: 0,
-            }}
-          >
-            click the core to enter the index
-          </button>
-        </div>
-      ) : (
-        <div
-          className="absolute inset-0 z-20"
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: '72px 0 40px',
+            padding: '0 24px',
           }}
         >
           <div
             style={{
-              width: '50%',
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '0 24px',
+              width: '100%',
+              maxWidth: '680px',
+              pointerEvents: 'auto',
             }}
           >
             <div
               style={{
-                width: '100%',
-                maxWidth: '680px',
-                pointerEvents: 'auto',
+                opacity: 1,
+                transition: 'opacity 360ms cubic-bezier(0.16,1,0.3,1), transform 360ms cubic-bezier(0.16,1,0.3,1)',
+                transform: 'translateY(-2px)',
+                marginBottom: '34px',
               }}
             >
-              <div
-                style={{
-                  opacity: 1,
-                  transition: 'opacity 360ms cubic-bezier(0.16,1,0.3,1), transform 360ms cubic-bezier(0.16,1,0.3,1)',
-                  transform: 'translateY(-2px)',
-                  marginBottom: '34px',
-                }}
-              >
-                <div style={{ color: '#c8a96e', fontSize: scalePx(10), letterSpacing: '0.25em', marginBottom: '8px' }}>
-                  PORTFOLIO
-                </div>
-                <div style={{ color: '#a09070', fontSize: scalePx(11), letterSpacing: '0.12em', marginTop: '4px' }}>
-                  Xinyue Shou
-                </div>
-                <div style={{ width: '32px', height: '1px', background: '#c8a96e', margin: '10px 0', opacity: 0.6 }} />
+              <div style={{ color: '#c8a96e', fontSize: scalePx(10), letterSpacing: '0.25em', marginBottom: '8px' }}>
+                PORTFOLIO
               </div>
+              <div style={{ color: '#a09070', fontSize: scalePx(11), letterSpacing: '0.12em', marginTop: '4px' }}>
+                Xinyue Shou
+              </div>
+              <div style={{ width: '32px', height: '1px', background: '#c8a96e', margin: '10px 0', opacity: 0.6 }} />
+            </div>
 
-              {orderedSections.map((entry) => {
-                const isActive = entry.key === section?.key;
-                return (
-                  <div key={entry.key} style={{ marginBottom: isActive ? '24px' : '16px' }}>
-                    <button
-                      onClick={() => onSelectSection(entry.key)}
+            {orderedSections.map((entry) => {
+              const isActive = entry.key === section?.key;
+              return (
+                <div key={entry.key} style={{ marginBottom: isActive ? '24px' : '16px' }}>
+                  <button
+                    onClick={() => onSelectSection(entry.key)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      textAlign: 'left',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isActive ? '#f0e8d8' : '#5e5039',
+                      padding: 0,
+                    }}
+                  >
+                    <div
                       style={{
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'left',
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: isActive ? '#f0e8d8' : '#5e5039',
-                        padding: 0,
+                        color: isActive ? '#c8a96e' : '#403421',
+                        fontSize: scalePx(10),
+                        letterSpacing: '0.26em',
+                        marginBottom: '6px',
                       }}
                     >
-                      <div
-                        style={{
-                          color: isActive ? '#c8a96e' : '#403421',
-                          fontSize: scalePx(10),
-                          letterSpacing: '0.26em',
-                          marginBottom: '6px',
-                        }}
-                      >
-                        {entry.title}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: isActive ? scalePx(20) : scalePx(15),
-                          fontStyle: isActive ? 'italic' : 'normal',
-                          letterSpacing: isActive ? '0' : '0.03em',
-                          lineHeight: 1.35,
-                        }}
-                      >
-                        {entry.subtitle}
-                      </div>
-                    </button>
+                      {entry.title}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: isActive ? scalePx(20) : scalePx(15),
+                        fontStyle: isActive ? 'italic' : 'normal',
+                        letterSpacing: isActive ? '0' : '0.03em',
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {entry.subtitle}
+                    </div>
+                  </button>
 
-                    {isActive && (
-                      <div
-                        className="mini-panel-enter"
+                  {isActive && (
+                    <div
+                      className="mini-panel-enter"
+                      style={{
+                        marginTop: '14px',
+                        marginLeft: '10px',
+                        width: 'calc(100% + 200px)',
+                        maxWidth: '840px',
+                        border: '1px solid rgba(200,169,110,0.08)',
+                        background: 'rgba(10,8,6,0.44)',
+                        backdropFilter: 'blur(3px)',
+                        boxShadow: '0 18px 44px rgba(0,0,0,0.12)',
+                        padding: '14px 16px 16px',
+                      }}
+                    >
+                      <div style={{ color: '#8b7db5', fontSize: scalePx(9), letterSpacing: '0.22em', marginBottom: '8px' }}>
+                        {entry.descriptionTitle}
+                      </div>
+                      <p
                         style={{
-                          marginTop: '14px',
-                          marginLeft: '10px',
-                          width: 'calc(100% + 200px)',
-                          maxWidth: '840px',
-                          border: '1px solid rgba(200,169,110,0.08)',
-                          background: 'rgba(10,8,6,0.44)',
-                          backdropFilter: 'blur(3px)',
-                          boxShadow: '0 18px 44px rgba(0,0,0,0.12)',
-                          padding: '14px 16px 16px',
+                          margin: 0,
+                          color: '#8a7552',
+                          fontSize: '12px',
+                          lineHeight: 1.9,
                         }}
                       >
-                        <div style={{ color: '#8b7db5', fontSize: scalePx(9), letterSpacing: '0.22em', marginBottom: '8px' }}>
-                          {entry.descriptionTitle}
-                        </div>
-                        <p
-                          style={{
-                            margin: 0,
-                            color: '#8a7552',
-                            fontSize: '12px',
-                            lineHeight: 1.9,
-                          }}
-                        >
-                          {entry.body}
-                        </p>
+                        {entry.body}
+                      </p>
 
-                        <div style={{ color: '#6f5b92', fontSize: scalePx(9), letterSpacing: '0.24em', marginTop: '14px', marginBottom: '6px' }}>
-                          RELATED PROJECTS
-                        </div>
-                        <div style={{ border: '1px solid rgba(200,169,110,0.08)' }}>
-                          {entry.chapters.map((chapter, index) => {
-                            const sourceProject = getProjectByRoute(entry.phaseProjectRoute);
-                            const projectColor = sourceProject?.color ?? '#c8a96e';
-                            const projectTitle = sourceProject?.title ?? entry.subtitle;
-                            const isHovered = hoveredChapter?.route === chapter.route;
-                            return (
-                              <button
-                                key={chapter.route}
-                                onClick={() => onOpenChapter(chapter.route)}
-                                onMouseEnter={(e) => {
-                                  onChapterEnter({
-                                    route: chapter.route,
-                                    numeral: chapter.numeral,
-                                    label: chapter.label,
-                                    projectColor,
-                                    projectTitle,
-                                    chapterIndex: index,
-                                    chapterTotal: entry.chapters.length,
-                                    pointerX: e.clientX,
-                                    pointerY: e.clientY,
-                                  });
-                                }}
-                                onMouseMove={(e) => {
-                                  onChapterMove(chapter.route, e.clientX, e.clientY);
-                                }}
-                                onMouseLeave={() => onChapterLeave(chapter.route)}
+                      <div style={{ color: '#6f5b92', fontSize: scalePx(9), letterSpacing: '0.24em', marginTop: '14px', marginBottom: '6px' }}>
+                        RELATED PROJECTS
+                      </div>
+                      <div style={{ border: '1px solid rgba(200,169,110,0.08)' }}>
+                        {entry.chapters.map((chapter, index) => {
+                          const sourceProject = getProjectByRoute(entry.phaseProjectRoute);
+                          const projectColor = sourceProject?.color ?? '#c8a96e';
+                          const projectTitle = sourceProject?.title ?? entry.subtitle;
+                          const isHovered = hoveredChapter?.route === chapter.route;
+                          return (
+                            <button
+                              key={chapter.route}
+                              onClick={() => onOpenChapter(chapter.route)}
+                              onMouseEnter={(e) => {
+                                onChapterEnter({
+                                  route: chapter.route,
+                                  numeral: chapter.numeral,
+                                  label: chapter.label,
+                                  projectColor,
+                                  projectTitle,
+                                  chapterIndex: index,
+                                  chapterTotal: entry.chapters.length,
+                                  pointerX: e.clientX,
+                                  pointerY: e.clientY,
+                                });
+                              }}
+                              onMouseMove={(e) => {
+                                onChapterMove(chapter.route, e.clientX, e.clientY);
+                              }}
+                              onMouseLeave={() => onChapterLeave(chapter.route)}
+                              style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                border: 'none',
+                                borderBottom: index === entry.chapters.length - 1 ? 'none' : '1px solid rgba(200,169,110,0.05)',
+                                background: isHovered ? 'rgba(200,169,110,0.06)' : 'rgba(0,0,0,0.03)',
+                                color: isHovered ? '#d4c4a0' : '#7f6a49',
+                                padding: '10px 12px',
+                                textAlign: 'left',
+                                cursor: 'pointer',
+                                transition: 'background 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1)',
+                              }}
+                            >
+                              <span
                                 style={{
-                                  width: '100%',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '12px',
-                                  border: 'none',
-                                  borderBottom: index === entry.chapters.length - 1 ? 'none' : '1px solid rgba(200,169,110,0.05)',
-                                  background: isHovered ? 'rgba(200,169,110,0.06)' : 'rgba(0,0,0,0.03)',
-                                  color: isHovered ? '#d4c4a0' : '#7f6a49',
-                                  padding: '10px 12px',
-                                  textAlign: 'left',
-                                  cursor: 'pointer',
-                                  transition: 'background 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1)',
+                                  width: '16px',
+                                  color: isHovered ? projectColor : '#4f422f',
+                                  fontSize: scalePx(9),
+                                  fontStyle: 'italic',
+                                  flexShrink: 0,
+                                  transition: 'color 220ms cubic-bezier(0.16,1,0.3,1)',
                                 }}
                               >
-                                <span
-                                  style={{
-                                    width: '16px',
-                                    color: isHovered ? projectColor : '#4f422f',
-                                    fontSize: scalePx(9),
-                                    fontStyle: 'italic',
-                                    flexShrink: 0,
-                                    transition: 'color 220ms cubic-bezier(0.16,1,0.3,1)',
-                                  }}
-                                >
-                                  {chapter.numeral}
-                                </span>
-                                <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
+                                {chapter.numeral}
+                              </span>
+                              <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
-      )}
+      </div>
 
       <ChapterHologramPreview
         chapter={hoveredChapter}

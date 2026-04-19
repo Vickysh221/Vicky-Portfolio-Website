@@ -207,7 +207,6 @@ export default function HomeVoidBackground({
   });
   const controlledPhase = typeof phaseIndex === 'number';
   const [internalPhaseIndex, setInternalPhaseIndex] = useState(DEFAULT_PHASE_INDEX);
-  const [overlayVisible, setOverlayVisible] = useState(true);
 
   const phases = useMemo<VoidPhase[]>(() => [
     {
@@ -400,12 +399,7 @@ export default function HomeVoidBackground({
     window.addEventListener('mousemove', handleMouseMove);
     animate();
 
-    const overlayTimer = window.setTimeout(() => {
-      setOverlayVisible(false);
-    }, 1500);
-
     return () => {
-      window.clearTimeout(overlayTimer);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
 
@@ -594,26 +588,6 @@ export default function HomeVoidBackground({
             点击核心 以观测维度的超经验演化
           </div>
         </div>
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          background: '#000',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          pointerEvents: 'none',
-          letterSpacing: '1.2em',
-          fontSize: '11px',
-          color: '#7d724e',
-          opacity: overlayVisible ? 1 : 0,
-          transition: 'opacity 3s cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-      >
-        TRANSCENDING VOID
       </div>
     </div>
   );
