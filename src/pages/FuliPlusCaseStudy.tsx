@@ -161,6 +161,83 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
+    pageId: 'case05-first-round-expansion',
+    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
+    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
+    mainCopy:
+      '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05FirstRound',
+      },
+    ],
+  },
+  {
+    pageId: 'case05-selection-and-convergence',
+    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
+    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
+    mainCopy:
+      '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'case05SelectionConvergence',
+      },
+    ],
+  },
+  {
+    pageTitle: 'Towards an agentic project',
+    pageGoal: '把当前系统从 semantic layer 推进到 agent design 的下一阶段讲清楚。',
+    mainCopy:
+      '当前项目已经从“参数 demo + 最近邻展示”推进到“带有 design state、反馈闭环、真实资产匹配和 early-round probing 实验的机制原型”。这一步最重要的变化不是系统终于“更像一个 agent”了，而是 rug-specific semantic layer 已经逐渐成形：用户输入、参考图、品牌 cue 和多轮反馈，第一次可以被压到同一组可比较、可收束的中间状态里。',
+    contentBlocks: [
+      {
+        type: 'shortParagraphs',
+        items: [
+          '也正因为这层结构开始稳定，agent 的下一步才第一次变得可被精确定义。它不再只是一个会话壳，也不只是负责理解泛化意图，而是要开始承担更清楚的 orchestration 工作：判断当前反馈落在哪个对象层级、区分 lane switch 与 same-lane refinement、识别哪些槽位已经收束成 locked DNA、决定这一轮应继续 exploration 还是进入 second-stage control，并在用户偏好与品牌 DNA 之间组织更稳定的 semantic reinforcement。',
+          '这部分工作的意义，不是回头证明“要不要用 agent”，而是基于现有系统状态，开始设计一个真正服务于 semantic control 的多轮 design agent。技术上，前一阶段已经把 intent recognition、semantic mapping、slot matching、brand cue retrieval 和 variation control 的基础对象做了出来；下一阶段要解决的，是 agent 如何调度这些对象，让一个方向在多轮过程中被持续解释、被策略化推进，并最终收束成更可控的设计判断。',
+        ],
+      },
+      {
+        type: 'bulletCluster',
+        title: '下一步 agent design 不再是泛化助手，而是 semantic orchestration layer',
+        items: [
+          'semantic layer 已经把用户输入、参考图、品牌 cue 和多轮反馈压成可操作的 design state。',
+          'agent 的职责开始清楚：解释当前反馈落点、管理阶段切换、选择 control mode、推动方向逐步收束。',
+          '技术重点不再只是生成更多结果，而是让 retrieval、semantic matching 和 variation control 形成连续的多轮策略层。',
+          '因此，下一阶段不是继续抽象讨论 agent，而是把它具体设计成一个服务于 semantic control 的 design orchestration system。',
+        ],
+      },
+      {
+        type: 'bulletCluster',
+        title: '如果把这套东西落到具体界面上',
+        items: [
+          '将当前的智驾播报升级为驾驶责任条，实时显示现在谁负责、系统状态、ODD / 能力边界、接管准备度。',
+          '把车机陪伴助手的信息显示升级，让它实时显示现在基于哪些偏好在工作、刚学到了什么、哪些记忆候选等待确认。',
+          '实时只出现 1 / 2 / 4 类回执，第 3 类尽量延后到低负荷时刻。',
+          '停车后再回放学习，不是边开边问，而是事后说，“今天观察到你在二级路更偏好提前两个路口变道，要不要保存？”',
+          '同时提供记忆工坊，让每条记忆都能看来源、场景、生效范围、上次使用、编辑 / 忘记 / 永不学习。',
+          '一旦进入高风险或低置信状态，所有 companion 式解释自动退场，只保留安全提示与接管信息。',
+        ],
+      },
+      {
+        type: 'highlightParagraph',
+        title: 'highlight',
+        body:
+          '这套界面落地的关键，不是把 agent 解释做得更“像陪伴”，而是把 responsibility、confidence、memory learning 和 interaction timing 放到同一个受驾驶负荷约束的 orchestration 逻辑里：高负荷时只留下安全与接管，低负荷或事后时刻再让学习、确认和偏好组织进入界面。',
+      },
+    ],
+    visualBlocks: [
+      {
+        type: 'htmlEmbed',
+        title: 'orchestration flow',
+        src: '/orchestration_flow_semantic_control.html',
+        aspectRatio: '1.6 / 1',
+      },
+    ],
+  },
+  {
     pageId: 'semantic-compilation-chain',
     pageTitle: '基于地毯生成目标的任务拆解-round 1 方向探索',
     pageGoal: '解释第一轮为什么是方向假设，而不是三张随机图。',
@@ -243,83 +320,6 @@ const pages: CaseStudyPage[] = [
         title: '从模糊语义到 rug-specific design language',
         before: ['温暖自然', '有流动感', '不要太甜', '适合客厅'],
         after: ['restrained warm-earth palette', 'branching organic path', 'open breathing areas', 'soft contour transitions', 'mixed-pile hand-tufted relief'],
-      },
-    ],
-  },
-  {
-    pageId: 'case05-first-round-expansion',
-    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
-    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
-    mainCopy:
-      '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'case05FirstRound',
-      },
-    ],
-  },
-  {
-    pageId: 'case05-selection-and-convergence',
-    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
-    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
-    mainCopy:
-      '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
-    contentBlocks: [],
-    visualBlocks: [
-      {
-        type: 'case05SelectionConvergence',
-      },
-    ],
-  },
-  {
-    pageTitle: 'Towards an agentic project',
-    pageGoal: '把当前系统从 semantic layer 推进到 agent design 的下一阶段讲清楚。',
-    mainCopy:
-      '当前项目已经从“参数 demo + 最近邻展示”推进到“带有 design state、反馈闭环、真实资产匹配和 early-round probing 实验的机制原型”。这一步最重要的变化不是系统终于“更像一个 agent”了，而是 rug-specific semantic layer 已经逐渐成形：用户输入、参考图、品牌 cue 和多轮反馈，第一次可以被压到同一组可比较、可收束的中间状态里。',
-    contentBlocks: [
-      {
-        type: 'shortParagraphs',
-        items: [
-          '也正因为这层结构开始稳定，agent 的下一步才第一次变得可被精确定义。它不再只是一个会话壳，也不只是负责理解泛化意图，而是要开始承担更清楚的 orchestration 工作：判断当前反馈落在哪个对象层级、区分 lane switch 与 same-lane refinement、识别哪些槽位已经收束成 locked DNA、决定这一轮应继续 exploration 还是进入 second-stage control，并在用户偏好与品牌 DNA 之间组织更稳定的 semantic reinforcement。',
-          '这部分工作的意义，不是回头证明“要不要用 agent”，而是基于现有系统状态，开始设计一个真正服务于 semantic control 的多轮 design agent。技术上，前一阶段已经把 intent recognition、semantic mapping、slot matching、brand cue retrieval 和 variation control 的基础对象做了出来；下一阶段要解决的，是 agent 如何调度这些对象，让一个方向在多轮过程中被持续解释、被策略化推进，并最终收束成更可控的设计判断。',
-        ],
-      },
-      {
-        type: 'bulletCluster',
-        title: '下一步 agent design 不再是泛化助手，而是 semantic orchestration layer',
-        items: [
-          'semantic layer 已经把用户输入、参考图、品牌 cue 和多轮反馈压成可操作的 design state。',
-          'agent 的职责开始清楚：解释当前反馈落点、管理阶段切换、选择 control mode、推动方向逐步收束。',
-          '技术重点不再只是生成更多结果，而是让 retrieval、semantic matching 和 variation control 形成连续的多轮策略层。',
-          '因此，下一阶段不是继续抽象讨论 agent，而是把它具体设计成一个服务于 semantic control 的 design orchestration system。',
-        ],
-      },
-      {
-        type: 'bulletCluster',
-        title: '如果把这套东西落到具体界面上',
-        items: [
-          '将当前的智驾播报升级为驾驶责任条，实时显示现在谁负责、系统状态、ODD / 能力边界、接管准备度。',
-          '把车机陪伴助手的信息显示升级，让它实时显示现在基于哪些偏好在工作、刚学到了什么、哪些记忆候选等待确认。',
-          '实时只出现 1 / 2 / 4 类回执，第 3 类尽量延后到低负荷时刻。',
-          '停车后再回放学习，不是边开边问，而是事后说，“今天观察到你在二级路更偏好提前两个路口变道，要不要保存？”',
-          '同时提供记忆工坊，让每条记忆都能看来源、场景、生效范围、上次使用、编辑 / 忘记 / 永不学习。',
-          '一旦进入高风险或低置信状态，所有 companion 式解释自动退场，只保留安全提示与接管信息。',
-        ],
-      },
-      {
-        type: 'highlightParagraph',
-        title: 'highlight',
-        body:
-          '这套界面落地的关键，不是把 agent 解释做得更“像陪伴”，而是把 responsibility、confidence、memory learning 和 interaction timing 放到同一个受驾驶负荷约束的 orchestration 逻辑里：高负荷时只留下安全与接管，低负荷或事后时刻再让学习、确认和偏好组织进入界面。',
-      },
-    ],
-    visualBlocks: [
-      {
-        type: 'htmlEmbed',
-        title: 'orchestration flow',
-        src: '/orchestration_flow_semantic_control.html',
-        aspectRatio: '1.6 / 1',
       },
     ],
   },
@@ -746,6 +746,17 @@ function mediaFrame(src: string, crop = 'center', fit: 'cover' | 'contain' = 'co
   } as CSSProperties;
 }
 
+function imageFrameStyle(): CSSProperties {
+  return {
+    display: 'block',
+    width: '100%',
+    height: 'auto',
+    borderRadius: 16,
+    backgroundColor: 'rgba(8,6,4,0.72)',
+    border: '1px solid rgba(200,169,110,0.1)',
+  };
+}
+
 function HtmlEmbedBlock({
   title,
   src,
@@ -948,7 +959,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
     case 'heroImage':
       return (
         <div style={{ ...blockPanel, padding: 12 }}>
-          <div className="narrative-media" style={{ ...mediaFrame(block.src, 'center'), aspectRatio: isMobile ? '1 / 1.1' : '1.45 / 1', minHeight: 320 }} />
+          <img src={block.src} alt={block.caption} className="narrative-media" style={imageFrameStyle()} />
           <div style={{ color: '#8f7d61', fontSize: 13, marginTop: 10, lineHeight: 1.7 }}>{block.caption}</div>
         </div>
       );
@@ -972,7 +983,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {block.items.map((item, index) => (
               <div key={item.title} className="narrative-card" style={{ borderRadius: 16, padding: 12, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.02)' }}>
-                <div className="narrative-media" style={mediaFrame(index % 2 === 0 ? fuliHeroImage : fuliSystemImage, item.crop ?? 'center')} />
+                <img src={index % 2 === 0 ? fuliHeroImage : fuliSystemImage} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
                 <div style={{ ...cardTitleStyle(), marginTop: 12 }}>{item.title}</div>
                 <div style={smallBodyStyle()}>{item.body}</div>
               </div>
@@ -988,13 +999,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               {block.items.map((item, index) => (
                 <div key={item.title} className="narrative-card" style={{ borderRadius: 18, padding: '18px 18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)', display: 'grid', gap: 14, transitionDelay: `${index * 70}ms` }}>
                   {item.src ? (
-                    <div
-                      className="narrative-media"
-                      style={{
-                        ...mediaFrame(item.src, item.crop ?? 'center', 'cover'),
-                        aspectRatio: '1 / 1',
-                      }}
-                    />
+                    <img src={item.src} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
                   ) : null}
                   <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.28 }}>{item.title}</div>
                   <div style={smallBodyStyle()}>{item.body}</div>
@@ -1269,7 +1274,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                       transitionDelay: `${120 + index * 70}ms`,
                     }}
                   >
-                    <div className="narrative-media" style={{ ...mediaFrame(card.src, 'center', 'cover'), aspectRatio: '1 / 1', marginBottom: 10 }} />
+                    <img src={card.src} alt={card.title} className="narrative-media" style={{ ...imageFrameStyle(), marginBottom: 10 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 6 }}>{card.title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.65 }}>{card.body}</div>
                   </div>
@@ -1287,7 +1292,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.14)', background: 'rgba(255,255,255,0.022)' }}>
             <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>用户选择后的主线确认</div>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr', gap: 14, alignItems: 'center' }}>
-              <div className="narrative-media" style={{ ...mediaFrame(lotusVerticalOrganicLattice, 'center', 'cover'), aspectRatio: '1 / 1', border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
+              <img src={lotusVerticalOrganicLattice} alt="纵向有机结构" className="narrative-media" style={{ ...imageFrameStyle(), border: '1px solid rgba(200,169,110,0.18)', boxShadow: '0 0 0 1px rgba(200,169,110,0.08), 0 18px 40px rgba(0,0,0,0.18)' }} />
               <div style={{ color: '#efe4d0', fontSize: isMobile ? 20 : 24, lineHeight: 1.55 }}>
                 在这个案例里，用户选中的并不只是“第二张图更好看”，而是一种更适合继续推进的成立方式。
               </div>
@@ -1370,7 +1375,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                   ['Direction C｜打开的罩顶格场', '打开局部单元关系，让留白和呼吸感更明显。', lotusVerticalOrganicLattice4],
                 ].map(([title, body, src], index) => (
                   <div key={title} className="narrative-card" style={{ borderRadius: 16, padding: '14px 14px 12px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)', transitionDelay: `${140 + index * 60}ms` }}>
-                    <div className="narrative-media" style={{ ...mediaFrame(src as string, 'center', 'cover'), aspectRatio: '1 / 1', marginBottom: 12 }} />
+                    <img src={src as string} alt={title} className="narrative-media" style={{ ...imageFrameStyle(), marginBottom: 12 }} />
                     <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.45, marginBottom: 8 }}>{title}</div>
                     <div style={{ color: '#ac9c83', fontSize: 16, lineHeight: 1.75 }}>{body}</div>
                   </div>
@@ -1387,7 +1392,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {block.items.map((item) => (
               <div key={item.label} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
-                <div className="narrative-media" style={mediaFrame(fuliHeroImage, item.crop)} />
+                <img src={fuliHeroImage} alt={item.label} className="narrative-media" style={imageFrameStyle()} />
                 <div>
                   <div style={{ color: '#f0e8d8', fontSize: 16, marginBottom: 4 }}>{item.label}</div>
                   <div style={smallBodyStyle()}>{item.body}</div>
@@ -1431,7 +1436,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${block.items.length}, minmax(0, 1fr))`, gap: 12 }}>
             {block.items.map((item, index) => (
               <div key={item.title} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
-                <div className="narrative-media" style={mediaFrame(item.src, index === 1 ? 'center' : '50% 40%')} />
+                <img src={item.src} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
                 <div style={{ color: '#f0e8d8', fontSize: 16 }}>{item.title}</div>
                 <div style={smallBodyStyle()}>{item.body}</div>
               </div>
