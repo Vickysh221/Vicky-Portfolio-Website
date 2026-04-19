@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { HOME_INDEX_SECTIONS, getProjectByRoute, type HomeIndexSection, type HomeSectionKey, type HomeStateKey } from '../home/homeScenes';
 import { useChapterHover } from '../hooks/useChapterHover';
 import { PROJECTS, type SubPagePreviewMedia } from '../projectRegistry';
+import arrowIcon from '../icons/arrow.svg';
 import ChapterHologramPreview from './ChapterHologramPreview';
 import ChapterTerminal from './ChapterTerminal';
 
@@ -32,6 +33,7 @@ export default function HomeSceneOverlay({
   onOpenChapter,
   onChapterHoverChange,
 }: HomeSceneOverlayProps) {
+  const [hoveredSectionKey, setHoveredSectionKey] = useState<HomeSectionKey | null>(null);
   const orderedSections = section
     ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
     : sectionList;
@@ -135,6 +137,22 @@ export default function HomeSceneOverlay({
         pointerEvents: 'none',
       }}
     >
+      <style>
+        {`
+          @keyframes home-section-arrow-breathe {
+            0%, 100% {
+              opacity: 0.38;
+              transform: translateX(0);
+              text-shadow: 0 0 0 rgba(240, 232, 216, 0);
+            }
+            50% {
+              opacity: 0.8;
+              transform: translateX(3px);
+              text-shadow: 0 0 10px rgba(240, 232, 216, 0.16);
+            }
+          }
+        `}
+      </style>
       <div
         className="absolute inset-0 pointer-events-none z-10 opacity-30"
         style={{
@@ -193,10 +211,13 @@ export default function HomeSceneOverlay({
 
             {orderedSections.map((entry) => {
               const isActive = entry.key === section?.key;
+              const isHovered = hoveredSectionKey === entry.key;
               return (
                 <div key={entry.key} style={{ marginBottom: isActive ? '24px' : '16px' }}>
                   <button
                     onClick={() => onSelectSection(entry.key)}
+                    onMouseEnter={() => setHoveredSectionKey(entry.key)}
+                    onMouseLeave={() => setHoveredSectionKey((current) => (current === entry.key ? null : current))}
                     style={{
                       display: 'block',
                       width: '100%',
@@ -207,27 +228,73 @@ export default function HomeSceneOverlay({
                       color: isActive ? '#f0e8d8' : '#5e5039',
                       padding: 0,
                     }}
-                  >
-                    <div
-                      style={{
-                        color: isActive ? '#c8a96e' : '#403421',
+                    >
+                      <div
+                        style={{
+                          color: isActive ? '#c8a96e' : '#403421',
                         fontSize: scalePx(10),
                         letterSpacing: '0.26em',
                         marginBottom: '6px',
                       }}
-                    >
-                      {entry.title}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: isActive ? scalePx(20) : scalePx(15),
-                        fontStyle: isActive ? 'italic' : 'normal',
-                        letterSpacing: isActive ? '0' : '0.03em',
-                        lineHeight: 1.35,
-                      }}
-                    >
-                      {entry.subtitle}
-                    </div>
+                      >
+                        {entry.title}
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '16px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: isActive ? scalePx(20) : scalePx(15),
+                            fontStyle: isActive ? 'italic' : 'normal',
+                            letterSpacing: isActive ? '0' : '0.03em',
+                            lineHeight: 1.35,
+                            color: isActive ? '#f0e8d8' : isHovered ? '#f5eee0' : '#8a7552',
+                            transition:
+                              'color 220ms cubic-bezier(0.16,1,0.3,1), text-shadow 220ms cubic-bezier(0.16,1,0.3,1), transform 220ms cubic-bezier(0.16,1,0.3,1)',
+                            textShadow: isHovered && !isActive ? '0 0 12px rgba(240,232,216,0.14)' : 'none',
+                            transform: isHovered && !isActive ? 'translateX(2px)' : 'translateX(0)',
+                          }}
+                        >
+                          {entry.subtitle}
+                        </div>
+                        {!isActive ? (
+                          <span
+                            aria-hidden="true"
+                            style={{
+                              width: '30px',
+                              height: '30px',
+                              flexShrink: 0,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transform: isHovered ? 'translateX(9px)' : 'translateX(0)',
+                              opacity: isHovered ? 1 : 0.72,
+                              transition:
+                                'transform 260ms cubic-bezier(0.16,1,0.3,1), opacity 220ms cubic-bezier(0.16,1,0.3,1)',
+                              animation: isHovered ? 'home-section-arrow-breathe 2.4s ease-in-out infinite' : 'none',
+                            }}
+                          >
+                            <img
+                              src={arrowIcon}
+                              alt=""
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'block',
+                                filter: isHovered
+                                  ? 'brightness(2.5) saturate(0.3)'
+                                  : 'brightness(1.05) saturate(0.85)',
+                                transition: 'filter 220ms cubic-bezier(0.16,1,0.3,1)',
+                              }}
+                            />
+                          </span>
+                        ) : null}
+                      </div>
                   </button>
 
                   {isActive && (
