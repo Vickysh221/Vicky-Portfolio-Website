@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import ChapterArrowButton from '../components/ChapterArrowButton';
@@ -7,6 +7,9 @@ import { PAGE_META } from '../constants/routeDepth';
 import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus';
 import H5DocContent from './H5DocContent';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
+import AgentGutter from '../components/agents/AgentGutter';
+import AgentToggle from '../components/agents/AgentToggle';
+import { getThreadForRoute } from '../agents/threads';
 
 const cornerStyles: React.CSSProperties[] = [
   { top: '-1px', left: '-1px', borderTop: '8px solid #c8a96e', borderLeft: '8px solid #c8a96e' },
@@ -296,20 +299,30 @@ function PanelContent({
 }) {
   const meta = PAGE_META[route];
   const rootScrollRef = useRef<HTMLDivElement>(null);
-  if (!meta) return null;
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
+  const [agentEnabled, setAgentEnabled] = useState(true);
   const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
 
-  const isLevel1 = meta.parent === null;
-  const hasChildChapters = !!meta.subPages && meta.subPages.length > 0;
-  const hasInlineChildContent = !!meta.inlineChildRoute;
+  const hasInlineChildContent = !!meta?.inlineChildRoute;
   const isBTypeSubPage = route.split('/').filter(Boolean).length >= 2;
   const isReadingMode = (isExpanded || hasInlineChildContent) && !isMobile;
-  const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
+
+  // Agent comment integration: only valid in non-fullscreen, non-mobile,
+  // non-reading mode where the panel body is the scrollable container.
+  const agentThread = useMemo(() => getThreadForRoute(route), [route]);
+  const agentGutterMountable =
+    !!agentThread && !isMobile && !isExpanded && !isReadingMode && isBTypeSubPage;
 
   useEffect(() => {
     if (!isReadingMode) return;
     rootScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
   }, [isReadingMode, route]);
+
+  if (!meta) return null;
+
+  const isLevel1 = meta.parent === null;
+  const hasChildChapters = !!meta.subPages && meta.subPages.length > 0;
+  const shouldScrollTitleBlock = isExpanded && isBTypeSubPage;
 
   const titleBlock = (
     <div
@@ -425,18 +438,27 @@ function PanelContent({
                 {hasChildChapters || isLevel1 ? 'PROJECT' : 'CHAPTER'}
               </div>
             </div>
-            {/* Expand / collapse buttons */}
-            {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
-            {!isMobile && !isExpanded && (
-              <ExpandButton
-                onClick={() => {
-                  dismissForever();
-                  onExpand();
-                }}
-                accentColor={accentColor}
-                showHint={showFullscreenHint}
-              />
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {agentGutterMountable && (
+                <AgentToggle
+                  enabled={agentEnabled}
+                  onToggle={setAgentEnabled}
+                  count={agentThread?.comments.length}
+                />
+              )}
+              {/* Expand / collapse buttons */}
+              {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
+              {!isMobile && !isExpanded && (
+                <ExpandButton
+                  onClick={() => {
+                    dismissForever();
+                    onExpand();
+                  }}
+                  accentColor={accentColor}
+                  showHint={showFullscreenHint}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -445,10 +467,12 @@ function PanelContent({
 
       {/* ── Sub-pages (level-1) or placeholder (level-2) ── */}
       <div
+        ref={bodyScrollRef}
         style={{
           flex: 1,
           padding: isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
           overflow: isReadingMode ? 'visible' : 'auto',
+          position: 'relative',
           ...(isReadingMode ? readingColumnStyle : null),
         }}
         className="panel-scroll portfolio-scroll"
@@ -521,7 +545,16 @@ function PanelContent({
             </div>
           </div>
         )}
+
       </div>
+
+      {agentGutterMountable && agentThread && (
+        <AgentGutter
+          scrollRef={bodyScrollRef}
+          thread={agentThread}
+          visible={agentEnabled}
+        />
+      )}
     </div>
   );
 }
