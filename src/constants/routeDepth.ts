@@ -41,11 +41,11 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/web-design-develop/component-framework': 1,
   '/web-design-develop/key-pages': 1,
   '/web-design-develop/semantic-system': 1,
-  '/web-design-develop/fuli-plus': 10,
+  '/web-design-develop/fuli-plus': 11,
 
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/simo-agent-system': 1,
-  '/agentic-design-development/fuli-plus': 11,
+  '/agentic-design-development/fuli-plus': 12,
   '/agentic-design-development/agentic-driving': 7,
   '/agentic-design-development/driving-authority-contracts/main': 1,
   '/agentic-design-development/driving-authority-contracts/ux-case-example': 1,

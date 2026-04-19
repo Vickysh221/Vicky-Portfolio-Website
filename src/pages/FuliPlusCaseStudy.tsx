@@ -2,14 +2,17 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import fuliHeroImage from '../images/fuli/slide01-img01.png';
 import fuliSystemImage from '../images/fuli/slide02-img01.png';
+import fuliIntroVideo540p from '../images/fuli/slide01-vid01-540p.mp4';
+import fuliIntroVideo720p from '../images/fuli/slide01-vid01-720p.mp4';
 import lotusWarmClusterDrift from '../images/fuli/lotus and fish/Warm Cluster Drift.png';
 import lotusVerticalOrganicLattice from '../images/fuli/lotus and fish/vertical organic lattice.png';
 import lotusLeafAndCurrentField from '../images/fuli/lotus and fish/Leaf-and-Current Field.png';
 import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical organic lattice2.png';
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
+import { chooseFuliPlusIntroVideoResolution } from './fuliPlusIntroVideo';
 
-export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 11;
+export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 12;
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -36,6 +39,7 @@ type VisualBlock =
   | { type: 'closingPoints'; title?: string; items: string[] }
   | { type: 'appendixDiagram'; title?: string; groups: { title: string; items: string[] }[] }
   | { type: 'assetMap'; title?: string; columns: { title: string; items: string[] }[] }
+  | { type: 'adaptiveIntroVideo'; title?: string; caption?: string }
   | { type: 'semanticCompilationChain' }
   | { type: 'directionWeightMatrix' }
   | { type: 'rugLanguagePromptBridge' }
@@ -53,7 +57,28 @@ interface CaseStudyPage {
 
 const pages: CaseStudyPage[] = [
   {
-    pageTitle: '传统用户定制地毯工作流',
+    pageId: 'fuli-plus-intro-video',
+    pageTitle: 'Fuli Plus 功能演示',
+    pageGoal: '在项目开头直接展示核心交互结果，用自动播放但静音的视频建立第一印象。',
+    mainCopy:
+      '这一页只承担一个任务：让读者先看到系统实际交付出来的设计演示。页面会根据设备性能和视口宽度在 540p 与 720p 之间做单路选择，默认静音并自动播放，但这套行为只作用在当前页，不会改动其他页面媒体的音频策略。',
+    contentBlocks: [],
+    visualBlocks: [
+      {
+        type: 'adaptiveIntroVideo',
+        title: 'Adaptive product demo',
+        caption: '产品功能演示',
+      },
+      {
+        type: 'heroImage',
+        title: 'interaction system map',
+        src: fuliSystemImage,
+        caption: '基于用户持续反馈的地毯生成交互系统',
+      },
+    ],
+  },
+  {
+    pageTitle: '基于用户持续反馈的地毯生成交互系统',
     pageGoal: '让读者立刻知道这是一个 AI + 设计系统项目，主题是 rug 定制与设计转化。',
     mainCopy:
       '这个项目试图把用户模糊的语言、参考图里的线索，以及一轮轮反馈里的微小判断，转成可比较、可推进的 rug 设计方向。它关心的不是单次出图，而是怎样让方向生成、选择与 refinement 形成一条能持续工作的路径。',
@@ -849,6 +874,73 @@ function HtmlEmbedBlock({
   );
 }
 
+function AdaptiveFuliIntroVideo({ accentColor }: { accentColor: string }) {
+  const [resolution, setResolution] = useState<'540p' | '720p'>(() =>
+    chooseFuliPlusIntroVideoResolution({
+      viewportWidth: typeof window === 'undefined' ? 1440 : window.innerWidth,
+      deviceMemoryGb: typeof navigator === 'undefined' ? undefined : (navigator as Navigator & { deviceMemory?: number }).deviceMemory,
+      hardwareConcurrency: typeof navigator === 'undefined' ? undefined : navigator.hardwareConcurrency,
+      saveData: typeof navigator === 'undefined'
+        ? undefined
+        : (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData,
+    }),
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const updateResolution = () => {
+      setResolution(
+        chooseFuliPlusIntroVideoResolution({
+          viewportWidth: window.innerWidth,
+          deviceMemoryGb: (navigator as Navigator & { deviceMemory?: number }).deviceMemory,
+          hardwareConcurrency: navigator.hardwareConcurrency,
+          saveData: (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData,
+        }),
+      );
+    };
+
+    updateResolution();
+    window.addEventListener('resize', updateResolution);
+    return () => window.removeEventListener('resize', updateResolution);
+  }, []);
+
+  const src = resolution === '540p' ? fuliIntroVideo540p : fuliIntroVideo720p;
+
+  return (
+    <div
+      className="narrative-card"
+      style={{
+        borderRadius: 22,
+        padding: 12,
+        border: '1px solid rgba(200,169,110,0.14)',
+        background: 'rgba(255,255,255,0.024)',
+        boxShadow: '0 18px 48px rgba(0,0,0,0.2)',
+      }}
+    >
+      <video
+        key={resolution}
+        src={src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        controls
+        preload="metadata"
+        style={{
+          display: 'block',
+          width: '100%',
+          height: 'auto',
+          borderRadius: 16,
+          border: `1px solid ${accentColor}33`,
+          background: 'rgba(7, 6, 5, 0.9)',
+        }}
+        aria-label="Fuli Plus 功能演示视频"
+      />
+    </div>
+  );
+}
+
 function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
   const blockPanel = panelStyle();
 
@@ -1397,6 +1489,14 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               </div>
             ))}
           </div>
+        </div>
+      );
+    case 'adaptiveIntroVideo':
+      return (
+        <div style={{ ...blockPanel, padding: isMobile ? '16px 14px 18px' : '20px 20px 22px', display: 'grid', gap: 12 }}>
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          <AdaptiveFuliIntroVideo accentColor={accentColor} />
+          {block.caption ? <div style={smallBodyStyle()}>{block.caption}</div> : null}
         </div>
       );
     case 'htmlEmbed':
