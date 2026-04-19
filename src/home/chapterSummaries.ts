@@ -8,7 +8,7 @@
 export const CHAPTER_SUMMARIES: Record<string, string> = {
   // ── Project I · Agentic Design · Prototyping
   '/agentic-design-development/language-diary':
-    '把语言学习从"任务"重新组织为"抒写"——让多个智能体成为表达的陪伴者，而非纠错的监工。',
+    '把语言学习从"任务"重新组织为"抒写"——让多个智能体成为表达的陪伴者，让协作是"共同在场"。',
   '/agentic-design-development/fuli-plus':
     '把创造权一部分交给系统，让一块地毯的生成，从"由人到物"，变成"由人、材料、算法三方反复商榷"。',
   '/agentic-design-development/ai-interior-system':
@@ -18,7 +18,7 @@ export const CHAPTER_SUMMARIES: Record<string, string> = {
   '/agentic-design-development/agentic-driving':
     '自动驾驶的分歧不在能力强弱，而在它要成为专家，还是成为那个最像你的人——两种假设，两种未来。',
   '/agentic-design-development/simo-agent-system':
-    '一个把语言、记忆与行动放在同一张结构网上的多智能体系统——让协作不是"各自跑流程"，而是"共同在场"。',
+    '一把车机里的 agent 从零散功能提升成一个可被看见的平台系统——身份、能力组织、应用生态与创建流程第一次被放进同一套沉浸式界面里。',
 
   // ── Project II · Academic Gamification
   '/academic-gamification/companions':
