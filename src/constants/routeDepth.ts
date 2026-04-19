@@ -236,7 +236,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     title: "SIMO Agent System 概念设计",
     subtitle: "JIDU 4.0 · Agent Platform Concept",
     year: "2024",
-    desc: "Full-screen laboratory concept for a vehicle-embedded agent ecosystem. MBTI-personalized agent identities and a platform-level SIMO Agent System interaction paradigm.",
+    desc: "一个面向车机场景的多智能体平台概念：把 agent 的身份、能力组织、应用生态与创建流程统一到沉浸式系统表达中。",
     parent: "/agentic-design-development",
     color: "#8b7db5",
   },
