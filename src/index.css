@@ -52,6 +52,37 @@
     animation: miniPanelEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     transform-style: preserve-3d;
   }
+
+  .language-toggle-shell {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(200, 169, 110, 0.24);
+    background: rgba(8, 6, 4, 0.74);
+    color: rgba(200, 169, 110, 0.72);
+    backdrop-filter: blur(8px);
+  }
+
+  .language-toggle-shell button {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .language-toggle-shell button.is-active {
+    color: #f0e8d8;
+  }
 }
 
 @keyframes fadeUp {

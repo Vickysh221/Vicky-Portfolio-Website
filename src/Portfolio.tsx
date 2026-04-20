@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useI18n } from "./i18n/LanguageProvider.tsx";
+import { UI_COPY } from "./i18n/uiCopy.ts";
 import { PROJECTS } from "./projectRegistry";
 
 const projects = PROJECTS;
@@ -25,6 +27,7 @@ interface PortfolioProps {
 }
 
 export default function Portfolio({ activeCard, onProjectClick, showProjectDirectory = true }: PortfolioProps) {
+  const { text } = useI18n();
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -102,7 +105,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
 
       {/* ── TOP RIGHT: About ── */}
       <div
-        className="absolute top-8 right-8 z-30 text-right"
+        className="absolute top-20 right-8 z-30 text-right"
         style={{
           opacity: mounted ? homeOpacity : 0,
           transform: mounted ? "translateY(0)" : "translateY(-12px)",
@@ -127,7 +130,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
             ((e.currentTarget as HTMLButtonElement).style.color = showAbout ? "#c8a96e" : "#9a8870")
           }
         >
-          ABOUT
+          {text(UI_COPY.about)}
         </button>
 
         {showAbout && (
@@ -190,7 +193,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
           }}
         >
           <div style={{ color: "#c8a96e", fontSize: "13px", letterSpacing: "0.3em", marginBottom: "24px" }}>
-            SELECTED WORKS
+            {text(UI_COPY.selectedWorks)}
           </div>
 
           {projects.map((p, i) => (
@@ -260,7 +263,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
                   transition: "color 0.25s",
                 }}
               >
-                {p.disabled ? "敬请期待" : p.year}
+                {p.disabled ? text(UI_COPY.comingSoon) : p.year}
               </span>
             </button>
           ))}
@@ -289,7 +292,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
           pointerEvents: "none",
         }}
       >
-        SELECTED WORKS
+        {text(UI_COPY.selectedWorks)}
       </div>
     </div>
   );

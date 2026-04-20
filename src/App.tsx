@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import HomeSceneOverlay from './components/HomeSceneOverlay';
 import HomeVoidBackground from './components/HomeVoidBackground';
+import LanguageToggle from './components/LanguageToggle';
 import { PAGE_META, getSlideCount } from './constants/routeDepth';
 import { getHomeProjectPhaseIndex, getHomeSceneConfig, getHomeSection, getHomeSectionByProjectRoute, resolveHomeAction, type HomeActionType, type HomeSceneKey, type HomeSectionKey, type HomeStateKey } from './home/homeScenes';
 import { useIsMobile } from './hooks/useIsMobile';
@@ -91,6 +92,8 @@ export default function App() {
         overflow: 'hidden',
       }}
     >
+      <LanguageToggle />
+
       {isHome && (
         <HomeVoidBackground
           phaseIndex={activePhaseIndex}
