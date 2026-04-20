@@ -1,13 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { UI_COPY } from '../src/i18n/uiCopy.ts';
-import { pickLocalizedText } from '../src/i18n/localization.ts';
+import { getLiveChromeCopy } from '../src/i18n/liveUiCopy.ts';
 
-test('shared UI copy resolves in both languages with zh fallback', () => {
-  assert.equal(pickLocalizedText(UI_COPY.about, 'zh'), 'ABOUT');
-  assert.equal(pickLocalizedText(UI_COPY.about, 'en'), 'ABOUT');
-  assert.equal(pickLocalizedText(UI_COPY.selectedWorks, 'zh'), '精选作品');
-  assert.equal(pickLocalizedText(UI_COPY.selectedWorks, 'en'), 'Selected Works');
-  assert.equal(pickLocalizedText(UI_COPY.comingSoon, 'en'), 'Coming Soon');
+test('live chrome copy resolves in both languages', () => {
+  const zh = getLiveChromeCopy('zh');
+  const en = getLiveChromeCopy('en');
+
+  assert.equal(zh.back, '返回');
+  assert.equal(en.back, 'Back');
+  assert.equal(zh.expandFullscreen, '展开全屏');
+  assert.equal(en.expandFullscreen, 'Expand fullscreen');
+  assert.equal(zh.exitFullscreen, '退出全屏');
+  assert.equal(en.exitFullscreen, 'Exit fullscreen');
+  assert.equal(zh.fullscreenHint, '点击这里可进入全屏查看');
+  assert.equal(en.fullscreenHint, 'Open fullscreen for a larger reading view');
 });

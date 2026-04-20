@@ -55,8 +55,8 @@
 
   .language-toggle-shell {
     position: fixed;
-    top: 24px;
-    right: 24px;
+    top: calc(env(safe-area-inset-top, 0px) + 16px);
+    right: calc(env(safe-area-inset-right, 0px) + 16px);
     z-index: 120;
     display: flex;
     align-items: center;
@@ -66,6 +66,9 @@
     background: rgba(8, 6, 4, 0.74);
     color: rgba(200, 169, 110, 0.72);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    touch-action: manipulation;
+    max-width: calc(100vw - 32px);
   }
 
   .language-toggle-shell button {
@@ -78,10 +81,17 @@
     cursor: pointer;
     padding: 0;
     line-height: 1;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .language-toggle-shell button.is-active {
     color: #f0e8d8;
+  }
+
+  .language-toggle-shell button:focus-visible {
+    outline: 1px solid rgba(240, 232, 216, 0.7);
+    outline-offset: 2px;
   }
 }
 

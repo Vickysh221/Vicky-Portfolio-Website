@@ -8,6 +8,8 @@ import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus
 import H5DocContent, { hasSectionContent } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
+import { getLiveChromeCopy } from '../i18n/liveUiCopy.ts';
 
 interface Props {
   route: string;
@@ -33,7 +35,7 @@ const readingColumnStyle: React.CSSProperties = {
   margin: '0 auto',
 };
 
-function BackButton({ onClick }: { onClick: () => void }) {
+function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   const [hov, setHov] = useState(false);
   return (
     <button
@@ -73,7 +75,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
           strokeLinejoin="round"
         />
       </svg>
-      BACK
+      {label}
     </button>
   );
 }
@@ -82,10 +84,14 @@ function ExpandButton({
   onClick,
   accentColor,
   showHint,
+  title,
+  hintText,
 }: {
   onClick: () => void;
   accentColor: string;
   showHint?: boolean;
+  title: string;
+  hintText: string;
 }) {
   const [hov, setHov] = useState(false);
   return (
@@ -94,7 +100,7 @@ function ExpandButton({
         onClick={onClick}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
-        title="Expand fullscreen"
+        title={title}
         style={{
           width: '24px',
           height: '24px',
@@ -139,21 +145,21 @@ function ExpandButton({
             zIndex: 20,
           }}
         >
-          点击这里可进入全屏查看
+          {hintText}
         </div>
       )}
     </div>
   );
 }
 
-function CollapseButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+function CollapseButton({ onClick, accentColor, title }: { onClick: () => void; accentColor: string; title: string }) {
   const [hov, setHov] = useState(false);
   return (
     <button
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      title="Exit fullscreen"
+      title={title}
       style={{
         width: '28px',
         height: '28px',
@@ -207,6 +213,8 @@ function SlideContent({
   isMobile?: boolean;
   showExpandHint?: boolean;
 }) {
+  const { language } = useI18n();
+  const chromeCopy = getLiveChromeCopy(language);
   const meta = PAGE_META[route];
   const rootScrollRef = useRef<HTMLDivElement>(null);
   if (!meta) return null;
@@ -332,7 +340,7 @@ function SlideContent({
         <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
-              <BackButton onClick={onBack} />
+              <BackButton onClick={onBack} label={chromeCopy.back} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 }}>
                 <div
                   style={{
@@ -358,12 +366,14 @@ function SlideContent({
             </div>
             {/* Expand button: PC only, not in expanded state */}
             {!isMobile && !isExpanded && onExpand && (
-              <ExpandButton
-                onClick={onExpandWithHint ?? onExpand}
-                accentColor={accentColor}
-                showHint={showExpandHint}
-              />
-            )}
+                <ExpandButton
+                  onClick={onExpandWithHint ?? onExpand}
+                  accentColor={accentColor}
+                  showHint={showExpandHint}
+                  title={chromeCopy.expandFullscreen}
+                  hintText={chromeCopy.fullscreenHint}
+                />
+              )}
           </div>
         </div>
       </div>
@@ -466,8 +476,10 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const { isVisible: showFullscreenHint, dismissForever } = useFullscreenHint(!isMobile && !isExpanded);
+  const { language } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
+  const chromeCopy = getLiveChromeCopy(language);
 
   const meta = PAGE_META[route];
   const prevTarget = getAdjacentChapterSlideTarget(route, activeIndex, 'prev');
@@ -666,7 +678,11 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
               pointerEvents: 'auto',
             }}
           >
-            <CollapseButton onClick={() => setIsExpanded(false)} accentColor={accentColor} />
+            <CollapseButton
+              onClick={() => setIsExpanded(false)}
+              accentColor={accentColor}
+              title={chromeCopy.exitFullscreen}
+            />
           </div>
           {/* Navigation in expanded mode */}
           <ChapterArrowButton

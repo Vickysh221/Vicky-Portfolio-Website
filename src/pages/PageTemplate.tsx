@@ -10,6 +10,8 @@ import { useFullscreenHint } from '../hooks/useFullscreenHint';
 import AgentGutter from '../components/agents/AgentGutter';
 import AgentToggle from '../components/agents/AgentToggle';
 import { getThreadForRoute } from '../agents/threads';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
+import { getLiveChromeCopy } from '../i18n/liveUiCopy.ts';
 
 const cornerStyles: React.CSSProperties[] = [
   { top: '-1px', left: '-1px', borderTop: '8px solid #c8a96e', borderLeft: '8px solid #c8a96e' },
@@ -36,7 +38,7 @@ interface Props {
   onNavigateAway?: () => void;
 }
 
-function BackButton({ onClick }: { onClick: () => void }) {
+function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   const [hov, setHov] = useState(false);
   return (
     <button
@@ -76,7 +78,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
           strokeLinejoin="round"
         />
       </svg>
-      BACK
+      {label}
     </button>
   );
 }
@@ -85,10 +87,14 @@ function ExpandButton({
   onClick,
   accentColor,
   showHint,
+  title,
+  hintText,
 }: {
   onClick: () => void;
   accentColor: string;
   showHint?: boolean;
+  title: string;
+  hintText: string;
 }) {
   const [hov, setHov] = useState(false);
   return (
@@ -97,7 +103,7 @@ function ExpandButton({
         onClick={onClick}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
-        title="Expand fullscreen"
+        title={title}
         style={{
           width: '24px',
           height: '24px',
@@ -142,21 +148,21 @@ function ExpandButton({
             zIndex: 20,
           }}
         >
-          点击这里可进入全屏查看
+          {hintText}
         </div>
       )}
     </div>
   );
 }
 
-function CollapseButton({ onClick, accentColor }: { onClick: () => void; accentColor: string }) {
+function CollapseButton({ onClick, accentColor, title }: { onClick: () => void; accentColor: string; title: string }) {
   const [hov, setHov] = useState(false);
   return (
     <button
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      title="Exit fullscreen"
+      title={title}
       style={{
         width: '28px',
         height: '28px',
@@ -297,6 +303,8 @@ function PanelContent({
   onBack: () => void;
   onNavigateAway?: () => void;
 }) {
+  const { language } = useI18n();
+  const chromeCopy = getLiveChromeCopy(language);
   const meta = PAGE_META[route];
   const rootScrollRef = useRef<HTMLDivElement>(null);
   const bodyScrollRef = useRef<HTMLDivElement>(null);
@@ -427,7 +435,7 @@ function PanelContent({
         <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
-              <BackButton onClick={onBack} />
+              <BackButton onClick={onBack} label={chromeCopy.back} />
               <div
                 style={{
                   color: 'rgba(200,169,110,0.28)',
@@ -447,7 +455,9 @@ function PanelContent({
                 />
               )}
               {/* Expand / collapse buttons */}
-              {!isMobile && isExpanded && <CollapseButton onClick={onCollapse} accentColor={accentColor} />}
+              {!isMobile && isExpanded && (
+                <CollapseButton onClick={onCollapse} accentColor={accentColor} title={chromeCopy.exitFullscreen} />
+              )}
               {!isMobile && !isExpanded && (
                 <ExpandButton
                   onClick={() => {
@@ -456,6 +466,8 @@ function PanelContent({
                   }}
                   accentColor={accentColor}
                   showHint={showFullscreenHint}
+                  title={chromeCopy.expandFullscreen}
+                  hintText={chromeCopy.fullscreenHint}
                 />
               )}
             </div>
