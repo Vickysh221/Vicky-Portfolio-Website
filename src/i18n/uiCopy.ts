@@ -6,4 +6,7 @@ export const UI_COPY = {
   exitFullscreen: { zh: '退出全屏', en: 'Exit fullscreen' },
   comingSoon: { zh: '敬请期待', en: 'Coming Soon' },
   fullscreenHint: { zh: '点击这里可进入全屏查看', en: 'Open fullscreen for a larger reading view' },
+  languageSwitcher: { zh: '语言切换', en: 'Language switcher' },
+  switchToChinese: { zh: '切换到中文', en: 'Switch to Chinese' },
+  switchToEnglish: { zh: '切换到英文', en: 'Switch to English' },
 } as const;
