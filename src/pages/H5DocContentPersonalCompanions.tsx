@@ -1,7 +1,10 @@
 import type { CSSProperties } from 'react';
 import { VideoWithStatus } from '../components/MediaWithStatus';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
-import { PERSONAL_COMPANIONS_SECTION_DEFINITIONS } from './H5DocContentSectionTitles.ts';
+import {
+  getPersonalCompanionsOverviewSectionDefinition,
+  getPersonalCompanionsSlideSectionDefinition,
+} from './H5DocContentSectionTitles.ts';
 import { blockLabelStyle, dividerStyle, kickerStyle, noteCardStyle, paragraphStyle } from './h5Styles';
 
 import christmasEveVideo from '../images/companions/christmas eve.mp4';
@@ -27,7 +30,7 @@ const projectDescription = [
   '网易云音乐 CLI 在这里负责搜歌、确认 songId、判断某首歌是不是可播、控制播放，再把歌曲真正接进 bot 页面 / scene prototype。最后它慢慢长成了一个混合体：一部分是音乐界面，一部分是场景引擎，一部分是角色系统，一部分是情绪翻译器。它也是我 being with my string figure player 的一部分。',
 ];
 
-type CompanionSlideKey = (typeof PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides)[number]['key'];
+type CompanionSlideKey = ReturnType<typeof getPersonalCompanionsSlideSectionDefinition>['key'];
 
 const companionSlideMedia: Record<CompanionSlideKey, CompanionSlideMedia> = {
   christmasEve: {
@@ -100,10 +103,11 @@ function introGridStyle(): CSSProperties {
 
 function getProjectDescriptionSections(): LocalizedSectionData[] {
   const [lead, ...body] = projectDescription;
+  const sectionDefinition = getPersonalCompanionsOverviewSectionDefinition();
 
   return [
     {
-      ...PERSONAL_COMPANIONS_SECTION_DEFINITIONS.projectOverview,
+      ...sectionDefinition,
       blocks: [
         <>
           <p style={kickerStyle('#6f8f92')}>Have a cup of tea with AI</p>
@@ -128,9 +132,7 @@ function getProjectDescriptionSections(): LocalizedSectionData[] {
 export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPlayMedia: boolean): LocalizedSectionData[] {
   if (slideIndex === 0) return getProjectDescriptionSections();
 
-  const companionIndex = slideIndex - 1;
-  const sectionDefinition = PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[companionIndex]
-    ?? PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[0];
+  const sectionDefinition = getPersonalCompanionsSlideSectionDefinition(slideIndex);
   const slideMedia = companionSlideMedia[sectionDefinition.key];
 
   return [

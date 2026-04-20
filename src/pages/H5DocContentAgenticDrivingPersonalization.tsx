@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { CSSProperties, ReactNode } from 'react';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
-import { AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS } from './H5DocContentSectionTitles.ts';
+import { getAgenticDrivingPersonalizationSectionDefinition } from './H5DocContentSectionTitles.ts';
 import {
   blockLabelStyle,
   captionStyle,
@@ -367,7 +367,7 @@ function BalanceVisual({ accentColor }: { accentColor: string }) {
 export function getAgenticDrivingPersonalizationSlide01Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide01,
+      ...getAgenticDrivingPersonalizationSectionDefinition(1),
       blocks: [
         <>
           <P>在辅助驾驶系统中，agent 的价值并不只在于听懂用户说了什么，而在于它能否逐步理解用户是如何驾驶的。</P>
@@ -392,7 +392,7 @@ export function getAgenticDrivingPersonalizationSlide01Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide02Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide02,
+      ...getAgenticDrivingPersonalizationSectionDefinition(2),
       blocks: [
         <>
           <P>
@@ -416,7 +416,7 @@ export function getAgenticDrivingPersonalizationSlide02Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide03Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide03,
+      ...getAgenticDrivingPersonalizationSectionDefinition(3),
       blocks: [
         <>
           <P>
@@ -443,7 +443,7 @@ export function getAgenticDrivingPersonalizationSlide03Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide04Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide04,
+      ...getAgenticDrivingPersonalizationSectionDefinition(4),
       blocks: [
         <>
           <P>
@@ -475,7 +475,7 @@ export function getAgenticDrivingPersonalizationSlide04Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide05Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide05,
+      ...getAgenticDrivingPersonalizationSectionDefinition(5),
       blocks: [
         <>
           <P>
@@ -523,7 +523,7 @@ export function getAgenticDrivingPersonalizationSlide05Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide06Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide06,
+      ...getAgenticDrivingPersonalizationSectionDefinition(6),
       blocks: [
         <>
           <P>
@@ -556,7 +556,7 @@ export function getAgenticDrivingPersonalizationSlide06Sections(accentColor: str
 export function getAgenticDrivingPersonalizationSlide07Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      ...AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide07,
+      ...getAgenticDrivingPersonalizationSectionDefinition(7),
       blocks: [
         <>
           <P>

@@ -55,6 +55,15 @@ export const PERSONAL_COMPANIONS_SECTION_DEFINITIONS = {
   slides: readonly (LocalizedSectionDefinition & { key: string })[];
 };
 
+export function getPersonalCompanionsOverviewSectionDefinition() {
+  return PERSONAL_COMPANIONS_SECTION_DEFINITIONS.projectOverview;
+}
+
+export function getPersonalCompanionsSlideSectionDefinition(slideIndex: number) {
+  return PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[slideIndex - 1]
+    ?? PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[0];
+}
+
 export const AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS = {
   slide01: {
     id: 'agentic-driving-question',
@@ -113,6 +122,12 @@ export const AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS = {
     ),
   },
 } as const satisfies Record<string, LocalizedSectionDefinition>;
+
+export function getAgenticDrivingPersonalizationSectionDefinition(slideNumber: number) {
+  const key = `slide${String(slideNumber).padStart(2, '0')}` as keyof typeof AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS;
+  return AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS[key]
+    ?? AGENTIC_DRIVING_PERSONALIZATION_SECTION_DEFINITIONS.slide01;
+}
 
 export const PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_DEFINITIONS = {
   memoryArchitecture: {
