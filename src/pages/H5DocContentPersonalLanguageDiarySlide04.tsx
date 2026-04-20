@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
-import { createLocalizedTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
+import { PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
 import { gridListStyle, infoTagStyle, kickerStyle, mediaBlockStyle, paragraphStyle, smallMetaStyle, subtitleStyle, ListItem } from './h5Styles';
 
 function listStyle(): CSSProperties {
@@ -14,10 +15,7 @@ export function getPersonalLanguageDiarySlide04Sections(accentColor: string): Lo
     {
       id: 'language-diary-memory-architecture',
       numeral: '04',
-      title: createLocalizedTitle(
-        '把一次表达变成长期资产 · Memory Architecture',
-        'Turn a single expression into a long-term asset · Memory Architecture',
-      ),
+      title: PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_TITLES.memoryArchitecture,
       blocks: [
         <>
           <div style={kickerStyle(accentColor)}>四层记忆结构</div>

@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { CSSProperties, ReactNode } from 'react';
-import { createLocalizedTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
+import { AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
 import {
   blockLabelStyle,
   captionStyle,
@@ -368,10 +369,7 @@ export function getAgenticDrivingPersonalizationSlide01Sections(accentColor: str
     {
       id: 'agentic-driving-question',
       numeral: '01',
-      title: createLocalizedTitle(
-        'Agent 在辅助驾驶中：驾驶专家，还是个性化驾驶员？',
-        'In assisted driving, should the agent become a driving expert or a personalized driver?',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide01,
       blocks: [
         <>
           <P>在辅助驾驶系统中，agent 的价值并不只在于听懂用户说了什么，而在于它能否逐步理解用户是如何驾驶的。</P>
@@ -398,10 +396,7 @@ export function getAgenticDrivingPersonalizationSlide02Sections(accentColor: str
     {
       id: 'agentic-driving-industry-definition',
       numeral: '02',
-      title: createLocalizedTitle(
-        '真实世界里的 Agent，正在被不同厂商定义成不同的东西',
-        'In the real world, the agent is being defined as different things by different companies',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide02,
       blocks: [
         <>
           <P>
@@ -427,10 +422,7 @@ export function getAgenticDrivingPersonalizationSlide03Sections(accentColor: str
     {
       id: 'agentic-driving-command-critique',
       numeral: '03',
-      title: createLocalizedTitle(
-        '如果系统只是把模糊话语映射成动作，它和旧规则系统有什么本质区别？',
-        'If the system only maps vague language into actions, how is it fundamentally different from the old rule-based system?',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide03,
       blocks: [
         <>
           <P>
@@ -459,10 +451,7 @@ export function getAgenticDrivingPersonalizationSlide04Sections(accentColor: str
     {
       id: 'agentic-driving-behavior-understanding',
       numeral: '04',
-      title: createLocalizedTitle(
-        '真正的分水岭，不是听懂一句话，而是看懂用户在具体情境里如何驾驶',
-        'The real dividing line is not understanding one sentence, but understanding how the user drives in a specific context',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide04,
       blocks: [
         <>
           <P>
@@ -496,10 +485,7 @@ export function getAgenticDrivingPersonalizationSlide05Sections(accentColor: str
     {
       id: 'agentic-driving-ux-case-example',
       numeral: '05',
-      title: createLocalizedTitle(
-        '交互与 UX 模式：在歧义里做判断，并把判断过程变成可被人信任的协作',
-        'Interaction and UX patterns: make judgments in ambiguity, and turn that judgment process into collaboration people can trust',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide05,
       blocks: [
         <>
           <P>
@@ -549,10 +535,7 @@ export function getAgenticDrivingPersonalizationSlide06Sections(accentColor: str
     {
       id: 'agentic-driving-literature',
       numeral: '06',
-      title: createLocalizedTitle(
-        '文献给出的提醒：个性化驾驶真正难的，是行为数据如何被获取和组织',
-        'What the literature reminds us: the real difficulty in personalized driving is how behavioral data is collected and organized',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide06,
       blocks: [
         <>
           <P>
@@ -587,10 +570,7 @@ export function getAgenticDrivingPersonalizationSlide07Sections(accentColor: str
     {
       id: 'agentic-driving-judgment',
       numeral: '07',
-      title: createLocalizedTitle(
-        '我的判断：agent 不是车主分身，也不是纯粹驾驶专家',
-        'My judgment: the agent is neither a proxy for the owner nor a pure driving expert',
-      ),
+      title: AGENTIC_DRIVING_PERSONALIZATION_SECTION_TITLES.slide07,
       blocks: [
         <>
           <P>

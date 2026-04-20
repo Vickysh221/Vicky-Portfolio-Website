@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
-import { createLocalizedTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
+import { MAP_3D_SLIDE02_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
 import { paragraphStyle, subtitleStyle } from './h5Styles';
 
 
@@ -335,7 +336,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
     {
       id: 'problem-definition',
       numeral: '01',
-      title: createLocalizedTitle('问题定义', 'Problem Definition'),
+      title: MAP_3D_SLIDE02_SECTION_TITLES.problemDefinition,
       blocks: [
         <>
           <div style={{ color: '#c8a96e', fontSize: '11px', letterSpacing: '0.2em', marginBottom: 8 }}>
@@ -360,7 +361,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
     {
       id: 'decision-basis',
       numeral: '02',
-      title: createLocalizedTitle('核心判定依据', 'Core Decision Basis'),
+      title: MAP_3D_SLIDE02_SECTION_TITLES.decisionBasis,
       blocks: [
         <>
           <h2 style={subtitleStyle(accentColor)}>SR 显示判定表</h2>
@@ -371,7 +372,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
     {
       id: 'scope',
       numeral: '03',
-      title: createLocalizedTitle('适用范围', 'Scope'),
+      title: MAP_3D_SLIDE02_SECTION_TITLES.scope,
       blocks: [
         <ScopeTable accentColor={accentColor} />,
       ],
@@ -379,7 +380,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
     {
       id: 'open-road-rules',
       numeral: '04',
-      title: createLocalizedTitle('开放道路场景下的 SR 显示规则', 'SR Display Rules in Open-Road Scenarios'),
+      title: MAP_3D_SLIDE02_SECTION_TITLES.openRoadRules,
       blocks: [
         <OpenRoadSRTable accentColor={accentColor} />,
       ],
@@ -387,7 +388,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
     {
       id: 'closed-road-rules',
       numeral: '05',
-      title: createLocalizedTitle('封闭 / 弱图空间下的显示关系', 'Display Priority in Closed or Weak-Map Spaces'),
+      title: MAP_3D_SLIDE02_SECTION_TITLES.closedRoadRules,
       blocks: [
         <>
           <p style={paragraphStyle()}>

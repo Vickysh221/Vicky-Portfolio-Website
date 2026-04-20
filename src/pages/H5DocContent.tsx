@@ -51,7 +51,7 @@ import {
   getDrivingAuthorityContractsUxSubpageSections,
 } from './H5DocContentDrivingAuthorityContracts';
 import type { SectionData } from './H5DocContentSlideFactory';
-import type { LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';

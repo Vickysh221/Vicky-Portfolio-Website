@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { VideoWithStatus } from '../components/MediaWithStatus';
-import { createLocalizedTitle, createMirroredTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
+import { PERSONAL_COMPANIONS_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
 import { blockLabelStyle, dividerStyle, kickerStyle, noteCardStyle, paragraphStyle } from './h5Styles';
 
 import christmasEveVideo from '../images/companions/christmas eve.mp4';
@@ -110,7 +111,7 @@ function getProjectDescriptionSections(): LocalizedSectionData[] {
     {
       id: 'companions-project-overview',
       numeral: '01',
-      title: createLocalizedTitle('项目叙述', 'Project Narrative'),
+      title: PERSONAL_COMPANIONS_SECTION_TITLES.projectOverview,
       blocks: [
         <>
           <p style={kickerStyle('#6f8f92')}>Have a cup of tea with AI</p>
@@ -142,7 +143,7 @@ export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPla
     {
       id: `companions-slide-${slideIndex + 1}`,
       numeral: String(slideIndex + 1).padStart(2, '0'),
-      title: createMirroredTitle(slide.title),
+      title: PERSONAL_COMPANIONS_SECTION_TITLES.slides[companionIndex] ?? PERSONAL_COMPANIONS_SECTION_TITLES.slides[0],
       blocks: [
         <div style={videoFrameStyle(slide.frameAspectRatio)}>
           <VideoWithStatus
