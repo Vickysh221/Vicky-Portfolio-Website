@@ -213,7 +213,7 @@ function SlideContent({
   isMobile?: boolean;
   showExpandHint?: boolean;
 }) {
-  const { language } = useI18n();
+  const { language, text } = useI18n();
   const chromeCopy = getLiveChromeCopy(language);
   const meta = PAGE_META[route];
   const rootScrollRef = useRef<HTMLDivElement>(null);
@@ -257,7 +257,7 @@ function SlideContent({
             letterSpacing: '-0.01em',
           }}
         >
-          {meta.title}
+          {text(meta.title)}
         </div>
       </div>
       <div
@@ -268,7 +268,7 @@ function SlideContent({
           paddingLeft: '17px',
         }}
       >
-        {meta.subtitle} · {meta.year}
+        {text(meta.subtitle)} · {meta.year}
       </div>
 
       <div
@@ -289,7 +289,7 @@ function SlideContent({
           maxWidth: isReadingMode ? '48em' : undefined,
         }}
       >
-        {meta.desc}
+        {text(meta.desc)}
       </p>
     </div>
   );

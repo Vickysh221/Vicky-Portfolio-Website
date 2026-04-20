@@ -5,6 +5,7 @@ import { PROJECTS, type SubPagePreviewMedia } from '../projectRegistry';
 import arrowIcon from '../icons/arrow.svg';
 import ChapterHologramPreview from './ChapterHologramPreview';
 import ChapterTerminal from './ChapterTerminal';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
 
 interface HomeSceneOverlayProps {
   stateKey: HomeStateKey;
@@ -33,6 +34,7 @@ export default function HomeSceneOverlay({
   onOpenChapter,
   onChapterHoverChange,
 }: HomeSceneOverlayProps) {
+  const { text } = useI18n();
   const [hoveredSectionKey, setHoveredSectionKey] = useState<HomeSectionKey | null>(null);
   const orderedSections = section
     ? [section, ...sectionList.filter((entry) => entry.key !== section.key)]
@@ -237,7 +239,7 @@ export default function HomeSceneOverlay({
                         marginBottom: '6px',
                       }}
                       >
-                        {entry.title}
+                        {text(entry.title)}
                       </div>
                       <div
                         style={{
@@ -260,7 +262,7 @@ export default function HomeSceneOverlay({
                             transform: isHovered && !isActive ? 'translateX(2px)' : 'translateX(0)',
                           }}
                         >
-                          {entry.subtitle}
+                          {text(entry.subtitle)}
                         </div>
                         {!isActive ? (
                           <span
@@ -313,7 +315,7 @@ export default function HomeSceneOverlay({
                       }}
                     >
                       <div style={{ color: '#8b7db5', fontSize: scalePx(9), letterSpacing: '0.22em', marginBottom: '8px' }}>
-                        {entry.descriptionTitle}
+                        {text(entry.descriptionTitle)}
                       </div>
                       <p
                         style={{
@@ -323,7 +325,7 @@ export default function HomeSceneOverlay({
                           lineHeight: 1.9,
                         }}
                       >
-                        {entry.body}
+                        {text(entry.body)}
                       </p>
 
                       <div style={{ color: '#6f5b92', fontSize: scalePx(9), letterSpacing: '0.24em', marginTop: '14px', marginBottom: '6px' }}>
@@ -333,7 +335,7 @@ export default function HomeSceneOverlay({
                         {entry.chapters.map((chapter, index) => {
                           const sourceProject = getProjectByRoute(entry.phaseProjectRoute);
                           const projectColor = sourceProject?.color ?? '#c8a96e';
-                          const projectTitle = sourceProject?.title ?? entry.subtitle;
+                          const projectTitle = text(sourceProject?.title ?? entry.subtitle);
                           const isHovered = hoveredChapter?.route === chapter.route;
                           return (
                             <button
@@ -343,7 +345,7 @@ export default function HomeSceneOverlay({
                                 onChapterEnter({
                                   route: chapter.route,
                                   numeral: chapter.numeral,
-                                  label: chapter.label,
+                                  label: text(chapter.label),
                                   projectColor,
                                   projectTitle,
                                   chapterIndex: index,
@@ -383,7 +385,7 @@ export default function HomeSceneOverlay({
                               >
                                 {chapter.numeral}
                               </span>
-                              <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{chapter.label}</span>
+                              <span style={{ fontSize: scalePx(10), lineHeight: 1.4 }}>{text(chapter.label)}</span>
                             </button>
                           );
                         })}

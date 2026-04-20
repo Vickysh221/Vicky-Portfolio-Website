@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { PROJECTS } from "./projectRegistry";
+import { useI18n } from "./i18n/LanguageProvider.tsx";
 
 const projects = PROJECTS;
 
@@ -25,6 +26,7 @@ interface PortfolioProps {
 }
 
 export default function Portfolio({ activeCard, onProjectClick, showProjectDirectory = true }: PortfolioProps) {
+  const { text } = useI18n();
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -249,7 +251,7 @@ export default function Portfolio({ activeCard, onProjectClick, showProjectDirec
                   letterSpacing: "0.02em",
                 }}
               >
-                {p.title}
+                {text(p.title)}
               </span>
               <span
                 style={{

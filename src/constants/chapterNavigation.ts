@@ -1,4 +1,4 @@
-import { PAGE_META, getSlideCount } from './routeDepth';
+import { PAGE_META, getSlideCount, type PageMeta } from './routeDepth';
 
 export interface ChapterSlideTarget {
   route: string;
@@ -7,10 +7,14 @@ export interface ChapterSlideTarget {
 
 type Direction = 'prev' | 'next';
 
+function hasSubPages(meta: PageMeta): meta is PageMeta & { subPages: NonNullable<PageMeta['subPages']> } {
+  return meta.parent === null && Array.isArray(meta.subPages) && meta.subPages.length > 0;
+}
+
 function getOrderedChapterRoutes(): string[] {
-  return Object.entries(PAGE_META)
-    .filter(([, meta]) => meta.parent === null && meta.subPages && meta.subPages.length > 0)
-    .flatMap(([, meta]) => meta.subPages ?? [])
+  return Object.values(PAGE_META)
+    .filter(hasSubPages)
+    .flatMap((meta) => meta.subPages)
     .filter((subPage) => !subPage.disabled)
     .map((subPage) => subPage.route);
 }

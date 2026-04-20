@@ -303,7 +303,7 @@ function PanelContent({
   onBack: () => void;
   onNavigateAway?: () => void;
 }) {
-  const { language } = useI18n();
+  const { language, text } = useI18n();
   const chromeCopy = getLiveChromeCopy(language);
   const meta = PAGE_META[route];
   const rootScrollRef = useRef<HTMLDivElement>(null);
@@ -360,7 +360,7 @@ function PanelContent({
             letterSpacing: '-0.01em',
           }}
         >
-          {meta.title}
+          {text(meta.title)}
         </div>
       </div>
       <div
@@ -371,7 +371,7 @@ function PanelContent({
           paddingLeft: '17px',
         }}
       >
-        {meta.subtitle} · {meta.year}
+        {text(meta.subtitle)} · {meta.year}
       </div>
 
       <div
@@ -392,7 +392,7 @@ function PanelContent({
           maxWidth: isReadingMode ? '48em' : undefined,
         }}
       >
-        {meta.desc}
+        {text(meta.desc)}
       </p>
     </div>
   );
@@ -514,7 +514,7 @@ function PanelContent({
                 <SubPageLink
                   key={sp.route}
                   route={sp.route}
-                  label={sp.label}
+                  label={text(sp.label)}
                   numeral={sp.numeral}
                   color={accentColor}
                   disabled={sp.disabled}
