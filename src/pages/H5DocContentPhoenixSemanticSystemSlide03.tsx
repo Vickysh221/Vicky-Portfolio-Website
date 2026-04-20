@@ -1,6 +1,7 @@
 import { createLocalizedTitle, type RenderableSectionTitle, type SectionShape } from '../i18n/sectionBuilders.ts';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import type { LocalizedText } from '../i18n/types.ts';
+import { PHOENIX_SEMANTIC_SYSTEM_SLIDE03_BODY_COPY } from '../i18n/bilingualCaseStudyFallback.ts';
 import { paragraphStyle, h2Style, ListItem, gridListStyle, documentCardStyle, smallMetaStyle, infoTagStyle } from './h5Styles';
 
 function Copy({ value }: { value: LocalizedText }) {
@@ -18,15 +19,15 @@ export function getPhoenixSemanticSystemSlide03Sections(accentColor: string): Se
         <>
           <div style={infoTagStyle(accentColor, 'tech')}>serialization layer</div>
           <p style={paragraphStyle()}>
-            <Copy value={{ zh: '这一页的任务，是把 prompt 从“方法本体”降回“外部表达层”。如果前面两页已经讲清 semantic compilation chain 和 per-direction weighting，那么这里就能顺势说明：prompt 只是把已成立的 design state 序列化给模型，而不是替系统做判断。', en: 'The job of this page is to move prompt back down from the “core method” to the “external expression layer.” If the previous two pages have already explained semantic compilation and per-direction weighting, this page can then show that prompt simply serializes an established design state for the model; it does not make the judgment for the system.' }} />
+            <Copy value={PHOENIX_SEMANTIC_SYSTEM_SLIDE03_BODY_COPY} />
           </p>
           <h2 style={h2Style(accentColor)}><Copy value={{ zh: '三层关系', en: 'Three layers' }} /></h2>
           <div style={documentCardStyle()}>
             <div style={smallMetaStyle()}>from method to model instruction</div>
             <ul style={gridListStyle(6)}>
-              <ListItem accent={accentColor}>Layer 1｜semantic hypothesis：这一轮到底想验证哪种设计成立方式</ListItem>
-              <ListItem accent={accentColor}>Layer 2｜rug design language：把方向翻成 composition / motif / color / material / pile / relief / density</ListItem>
-              <ListItem accent={accentColor}>Layer 3｜prompt assembly：再把这些状态组织成模型可执行的 generation instruction</ListItem>
+              <ListItem accent={accentColor}><Copy value={{ zh: 'Layer 1｜semantic hypothesis：这一轮到底想验证哪种设计成立方式', en: 'Layer 1 | semantic hypothesis: which form of design viability is this round trying to verify' }} /></ListItem>
+              <ListItem accent={accentColor}><Copy value={{ zh: 'Layer 2｜rug design language：把方向翻成 composition / motif / color / material / pile / relief / density', en: 'Layer 2 | rug design language: translate the direction into composition / motif / color / material / pile / relief / density' }} /></ListItem>
+              <ListItem accent={accentColor}><Copy value={{ zh: 'Layer 3｜prompt assembly：再把这些状态组织成模型可执行的 generation instruction', en: 'Layer 3 | prompt assembly: organize those states into a model-executable generation instruction' }} /></ListItem>
             </ul>
           </div>
           <h2 style={h2Style(accentColor)}><Copy value={{ zh: '这页为什么比 roadmap 更重要', en: 'Why this page matters more than the roadmap' }} /></h2>
@@ -35,9 +36,9 @@ export function getPhoenixSemanticSystemSlide03Sections(accentColor: string): Se
           </p>
           <h2 style={h2Style(accentColor)}><Copy value={{ zh: '读者最后应该带走什么', en: 'What readers should take away' }} /></h2>
           <ul style={gridListStyle(6)}>
-            <ListItem accent={accentColor}>这个项目的核心不是随机生成三张图，而是先组织三个可判断的方向</ListItem>
-            <ListItem accent={accentColor}>方向差异不是措辞差异，而是 rug design logic 的差异</ListItem>
-            <ListItem accent={accentColor}>prompt 在这里是结果层，不是思考层</ListItem>
+            <ListItem accent={accentColor}><Copy value={{ zh: '这个项目的核心不是随机生成三张图，而是先组织三个可判断的方向', en: 'The core of this project is not generating three random images; it is organizing three directions that can be judged first' }} /></ListItem>
+            <ListItem accent={accentColor}><Copy value={{ zh: '方向差异不是措辞差异，而是 rug design logic 的差异', en: 'The difference between directions is not wording, but rug design logic' }} /></ListItem>
+            <ListItem accent={accentColor}><Copy value={{ zh: 'prompt 在这里是结果层，不是思考层', en: 'Prompt is the result layer here, not the thinking layer' }} /></ListItem>
           </ul>
         </>,
       ],

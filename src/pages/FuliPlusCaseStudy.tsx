@@ -11,6 +11,8 @@ import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
+import { normalizeLocalizedText } from '../i18n/localization.ts';
+import { FULI_PLUS_INTRO_COPY } from '../i18n/bilingualCaseStudyFallback.ts';
 import type { LocalizedText } from '../i18n/types.ts';
 import { chooseFuliPlusIntroVideoResolution } from './fuliPlusIntroVideo';
 
@@ -21,36 +23,36 @@ function t(zh: string, en: string): LocalizedText {
 }
 
 type ContentBlock =
-  | { type: 'userQuotes'; title?: string; items: string[] }
-  | { type: 'shortParagraphs'; title?: string; items: string[] }
-  | { type: 'bulletCluster'; title?: string; items: string[] }
-  | { type: 'comparisonCards'; title?: string; items: { title: string; body: string }[] }
-  | { type: 'miniCaptions'; title?: string; items: string[] }
-  | { type: 'codeBlock'; title?: string; code: string }
-  | { type: 'highlightParagraph'; title?: string; body: string };
+  | { type: 'userQuotes'; title?: string | LocalizedText; items: Array<string | LocalizedText> }
+  | { type: 'shortParagraphs'; title?: string | LocalizedText; items: Array<string | LocalizedText> }
+  | { type: 'bulletCluster'; title?: string | LocalizedText; items: Array<string | LocalizedText> }
+  | { type: 'comparisonCards'; title?: string | LocalizedText; items: { title: string | LocalizedText; body: string | LocalizedText }[] }
+  | { type: 'miniCaptions'; title?: string | LocalizedText; items: Array<string | LocalizedText> }
+  | { type: 'codeBlock'; title?: string | LocalizedText; code: string }
+  | { type: 'highlightParagraph'; title?: string | LocalizedText; body: string | LocalizedText };
 
 type VisualBlock =
-  | { type: 'heroImage'; title?: string; src: string; caption: string }
-  | { type: 'workflowDiagram'; title?: string; nodes: string[] }
-  | { type: 'problemGrid'; title?: string; items: { title: string; body: string; crop?: string }[] }
-  | { type: 'rugJudgmentGrid'; items: { title: string; body: string; src?: string; crop?: string }[] }
-  | { type: 'beforeAfter'; title?: string; before: string[]; after: string[] }
-  | { type: 'pipeline'; title?: string; stages: string[] }
+  | { type: 'heroImage'; title?: string | LocalizedText; src: string; caption: string | LocalizedText }
+  | { type: 'workflowDiagram'; title?: string | LocalizedText; nodes: Array<string | LocalizedText> }
+  | { type: 'problemGrid'; title?: string | LocalizedText; items: { title: string | LocalizedText; body: string | LocalizedText; crop?: string }[] }
+  | { type: 'rugJudgmentGrid'; items: { title: string | LocalizedText; body: string | LocalizedText; src?: string; crop?: string }[] }
+  | { type: 'beforeAfter'; title?: string | LocalizedText; before: Array<string | LocalizedText>; after: Array<string | LocalizedText> }
+  | { type: 'pipeline'; title?: string | LocalizedText; stages: Array<string | LocalizedText> }
   | { type: 'case05FirstRound' }
   | { type: 'case05SelectionConvergence' }
-  | { type: 'referenceImageGrid'; title?: string; items: { label: string; body: string; crop: string }[] }
-  | { type: 'semanticBuckets'; title?: string; items: { title: string; body: string }[] }
-  | { type: 'roleCompare'; title?: string; left: { title: string; body: string }; right: { title: string; body: string } }
-  | { type: 'caseImageStrip'; title?: string; items: { title: string; body: string; src: string }[] }
-  | { type: 'closingPoints'; title?: string; items: string[] }
-  | { type: 'appendixDiagram'; title?: string; groups: { title: string; items: string[] }[] }
-  | { type: 'assetMap'; title?: string; columns: { title: string; items: string[] }[] }
-  | { type: 'adaptiveIntroVideo'; title?: string; caption?: string }
+  | { type: 'referenceImageGrid'; title?: string | LocalizedText; items: { label: string | LocalizedText; body: string | LocalizedText; crop: string }[] }
+  | { type: 'semanticBuckets'; title?: string | LocalizedText; items: { title: string | LocalizedText; body: string | LocalizedText }[] }
+  | { type: 'roleCompare'; title?: string | LocalizedText; left: { title: string | LocalizedText; body: string | LocalizedText }; right: { title: string | LocalizedText; body: string | LocalizedText } }
+  | { type: 'caseImageStrip'; title?: string | LocalizedText; items: { title: string | LocalizedText; body: string | LocalizedText; src: string }[] }
+  | { type: 'closingPoints'; title?: string | LocalizedText; items: Array<string | LocalizedText> }
+  | { type: 'appendixDiagram'; title?: string | LocalizedText; groups: { title: string | LocalizedText; items: Array<string | LocalizedText> }[] }
+  | { type: 'assetMap'; title?: string | LocalizedText; columns: { title: string | LocalizedText; items: Array<string | LocalizedText> }[] }
+  | { type: 'adaptiveIntroVideo'; title?: string | LocalizedText; caption?: string | LocalizedText }
   | { type: 'semanticCompilationChain' }
   | { type: 'directionWeightMatrix' }
   | { type: 'rugLanguagePromptBridge' }
   | { type: 'appendixC' }
-  | { type: 'htmlEmbed'; title?: string; src: string; aspectRatio?: string };
+  | { type: 'htmlEmbed'; title?: string | LocalizedText; src: string; aspectRatio?: string };
 
 interface CaseStudyPage {
   pageId?: string;
@@ -64,12 +66,7 @@ interface CaseStudyPage {
 const pages: CaseStudyPage[] = [
   {
     pageId: 'fuli-plus-intro-video',
-    pageTitle: t('Fuli Plus 功能演示', 'Fuli Plus Product Demo'),
-    pageGoal: t('在项目开头直接展示核心交互结果，用自动播放但静音的视频建立第一印象。', 'Open with the core interaction result and build the first impression through an autoplay, muted video.'),
-    mainCopy: t(
-      '这一页只承担一个任务：让读者先看到系统实际交付出来的设计演示。页面会根据设备性能和视口宽度在 540p 与 720p 之间做单路选择，默认静音并自动播放，但这套行为只作用在当前页，不会改动其他页面媒体的音频策略。',
-      'This page has one job: show the design demo the system actually ships. It selects either 540p or 720p based on device capability and viewport width, autoplays muted by default, and keeps that media behavior scoped to this page only.',
-    ),
+    ...FULI_PLUS_INTRO_COPY,
     contentBlocks: [],
     visualBlocks: [
       {
@@ -623,11 +620,13 @@ function AgentThinking({
 
 function IntroReveal({
   pageTitle,
+  pageGoal,
   mainCopy,
   isMobile,
   disabled,
 }: {
   pageTitle: LocalizedText;
+  pageGoal: LocalizedText;
   mainCopy: LocalizedText;
   isMobile?: boolean;
   disabled?: boolean;
@@ -648,6 +647,9 @@ function IntroReveal({
       <div style={revealStyle(visible, 0)}>
         <div style={pageTitleStyle(isMobile)}>{text(pageTitle)}</div>
       </div>
+      <div style={revealStyle(visible, 40)}>
+        <div style={{ color: '#9f8d73', fontSize: 13, lineHeight: 1.7, maxWidth: 860 }}>{text(pageGoal)}</div>
+      </div>
       <div style={revealStyle(visible, 90)}>
         <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{text(mainCopy)}</p>
       </div>
@@ -655,18 +657,18 @@ function IntroReveal({
   );
 }
 
-function renderContentBlock(block: ContentBlock, accentColor: string) {
+function renderContentBlock(block: ContentBlock, accentColor: string, text: (value: LocalizedText) => string) {
   const blockPanel = panelStyle();
 
   switch (block.type) {
     case 'userQuotes':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gap: 12 }}>
             {block.items.map((item) => (
-              <div key={item} className="narrative-card" style={{ padding: '14px 16px', borderRadius: 14, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.08)', color: '#f0e8d8', fontSize: 18, lineHeight: 1.7 }}>
-                {item}
+              <div key={typeof item === 'string' ? item : item.zh} className="narrative-card" style={{ padding: '14px 16px', borderRadius: 14, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.08)', color: '#f0e8d8', fontSize: 18, lineHeight: 1.7 }}>
+                {text(normalizeLocalizedText(item))}
               </div>
             ))}
           </div>
@@ -675,10 +677,10 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
     case 'shortParagraphs':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gap: 10 }}>
             {block.items.map((item) => (
-              <p key={item} style={paragraphStyle()}>{item}</p>
+              <p key={typeof item === 'string' ? item : item.zh} style={paragraphStyle()}>{text(normalizeLocalizedText(item))}</p>
             ))}
           </div>
         </div>
@@ -686,12 +688,12 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
     case 'bulletCluster':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gap: 8 }}>
             {block.items.map((item) => (
-              <div key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: '#d7cab5', fontSize: 15, lineHeight: 1.8 }}>
+              <div key={typeof item === 'string' ? item : item.zh} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: '#d7cab5', fontSize: 15, lineHeight: 1.8 }}>
                 <span style={{ color: accentColor }}>•</span>
-                <span>{item}</span>
+                <span>{text(normalizeLocalizedText(item))}</span>
               </div>
             ))}
           </div>
@@ -700,12 +702,12 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
     case 'comparisonCards':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
             {block.items.map((item) => (
-              <div key={item.title} className="narrative-card" style={{ borderRadius: 14, padding: '16px 16px 14px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(200,169,110,0.08)' }}>
-                <div style={cardTitleStyle()}>{item.title}</div>
-                <div style={smallBodyStyle()}>{item.body}</div>
+              <div key={typeof item.title === 'string' ? item.title : item.title.zh} className="narrative-card" style={{ borderRadius: 14, padding: '16px 16px 14px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(200,169,110,0.08)' }}>
+                <div style={cardTitleStyle()}>{text(normalizeLocalizedText(item.title))}</div>
+                <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
               </div>
             ))}
           </div>
@@ -714,11 +716,11 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
     case 'miniCaptions':
       return (
         <div style={{ ...blockPanel, padding: '16px 18px' }}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gap: 8 }}>
             {block.items.map((item) => (
-              <div key={item} style={{ color: '#95856b', fontSize: 13, lineHeight: 1.7 }}>
-                {item}
+              <div key={typeof item === 'string' ? item : item.zh} style={{ color: '#95856b', fontSize: 13, lineHeight: 1.7 }}>
+                {text(normalizeLocalizedText(item))}
               </div>
             ))}
           </div>
@@ -727,7 +729,7 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
     case 'codeBlock':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <pre
             style={{
               margin: 0,
@@ -756,8 +758,8 @@ function renderContentBlock(block: ContentBlock, accentColor: string) {
             background: `linear-gradient(180deg, ${accentColor}14, rgba(10,8,6,0.94) 42%)`,
           }}
         >
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
-          <p style={{ ...paragraphStyle(), margin: 0, color: '#efe4d0' }}>{block.body}</p>
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
+          <p style={{ ...paragraphStyle(), margin: 0, color: '#efe4d0' }}>{text(normalizeLocalizedText(block.body))}</p>
         </div>
       );
   }
@@ -903,6 +905,7 @@ function HtmlEmbedBlock({
 }
 
 function AdaptiveFuliIntroVideo({ accentColor }: { accentColor: string }) {
+  const { text } = useI18n();
   const [resolution, setResolution] = useState<'540p' | '720p'>(() =>
     chooseFuliPlusIntroVideoResolution({
       viewportWidth: typeof window === 'undefined' ? 1440 : window.innerWidth,
@@ -963,31 +966,31 @@ function AdaptiveFuliIntroVideo({ accentColor }: { accentColor: string }) {
           border: `1px solid ${accentColor}33`,
           background: 'rgba(7, 6, 5, 0.9)',
         }}
-        aria-label="Fuli Plus 功能演示视频"
+        aria-label={text({ zh: 'Fuli Plus 功能演示视频', en: 'Fuli Plus product demo video' })}
       />
     </div>
   );
 }
 
-function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: boolean) {
+function renderVisualBlock(block: VisualBlock, accentColor: string, text: (value: LocalizedText) => string, isMobile?: boolean) {
   const blockPanel = panelStyle();
 
   switch (block.type) {
     case 'heroImage':
       return (
         <div style={{ ...blockPanel, padding: 12 }}>
-          <img src={block.src} alt={block.caption} className="narrative-media" style={imageFrameStyle()} />
-          <div style={{ color: '#8f7d61', fontSize: 13, marginTop: 10, lineHeight: 1.7 }}>{block.caption}</div>
+          <img src={block.src} alt={text(normalizeLocalizedText(block.caption))} className="narrative-media" style={imageFrameStyle()} />
+          <div style={{ color: '#8f7d61', fontSize: 13, marginTop: 10, lineHeight: 1.7 }}>{text(normalizeLocalizedText(block.caption))}</div>
         </div>
       );
     case 'workflowDiagram':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${block.nodes.length}, minmax(0, 1fr))`, gap: 10, alignItems: 'center' }}>
             {block.nodes.map((node, index) => (
-              <div key={node} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div className="narrative-step" style={{ flex: 1, padding: '14px 12px', borderRadius: 14, border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.02)', color: '#efe4d0', textAlign: 'center', lineHeight: 1.6, transitionDelay: `${index * 90}ms` }}>{node}</div>
+              <div key={typeof node === 'string' ? node : node.zh} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div className="narrative-step" style={{ flex: 1, padding: '14px 12px', borderRadius: 14, border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.02)', color: '#efe4d0', textAlign: 'center', lineHeight: 1.6, transitionDelay: `${index * 90}ms` }}>{text(normalizeLocalizedText(node))}</div>
                 {!isMobile && index < block.nodes.length - 1 ? <div style={{ color: accentColor }}>→</div> : null}
               </div>
             ))}
@@ -999,10 +1002,10 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {block.items.map((item, index) => (
-              <div key={item.title} className="narrative-card" style={{ borderRadius: 16, padding: 12, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.02)' }}>
-                <img src={index % 2 === 0 ? fuliHeroImage : fuliSystemImage} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
-                <div style={{ ...cardTitleStyle(), marginTop: 12 }}>{item.title}</div>
-                <div style={smallBodyStyle()}>{item.body}</div>
+              <div key={`problem-${index}`} className="narrative-card" style={{ borderRadius: 16, padding: 12, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                <img src={index % 2 === 0 ? fuliHeroImage : fuliSystemImage} alt={text(normalizeLocalizedText(item.title))} className="narrative-media" style={imageFrameStyle()} />
+                <div style={{ ...cardTitleStyle(), marginTop: 12 }}>{text(normalizeLocalizedText(item.title))}</div>
+                <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
               </div>
             ))}
           </div>
@@ -1014,12 +1017,12 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           <div style={{ display: 'grid', gap: 18 }}>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 16, alignItems: 'stretch' }}>
               {block.items.map((item, index) => (
-                <div key={item.title} className="narrative-card" style={{ borderRadius: 18, padding: '18px 18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)', display: 'grid', gap: 14, transitionDelay: `${index * 70}ms` }}>
+                <div key={typeof item.title === 'string' ? item.title : item.title.zh} className="narrative-card" style={{ borderRadius: 18, padding: '18px 18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.018)', display: 'grid', gap: 14, transitionDelay: `${index * 70}ms` }}>
                   {item.src ? (
-                    <img src={item.src} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
+                    <img src={item.src} alt={text(normalizeLocalizedText(item.title))} className="narrative-media" style={imageFrameStyle()} />
                   ) : null}
-                  <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.28 }}>{item.title}</div>
-                  <div style={smallBodyStyle()}>{item.body}</div>
+                  <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.28 }}>{text(normalizeLocalizedText(item.title))}</div>
+                  <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
                 </div>
               ))}
             </div>
@@ -1035,7 +1038,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
             borderRadius: isMobile ? 28 : 34,
           }}
         >
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 14 }}>
             {[{ label: 'Before', items: block.before }, { label: 'After', items: block.after }].map((group) => (
               <div
@@ -1058,7 +1061,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                 >
                   {group.items.map((item, index) => (
                     <div
-                      key={item}
+                      key={`before-after-${index}`}
                       style={{
                         position: 'relative',
                         minWidth: 0,
@@ -1091,7 +1094,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                           overflowWrap: 'normal',
                         }}
                       >
-                        {item}
+                        {text(normalizeLocalizedText(item))}
                       </div>
                     </div>
                   ))}
@@ -1106,9 +1109,9 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           <div style={{ display: 'grid', gap: 10 }}>
             {block.stages.map((stage, index) => (
-              <div key={stage} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div key={typeof stage === 'string' ? stage : stage.zh} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ minWidth: 34, color: accentColor, fontSize: 12 }}>{String(index + 1).padStart(2, '0')}</div>
-                <div className="narrative-step" style={{ flex: 1, borderRadius: 14, padding: '14px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.1)', color: '#f0e8d8', transitionDelay: `${index * 100}ms` }}>{stage}</div>
+                <div className="narrative-step" style={{ flex: 1, borderRadius: 14, padding: '14px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.1)', color: '#f0e8d8', transitionDelay: `${index * 100}ms` }}>{text(normalizeLocalizedText(stage))}</div>
               </div>
             ))}
           </div>
@@ -1148,7 +1151,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           >
             <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 18px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', minHeight: isMobile ? undefined : 420 }}>
               <div style={{ color: accentColor, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, opacity: 0.88 }}>第一轮的意义</div>
-              <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>第一轮在做什么</div>
+                        <div style={{ color: '#f0e8d8', fontSize: 22, lineHeight: 1.3, marginBottom: 12 }}>{text({ zh: '第一轮在做什么', en: 'What the first round does' })}</div>
               <div style={{ borderRadius: 14, border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.015)', padding: '14px 14px 12px', marginBottom: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: accentColor, fontSize: 13, marginBottom: 8 }}>
                   <span>题材</span>
@@ -1279,7 +1282,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
                 {directionCards.map((card, index) => (
                   <div
-                    key={card.title}
+                    key={`direction-${index}`}
                     className="narrative-card"
                     style={{
                       borderRadius: 16,
@@ -1405,14 +1408,14 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
     case 'referenceImageGrid':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {block.items.map((item) => (
-              <div key={item.label} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
-                <img src={fuliHeroImage} alt={item.label} className="narrative-media" style={imageFrameStyle()} />
+              <div key={typeof item.label === 'string' ? item.label : item.label.zh} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
+                <img src={fuliHeroImage} alt={text(normalizeLocalizedText(item.label))} className="narrative-media" style={imageFrameStyle()} />
                 <div>
-                  <div style={{ color: '#f0e8d8', fontSize: 16, marginBottom: 4 }}>{item.label}</div>
-                  <div style={smallBodyStyle()}>{item.body}</div>
+                <div style={{ color: '#f0e8d8', fontSize: 16, marginBottom: 4 }}>{text(normalizeLocalizedText(item.label))}</div>
+                  <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
                 </div>
               </div>
             ))}
@@ -1422,12 +1425,12 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
     case 'semanticBuckets':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gap: 12 }}>
             {block.items.map((item) => (
-              <div key={item.title} className="narrative-card" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '200px minmax(0, 1fr)', gap: 12, alignItems: 'start', padding: '14px 0', borderTop: '1px solid rgba(200,169,110,0.08)' }}>
-                <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.3 }}>{item.title}</div>
-                <div style={smallBodyStyle()}>{item.body}</div>
+              <div key={typeof item.title === 'string' ? item.title : item.title.zh} className="narrative-card" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '200px minmax(0, 1fr)', gap: 12, alignItems: 'start', padding: '14px 0', borderTop: '1px solid rgba(200,169,110,0.08)' }}>
+                <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.3 }}>{text(normalizeLocalizedText(item.title))}</div>
+                <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
               </div>
             ))}
           </div>
@@ -1438,9 +1441,9 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {[block.left, block.right].map((item) => (
-              <div key={item.title} className="narrative-card" style={{ borderRadius: 16, padding: '18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-                <div style={cardTitleStyle()}>{item.title}</div>
-                <div style={smallBodyStyle()}>{item.body}</div>
+              <div key={typeof item.title === 'string' ? item.title : item.title.zh} className="narrative-card" style={{ borderRadius: 16, padding: '18px 16px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
+                <div style={cardTitleStyle()}>{text(normalizeLocalizedText(item.title))}</div>
+                <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
               </div>
             ))}
           </div>
@@ -1449,13 +1452,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
     case 'caseImageStrip':
       return (
         <div style={blockPanel}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${block.items.length}, minmax(0, 1fr))`, gap: 12 }}>
             {block.items.map((item) => (
-              <div key={item.title} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
-                <img src={item.src} alt={item.title} className="narrative-media" style={imageFrameStyle()} />
-                <div style={{ color: '#f0e8d8', fontSize: 16 }}>{item.title}</div>
-                <div style={smallBodyStyle()}>{item.body}</div>
+              <div key={typeof item.title === 'string' ? item.title : item.title.zh} className="narrative-card" style={{ display: 'grid', gap: 10 }}>
+                <img src={item.src} alt={text(normalizeLocalizedText(item.title))} className="narrative-media" style={imageFrameStyle()} />
+                <div style={{ color: '#f0e8d8', fontSize: 16 }}>{text(normalizeLocalizedText(item.title))}</div>
+                <div style={smallBodyStyle()}>{text(normalizeLocalizedText(item.body))}</div>
               </div>
             ))}
           </div>
@@ -1466,9 +1469,9 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={{ ...blockPanel, padding: '28px 26px' }}>
           <div style={{ display: 'grid', gap: 14 }}>
             {block.items.map((item, index) => (
-              <div key={item} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '44px minmax(0, 1fr)', gap: 12, alignItems: 'start' }}>
+              <div key={typeof item === 'string' ? item : item.zh} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '44px minmax(0, 1fr)', gap: 12, alignItems: 'start' }}>
                 <div style={{ color: accentColor, fontSize: 13, letterSpacing: '0.18em' }}>{String(index + 1).padStart(2, '0')}</div>
-                <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.35 }}>{item}</div>
+                <div style={{ color: '#f0e8d8', fontSize: isMobile ? 20 : 24, lineHeight: 1.35 }}>{text(normalizeLocalizedText(item))}</div>
               </div>
             ))}
           </div>
@@ -1479,13 +1482,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
             {block.groups.map((group) => (
-              <div key={group.title} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.1)' }}>
-                <div style={cardTitleStyle()}>{group.title}</div>
+              <div key={typeof group.title === 'string' ? group.title : group.title.zh} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.1)' }}>
+                <div style={cardTitleStyle()}>{text(normalizeLocalizedText(group.title))}</div>
                 <div style={{ display: 'grid', gap: 8 }}>
                   {group.items.map((item) => (
-                    <div key={item} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
+                    <div key={typeof item === 'string' ? item : item.zh} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
                       <span style={{ color: accentColor }}>•</span>
-                      <span>{item}</span>
+                      <span>{text(normalizeLocalizedText(item))}</span>
                     </div>
                   ))}
                 </div>
@@ -1499,12 +1502,12 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
         <div style={blockPanel}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
             {block.columns.map((column) => (
-              <div key={column.title} style={{ display: 'grid', gap: 10 }}>
-                <div style={{ color: '#f0e8d8', fontSize: 18 }}>{column.title}</div>
+              <div key={typeof column.title === 'string' ? column.title : column.title.zh} style={{ display: 'grid', gap: 10 }}>
+                <div style={{ color: '#f0e8d8', fontSize: 18 }}>{text(normalizeLocalizedText(column.title))}</div>
                 <div style={{ display: 'grid', gap: 8 }}>
                   {column.items.map((item) => (
-                    <div key={item} className="narrative-card" style={{ padding: '12px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.08)', color: '#b7a68a' }}>
-                      {item}
+                    <div key={typeof item === 'string' ? item : item.zh} className="narrative-card" style={{ padding: '12px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(200,169,110,0.08)', color: '#b7a68a' }}>
+                      {text(normalizeLocalizedText(item))}
                     </div>
                   ))}
                 </div>
@@ -1516,13 +1519,13 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
     case 'adaptiveIntroVideo':
       return (
         <div style={{ ...blockPanel, padding: isMobile ? '16px 14px 18px' : '20px 20px 22px', display: 'grid', gap: 12 }}>
-          {block.title ? <div style={sectionLabelStyle(accentColor)}>{block.title}</div> : null}
+          {block.title ? <div style={sectionLabelStyle(accentColor)}>{text(normalizeLocalizedText(block.title))}</div> : null}
           <AdaptiveFuliIntroVideo accentColor={accentColor} />
-          {block.caption ? <div style={smallBodyStyle()}>{block.caption}</div> : null}
+          {block.caption ? <div style={smallBodyStyle()}>{text(normalizeLocalizedText(block.caption))}</div> : null}
         </div>
       );
     case 'htmlEmbed':
-      return <HtmlEmbedBlock title={block.title} src={block.src} aspectRatio={block.aspectRatio} accentColor={accentColor} />;
+      return <HtmlEmbedBlock title={text(normalizeLocalizedText(block.title ?? ''))} src={block.src} aspectRatio={block.aspectRatio} accentColor={accentColor} />;
     case 'semanticCompilationChain': {
       const chainCards = [
         {
@@ -1563,7 +1566,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
           <div style={{ display: 'grid', gap: 12 }}>
             {chainCards.map((card, index) => (
-              <div key={card.title} style={{ position: 'relative', minWidth: 0, paddingBottom: index < chainCards.length - 1 ? 18 : 0 }}>
+              <div key={`chain-${index}`} style={{ position: 'relative', minWidth: 0, paddingBottom: index < chainCards.length - 1 ? 18 : 0 }}>
                 <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 15px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)' }}>
                   <div style={{ color: '#8e7f68', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 8 }}>{String(index + 1).padStart(2, '0')}</div>
                   <div style={{ color: '#f0e8d8', fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>{card.title}</div>
@@ -1643,12 +1646,12 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-            {featureGroups.map((group) => (
-              <div key={group.title} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
+            {featureGroups.map((group, index) => (
+              <div key={`feature-${index}`} className="narrative-card" style={{ borderRadius: 16, padding: '16px 16px 14px', border: '1px solid rgba(200,169,110,0.08)', background: 'rgba(255,255,255,0.016)' }}>
                 <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 10 }}>{group.title}</div>
                 <div style={{ display: 'grid', gap: 8 }}>
-                  {group.items.map((item) => (
-                    <div key={item} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
+                  {group.items.map((item, itemIndex) => (
+                    <div key={`feature-${index}-${itemIndex}`} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
                       <span style={{ color: accentColor }}>•</span>
                       <span>{item}</span>
                     </div>
@@ -1688,12 +1691,12 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
 
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
             {bridgeColumns.map((column, index) => (
-              <div key={column.title} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < bridgeColumns.length - 1 ? 24 : 0 }}>
+              <div key={`bridge-${index}`} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < bridgeColumns.length - 1 ? 24 : 0 }}>
                 <div className="narrative-card" style={{ borderRadius: 18, padding: '16px 16px 15px', border: '1px solid rgba(200,169,110,0.1)', background: 'rgba(255,255,255,0.02)', height: '100%' }}>
                   <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35, marginBottom: 10 }}>{column.title}</div>
                   <div style={{ display: 'grid', gap: 8 }}>
-                    {column.items.map((item) => (
-                      <div key={item} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
+                    {column.items.map((item, itemIndex) => (
+                      <div key={`bridge-${index}-${itemIndex}`} style={{ display: 'flex', gap: 8, color: '#b7a68a', fontSize: 14, lineHeight: 1.7 }}>
                         <span style={{ color: accentColor }}>•</span>
                         <span>{item}</span>
                       </div>
@@ -1794,7 +1797,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: isMobile ? 10 : 12 }}>
                 {['图像证据', 'semantic bucket', 'slot-state', 'compiler behavior'].map((item, index) => (
-                  <div key={item} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < 3 ? 22 : 0 }}>
+                  <div key={`slot-${index}`} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < 3 ? 22 : 0 }}>
                     <div className="narrative-step" style={{ minHeight: 72, borderRadius: 16, padding: '16px 14px', border: '1px solid rgba(200,169,110,0.12)', background: 'rgba(255,255,255,0.018)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: '#f0e8d8', lineHeight: 1.5, transitionDelay: `${70 + index * 70}ms` }}>
                       {item}
                     </div>
@@ -1851,7 +1854,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
                 {bucketCards.map((card, index) => (
-                  <div key={card.title} className="narrative-card" style={{ ...appendixSectionCard(170 + index * 45), padding: '16px 16px 15px' }}>
+                  <div key={`bucket-${index}`} className="narrative-card" style={{ ...appendixSectionCard(170 + index * 45), padding: '16px 16px 15px' }}>
                     <div style={{ display: 'grid', gap: 10 }}>
                       <div style={{ color: '#f0e8d8', fontSize: 18, lineHeight: 1.35 }}>{card.title}</div>
                       <div style={smallBodyStyle()}>{card.body}</div>
@@ -1924,7 +1927,7 @@ function renderVisualBlock(block: VisualBlock, accentColor: string, isMobile?: b
                     body: '第一轮会先拉开编排和密度方向，保持同一显影逻辑；第二轮则锁定这组 DNA，只在局部色彩、密度和表面起伏上继续 refinement。',
                   },
                 ].map((item, index) => (
-                  <div key={item.title} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < 3 ? 24 : 0 }}>
+                  <div key={`example-${index}`} style={{ position: 'relative', minWidth: 0, paddingRight: !isMobile && index < 3 ? 24 : 0 }}>
                     <div className="narrative-card" style={{ ...appendixSectionCard(260 + index * 50), padding: '16px 16px 15px', height: '100%' }}>
                       <div style={{ color: '#f0e8d8', fontSize: 17, lineHeight: 1.3, marginBottom: 8 }}>{item.title}</div>
                       <div style={smallBodyStyle()}>{item.body}</div>
@@ -1994,11 +1997,13 @@ export default function FuliPlusCaseStudy({
 
   const pageIndex = getFuliPlusCaseStudyPageIndex(route, slideIndex);
   const page = pages[pageIndex ?? slideIndex];
+  const { text } = useI18n();
 
   return (
     <div id={page.pageId} style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
       <IntroReveal
         pageTitle={page.pageTitle}
+        pageGoal={page.pageGoal}
         mainCopy={page.mainCopy}
         isMobile={isMobile}
         disabled={!enableMotion}
@@ -2008,7 +2013,7 @@ export default function FuliPlusCaseStudy({
         <section style={{ display: 'grid', gap: 14 }}>
           {page.visualBlocks.map((block, index) => (
             <Reveal key={`visual-${index}`} delay={index * 90} disabled={!enableMotion}>
-              {renderVisualBlock(block, accentColor, isMobile)}
+              {renderVisualBlock(block, accentColor, text, isMobile)}
             </Reveal>
           ))}
         </section>
@@ -2018,7 +2023,7 @@ export default function FuliPlusCaseStudy({
         <section style={{ display: 'grid', gap: 14 }}>
           {page.contentBlocks.map((block, index) => (
             <Reveal key={`content-${index}`} delay={index * 90 + 80} disabled={!enableMotion}>
-              {renderContentBlock(block, accentColor)}
+              {renderContentBlock(block, accentColor, text)}
             </Reveal>
           ))}
         </section>

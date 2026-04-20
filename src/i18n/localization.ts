@@ -15,3 +15,7 @@ export function resolveInitialLanguage(storage: Pick<Storage, 'getItem'> | undef
 export function pickLocalizedText(text: LocalizedText, language: Language): string {
   return language === 'en' ? text.en ?? text.zh : text.zh;
 }
+
+export function normalizeLocalizedText(value: string | LocalizedText): LocalizedText {
+  return typeof value === 'string' ? { zh: value } : value;
+}
