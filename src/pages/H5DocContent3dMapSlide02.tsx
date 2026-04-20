@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { SectionData } from './H5DocContentSlideFactory';
+import { createLocalizedTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
 import { paragraphStyle, subtitleStyle } from './h5Styles';
 
 
@@ -330,12 +330,12 @@ function ScopeTable({ accentColor }: { accentColor: string }) {
   );
 }
 
-export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
+export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
       id: 'problem-definition',
       numeral: '01',
-      title: '问题定义',
+      title: createLocalizedTitle('问题定义', 'Problem Definition'),
       blocks: [
         <>
           <div style={{ color: '#c8a96e', fontSize: '11px', letterSpacing: '0.2em', marginBottom: 8 }}>
@@ -360,7 +360,7 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
     {
       id: 'decision-basis',
       numeral: '02',
-      title: '核心判定依据',
+      title: createLocalizedTitle('核心判定依据', 'Core Decision Basis'),
       blocks: [
         <>
           <h2 style={subtitleStyle(accentColor)}>SR 显示判定表</h2>
@@ -371,7 +371,7 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
     {
       id: 'scope',
       numeral: '03',
-      title: '适用范围',
+      title: createLocalizedTitle('适用范围', 'Scope'),
       blocks: [
         <ScopeTable accentColor={accentColor} />,
       ],
@@ -379,7 +379,7 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
     {
       id: 'open-road-rules',
       numeral: '04',
-      title: '开放道路场景下的 SR 显示规则',
+      title: createLocalizedTitle('开放道路场景下的 SR 显示规则', 'SR Display Rules in Open-Road Scenarios'),
       blocks: [
         <OpenRoadSRTable accentColor={accentColor} />,
       ],
@@ -387,7 +387,7 @@ export function get3dMapSlide02Sections(accentColor: string): SectionData[] {
     {
       id: 'closed-road-rules',
       numeral: '05',
-      title: '封闭 / 弱图空间下的显示关系',
+      title: createLocalizedTitle('封闭 / 弱图空间下的显示关系', 'Display Priority in Closed or Weak-Map Spaces'),
       blocks: [
         <>
           <p style={paragraphStyle()}>

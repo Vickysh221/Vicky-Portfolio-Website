@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { VideoWithStatus } from '../components/MediaWithStatus';
-import type { SectionData } from './H5DocContentSlideFactory';
+import { createLocalizedTitle, createMirroredTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
 import { blockLabelStyle, dividerStyle, kickerStyle, noteCardStyle, paragraphStyle } from './h5Styles';
 
 import christmasEveVideo from '../images/companions/christmas eve.mp4';
@@ -103,14 +103,14 @@ function introGridStyle(): CSSProperties {
   };
 }
 
-function getProjectDescriptionSections(): SectionData[] {
+function getProjectDescriptionSections(): LocalizedSectionData[] {
   const [lead, ...body] = projectDescription;
 
   return [
     {
       id: 'companions-project-overview',
       numeral: '01',
-      title: '项目叙述',
+      title: createLocalizedTitle('项目叙述', 'Project Narrative'),
       blocks: [
         <>
           <p style={kickerStyle('#6f8f92')}>Have a cup of tea with AI</p>
@@ -132,7 +132,7 @@ function getProjectDescriptionSections(): SectionData[] {
   ];
 }
 
-export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPlayMedia: boolean): SectionData[] {
+export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPlayMedia: boolean): LocalizedSectionData[] {
   if (slideIndex === 0) return getProjectDescriptionSections();
 
   const companionIndex = slideIndex - 1;
@@ -142,7 +142,7 @@ export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPla
     {
       id: `companions-slide-${slideIndex + 1}`,
       numeral: String(slideIndex + 1).padStart(2, '0'),
-      title: slide.title,
+      title: createMirroredTitle(slide.title),
       blocks: [
         <div style={videoFrameStyle(slide.frameAspectRatio)}>
           <VideoWithStatus

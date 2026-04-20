@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { SectionData } from './H5DocContentSlideFactory';
+import { createLocalizedTitle, type LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
 import { gridListStyle, infoTagStyle, kickerStyle, mediaBlockStyle, paragraphStyle, smallMetaStyle, subtitleStyle, ListItem } from './h5Styles';
 
 function listStyle(): CSSProperties {
@@ -9,12 +9,15 @@ function listStyle(): CSSProperties {
   };
 }
 
-export function getPersonalLanguageDiarySlide04Sections(accentColor: string): SectionData[] {
+export function getPersonalLanguageDiarySlide04Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
       id: 'language-diary-memory-architecture',
       numeral: '04',
-      title: '把一次表达变成长期资产 · Memory Architecture',
+      title: createLocalizedTitle(
+        '把一次表达变成长期资产 · Memory Architecture',
+        'Turn a single expression into a long-term asset · Memory Architecture',
+      ),
       blocks: [
         <>
           <div style={kickerStyle(accentColor)}>四层记忆结构</div>

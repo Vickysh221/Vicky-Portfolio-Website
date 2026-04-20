@@ -51,6 +51,8 @@ import {
   getDrivingAuthorityContractsUxSubpageSections,
 } from './H5DocContentDrivingAuthorityContracts';
 import type { SectionData } from './H5DocContentSlideFactory';
+import type { LocalizedSectionData } from '../i18n/sectionBuilders.tsx';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
 import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 
@@ -77,7 +79,9 @@ function sectionTitleStyle(): CSSProperties {
   };
 }
 
-const sectionMap: Record<string, (accentColor: string) => SectionData[]> = {
+type RenderableSectionData = SectionData | LocalizedSectionData;
+
+const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[]> = {
   '/jidu-hmi/unity3d-camera:0': getUnitySections,
   '/jidu-hmi/unity3d-camera:1': getUnityChapter2Sections,
   '/jidu-hmi/unity3d-camera:2': getUnityCameraSlide03Sections,
@@ -146,12 +150,15 @@ export function hasSectionContent(route: string, slideIndex = 0): boolean {
   return `${route}:${slideIndex}` in sectionMap;
 }
 
-function H5Section({ section, accentColor }: { section: SectionData; accentColor: string }) {
+function H5Section({ section, accentColor }: { section: RenderableSectionData; accentColor: string }) {
+  const { text } = useI18n();
+  const title = typeof section.title === 'string' ? section.title : text(section.title);
+
   return (
     <section id={section.id} style={{ marginBottom: 26, scrollMarginTop: 12 }}>
       <h1 style={sectionTitleStyle()}>
         <span style={{ color: accentColor, fontSize: '12px', letterSpacing: '0.2em' }}>{section.numeral}</span>
-        <span>{section.title}</span>
+        <span>{title}</span>
       </h1>
       {section.blocks.map((block, idx) => (
         <div key={`${section.id}-${idx}`}>{block}</div>
