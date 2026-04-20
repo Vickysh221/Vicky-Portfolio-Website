@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
-import { PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
+import { PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_DEFINITIONS } from './H5DocContentSectionTitles.ts';
 import { gridListStyle, infoTagStyle, kickerStyle, mediaBlockStyle, paragraphStyle, smallMetaStyle, subtitleStyle, ListItem } from './h5Styles';
 
 function listStyle(): CSSProperties {
@@ -13,9 +13,7 @@ function listStyle(): CSSProperties {
 export function getPersonalLanguageDiarySlide04Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      id: 'language-diary-memory-architecture',
-      numeral: '04',
-      title: PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_TITLES.memoryArchitecture,
+      ...PERSONAL_LANGUAGE_DIARY_SLIDE04_SECTION_DEFINITIONS.memoryArchitecture,
       blocks: [
         <>
           <div style={kickerStyle(accentColor)}>四层记忆结构</div>

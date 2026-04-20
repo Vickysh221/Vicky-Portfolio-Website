@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
-import { MAP_3D_SLIDE02_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
+import { MAP_3D_SLIDE02_SECTION_DEFINITIONS } from './H5DocContentSectionTitles.ts';
 import { paragraphStyle, subtitleStyle } from './h5Styles';
 
 
@@ -334,9 +334,7 @@ function ScopeTable({ accentColor }: { accentColor: string }) {
 export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionData[] {
   return [
     {
-      id: 'problem-definition',
-      numeral: '01',
-      title: MAP_3D_SLIDE02_SECTION_TITLES.problemDefinition,
+      ...MAP_3D_SLIDE02_SECTION_DEFINITIONS.problemDefinition,
       blocks: [
         <>
           <div style={{ color: '#c8a96e', fontSize: '11px', letterSpacing: '0.2em', marginBottom: 8 }}>
@@ -359,9 +357,7 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
       ],
     },
     {
-      id: 'decision-basis',
-      numeral: '02',
-      title: MAP_3D_SLIDE02_SECTION_TITLES.decisionBasis,
+      ...MAP_3D_SLIDE02_SECTION_DEFINITIONS.decisionBasis,
       blocks: [
         <>
           <h2 style={subtitleStyle(accentColor)}>SR 显示判定表</h2>
@@ -370,25 +366,19 @@ export function get3dMapSlide02Sections(accentColor: string): LocalizedSectionDa
       ],
     },
     {
-      id: 'scope',
-      numeral: '03',
-      title: MAP_3D_SLIDE02_SECTION_TITLES.scope,
+      ...MAP_3D_SLIDE02_SECTION_DEFINITIONS.scope,
       blocks: [
         <ScopeTable accentColor={accentColor} />,
       ],
     },
     {
-      id: 'open-road-rules',
-      numeral: '04',
-      title: MAP_3D_SLIDE02_SECTION_TITLES.openRoadRules,
+      ...MAP_3D_SLIDE02_SECTION_DEFINITIONS.openRoadRules,
       blocks: [
         <OpenRoadSRTable accentColor={accentColor} />,
       ],
     },
     {
-      id: 'closed-road-rules',
-      numeral: '05',
-      title: MAP_3D_SLIDE02_SECTION_TITLES.closedRoadRules,
+      ...MAP_3D_SLIDE02_SECTION_DEFINITIONS.closedRoadRules,
       blocks: [
         <>
           <p style={paragraphStyle()}>

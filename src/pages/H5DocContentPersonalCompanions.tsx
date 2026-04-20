@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { VideoWithStatus } from '../components/MediaWithStatus';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
-import { PERSONAL_COMPANIONS_SECTION_TITLES } from './H5DocContentSectionTitles.ts';
+import { PERSONAL_COMPANIONS_SECTION_DEFINITIONS } from './H5DocContentSectionTitles.ts';
 import { blockLabelStyle, dividerStyle, kickerStyle, noteCardStyle, paragraphStyle } from './h5Styles';
 
 import christmasEveVideo from '../images/companions/christmas eve.mp4';
@@ -12,8 +12,7 @@ import neverTwoVideo from '../images/companions/never2-1.mp4';
 import nightcarVideo from '../images/companions/nightcar-1.mp4';
 import submarineVideo from '../images/companions/submarine-1.mp4';
 
-type CompanionSlide = {
-  title: string;
+type CompanionSlideMedia = {
   note: string;
   src: string;
   frameAspectRatio?: string;
@@ -28,44 +27,39 @@ const projectDescription = [
   '网易云音乐 CLI 在这里负责搜歌、确认 songId、判断某首歌是不是可播、控制播放，再把歌曲真正接进 bot 页面 / scene prototype。最后它慢慢长成了一个混合体：一部分是音乐界面，一部分是场景引擎，一部分是角色系统，一部分是情绪翻译器。它也是我 being with my string figure player 的一部分。',
 ];
 
-const companionSlides: CompanionSlide[] = [
-  {
-    title: 'Christmas Eve',
+type CompanionSlideKey = (typeof PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides)[number]['key'];
+
+const companionSlideMedia: Record<CompanionSlideKey, CompanionSlideMedia> = {
+  christmasEve: {
     note: '一段节日夜色里的陪伴感，像把人慢慢带进同一个呼吸节奏。',
     src: christmasEveVideo,
   },
-  {
-    title: 'Green',
+  green: {
     note: '更偏生长感和环境氛围，让角色关系先通过空间气息被感知。',
     src: greenVideo,
   },
-  {
-    title: 'Dancing',
+  dancing: {
     note: '把陪伴感放进更轻的身体节奏里，让音乐先通过动作和停顿被看见。',
     src: dancingVideo,
     frameAspectRatio: '742 / 1080',
   },
-  {
-    title: 'Never I',
+  neverOne: {
     note: '把人物和场景压进更私密的观看距离里，保留一种不完全说破的情绪。',
     src: neverOneVideo,
   },
-  {
-    title: 'Never II',
+  neverTwo: {
     note: '像前一段关系的延续版本，重点不在事件，而在陪伴是如何被停留住的。',
     src: neverTwoVideo,
   },
-  {
-    title: 'Night Car',
+  nightCar: {
     note: '把移动中的空间当成情绪容器，车窗内外共同构成观看的时间感。',
     src: nightcarVideo,
   },
-  {
-    title: 'Submarine',
+  submarine: {
     note: '更像一个被包裹起来的小世界，关系在封闭环境里变得更清楚。',
     src: submarineVideo,
   },
-];
+};
 
 function videoFrameStyle(aspectRatio = '2188 / 1080'): CSSProperties {
   return {
@@ -109,9 +103,7 @@ function getProjectDescriptionSections(): LocalizedSectionData[] {
 
   return [
     {
-      id: 'companions-project-overview',
-      numeral: '01',
-      title: PERSONAL_COMPANIONS_SECTION_TITLES.projectOverview,
+      ...PERSONAL_COMPANIONS_SECTION_DEFINITIONS.projectOverview,
       blocks: [
         <>
           <p style={kickerStyle('#6f8f92')}>Have a cup of tea with AI</p>
@@ -137,17 +129,17 @@ export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPla
   if (slideIndex === 0) return getProjectDescriptionSections();
 
   const companionIndex = slideIndex - 1;
-  const slide = companionSlides[companionIndex] ?? companionSlides[0];
+  const sectionDefinition = PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[companionIndex]
+    ?? PERSONAL_COMPANIONS_SECTION_DEFINITIONS.slides[0];
+  const slideMedia = companionSlideMedia[sectionDefinition.key];
 
   return [
     {
-      id: `companions-slide-${slideIndex + 1}`,
-      numeral: String(slideIndex + 1).padStart(2, '0'),
-      title: PERSONAL_COMPANIONS_SECTION_TITLES.slides[companionIndex] ?? PERSONAL_COMPANIONS_SECTION_TITLES.slides[0],
+      ...sectionDefinition,
       blocks: [
-        <div style={videoFrameStyle(slide.frameAspectRatio)}>
+        <div style={videoFrameStyle(slideMedia.frameAspectRatio)}>
           <VideoWithStatus
-            sources={[{ src: slide.src, type: 'video/mp4' }]}
+            sources={[{ src: slideMedia.src, type: 'video/mp4' }]}
             autoPlay
             loop
             controls
@@ -163,7 +155,7 @@ export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPla
           />
         </div>,
         <p style={{ ...noteStyle(), marginTop: '18px' }}>
-          {slide.note}
+          {slideMedia.note}
         </p>,
         <p style={{ ...noteStyle(), fontSize: '14px', color: '#8f816c', marginTop: '10px' }}>
           视频已转为更适合网页播放的 H.264 MP4，优先保证浏览器内联播放和构建兼容性。

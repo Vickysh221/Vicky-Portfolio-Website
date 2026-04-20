@@ -1,12 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
+import type { SectionShape } from '../i18n/sectionBuilders.ts';
 import { paragraphStyle } from './h5Styles';
 
-export interface SectionData {
-  id: string;
-  numeral: string;
-  title: string;
-  blocks: ReactNode[];
-}
+export type SectionData = SectionShape<string>;
 
 function markerStyle(accentColor: string): CSSProperties {
   return {

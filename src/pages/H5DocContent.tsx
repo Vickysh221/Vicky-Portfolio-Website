@@ -50,8 +50,7 @@ import {
   getDrivingAuthorityContractsMainSections,
   getDrivingAuthorityContractsUxSubpageSections,
 } from './H5DocContentDrivingAuthorityContracts';
-import type { SectionData } from './H5DocContentSlideFactory';
-import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
+import { resolveSectionTitle, type RenderableSectionTitle, type SectionShape } from '../i18n/sectionBuilders.ts';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
@@ -79,7 +78,7 @@ function sectionTitleStyle(): CSSProperties {
   };
 }
 
-type RenderableSectionData = SectionData | LocalizedSectionData;
+type RenderableSectionData = SectionShape<RenderableSectionTitle>;
 
 const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[]> = {
   '/jidu-hmi/unity3d-camera:0': getUnitySections,
@@ -152,7 +151,7 @@ export function hasSectionContent(route: string, slideIndex = 0): boolean {
 
 function H5Section({ section, accentColor }: { section: RenderableSectionData; accentColor: string }) {
   const { text } = useI18n();
-  const title = typeof section.title === 'string' ? section.title : text(section.title);
+  const title = resolveSectionTitle(section.title, text);
 
   return (
     <section id={section.id} style={{ marginBottom: 26, scrollMarginTop: 12 }}>
