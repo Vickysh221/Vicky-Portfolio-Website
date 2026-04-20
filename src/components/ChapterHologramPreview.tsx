@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { HoveredChapter } from '../hooks/useChapterHover';
 import type { SubPagePreviewMedia } from '../projectRegistry';
 import { computePointerPlacement } from './chapterPreviewPlacement';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
 
 interface ChapterHologramPreviewProps {
   chapter: HoveredChapter | null;
@@ -48,6 +49,7 @@ export default function ChapterHologramPreview({
   chapter,
   previewMedia,
 }: ChapterHologramPreviewProps) {
+  const { text } = useI18n();
   const [visible, setVisible] = useState(false);
   const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
   const [placement, setPlacement] = useState<Placement | null>(null);
@@ -314,7 +316,7 @@ export default function ChapterHologramPreview({
               letterSpacing: '0.02em',
             }}
           >
-            {chapter.label}
+            {text(chapter.label)}
           </span>
         </div>
 

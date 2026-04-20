@@ -1,27 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { LocalizedText } from '../i18n/types.ts';
 
 export interface HoveredChapter {
   route: string;
   numeral: string;
-  label: string;
+  label: LocalizedText;
   projectColor: string;
-  projectTitle: string;
+  projectTitle: LocalizedText;
   chapterIndex: number;
   chapterTotal: number;
   pointerX: number;
   pointerY: number;
 }
 
-interface PendingChapter {
-  route: string;
-  numeral: string;
-  label: string;
-  projectColor: string;
-  projectTitle: string;
-  chapterIndex: number;
-  chapterTotal: number;
-  pointerX: number;
-  pointerY: number;
+interface PendingChapter extends HoveredChapter {}
+
+export function createHoveredChapterSnapshot(chapter: HoveredChapter): HoveredChapter {
+  return { ...chapter };
 }
 
 const ENTER_DELAY_MS = 0;
@@ -62,17 +57,7 @@ export function useChapterHover() {
 
   const commit = useCallback((pending: PendingChapter) => {
     activeRouteRef.current = pending.route;
-    setHoveredChapter({
-      route: pending.route,
-      numeral: pending.numeral,
-      label: pending.label,
-      projectColor: pending.projectColor,
-      projectTitle: pending.projectTitle,
-      chapterIndex: pending.chapterIndex,
-      chapterTotal: pending.chapterTotal,
-      pointerX: pending.pointerX,
-      pointerY: pending.pointerY,
-    });
+    setHoveredChapter(createHoveredChapterSnapshot(pending));
   }, []);
 
   const onChapterEnter = useCallback((pending: PendingChapter) => {

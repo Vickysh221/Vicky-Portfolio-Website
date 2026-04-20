@@ -148,8 +148,8 @@ export const PROJECTS: ProjectEntry[] = [
       { zh: 'ADAS', en: 'ADAS' },
     ],
     desc: {
-      zh: '3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU\'s in-car HMI. Prototyped directly in Unity3D.',
-      en: '3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU\'s in-car HMI. Prototyped directly in Unity3D.',
+      zh: 'Designed the 3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU\'s in-car HMI. Prototyped directly in Unity3D.',
+      en: 'Designed the 3D virtual camera architecture, gesture system, and autonomous driving UX states for JIDU\'s in-car HMI. Prototyped directly in Unity3D.',
     },
     color: '#c8a96e',
     route: '/jidu-hmi',

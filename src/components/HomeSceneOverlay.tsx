@@ -335,7 +335,7 @@ export default function HomeSceneOverlay({
                         {entry.chapters.map((chapter, index) => {
                           const sourceProject = getProjectByRoute(entry.phaseProjectRoute);
                           const projectColor = sourceProject?.color ?? '#c8a96e';
-                          const projectTitle = text(sourceProject?.title ?? entry.subtitle);
+                          const projectTitle = sourceProject?.title ?? entry.subtitle;
                           const isHovered = hoveredChapter?.route === chapter.route;
                           return (
                             <button
@@ -345,7 +345,7 @@ export default function HomeSceneOverlay({
                                 onChapterEnter({
                                   route: chapter.route,
                                   numeral: chapter.numeral,
-                                  label: text(chapter.label),
+                                  label: chapter.label,
                                   projectColor,
                                   projectTitle,
                                   chapterIndex: index,
