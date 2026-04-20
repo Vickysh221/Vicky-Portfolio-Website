@@ -1,8 +1,15 @@
 import type { CSSProperties } from 'react';
-import type { SectionData } from './H5DocContentSlideFactory';
+import { createLocalizedTitle, type RenderableSectionTitle, type SectionShape } from '../i18n/sectionBuilders.ts';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
+import type { LocalizedText } from '../i18n/types.ts';
 import { paragraphStyle, h2Style, codeBlockStyle } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
 import phoenixFrameworkOverview from '../images/phoenix/slide03-img01.png';
+
+function Copy({ value }: { value: LocalizedText }) {
+  const { text } = useI18n();
+  return <>{text(value)}</>;
+}
 
 function captionStyle(): CSSProperties {
   return {
@@ -62,12 +69,12 @@ function tdStyle(): CSSProperties {
   };
 }
 
-export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string): SectionData[] {
+export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string): SectionShape<RenderableSectionTitle>[] {
   return [
     {
       id: 'document-goal',
       numeral: '01',
-      title: '组件框架',
+      title: createLocalizedTitle('组件框架', 'Component Framework'),
       blocks: [
         <>
           <div style={{ marginBottom: '26px', textAlign: 'left' }}>
@@ -96,45 +103,45 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
               />
             </div>
             <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
-              本文件是 Phoenix 项目的组件状态系统规范。它同时服务 Figma 设计师、前端工程师和 AI Coding Agent（Codex），目标不是仅描述 UI，而是形成一套可推导、可生成、可实现的组件系统。
+              <Copy value={{ zh: '本文件是 Phoenix 项目的组件状态系统规范。它同时服务 Figma 设计师、前端工程师和 AI Coding Agent（Codex），目标不是仅描述 UI，而是形成一套可推导、可生成、可实现的组件系统。', en: 'This document defines the Phoenix component-state system. It serves Figma designers, frontend engineers, and the AI Coding Agent (Codex). The goal is not to describe UI alone, but to establish a component system that can be inferred, generated, and implemented.' }} />
             </p>
             <p style={{ ...paragraphStyle(), color: '#8f7d61', fontSize: '14px' }}>
-              上图对应我整理的网页产品信息架构与组件分层长图，用来统一业务页面、弹窗、表单、列表和 AI 生成工作台之间的组件语言。
+              <Copy value={{ zh: '上图对应我整理的网页产品信息架构与组件分层长图，用来统一业务页面、弹窗、表单、列表和 AI 生成工作台之间的组件语言。', en: 'The diagram maps the information architecture and component layers I organized for the web product, aligning the component language across business pages, dialogs, forms, lists, and the AI generation workbench.' }} />
             </p>
           </div>
 
-          <h2 style={h2Style(accentColor)}>文档服务对象</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '文档服务对象', en: 'Document audience' }} /></h2>
           <div style={tableWrapStyle()}>
             <table style={tableStyle()}>
               <thead>
                 <tr>
-                  <th style={thStyle(accentColor)}>我和AI Coder的角色</th>
-                  <th style={thStyle(accentColor)}>使用方式</th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '我和AI Coder的角色', en: 'Roles for me and AI Coder' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '使用方式', en: 'How it is used' }} /></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style={tdStyle()}>Figma 设计师</td>
-                  <td style={tdStyle()}>建立 Component Set 与 Variant</td>
+                  <td style={tdStyle()}><Copy value={{ zh: 'Figma 设计师', en: 'Figma designer' }} /></td>
+                  <td style={tdStyle()}><Copy value={{ zh: '建立 Component Set 与 Variant', en: 'Build component sets and variants' }} /></td>
                 </tr>
                 <tr>
-                  <td style={tdStyle()}>前端工程师</td>
-                  <td style={tdStyle()}>实现组件 Props / State / Event</td>
+                  <td style={tdStyle()}><Copy value={{ zh: '前端工程师', en: 'Frontend engineer' }} /></td>
+                  <td style={tdStyle()}><Copy value={{ zh: '实现组件 Props / State / Event', en: 'Implement component props, state, and events' }} /></td>
                 </tr>
                 <tr>
-                  <td style={tdStyle()}>AI Coding Agent</td>
-                  <td style={tdStyle()}>自动生成组件结构与状态逻辑</td>
+                  <td style={tdStyle()}><Copy value={{ zh: 'AI Coding Agent', en: 'AI coding agent' }} /></td>
+                  <td style={tdStyle()}><Copy value={{ zh: '自动生成组件结构与状态逻辑', en: 'Generate component structure and state logic automatically' }} /></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <h2 style={h2Style(accentColor)}>规范覆盖内容</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '规范覆盖内容', en: 'Scope' }} /></h2>
           <ul style={listStyle()}>
-            <li>视觉 Variant</li>
-            <li>交互 State</li>
-            <li>前端接口</li>
-            <li>组件元信息（metadata）</li>
+            <li><Copy value={{ zh: '视觉 Variant', en: 'Visual variants' }} /></li>
+            <li><Copy value={{ zh: '交互 State', en: 'Interaction states' }} /></li>
+            <li><Copy value={{ zh: '前端接口', en: 'Frontend interfaces' }} /></li>
+            <li><Copy value={{ zh: '组件元信息（metadata）', en: 'Component metadata' }} /></li>
           </ul>
         </>,
       ],
@@ -142,12 +149,12 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
     {
       id: 'core-model-and-global-states',
       numeral: '02',
-      title: '组件系统核心模型与全局状态',
+      title: createLocalizedTitle('组件系统核心模型与全局状态', 'Core component model and global states'),
       blocks: [
         <>
-          <h2 style={h2Style(accentColor)}>四层模型</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '四层模型', en: 'Four-layer model' }} /></h2>
           <p style={paragraphStyle()}>
-            Phoenix 组件统一遵循四层模型，通过 `type / variant / state / theme` 四个维度描述组件实例。
+            <Copy value={{ zh: 'Phoenix 组件统一遵循四层模型，通过 `type / variant / state / theme` 四个维度描述组件实例。', en: 'Phoenix components follow a four-layer model, describing each instance through `type / variant / state / theme`.' }} />
           </p>
           <div style={codeBlockStyle()}>
 {`Component
@@ -158,7 +165,7 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
           </div>
           <p style={captionStyle()}>代码块 2-1 Phoenix 组件统一遵循四层模型</p>
 
-          <h2 style={h2Style(accentColor)}>示例</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '示例', en: 'Example' }} /></h2>
           <div style={codeBlockStyle()}>
 {`Button
  ├ type: button
@@ -168,15 +175,15 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
           </div>
           <p style={captionStyle()}>代码块 2-2 组件实例通过 type、variant、state、theme 组合确定</p>
 
-          <h2 style={h2Style(accentColor)}>全局交互状态系统</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '全局交互状态系统', en: 'Global interaction states' }} /></h2>
           <div style={tableWrapStyle()}>
             <table style={tableStyle()}>
               <thead>
                 <tr>
                   <th style={thStyle(accentColor)}>State</th>
-                  <th style={thStyle(accentColor)}>类型</th>
-                  <th style={thStyle(accentColor)}>说明</th>
-                  <th style={thStyle(accentColor)}>触发方式</th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '类型', en: 'Type' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '说明', en: 'Description' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '触发方式', en: 'Trigger' }} /></th>
                 </tr>
               </thead>
               <tbody>
@@ -200,13 +207,13 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
             </table>
           </div>
 
-          <h2 style={h2Style(accentColor)}>重要原则</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: '重要原则', en: 'Key principle' }} /></h2>
           <div style={codeBlockStyle()}>
 {`pressed ≠ selected`}
           </div>
           <ul style={listStyle()}>
-            <li>pressed：瞬时状态</li>
-            <li>selected：持久状态</li>
+            <li><Copy value={{ zh: 'pressed：瞬时状态', en: 'pressed: instant state' }} /></li>
+            <li><Copy value={{ zh: 'selected：持久状态', en: 'selected: persistent state' }} /></li>
           </ul>
         </>,
       ],
@@ -214,11 +221,11 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
     {
       id: 'metadata-schema',
       numeral: '03',
-      title: '组件元数据结构',
+      title: createLocalizedTitle('组件元数据结构', 'Component metadata schema'),
       blocks: [
         <>
           <p style={paragraphStyle()}>
-            为了让 Codex 能自动生成组件，建议每个组件都遵循统一 schema。
+            <Copy value={{ zh: '为了让 Codex 能自动生成组件，建议每个组件都遵循统一 schema。', en: 'To let Codex generate components automatically, each component should follow a consistent schema.' }} />
           </p>
           <div style={codeBlockStyle()}>
 {`interface ComponentSpec {
@@ -237,10 +244,10 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
     {
       id: 'button-and-segmented-control',
       numeral: '04',
-      title: 'Button 与 SegmentedControl',
+      title: createLocalizedTitle('Button 与 SegmentedControl', 'Button and SegmentedControl'),
       blocks: [
         <>
-          <h2 style={h2Style(accentColor)}>Button · 组件元数据</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'Button · 组件元数据', en: 'Button · component metadata' }} /></h2>
           <div style={codeBlockStyle()}>
 {`{
   name: "Button",
@@ -251,7 +258,7 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
 }`}
           </div>
 
-          <h2 style={h2Style(accentColor)}>Button · Figma 组件结构</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'Button · Figma 组件结构', en: 'Button · Figma component structure' }} /></h2>
           <div style={codeBlockStyle()}>
 {`Button
  ├ Variant
@@ -271,7 +278,7 @@ export function getPhoenixComponentFrameworkSlide01Sections(accentColor: string)
      └ Light`}
           </div>
 
-          <h2 style={h2Style(accentColor)}>Button · 前端接口</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'Button · 前端接口', en: 'Button · frontend API' }} /></h2>
           <div style={codeBlockStyle()}>
 {`type ButtonVariant =
   | 'primary'
@@ -289,14 +296,14 @@ interface ButtonProps {
 }`}
           </div>
 
-          <h2 style={h2Style(accentColor)}>Button · 状态行为定义</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'Button · 状态行为定义', en: 'Button · state behavior' }} /></h2>
           <div style={tableWrapStyle()}>
             <table style={tableStyle()}>
               <thead>
                 <tr>
-                  <th style={thStyle(accentColor)}>状态</th>
-                  <th style={thStyle(accentColor)}>表现</th>
-                  <th style={thStyle(accentColor)}>触发</th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '状态', en: 'State' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '表现', en: 'Appearance' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '触发', en: 'Trigger' }} /></th>
                 </tr>
               </thead>
               <tbody>
@@ -317,7 +324,7 @@ interface ButtonProps {
             </table>
           </div>
 
-          <h2 style={h2Style(accentColor)}>SegmentedControl · 组件元数据</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'SegmentedControl · 组件元数据', en: 'SegmentedControl · component metadata' }} /></h2>
           <div style={codeBlockStyle()}>
 {`{
   name: "SegmentedControl",
@@ -328,7 +335,7 @@ interface ButtonProps {
 }`}
           </div>
 
-          <h2 style={h2Style(accentColor)}>SegmentedControl · 前端接口</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'SegmentedControl · 前端接口', en: 'SegmentedControl · frontend API' }} /></h2>
           <div style={codeBlockStyle()}>
 {`interface SegmentedOption {
   label: string
@@ -343,13 +350,13 @@ interface SegmentedControlProps {
 }`}
           </div>
 
-          <h2 style={h2Style(accentColor)}>SegmentedControl · 状态行为定义</h2>
+          <h2 style={h2Style(accentColor)}><Copy value={{ zh: 'SegmentedControl · 状态行为定义', en: 'SegmentedControl · state behavior' }} /></h2>
           <div style={tableWrapStyle()}>
             <table style={tableStyle()}>
               <thead>
                 <tr>
-                  <th style={thStyle(accentColor)}>状态</th>
-                  <th style={thStyle(accentColor)}>规则</th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '状态', en: 'State' }} /></th>
+                  <th style={thStyle(accentColor)}><Copy value={{ zh: '规则', en: 'Rule' }} /></th>
                 </tr>
               </thead>
               <tbody>

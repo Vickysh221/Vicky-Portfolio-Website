@@ -8,8 +8,14 @@ import interiorVideo1 from '../images/interior/video01.mp4';
 import interiorVideo3 from '../images/interior/video03.mp4';
 import interiorPicture4 from '../images/interior/Picture4.png';
 import interiorPicture5 from '../images/interior/Picture5.png';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
+import type { LocalizedText } from '../i18n/types.ts';
 
 export const AI_INTERIOR_SYSTEM_PAGE_COUNT = 2;
+
+function t(zh: string, en: string): LocalizedText {
+  return { zh, en };
+}
 
 type ContentBlock =
   | { type: 'shortParagraphs'; title?: string; items: string[] }
@@ -27,19 +33,21 @@ type VisualBlock =
   | { type: 'heroImage'; title?: string; src: string; caption?: string };
 
 type AiInteriorSystemPage = {
-  pageTitle: string;
-  pageGoal: string;
-  mainCopy: string;
+  pageTitle: LocalizedText;
+  pageGoal: LocalizedText;
+  mainCopy: LocalizedText;
   contentBlocks: ContentBlock[];
   visualBlocks: VisualBlock[];
 };
 
 const aiInteriorSystemPages: AiInteriorSystemPage[] = [
   {
-    pageTitle: 'AI 室内设计系统：从房间生成到生活场景理解',
-    pageGoal: '说明这是一次问题重构与产品概念定义，而不是单纯的效果图生成。',
-    mainCopy:
+    pageTitle: t('AI 室内设计系统：从房间生成到生活场景理解', 'AI Interior Design System: from room generation to lived-scene understanding'),
+    pageGoal: t('说明这是一次问题重构与产品概念定义，而不是单纯的效果图生成。', 'Reframe the problem as a living-space system rather than a room generator.'),
+    mainCopy: t(
       '从 0 到 1 重构 AI 室内设计系统的问题定义，提出“空间不是房间，而是生活场景容器”的产品概念，改变系统理解用户需求的方式。',
+      'The project turns spatial understanding into a structured product concept instead of a pure image generator.',
+    ),
     contentBlocks: [
       {
         type: 'shortParagraphs',
@@ -75,10 +83,12 @@ const aiInteriorSystemPages: AiInteriorSystemPage[] = [
     ],
   },
   {
-    pageTitle: '用户标签匹配与语义采集机制',
-    pageGoal: '展示低负担卡牌交互如何把家庭结构、生活习惯与审美偏好变成高质量语义输入。',
-    mainCopy:
+    pageTitle: t('用户标签匹配与语义采集机制', 'User tag matching and semantic intake'),
+    pageGoal: t('展示低负担卡牌交互如何把家庭结构、生活习惯与审美偏好变成高质量语义输入。', 'Show how low-burden card interactions turn family structure, habits, and taste into high-quality semantic input.'),
+    mainCopy: t(
       '这一页不把用户理解为一组表单字段，而是把用户标签匹配做成一种渐进式的生活方式辨认过程：家庭成员、日常习惯、审美偏好、功能刚需与智能化倾向被组织成可快速判断、可逐步收束的卡牌式交互。',
+      'This page does not treat the user as a set of form fields. It turns tag matching into a gradual process of understanding a lifestyle: family members, habits, taste, functional needs, and automation preference are organized into card-based interactions that can be judged quickly and narrowed over time.',
+    ),
     contentBlocks: [
       {
         type: 'comparisonCards',
@@ -310,16 +320,18 @@ function IntroReveal({
   mainCopy,
   isMobile,
 }: {
-  pageTitle: string;
-  pageGoal: string;
-  mainCopy: string;
+  pageTitle: LocalizedText;
+  pageGoal: LocalizedText;
+  mainCopy: LocalizedText;
   isMobile?: boolean;
 }) {
+  const { text } = useI18n();
+
   return (
     <section style={{ padding: isMobile ? '8px 4px 0' : '12px 8px 0', display: 'grid', gap: 16 }}>
-      <div style={pageTitleStyle(isMobile)}>{pageTitle}</div>
-      <div style={{ color: '#9f8d73', fontSize: 13, lineHeight: 1.7, maxWidth: 860 }}>{pageGoal}</div>
-      <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{mainCopy}</p>
+      <div style={pageTitleStyle(isMobile)}>{text(pageTitle)}</div>
+      <div style={{ color: '#9f8d73', fontSize: 13, lineHeight: 1.7, maxWidth: 860 }}>{text(pageGoal)}</div>
+      <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{text(mainCopy)}</p>
     </section>
   );
 }

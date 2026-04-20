@@ -10,9 +10,15 @@ import lotusLeafAndCurrentField from '../images/fuli/lotus and fish/Leaf-and-Cur
 import lotusVerticalOrganicLattice2 from '../images/fuli/lotus and fish/vertical organic lattice2.png';
 import lotusVerticalOrganicLattice3 from '../images/fuli/lotus and fish/vertical organic lattice3.png';
 import lotusVerticalOrganicLattice4 from '../images/fuli/lotus and fish/vertical organic lattice4.png';
+import { useI18n } from '../i18n/LanguageProvider.tsx';
+import type { LocalizedText } from '../i18n/types.ts';
 import { chooseFuliPlusIntroVideoResolution } from './fuliPlusIntroVideo';
 
 export const FULI_PLUS_CASE_STUDY_PAGE_COUNT = 12;
+
+function t(zh: string, en: string): LocalizedText {
+  return { zh, en };
+}
 
 type ContentBlock =
   | { type: 'userQuotes'; title?: string; items: string[] }
@@ -48,9 +54,9 @@ type VisualBlock =
 
 interface CaseStudyPage {
   pageId?: string;
-  pageTitle: string;
-  pageGoal: string;
-  mainCopy: string;
+  pageTitle: LocalizedText;
+  pageGoal: LocalizedText;
+  mainCopy: LocalizedText;
   contentBlocks: ContentBlock[];
   visualBlocks: VisualBlock[];
 }
@@ -58,10 +64,12 @@ interface CaseStudyPage {
 const pages: CaseStudyPage[] = [
   {
     pageId: 'fuli-plus-intro-video',
-    pageTitle: 'Fuli Plus 功能演示',
-    pageGoal: '在项目开头直接展示核心交互结果，用自动播放但静音的视频建立第一印象。',
-    mainCopy:
+    pageTitle: t('Fuli Plus 功能演示', 'Fuli Plus Product Demo'),
+    pageGoal: t('在项目开头直接展示核心交互结果，用自动播放但静音的视频建立第一印象。', 'Open with the core interaction result and build the first impression through an autoplay, muted video.'),
+    mainCopy: t(
       '这一页只承担一个任务：让读者先看到系统实际交付出来的设计演示。页面会根据设备性能和视口宽度在 540p 与 720p 之间做单路选择，默认静音并自动播放，但这套行为只作用在当前页，不会改动其他页面媒体的音频策略。',
+      'This page has one job: show the design demo the system actually ships. It selects either 540p or 720p based on device capability and viewport width, autoplays muted by default, and keeps that media behavior scoped to this page only.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -78,10 +86,12 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: '基于用户持续反馈的地毯生成交互系统',
-    pageGoal: '让读者立刻知道这是一个 AI + 设计系统项目，主题是 rug 定制与设计转化。',
-    mainCopy:
+    pageTitle: t('基于用户持续反馈的地毯生成交互系统', 'Fabric pattern generation system driven by continuous user feedback'),
+    pageGoal: t('让读者立刻知道这是一个 AI + 设计系统项目，主题是 rug 定制与设计转化。', 'Make it immediately clear that this is an AI plus design-system project centered on rug customization and design conversion.'),
+    mainCopy: t(
       '这个项目试图把用户模糊的语言、参考图里的线索，以及一轮轮反馈里的微小判断，转成可比较、可推进的 rug 设计方向。它关心的不是单次出图，而是怎样让方向生成、选择与 refinement 形成一条能持续工作的路径。',
+      'The project tries to turn fuzzy user language, cues from reference images, and small judgments across multiple feedback rounds into rug directions that can be compared and evolved. The focus is not a single render, but a working path for direction generation, selection, and refinement.',
+    ),
     contentBlocks: [
       {
         type: 'userQuotes',
@@ -108,10 +118,12 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'AI流程自动化以提升效率与成交量',
-    pageGoal: '清楚展示系统框架。',
-    mainCopy:
+    pageTitle: t('AI流程自动化以提升效率与成交量', 'AI workflow automation to improve efficiency and conversion'),
+    pageGoal: t('清楚展示系统框架。', 'Show the system framework clearly.'),
+    mainCopy: t(
       '在这个判断之上，项目被重构成一个两阶段系统。第一阶段负责把模糊输入翻译成方向空间，先给出几条足够有差异、但仍在同一问题域内的起点；第二阶段负责沿已选方向继续长，避免每一轮都从头开始。',
+      'At this point, the project is reframed as a two-stage system. The first stage turns ambiguous input into a direction space and produces several distinct starting points that still belong to the same problem; the second stage continues growth along the chosen direction so every round does not start from scratch.',
+    ),
     contentBlocks: [
       {
         type: 'shortParagraphs',
@@ -131,10 +143,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'professional-rug-designer-judgment',
-    pageTitle: '一个专业的地毯设计师会怎么做？',
-    pageGoal: '具体展示为什么 generic image generation 在这个场景里不够用。',
-    mainCopy:
+    pageTitle: t('一个专业的地毯设计师会怎么做？', 'What would a professional rug designer do?'),
+    pageGoal: t('具体展示为什么 generic image generation 在这个场景里不够用。', 'Show why generic image generation is not enough in this context.'),
+    mainCopy: t(
       '生成地毯这件事，难的地方从来不只是“画面漂不漂亮”。很多图单看并不差，但一旦放到地毯这个媒介里，就会显得太像插画、太像装饰画，或者只是把参考图换了一种方式重说一遍。一个地毯顾问，他会结合意向，品牌审美，材质，空间等因素，来判断一个方向是否符合预期。',
+      'Designing a rug is never only about whether the image looks good. Many results are fine in isolation, but once they are put onto the rug medium they feel too illustrative, too decorative, or like a restatement of the reference image. A professional rug designer would judge whether a direction fits the brief by looking at intent, brand taste, material, and spatial context.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -162,10 +176,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'case05-first-round-expansion',
-    pageTitle: '同一个输入，如何被展开成三个可比较的方向',
-    pageGoal: '说明第一轮不是给一个答案，而是展开方向空间。',
-    mainCopy:
+    pageTitle: t('同一个输入，如何被展开成三个可比较的方向', 'How one input expands into three comparable directions'),
+    pageGoal: t('说明第一轮不是给一个答案，而是展开方向空间。', 'Show that the first round is not about giving one answer, but about expanding the direction space.'),
+    mainCopy: t(
       '以 Case05 Fish and Lotus 为例，系统先不急着给出一个答案，而是把参考图和用户意图转成三个不同的 rug 方向。',
+      'Using Case05 Fish and Lotus as the example, the system does not rush to one answer. It first turns the reference image and user intent into three different rug directions.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -175,10 +191,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'case05-selection-and-convergence',
-    pageTitle: '当用户选中方向二，系统开始稳定它对偏好的理解',
-    pageGoal: '展示用户选择如何收束系统判断，并进入第二轮 refinement。',
-    mainCopy:
+    pageTitle: t('当用户选中方向二，系统开始稳定它对偏好的理解', 'When the user chooses direction two, the system starts stabilizing what it has learned'),
+    pageGoal: t('展示用户选择如何收束系统判断，并进入第二轮 refinement。', 'Show how the user choice narrows the system judgment and moves into the second round of refinement.'),
+    mainCopy: t(
       '用户选择的不是一张更好看的图，而是一种更适合继续推进的成立方式。',
+      'The user is not choosing a prettier image; they are choosing a more viable way to keep the direction moving forward.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -187,10 +205,12 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'Towards an agentic project',
-    pageGoal: '把当前系统从 semantic layer 推进到 agent design 的下一阶段讲清楚。',
-    mainCopy:
+    pageTitle: t('Towards an agentic project', 'Towards an agentic project'),
+    pageGoal: t('把当前系统从 semantic layer 推进到 agent design 的下一阶段讲清楚。', 'Explain how the project moves from a semantic layer into the next phase of agent design.'),
+    mainCopy: t(
       '当前项目已经从“参数 demo + 最近邻展示”推进到“带有 design state、反馈闭环、真实资产匹配和 early-round probing 实验的机制原型”。这一步最重要的变化不是系统终于“更像一个 agent”了，而是 rug-specific semantic layer 已经逐渐成形：用户输入、参考图、品牌 cue 和多轮反馈，第一次可以被压到同一组可比较、可收束的中间状态里。',
+      'The project has moved from a “parameter demo + nearest-neighbor display” into a mechanism prototype with design state, feedback loops, real asset matching, and early-round probing experiments. The important shift is not that the system finally looks like an agent; it is that a rug-specific semantic layer is now taking shape, where user input, reference images, brand cues, and multi-round feedback can be compressed into one set of comparable, converging intermediate states.',
+    ),
     contentBlocks: [
       {
         type: 'shortParagraphs',
@@ -239,10 +259,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'semantic-compilation-chain',
-    pageTitle: '基于地毯生成目标的任务拆解-round 1 方向探索',
-    pageGoal: '解释第一轮为什么是方向假设，而不是三张随机图。',
-    mainCopy:
+    pageTitle: t('基于地毯生成目标的任务拆解-round 1 方向探索', 'Task decomposition for rug generation goals - round 1 direction exploration'),
+    pageGoal: t('解释第一轮为什么是方向假设，而不是三张随机图。', 'Explain why the first round is about direction hypotheses, not three random images.'),
+    mainCopy: t(
       '用户给出的通常不是一份完整 brief，而是一组混合着情绪、场景、审美倾向和局部限制的模糊语义。系统的第一步不是把这些话直接翻成一句 prompt，而是先判断哪些信号已经足够明确，哪些仍然含混，然后围绕同一个输入展开三条可以比较的设计方向。',
+      'Users usually do not provide a complete brief. They give a mix of emotion, scenario, aesthetic preference, and local constraints. The system’s first step is not to turn that directly into a prompt, but to identify which signals are already clear, which are still ambiguous, and then expand the same input into three directionally comparable design hypotheses.',
+    ),
     contentBlocks: [
       {
         type: 'comparisonCards',
@@ -281,10 +303,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'direction-weighting-and-rug-language',
-    pageTitle: '基于地毯生成目标的任务拆解-round n>1 方向收束',
-    pageGoal: '把三方向的差异解释成可控的设计维度，而不是同义改写。',
-    mainCopy:
+    pageTitle: t('基于地毯生成目标的任务拆解-round n>1 方向收束', 'Task decomposition for rug generation goals - round n>1 direction convergence'),
+    pageGoal: t('把三方向的差异解释成可控的设计维度，而不是同义改写。', 'Explain the three-direction difference as controllable design dimensions rather than paraphrases.'),
+    mainCopy: t(
       '同一句输入下，三个方向不会平均地改所有变量。系统会给每条方向分配不同的主导维度：有的让 arrangement 先成立，有的把 material feel 拉到前台，有的把 color restraint 和 motif abstraction 作为主轴。这样，差异才不是“看起来有点不同”，而是“成立方式不同”。',
+      'The three directions share the same semantic starting point, but they are not adjusted evenly. The system gives each direction different slot emphasis so the differences emerge from control logic, not from wording changes.',
+    ),
     contentBlocks: [
       {
         type: 'comparisonCards',
@@ -325,10 +349,12 @@ const pages: CaseStudyPage[] = [
   },
   {
     pageId: 'semantic-cue-brand-reinforcement',
-    pageTitle: 'Appendix A｜Semantic cue：把品牌图像变成可调用的语义加强层',
-    pageGoal: '说明品牌图像在 second-stage 中不是做风格迁移，而是作为品牌边界内的 semantic reinforcement。',
-    mainCopy:
+    pageTitle: t('Appendix A｜Semantic cue：把品牌图像变成可调用的语义加强层', 'Appendix A | Semantic cue: turning brand images into a reusable semantic reinforcement layer'),
+    pageGoal: t('说明品牌图像在 second-stage 中不是做风格迁移，而是作为品牌边界内的 semantic reinforcement。', 'Explain that brand images in the second stage are used as semantic reinforcement inside brand boundaries, not as style transfer.'),
+    mainCopy: t(
       '这里的品牌图像不只是风格迁移用的 style reference。它们如果只被拿来做表面相似匹配，系统借到的通常只是“像不像”，而不是对 rug 真正有用的判断层。我更想做的是把这些品牌历史图像 reverse-read 成 semantic cues：它们在主体形成、组织逻辑、密度节奏、边缘处理和表面语言上，各自代表什么样的整体取向。',
+      'These brand images are not just style references for transfer. If they are only matched superficially, the system borrows “look” rather than useful design judgment. What I want instead is to reverse-read them into semantic cues: what overall direction do they represent in subject formation, organization logic, density rhythm, edge handling, and surface language.',
+    ),
     contentBlocks: [
       {
         type: 'bulletCluster',
@@ -393,10 +419,12 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'Appendix B｜三个方向如何落到地毯语言',
-    pageGoal: '说明每个方向不是同义改写，而是通过不同的槽位权重和材料 / 工艺特征来分化。',
-    mainCopy:
+    pageTitle: t('Appendix B｜三个方向如何落到地毯语言', 'Appendix B | How the three directions map to rug language'),
+    pageGoal: t('说明每个方向不是同义改写，而是通过不同的槽位权重和材料 / 工艺特征来分化。', 'Show that each direction differentiates through slot weighting and material or craft features, not paraphrase.'),
+    mainCopy: t(
       '三条方向共享同一个语义起点，但不会平均地改所有维度。系统会为每条方向分配不同的 slot emphasis，让有的方向更强调 arrangement 和 movement，有的更强调 calm structure，有的更强调 tactile richness。真正拉开差异的，不是修辞，而是 rug-specific 的组织、表面与工艺特征。',
+      'The three directions share the same semantic origin, but they do not change every dimension evenly. The system assigns different slot emphasis to each direction, so one highlights arrangement and movement, another emphasizes calm structure, and another leans into tactile richness. What creates the difference is not wording, but rug-specific organization, surface behavior, and craft detail.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -405,10 +433,12 @@ const pages: CaseStudyPage[] = [
     ],
   },
   {
-    pageTitle: 'Appendix C｜Slot-state 映射层',
-    pageGoal: '把 bucket 到 slot-state 的作用链路讲清楚，但保持作品集附录的阅读感。',
-    mainCopy:
+    pageTitle: t('Appendix C｜Slot-state 映射层', 'Appendix C | Slot-state mapping layer'),
+    pageGoal: t('把 bucket 到 slot-state 的作用链路讲清楚，但保持作品集附录的阅读感。', 'Explain the path from bucket to slot-state while keeping the portfolio appendix tone.'),
+    mainCopy: t(
       '这一页不试图把系统解释成一份规范文档。它只把最关键的一层展开：参考图如何先被解释成 semantic bucket，再继续压成可以进入生成系统的 slot-state，并最终影响方向生成与 refinement。',
+      'This page does not try to explain the system as a specification document. It only expands the most important layer: how a reference image is first interpreted as a semantic bucket, then compressed into a slot-state that can enter the generation system and influence direction generation and refinement.',
+    ),
     contentBlocks: [],
     visualBlocks: [
       {
@@ -597,11 +627,12 @@ function IntroReveal({
   isMobile,
   disabled,
 }: {
-  pageTitle: string;
-  mainCopy: string;
+  pageTitle: LocalizedText;
+  mainCopy: LocalizedText;
   isMobile?: boolean;
   disabled?: boolean;
 }) {
+  const { text } = useI18n();
   const { ref, isVisible } = useRevealOnce<HTMLDivElement>();
   const visible = disabled ? true : isVisible;
 
@@ -615,10 +646,10 @@ function IntroReveal({
       }}
     >
       <div style={revealStyle(visible, 0)}>
-        <div style={pageTitleStyle(isMobile)}>{pageTitle}</div>
+        <div style={pageTitleStyle(isMobile)}>{text(pageTitle)}</div>
       </div>
       <div style={revealStyle(visible, 90)}>
-        <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{mainCopy}</p>
+        <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{text(mainCopy)}</p>
       </div>
     </section>
   );
