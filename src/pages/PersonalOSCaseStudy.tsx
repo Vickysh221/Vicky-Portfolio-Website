@@ -21,19 +21,19 @@ type FewShotStep = {
 
 type LinkCard = {
   label: LocalizedText;
-  body: LocalizedText;
+  body?: LocalizedText;
   url: string;
 };
 
 type PersonalOSPage = {
   skillName: string;
   pageTitle: LocalizedText;
-  pageGoal: LocalizedText;
+  pageGoal?: LocalizedText;
   mainCopy: LocalizedText;
-  insightCards: InsightCard[];
-  fewShotTitle: LocalizedText;
-  fewShotScenario: LocalizedText;
-  fewShotSteps: FewShotStep[];
+  insightCards?: InsightCard[];
+  fewShotTitle?: LocalizedText;
+  fewShotScenario?: LocalizedText;
+  fewShotSteps?: FewShotStep[];
   linksTitle: LocalizedText;
   linkCards: LinkCard[];
 };
@@ -45,84 +45,18 @@ const personalOsPages: PersonalOSPage[] = [
       'Product Ontology：把研究判断沉淀成可追溯对象',
       'Product Ontology: Turning Research Judgment into Traceable Objects',
     ),
-    pageGoal: t(
-      '解决“看了很多、写了很多，但下一轮已经无法复核或复用”的研究写回问题。',
-      'Solve the research-writeback problem where a team has read a lot and written a lot, but the next round can no longer audit or reuse the judgment.',
-    ),
     mainCopy: t(
-      '在 personal OS 里，我不把研究看成一次性 summary，而把它看成一条可回溯的判断链。这个 skill 要求 writeback 不能跳过 provenance、direction 和 tension：Source / Artifact / Evidence / Review / Writeback 必须被区分清楚，反例和不确定性也不能在润色里消失。',
-      'Inside a personal OS, I do not treat research as a one-off summary. I treat it as a traceable judgment chain. This skill enforces that writeback cannot skip provenance, direction, or tension: source, artifact, evidence, review, and final writeback must remain distinct, and counter-signals cannot be polished away.',
+      '这套产品研究 Skill，源于一个困扰我多年的问题：重要的产品信息常常散落在播客、官方发布、开发者文档、社区讨论和用户反馈中。它们既零碎又冗长，人很难持续、及时地抓住真正关键的变化；即使看见了，也很容易被叙述者的立场带偏，或受限于自己的观察角度。因此，我把产品分析重新设计成一套协作流程，而不是单次总结。系统先由信息收集者追踪不同来源的第一手材料，形成可回看的资料；再由观点提炼者将这些材料转化为清晰判断，说明发生了什么、影响落在哪一层、服务谁、缓解了什么问题，同时补充依据、可信度、信息缺口和可能的反面解释；最后由多视角评审角色与评论收束者共同工作，从产品、设计、技术、用户现实、业务和反方等角度对已有判断进行挑战、重排与校正，保留分歧，并决定哪些内容值得进入长期沉淀。我希望通过这套方式，把产品研究从“信息整理”推进到“长期判断的建立”。它的目标不是更快地下结论，而是在复杂信息环境中，帮助我持续形成更全面、更可追溯、也更不容易被单一叙述带偏的产品理解。',
+      'This product research skill comes from a problem that has bothered me for years: important product signals are often scattered across podcasts, official releases, developer documentation, community discussion, and user feedback. They are fragmented and long-form, which makes it hard to keep catching the truly important changes in time. Even when you do notice them, it is easy to be pulled by the narrator’s position or limited by your own angle of observation. So I redesigned product analysis as a collaborative workflow rather than a one-off summary. The system first uses information collectors to track first-hand material from different sources and turn it into records that can be revisited. Then viewpoint synthesizers convert those materials into clear judgments that explain what changed, which layer is affected, who it serves, and what problem it relieves, while also attaching evidence, confidence, information gaps, and possible counter-explanations. Finally, multi-perspective reviewers and a commentary closer work together to challenge, reorder, and calibrate those judgments from the angles of product, design, technology, user reality, business, and opposition, preserve disagreement, and decide what deserves long-term retention. Through this process, I want to move product research from information organization toward the building of durable judgment. The goal is not to reach conclusions faster, but to help me keep forming a fuller, more traceable understanding of products in a complex information environment, one that is less likely to be biased by a single narrative.',
     ),
-    insightCards: [
-      {
-        eyebrow: t('Problem 01', 'Problem 01'),
-        title: t('结论先行', 'Conclusion Drift'),
-        body: t(
-          '如果 agent 直接生成 polished summary，下一轮就没人知道哪些判断真的有证据支持。',
-          'If the agent jumps straight to a polished summary, the next round can no longer tell which judgments are actually supported.',
-        ),
-      },
-      {
-        eyebrow: t('Problem 02', 'Problem 02'),
-        title: t('provenance 丢失', 'Broken Provenance'),
-        body: t(
-          '一句判断到底来自 source、artifact，还是后来补进来的 intake，很容易在长文里混成一团。',
-          'A long writeback can easily blur whether a judgment came from source material, artifact evidence, or a later intake decision.',
-        ),
-      },
-      {
-        eyebrow: t('Problem 03', 'Problem 03'),
-        title: t('张力被抹平', 'Flattened Tension'),
-        body: t(
-          '反例、弱信号和冲突经常在“润色”阶段被清掉，最后只剩下无法迭代的一种声音。',
-          'Counter-signals, weak signals, and conflict often get polished away, leaving only one voice that cannot be updated later.',
-        ),
-      },
-    ],
-    fewShotTitle: t('场景化 few-shot', 'Scenario few-shot'),
-    fewShotScenario: t(
-      '输入是一组已批准的播客 / 文章链接，目标是回答：“Agent team 是否真的进入了企业化迁移阶段？”',
-      'Input: a bundle of approved podcast and article links. Goal: answer whether agent teams have actually entered an enterprise migration phase.',
-    ),
-    fewShotSteps: [
-      {
-        label: t('1. Normalize', '1. Normalize'),
-        body: t(
-          '先把 approved material 落成 source 与 artifact，不在缺失 transcript 或页面内容时凭空补完。',
-          'Turn approved material into source and artifact records first instead of inventing missing transcript or page content.',
-        ),
-      },
-      {
-        label: t('2. Cluster', '2. Cluster'),
-        body: t(
-          '从 artifact 里抽 support / tension / counter-signal，再按机制聚类，而不是按情绪写观点。',
-          'Extract support, tension, and counter-signals from artifacts, then cluster them by mechanism instead of writing by gut feel.',
-        ),
-      },
-      {
-        label: t('3. Write Back', '3. Write Back'),
-        body: t(
-          '先出 review pack，再按 intake 生成 writeback，让每条主张都能回溯到 evidence。',
-          'Produce the review pack first, then derive the writeback from intake so every core claim can be traced back to evidence.',
-        ),
-      },
-    ],
     linksTitle: t('GitHub 链接', 'GitHub Links'),
     linkCards: [
       {
         label: t('Repository', 'Repository'),
-        body: t(
-          '事件中心、证据约束、review 更新的产品分析知识库。',
-          'An event-centered, evidence-constrained, review-updated product analysis library.',
-        ),
         url: 'https://github.com/Vickysh221/product-ontology',
       },
       {
         label: t('Public Skill', 'Public Skill'),
-        body: t(
-          '公开 skill 入口：`product-ontological-analysis` 的可移植版本。',
-          'The portable public entry for the `product-ontological-analysis` skill.',
-        ),
         url: 'https://github.com/Vickysh221/product-ontology/blob/main/agent-skills/product-ontological-analysis/SKILL.md',
       },
     ],
@@ -297,13 +231,13 @@ function IntroReveal({
         {`personal os / ${page.skillName}`}
       </div>
       <div style={pageTitleStyle(isMobile)}>{text(page.pageTitle)}</div>
-      <div style={introMetaStyle()}>{text(page.pageGoal)}</div>
+      {page.pageGoal ? <div style={introMetaStyle()}>{text(page.pageGoal)}</div> : null}
       <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{text(page.mainCopy)}</p>
     </section>
   );
 }
 
-function renderInsightCards(page: PersonalOSPage, accentColor: string, text: (value: LocalizedText) => string) {
+function renderInsightCards(insightCards: InsightCard[], accentColor: string, text: (value: LocalizedText) => string) {
   return (
     <section
       style={{
@@ -312,7 +246,7 @@ function renderInsightCards(page: PersonalOSPage, accentColor: string, text: (va
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
       }}
     >
-      {page.insightCards.map((item) => (
+      {insightCards.map((item) => (
         <div key={item.title.zh} style={panelStyle()}>
           <div style={sectionLabelStyle(accentColor)}>{text(item.eyebrow)}</div>
           <div style={cardTitleStyle()}>{text(item.title)}</div>
@@ -323,13 +257,19 @@ function renderInsightCards(page: PersonalOSPage, accentColor: string, text: (va
   );
 }
 
-function renderFewShot(page: PersonalOSPage, accentColor: string, text: (value: LocalizedText) => string) {
+function renderFewShot(
+  fewShotTitle: LocalizedText,
+  fewShotScenario: LocalizedText,
+  fewShotSteps: FewShotStep[],
+  accentColor: string,
+  text: (value: LocalizedText) => string,
+) {
   return (
     <div style={panelStyle()}>
-      <div style={sectionLabelStyle(accentColor)}>{text(page.fewShotTitle)}</div>
-      <div style={{ ...cardTitleStyle(), marginBottom: 12 }}>{text(page.fewShotScenario)}</div>
+      <div style={sectionLabelStyle(accentColor)}>{text(fewShotTitle)}</div>
+      <div style={{ ...cardTitleStyle(), marginBottom: 12 }}>{text(fewShotScenario)}</div>
       <div style={{ display: 'grid', gap: 12 }}>
-        {page.fewShotSteps.map((step) => (
+        {fewShotSteps.map((step) => (
           <div
             key={step.label.zh}
             style={{
@@ -376,7 +316,7 @@ function renderLinks(page: PersonalOSPage, accentColor: string, text: (value: Lo
             }}
           >
             <div style={cardTitleStyle()}>{text(item.label)}</div>
-            <div style={cardBodyStyle()}>{text(item.body)}</div>
+            {item.body ? <div style={cardBodyStyle()}>{text(item.body)}</div> : null}
             <a href={item.url} target="_blank" rel="noreferrer" style={linkStyle(accentColor)}>
               {item.url}
             </a>
@@ -409,23 +349,34 @@ export default function PersonalOSCaseStudy({
 
   if (!page) return null;
 
+  const hasInsightCards = Boolean(page.insightCards?.length);
+  const hasFewShot = Boolean(page.fewShotTitle && page.fewShotScenario && page.fewShotSteps?.length);
+  const hasLinks = page.linkCards.length > 0;
+
   return (
     <div style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
       <IntroReveal page={page} isMobile={isMobile} />
 
-      {renderInsightCards(page, accentColor, text)}
+      {hasInsightCards ? renderInsightCards(page.insightCards!, accentColor, text) : null}
 
-      <section
-        style={{
-          display: 'grid',
-          gap: 14,
-          gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.25fr) minmax(280px, 0.9fr)',
-          alignItems: 'start',
-        }}
-      >
-        {renderFewShot(page, accentColor, text)}
-        {renderLinks(page, accentColor, text)}
-      </section>
+      {hasFewShot || hasLinks ? (
+        <section
+          style={{
+            display: 'grid',
+            gap: 14,
+            gridTemplateColumns:
+              !isMobile && hasFewShot && hasLinks
+                ? 'minmax(0, 1.25fr) minmax(280px, 0.9fr)'
+                : '1fr',
+            alignItems: 'start',
+          }}
+        >
+          {hasFewShot
+            ? renderFewShot(page.fewShotTitle!, page.fewShotScenario!, page.fewShotSteps!, accentColor, text)
+            : null}
+          {hasLinks ? renderLinks(page, accentColor, text) : null}
+        </section>
+      ) : null}
     </div>
   );
 }
