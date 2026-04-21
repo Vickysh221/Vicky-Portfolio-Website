@@ -30,6 +30,25 @@ const expandedContentFrameStyle: React.CSSProperties = {
   height: '100%',
   margin: '0 auto',
 };
+const showcaseExpandedModalViewportStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: expandedViewportPadding,
+  boxSizing: 'border-box',
+};
+const showcaseExpandedModalFrameStyle: React.CSSProperties = {
+  width: 'min(1680px, calc(100vw - 96px))',
+  height: 'min(940px, calc(100vh - 72px))',
+  maxHeight: 'calc(100vh - 72px)',
+  borderRadius: 28,
+  overflow: 'hidden',
+  border: '1px solid rgba(200,169,110,0.18)',
+  boxShadow: '0 30px 120px rgba(0,0,0,0.46)',
+  background: 'rgba(8,6,4,0.98)',
+};
 function shouldAutoExpandShowcase(route: string, slideIndex: number, isMobile?: boolean) {
   return !isMobile && route === '/agentic-design-development/language-diary' && slideIndex === 2;
 }
@@ -229,7 +248,8 @@ function SlideContent({
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
   const isReadingMode = !!isExpanded && !isMobile;
   const isExpandedShowcasePage = isReadingMode && isShowcaseSlide(route, slideIndex);
-  const shouldScrollTitleBlock = !!isExpanded && !isExpandedShowcasePage;
+  const shouldShowTitleBlock = !isShowcaseSlide(route, slideIndex);
+  const shouldScrollTitleBlock = shouldShowTitleBlock && !!isExpanded && !isExpandedShowcasePage;
 
   useEffect(() => {
     if (!isReadingMode) return;
@@ -308,13 +328,13 @@ function SlideContent({
       style={{
         width: '100%',
         height: '100%',
-        background: isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
+        background: isExpandedShowcasePage ? 'rgba(8,6,4,0.98)' : isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
         border: isReadingMode ? 'none' : `1px solid rgba(200,169,110,${isActive ? '0.28' : '0.14'})`,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         fontFamily: "Georgia, 'Times New Roman', serif",
-        overflow: isReadingMode ? 'auto' : 'hidden',
+        overflow: isExpandedShowcasePage ? 'hidden' : isReadingMode ? 'auto' : 'hidden',
         transition: 'border-color 0.4s',
       }}
     >
@@ -385,30 +405,34 @@ function SlideContent({
         </div>
       </div>
 
-      {!shouldScrollTitleBlock && titleBlock}
+      {shouldShowTitleBlock && !shouldScrollTitleBlock && titleBlock}
 
       {/* Content area */}
       <div
         style={{
           flex: 1,
           padding: isExpandedShowcasePage ? 0 : isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
-          overflow: isReadingMode ? 'visible' : 'auto',
+          overflow: isExpandedShowcasePage ? 'hidden' : isReadingMode ? 'visible' : 'auto',
+          minHeight: isExpandedShowcasePage ? 0 : undefined,
+          display: isExpandedShowcasePage ? 'flex' : undefined,
+          flexDirection: isExpandedShowcasePage ? 'column' : undefined,
           ...(isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : null),
         }}
         className={isReadingMode ? 'panel-scroll portfolio-scroll h5-reading-view' : 'panel-scroll portfolio-scroll'}
       >
-        {shouldScrollTitleBlock && titleBlock}
+        {shouldShowTitleBlock && shouldScrollTitleBlock && titleBlock}
         {isExpandedShowcasePage ? (
           <iframe
             src="/language-diary-ux-showcase/index.html"
             title="language-diary-ux-showcase-expanded-default"
             style={{
               width: '100%',
-              height: 'calc(100vh - 120px)',
-              minHeight: 720,
+              height: isExpandedShowcasePage ? '100%' : 'calc(100vh - 120px)',
+              minHeight: isExpandedShowcasePage ? 0 : 720,
               border: 'none',
               display: 'block',
               background: '#000',
+              flex: isExpandedShowcasePage ? 1 : undefined,
             }}
           />
         ) : hasSectionContent(route, slideIndex) ? (
@@ -660,6 +684,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   }
 
   // ── PC Expanded fullscreen overlay (portal) ──
+  const isExpandedShowcaseOverlay = isExpanded && isShowcaseSlide(route, activeIndex);
   const expandedOverlay = isExpanded
     ? createPortal(
         <div
@@ -674,14 +699,19 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
           }}
         >
           <div
-            style={{
-              width: '100%',
-              height: '100%',
-              padding: expandedViewportPadding,
-              boxSizing: 'border-box',
-            }}
+            style={isExpandedShowcaseOverlay
+              ? showcaseExpandedModalViewportStyle
+              : {
+                  width: '100%',
+                  height: '100%',
+                  padding: expandedViewportPadding,
+                  boxSizing: 'border-box',
+                }}
           >
-            <div style={expandedContentFrameStyle}>
+            <div
+              className={isExpandedShowcaseOverlay ? 'showcase-expanded-modal-frame' : undefined}
+              style={isExpandedShowcaseOverlay ? showcaseExpandedModalFrameStyle : expandedContentFrameStyle}
+            >
               <SlideContent
                 route={route}
                 slideIndex={activeIndex}
