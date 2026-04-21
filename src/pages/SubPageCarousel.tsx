@@ -30,6 +30,12 @@ const expandedContentFrameStyle: React.CSSProperties = {
   height: '100%',
   margin: '0 auto',
 };
+function shouldAutoExpandShowcase(route: string, slideIndex: number, isMobile?: boolean) {
+  return !isMobile && route === '/agentic-design-development/language-diary' && slideIndex === 2;
+}
+function isShowcaseSlide(route: string, slideIndex: number) {
+  return route === '/agentic-design-development/language-diary' && slideIndex === 2;
+}
 const readingColumnStyle: React.CSSProperties = {
   width: 'min(860px, 100%)',
   margin: '0 auto',
@@ -222,7 +228,8 @@ function SlideContent({
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
   const isReadingMode = !!isExpanded && !isMobile;
-  const shouldScrollTitleBlock = !!isExpanded;
+  const isExpandedShowcasePage = isReadingMode && isShowcaseSlide(route, slideIndex);
+  const shouldScrollTitleBlock = !!isExpanded && !isExpandedShowcasePage;
 
   useEffect(() => {
     if (!isReadingMode) return;
@@ -231,11 +238,11 @@ function SlideContent({
 
   const titleBlock = (
     <div
-      style={{
-        ...(isReadingMode ? readingColumnStyle : null),
-        padding: isReadingMode ? '0 0 28px' : isMobile ? '16px 20px 14px' : '24px 28px 20px',
-        flexShrink: 0,
-      }}
+        style={{
+          ...(isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : null),
+          padding: isReadingMode ? '0 0 28px' : isMobile ? '16px 20px 14px' : '24px 28px 20px',
+          flexShrink: 0,
+        }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
         <div
@@ -337,7 +344,7 @@ function SlideContent({
           alignItems: 'center',
         }}
       >
-        <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
+        <div style={isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : { width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
               <BackButton onClick={onBack} label={chromeCopy.back} />
@@ -384,14 +391,27 @@ function SlideContent({
       <div
         style={{
           flex: 1,
-          padding: isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
+          padding: isExpandedShowcasePage ? 0 : isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
           overflow: isReadingMode ? 'visible' : 'auto',
-          ...(isReadingMode ? readingColumnStyle : null),
+          ...(isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : null),
         }}
         className={isReadingMode ? 'panel-scroll portfolio-scroll h5-reading-view' : 'panel-scroll portfolio-scroll'}
       >
         {shouldScrollTitleBlock && titleBlock}
-        {hasSectionContent(route, slideIndex) ? (
+        {isExpandedShowcasePage ? (
+          <iframe
+            src="/language-diary-ux-showcase/index.html"
+            title="language-diary-ux-showcase-expanded-default"
+            style={{
+              width: '100%',
+              height: 'calc(100vh - 120px)',
+              minHeight: 720,
+              border: 'none',
+              display: 'block',
+              background: '#000',
+            }}
+          />
+        ) : hasSectionContent(route, slideIndex) ? (
           <H5DocContent
             route={route}
             accentColor={accentColor}
@@ -498,6 +518,12 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
     const raf = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(raf);
   }, []);
+
+  useEffect(() => {
+    if (shouldAutoExpandShowcase(route, activeIndex, isMobile)) {
+      setIsExpanded(true);
+    }
+  }, [activeIndex, isMobile, route]);
 
   useEffect(() => {
     const initialSlideIndex =
@@ -642,7 +668,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
             position: 'fixed',
             inset: 0,
             zIndex: 9999,
-            background: 'rgba(8,6,4,0.97)',
+            background: 'rgba(0,0,0,0.96)',
             backdropFilter: 'blur(12px)',
             pointerEvents: 'auto',
           }}
