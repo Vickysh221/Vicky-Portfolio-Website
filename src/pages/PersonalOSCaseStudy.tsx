@@ -67,85 +67,15 @@ const personalOsPages: PersonalOSPage[] = [
       '0→1 Human-Machine UX Conductor：先判断方向，再展开结构',
       '0→1 Human-Machine UX Conductor: Judge the Direction Before Expanding the Structure',
     ),
-    pageGoal: t(
-      '解决 zero-to-one 讨论里最常见的“还没想清为什么存在，就已经开始画系统”的问题。',
-      'Solve the classic zero-to-one failure mode where the team starts drawing systems before it knows why the direction should exist.',
-    ),
     mainCopy: t(
-      '这个 skill 是我在 personal OS 里的上游 gatekeeper。它把讨论强行分成 `Target A / Direction Framing` 和 `Target B / Structure Convergence` 两个阶段：如果 primary problem、why now、first wedge 和 actuation boundary 还没清楚，就不允许团队假装进入 UX 结构、agent 分工或记忆系统设计。',
-      'This skill is the upstream gatekeeper in my personal OS. It forces discussion into `Target A / Direction Framing` and `Target B / Structure Convergence`: if the primary problem, why now, first wedge, and actuation boundary are still unclear, the team is not allowed to pretend it has already entered UX structure, agent allocation, or memory-system design.',
+      '在研究智能体与辅助驾驶时，反复回到同一个问题：人机协作模式作为一种产品，关系作为体验本身需要被塑造。于是我尝试建立一套通用的追问方法，从“这个方向值不值得做”，一路追问到“人和系统如何分工、何时接管、如何留下长期状态”，用它来判断一个产品的走向和核心结构。\n\n我在尝试建立一套刨根问底的问法，agent 负责根据你的回答和对决策优先级的排序，用来判断一个人机协作产品该怎么成立。\n\n第一层：方向判别\n愿景与协作信条\n当下时机、范式变化与能力匹配\n问题定义\n运行环境与风险约束\n问题求解流程（粗粒度）\n方向决策\n\n第二层：结构收束\n问题求解流程拆解（细化）\n人机协作分工配置\n协作原型与最小协作单元\n交互原型类型\n交接机制与人工介入\n注意力预算与交互模态\n持久状态与记忆治理\n界面体系与体验承载\n评估体系\n分阶段放开路径\n迭代与学习回路',
+      'While researching agents and assisted driving, I kept returning to the same question: a human-machine collaboration mode is itself a product, and the relationship as an experience has to be shaped. So I started building a general questioning method that moves from “is this direction worth doing at all” to “how should the human and the system divide work, when should control hand off, and how should long-term state be retained,” using it to judge a product’s direction and core structure.\n\nI am trying to establish a root-cause questioning method, where the agent uses your answers and your ranking of decision priorities to judge how a human-machine collaboration product should be made to hold together.\n\nLayer 1: Direction Judgment\nVision and collaboration doctrine\nTiming, paradigm shift, and capability fit\nProblem definition\nOperating environment and risk constraints\nProblem-solving flow (coarse-grained)\nDirection decision\n\nLayer 2: Structural Convergence\nProblem-solving flow breakdown (detailed)\nHuman-machine collaboration allocation\nCollaboration prototypes and minimum collaboration units\nInteraction prototype types\nHandoff mechanisms and human intervention\nAttention budget and interaction modality\nDurable state and memory governance\nInterface system and experience carrier\nEvaluation system\nPhased release path\nIteration and learning loop',
     ),
-    insightCards: [
-      {
-        eyebrow: t('Problem 01', 'Problem 01'),
-        title: t('阶段混淆', 'Stage Confusion'),
-        body: t(
-          '团队常常把“这件事该不该存在”与“它具体怎么做”混在同一轮讨论里，结果两边都讲不清。',
-          'Teams often collapse “should this direction exist” and “how exactly should it work” into the same discussion, making both unclear.',
-        ),
-      },
-      {
-        eyebrow: t('Problem 02', 'Problem 02'),
-        title: t('过早进入 UX 细节', 'Premature UX Detail'),
-        body: t(
-          'agent 分工、记忆卡、首页结构看起来很快，但往往是在方向还没过门时制造虚假进展。',
-          'Agent allocation, memory cards, and home layouts feel fast, but they often create fake progress before the direction has passed the gate.',
-        ),
-      },
-      {
-        eyebrow: t('Problem 03', 'Problem 03'),
-        title: t('矛盾被包装掉', 'Contradictions Get Hidden'),
-        body: t(
-          '当 actuation boundary、风险和 handoff 还冲突时，完整 PRD 只会把 unresolved contradiction 包装得更漂亮。',
-          'When actuation boundaries, risks, and handoffs still conflict, a polished PRD only makes unresolved contradictions look prettier.',
-        ),
-      },
-    ],
-    fewShotTitle: t('场景化 few-shot', 'Scenario few-shot'),
-    fewShotScenario: t(
-      '团队说：“我们想做一个 personal OS，让 agent 主动帮用户整理生活。”',
-      'The team says: "We want a personal OS where agents proactively organize everyday life for the user."',
-    ),
-    fewShotSteps: [
-      {
-        label: t('1. Target A', '1. Target A'),
-        body: t(
-          '先问这是不是一个该存在的方向：核心问题是什么，为什么是现在，第一块有效 wedge 在哪里。',
-          'Start by asking whether this direction should exist at all: what the core problem is, why now, and where the first valid wedge lives.',
-        ),
-      },
-      {
-        label: t('2. Gate', '2. Gate'),
-        body: t(
-          '如果这些问题没过门，就给出 HOLD / SEND BACK，而不是用完整 PRD 掩盖不确定性。',
-          'If those questions do not pass the gate, return HOLD or SEND BACK instead of hiding uncertainty behind a polished PRD.',
-        ),
-      },
-      {
-        label: t('3. Target B', '3. Target B'),
-        body: t(
-          '只有方向通过后，才进入 flow、handoff、memory policy、attention / modality 与 surface system 的 Architecture Brief。',
-          'Only after the direction passes does the work move into an Architecture Brief covering flow, handoff, memory policy, attention and modality, and the surface system.',
-        ),
-      },
-    ],
     linksTitle: t('GitHub 链接', 'GitHub Links'),
     linkCards: [
       {
         label: t('Repository', 'Repository'),
-        body: t(
-          '零到一的人机协作方法库，包含 stage gate、Direction Brief 与 Architecture Brief。',
-          'A zero-to-one human-machine collaboration method repository with stage gates, Direction Briefs, and Architecture Briefs.',
-        ),
         url: 'https://github.com/Vickysh221/zero-to-one-human-machine-ux-conductor',
-      },
-      {
-        label: t('Skill Entry', 'Skill Entry'),
-        body: t(
-          '公开 skill 入口：`zero-to-one-human-machine-ux-conductor`。',
-          'The public entry file for the `zero-to-one-human-machine-ux-conductor` skill.',
-        ),
-        url: 'https://github.com/Vickysh221/zero-to-one-human-machine-ux-conductor/blob/main/SKILL.md',
       },
     ],
   },
@@ -232,7 +162,7 @@ function IntroReveal({
       </div>
       <div style={pageTitleStyle(isMobile)}>{text(page.pageTitle)}</div>
       {page.pageGoal ? <div style={introMetaStyle()}>{text(page.pageGoal)}</div> : null}
-      <p style={{ ...paragraphStyle(), maxWidth: 860 }}>{text(page.mainCopy)}</p>
+      <p style={{ ...paragraphStyle(), maxWidth: 860, whiteSpace: 'pre-line' }}>{text(page.mainCopy)}</p>
     </section>
   );
 }

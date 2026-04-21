@@ -810,7 +810,8 @@
       transform: scale(0) rotate(-30deg);
       transition: transform 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
-      filter: drop-shadow(0 1px 6px rgba(255, 190, 0, 0.75));
+      color: #FFD700;
+      filter: drop-shadow(0 2px 8px rgba(255, 210, 0, 0.85));
       user-select: none;
     }
     .star-badge.popped { transform: scale(1) rotate(0deg); }
@@ -830,8 +831,8 @@
     /* ── Agent cursor ── */
     .acursor {
       position: absolute;
-      top: 64px;
-      left: 14px;
+      top: 62px;
+      left: 12px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -1080,16 +1081,12 @@
                   </div>
                 </div>
 
-                <!-- B: STARRED by UX Agent + Research Agent votes -->
-                <div class="phone-variant pv-starred-ux pv-vote-research">
+                <!-- B: Human votes -->
+                <div class="phone-variant pv-vote-human">
                   <div class="vote-cluster">
-                    <div class="vote-dot vd-ux" title="UX Agent"></div>
-                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
                   </div>
-                  <div class="variant-title">
-                    B · highlight &amp; save
-                    <span class="star-badge">★</span>
-                  </div>
+                  <div class="variant-title">B · highlight &amp; save</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
                       <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1111,10 +1108,16 @@
                   </div>
                 </div>
 
-                <!-- C: no votes -->
-                <div class="phone-variant">
-                  <div class="vote-cluster"></div>
-                  <div class="variant-title">C · auto-capture pill</div>
+                <!-- C: STARRED by UX Agent + Research Agent votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-research">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                  </div>
+                  <div class="variant-title">
+                    C · auto-capture pill
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
                       <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1141,7 +1144,7 @@
 
               </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: external capture surfaces still stay language-first. Highlight-and-save wins — it keeps the user in social context while logging the fragment.</p>
+                <p>Shared annotation: external capture surfaces still stay language-first. Auto-capture wins — UX Agent and Research Agent both agree: zero friction is better than an explicit tap.</p>
                 <div class="annotation-badge">source shift · same spread logic</div>
               </div>
             </div>
@@ -1152,17 +1155,23 @@
             <aside class="spread-rail">
               <div class="spread-step">03</div>
               <h2 class="spread-title">白天捕获 · OS 系统分享</h2>
-              <p class="spread-subtitle">Three OS touchpoints. The confirmation banner earns a rare full-team vote.</p>
+              <p class="spread-subtitle">Three OS touchpoints. UX Agent and Human prefer the native share sheet — zero new UI to learn.</p>
               <div class="spread-stage">os · user initiated save</div>
               <p class="spread-rule">The page composition supports the devices. Any explanation belongs below.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
 
-                <!-- A: no votes -->
-                <div class="phone-variant">
-                  <div class="vote-cluster"></div>
-                  <div class="variant-title">A · iOS share sheet</div>
+                <!-- A: STARRED by UX Agent + Human votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
+                  <div class="variant-title">
+                    A · iOS share sheet
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
                       <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
@@ -1191,17 +1200,12 @@
                   </div>
                 </div>
 
-                <!-- B: STARRED by UX Agent + Research + Human (full consensus) -->
-                <div class="phone-variant pv-starred-ux pv-vote-research pv-vote-human pv-consensus">
+                <!-- B: Research Agent votes -->
+                <div class="phone-variant pv-vote-research">
                   <div class="vote-cluster">
-                    <div class="vote-dot vd-ux" title="UX Agent"></div>
                     <div class="vote-dot vd-research" title="Research Agent"></div>
-                    <div class="vote-dot vd-human" title="Human"></div>
                   </div>
-                  <div class="variant-title">
-                    B · saved confirmation banner
-                    <span class="star-badge">★</span>
-                  </div>
+                  <div class="variant-title">B · saved confirmation banner</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
                       <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
@@ -1222,11 +1226,9 @@
                   </div>
                 </div>
 
-                <!-- C: Human votes (alternative pick) -->
-                <div class="phone-variant pv-vote-human">
-                  <div class="vote-cluster">
-                    <div class="vote-dot vd-human" title="Human"></div>
-                  </div>
+                <!-- C: no votes -->
+                <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">C · home screen widget</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1250,7 +1252,7 @@
 
               </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: rare full-team consensus on the confirmation banner. It's the only moment in the session where all three voters align without debate.</p>
+                <p>Shared annotation: UX Agent and Human both prefer the native iOS share sheet — it feels ambient, no new UI to learn. Research Agent votes for the confirmation banner; outvoted 2-to-1.</p>
                 <div class="annotation-badge">reference-led spread</div>
               </div>
             </div>
@@ -1559,16 +1561,12 @@
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread phone-stage--transition">
 
-                <!-- A: STARRED by UX Agent + Research votes -->
-                <div class="phone-variant pv-starred-ux pv-vote-research">
+                <!-- A: UX Agent votes -->
+                <div class="phone-variant pv-vote-ux">
                   <div class="vote-cluster">
                     <div class="vote-dot vd-ux" title="UX Agent"></div>
-                    <div class="vote-dot vd-research" title="Research Agent"></div>
                   </div>
-                  <div class="variant-title">
-                    A · sunset timeline
-                    <span class="star-badge">★</span>
-                  </div>
+                  <div class="variant-title">A · sunset timeline</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
                       <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
@@ -1611,12 +1609,16 @@
                   </div>
                 </div>
 
-                <!-- C: Human votes (prefers the dark hard-cut) -->
-                <div class="phone-variant pv-vote-human">
+                <!-- C: STARRED by Research Agent + Human votes -->
+                <div class="phone-variant pv-starred-research pv-vote-human">
                   <div class="vote-cluster">
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
                     <div class="vote-dot vd-human" title="Human"></div>
                   </div>
-                  <div class="variant-title">C · quiet room</div>
+                  <div class="variant-title">
+                    C · quiet room
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
                       <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">9:14</span><span style="color:#fff;">●●●</span></div>
@@ -1633,7 +1635,7 @@
 
               </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: two agents vote for the timeline — it shows the day's arc visually. Human likes the quiet room's starkness but both agents worry it's too abrupt without context.</p>
+                <p>Shared annotation: Research Agent and Human both vote for the quiet room — the hard mode-switch signals that the day is done. UX Agent prefers the timeline for context; outvoted 2-to-1.</p>
                 <div class="annotation-badge">hard cut · same spread system</div>
               </div>
             </div>
@@ -1902,31 +1904,53 @@
       const COLORS = { ux: '#2f9bff', research: '#9b7dd4', human: '#c8a96e' };
       const LABELS = { ux: 'UX Agent', research: 'Research Agent', human: 'Human' };
 
+      /* diagonal positions for stacked multi-cursors */
+      const CURSOR_POS = [
+        { top: '56px', left: '8px'  },
+        { top: '76px', left: '22px' },
+        { top: '96px', left: '36px' },
+      ];
+
       function starredLabel(actor) {
-        if (actor === 'human') return 'HUMAN : STARRED !';
-        if (actor === 'ux')    return 'UX AGENT : STARRED !';
+        if (actor === 'human')    return 'HUMAN : STARRED !';
+        if (actor === 'ux')       return 'UX AGENT : STARRED !';
         return 'RESEARCH AGENT : STARRED !';
       }
-
-      function actorFromClasses(classList) {
-        if (classList.contains('pv-starred-ux'))       return 'ux';
-        if (classList.contains('pv-starred-research')) return 'research';
-        return null;
+      function votedLabel(actor) {
+        if (actor === 'human')    return 'HUMAN : VOTED';
+        if (actor === 'ux')       return 'UX AGENT : VOTED';
+        return 'RESEARCH AGENT : VOTED';
       }
 
-      function buildCursor(pv, actor) {
+      /* returns ordered list of actors voting on a starred pv */
+      function getVoters(pv) {
+        const voters = [];
+        // primary starer goes first
+        if (pv.classList.contains('pv-starred-ux'))       voters.push({ actor: 'ux',       primary: true  });
+        if (pv.classList.contains('pv-starred-research')) voters.push({ actor: 'research',  primary: true  });
+        // additional vote actors
+        if (pv.classList.contains('pv-vote-ux')       && !voters.find(v => v.actor === 'ux'))       voters.push({ actor: 'ux',       primary: false });
+        if (pv.classList.contains('pv-vote-research') && !voters.find(v => v.actor === 'research')) voters.push({ actor: 'research', primary: false });
+        if (pv.classList.contains('pv-vote-human')    && !voters.find(v => v.actor === 'human'))    voters.push({ actor: 'human',    primary: false });
+        return voters;
+      }
+
+      function buildCursor(pv, actor, isPrimary, posIdx) {
         const color = COLORS[actor];
-        const wrap  = document.createElement('div');
+        const pos   = CURSOR_POS[posIdx] || CURSOR_POS[0];
+
+        const wrap = document.createElement('div');
         wrap.className = 'acursor acursor-' + actor;
+        wrap.style.top  = pos.top;
+        wrap.style.left = pos.left;
 
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '20');
         svg.setAttribute('height', '24');
         svg.setAttribute('viewBox', '0 0 20 24');
-        svg.innerHTML = `
-          <path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" fill="${color}"/>
-          <path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" stroke="rgba(255,255,255,0.45)" stroke-width="1" fill="none"/>
-        `;
+        svg.innerHTML =
+          `<path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" fill="${color}"/>` +
+          `<path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" stroke="rgba(255,255,255,0.45)" stroke-width="1" fill="none"/>`;
 
         const label = document.createElement('span');
         label.className = 'acursor-label';
@@ -1936,7 +1960,7 @@
         const bubble = document.createElement('div');
         bubble.className = 'acursor-bubble';
         bubble.style.background = color;
-        bubble.textContent = starredLabel(actor);
+        bubble.textContent = isPrimary ? starredLabel(actor) : votedLabel(actor);
 
         wrap.appendChild(svg);
         wrap.appendChild(label);
@@ -1948,42 +1972,48 @@
       function animateSection(section) {
         const starredPVs = section.querySelectorAll('[class*="pv-starred-"]');
 
-        starredPVs.forEach((pv, idx) => {
-          const delay  = idx * 700;
-          const actor  = actorFromClasses(pv.classList);
-          if (!actor) return;
+        starredPVs.forEach((pv, pvIdx) => {
+          const sectionDelay = pvIdx * 800;
+          const voters       = getVoters(pv);
+          if (!voters.length) return;
 
-          const starEl  = pv.querySelector('.star-badge');
-          const titleEl = pv.querySelector('.variant-title');
-          const allDots = pv.querySelectorAll('.vote-dot');
-          const isConsensus = pv.classList.contains('pv-consensus');
+          const primaryActor = voters[0].actor;
+          const starEl       = pv.querySelector('.star-badge');
+          const titleEl      = pv.querySelector('.variant-title');
+          const allDots      = pv.querySelectorAll('.vote-dot');
+          const isConsensus  = pv.classList.contains('pv-consensus');
 
-          const { wrap, bubble } = buildCursor(pv, actor);
+          voters.forEach(({ actor, primary }, i) => {
+            const cursorDelay = sectionDelay + i * 280;
+            const { wrap, bubble } = buildCursor(pv, actor, primary, i);
 
-          // 1. cursor appears
-          setTimeout(() => wrap.classList.add('shown'), delay);
-          // 2. speech bubble pops
-          setTimeout(() => bubble.classList.add('shown'), delay + 500);
-          // 3. star badge + title highlight
-          setTimeout(() => {
-            if (starEl) starEl.classList.add('popped');
-            titleEl.classList.add('is-starred-' + actor);
-            if (isConsensus) titleEl.classList.add('is-consensus');
-          }, delay + 820);
-          // 4. vote dots pop in (star actor first, then others)
-          allDots.forEach((dot, i) => {
-            setTimeout(() => dot.classList.add('popped'), delay + 1100 + i * 200);
+            // cursor fades in
+            setTimeout(() => wrap.classList.add('shown'), cursorDelay);
+            // bubble pops
+            setTimeout(() => bubble.classList.add('shown'), cursorDelay + 460);
+            // star + highlight fires on primary actor's cue
+            if (primary) {
+              setTimeout(() => {
+                if (starEl) starEl.classList.add('popped');
+                titleEl.classList.add('is-starred-' + actor);
+                if (isConsensus) titleEl.classList.add('is-consensus');
+              }, cursorDelay + 780);
+            }
+            // bubble fades out
+            setTimeout(() => bubble.classList.add('hide'), cursorDelay + 2100);
           });
-          // 5. bubble fades
-          setTimeout(() => bubble.classList.add('hide'), delay + 2300);
+
+          // vote dots: pop in after all cursors have appeared
+          const dotDelay = sectionDelay + voters.length * 280 + 1000;
+          allDots.forEach((dot, i) => {
+            setTimeout(() => dot.classList.add('popped'), dotDelay + i * 200);
+          });
         });
 
-        // Pop in non-starred vote dots (after starred animation ends)
-        const nonStarredPVs = section.querySelectorAll('.phone-variant:not([class*="pv-starred-"])');
-        nonStarredPVs.forEach(pv => {
-          const dots = pv.querySelectorAll('.vote-dot');
-          dots.forEach((dot, i) => {
-            setTimeout(() => dot.classList.add('popped'), 1600 + i * 200);
+        // non-starred vote dots
+        section.querySelectorAll('.phone-variant:not([class*="pv-starred-"])').forEach(pv => {
+          pv.querySelectorAll('.vote-dot').forEach((dot, i) => {
+            setTimeout(() => dot.classList.add('popped'), 1800 + i * 200);
           });
         });
       }
