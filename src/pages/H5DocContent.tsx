@@ -55,6 +55,8 @@ import { resolveSectionTitle, type RenderableSectionTitle, type SectionShape } f
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
+import PersonalOSCaseStudy from './PersonalOSCaseStudy';
+import { hasPersonalOsCaseStudy } from './personalOsCaseStudyMeta.ts';
 
 interface H5DocContentProps {
   route: string;
@@ -145,6 +147,7 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
+  if (hasPersonalOsCaseStudy(route, slideIndex)) return true;
   if (hasAiInteriorSystemCaseStudy(route, slideIndex)) return true;
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
   if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 2) return true;
@@ -176,6 +179,18 @@ export default function H5DocContent({
   enableNarrativeMotion,
   shouldPlayMedia,
 }: H5DocContentProps) {
+  if (hasPersonalOsCaseStudy(route, slideIndex)) {
+    return (
+      <PersonalOSCaseStudy
+        route={route}
+        accentColor={accentColor}
+        slideIndex={slideIndex}
+        isMobile={isMobile}
+        enableMotion={enableNarrativeMotion}
+      />
+    );
+  }
+
   if (hasAiInteriorSystemCaseStudy(route, slideIndex)) {
     return (
       <AiInteriorSystemCaseStudy

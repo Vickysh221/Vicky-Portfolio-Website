@@ -107,6 +107,11 @@ export const PROJECTS: ProjectEntry[] = [
         numeral: 'VI',
         previewMedia: { src: interiorPreview, type: 'image' },
       },
+      {
+        route: '/agentic-design-development/personal-os',
+        label: { zh: 'personal OS 的探索进行时', en: 'Personal OS: An Ongoing Exploration' },
+        numeral: 'VII',
+      },
     ],
   },
   {
