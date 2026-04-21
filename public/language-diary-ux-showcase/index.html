@@ -29,26 +29,36 @@
       --shadow-lg: 12px 12px 0 var(--ink);
       --shadow-md: 8px 8px 0 var(--ink);
       --border: 3px solid var(--ink);
+      /* actor colors */
+      --ux-agent: #2f9bff;
+      --research-agent: #9b7dd4;
+      --human: #c8a96e;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      background: #000;
+      background: #0d0d0f;
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow-x: auto;
+      cursor: grab;
     }
+    body:active { cursor: grabbing; }
 
-    a {
-      color: inherit;
+    a { color: inherit; }
+
+    /* ── CANVAS BACKGROUND ── */
+    #canvas-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.13) 1.3px, transparent 1.3px);
+      background-size: 24px 24px;
+      background-color: #0d0d0f;
     }
 
     .showcase-shell {
@@ -56,6 +66,9 @@
       max-width: 2400px;
       margin: 0 auto;
       padding: 18px 24px 24px;
+      position: relative;
+      z-index: 1;
+      cursor: default;
     }
 
     .showcase-masthead {
@@ -68,15 +81,12 @@
       overflow: hidden;
     }
 
-    .masthead-top {
-      display: block;
-    }
+    .masthead-top { display: block; }
 
     .masthead-brand {
       padding: 18px 24px 16px;
       background: #111;
     }
-
     .masthead-brand h1 {
       margin: 0;
       font-family: "Bangers", cursive;
@@ -85,14 +95,8 @@
       line-height: 0.92;
       color: #fff5e8;
     }
-
-    .masthead-brand p {
-      display: none;
-    }
-
-    .masthead-side {
-      display: none;
-    }
+    .masthead-brand p { display: none; }
+    .masthead-side { display: none; }
 
     .side-label {
       width: fit-content;
@@ -115,10 +119,7 @@
       line-height: 1.55;
       color: rgba(22, 22, 26, 0.66);
     }
-
-    .side-copy strong {
-      color: var(--ink);
-    }
+    .side-copy strong { color: var(--ink); }
 
     .masthead-bottom {
       display: flex;
@@ -130,10 +131,7 @@
       border-top: 1px solid rgba(255,255,255,0.08);
     }
 
-    .layout-tabs {
-      display: inline-flex;
-      gap: 10px;
-    }
+    .layout-tabs { display: inline-flex; gap: 10px; }
 
     .layout-tab {
       appearance: none;
@@ -147,23 +145,15 @@
       font-size: 12px;
       cursor: pointer;
     }
-
     .layout-tab.is-active {
       background: var(--ink);
       color: #fff;
     }
 
-    .masthead-note {
-      display: none;
-    }
+    .masthead-note { display: none; }
 
-    .layout-panel {
-      display: none;
-    }
-
-    .layout-panel.is-active {
-      display: block;
-    }
+    .layout-panel { display: none; }
+    .layout-panel.is-active { display: block; }
 
     .section-nav {
       position: sticky;
@@ -181,10 +171,7 @@
       overflow-x: auto;
       scrollbar-width: none;
     }
-
-    .section-nav::-webkit-scrollbar {
-      display: none;
-    }
+    .section-nav::-webkit-scrollbar { display: none; }
 
     .section-pill {
       white-space: nowrap;
@@ -223,40 +210,27 @@
     }
 
     .portfolio-spread--day {
-      background:
-        linear-gradient(180deg, rgba(223, 249, 237, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+      background: linear-gradient(180deg, rgba(223, 249, 237, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
     }
-
     .portfolio-spread--day-alt {
-      background:
-        linear-gradient(180deg, rgba(222, 243, 229, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+      background: linear-gradient(180deg, rgba(222, 243, 229, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
     }
-
     .portfolio-spread--surface {
-      background:
-        linear-gradient(180deg, rgba(242, 238, 247, 0.82) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+      background: linear-gradient(180deg, rgba(242, 238, 247, 0.82) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
     }
-
     .portfolio-spread--aha {
       min-height: 1180px;
-      background:
-        linear-gradient(180deg, rgba(253, 114, 101, 0.14) 0 110px, rgba(255, 249, 246, 0.98) 110px 100%);
+      background: linear-gradient(180deg, rgba(253, 114, 101, 0.14) 0 110px, rgba(255, 249, 246, 0.98) 110px 100%);
     }
-
     .portfolio-spread--transition {
       width: 100%;
-      background:
-        linear-gradient(180deg, rgba(253, 192, 50, 0.18) 0 100px, rgba(255, 253, 248, 0.98) 100px 52%, rgba(189, 162, 217, 0.18) 52% 100%);
+      background: linear-gradient(180deg, rgba(253, 192, 50, 0.18) 0 100px, rgba(255, 253, 248, 0.98) 100px 52%, rgba(189, 162, 217, 0.18) 52% 100%);
     }
-
     .portfolio-spread--night {
-      background:
-        linear-gradient(180deg, rgba(189, 162, 217, 0.24) 0 100px, rgba(249, 245, 252, 0.98) 100px 100%);
+      background: linear-gradient(180deg, rgba(189, 162, 217, 0.24) 0 100px, rgba(249, 245, 252, 0.98) 100px 100%);
     }
-
     .portfolio-spread--deep {
-      background:
-        linear-gradient(180deg, rgba(138, 122, 168, 0.28) 0 100px, rgba(245, 240, 250, 0.98) 100px 100%);
+      background: linear-gradient(180deg, rgba(138, 122, 168, 0.28) 0 100px, rgba(245, 240, 250, 0.98) 100px 100%);
     }
 
     .spread-rail {
@@ -275,7 +249,6 @@
       letter-spacing: 1px;
       margin: 0;
     }
-
     .spread-title {
       margin: 0;
       font-family: "Black Han Sans", sans-serif;
@@ -283,14 +256,12 @@
       line-height: 1.2;
       color: var(--ink);
     }
-
     .spread-subtitle {
       margin: 0;
       font-size: 14px;
       line-height: 1.55;
       color: var(--ink-muted);
     }
-
     .spread-stage {
       width: fit-content;
       border: var(--border);
@@ -303,7 +274,6 @@
       text-transform: uppercase;
       color: var(--ink);
     }
-
     .spread-rule {
       margin-top: auto;
       border-left: var(--border);
@@ -326,21 +296,9 @@
       align-items: flex-start;
       flex-wrap: nowrap;
     }
-
-    .phone-stage--spread {
-      width: 100%;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .phone-stage--transition {
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .phone-stage--dense {
-      gap: 16px;
-    }
+    .phone-stage--spread { width: 100%; justify-content: space-between; gap: 18px; }
+    .phone-stage--transition { width: 100%; justify-content: space-between; }
+    .phone-stage--dense { gap: 16px; }
 
     .phone-variant {
       display: flex;
@@ -348,6 +306,7 @@
       align-items: center;
       gap: 12px;
       flex: 0 0 auto;
+      position: relative; /* for cursor absolute positioning */
     }
 
     .variant-title {
@@ -363,6 +322,8 @@
       letter-spacing: 0.2px;
       line-height: 1.2;
       color: var(--ink);
+      position: relative; /* for star badge */
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     }
 
     .phone {
@@ -388,31 +349,12 @@
       color: var(--ink);
     }
 
-    .phone-screen--day {
-      background: #edf7f2;
-    }
-
-    .phone-screen--day-alt {
-      background: #ebf4ef;
-    }
-
-    .phone-screen--surface {
-      background: #f1efea;
-    }
-
-    .phone-screen--coral {
-      background: #fff2ed;
-    }
-
-    .phone-screen--night {
-      background: #b8acd0;
-      color: #2d1a5e;
-    }
-
-    .phone-screen--deep {
-      background: #7b7290;
-      color: #f7f2ff;
-    }
+    .phone-screen--day    { background: #edf7f2; }
+    .phone-screen--day-alt { background: #ebf4ef; }
+    .phone-screen--surface { background: #f1efea; }
+    .phone-screen--coral  { background: #fff2ed; }
+    .phone-screen--night  { background: #b8acd0; color: #2d1a5e; }
+    .phone-screen--deep   { background: #7b7290; color: #f7f2ff; }
 
     .phone-statusbar {
       display: flex;
@@ -432,7 +374,6 @@
       justify-content: center;
       flex: 0 0 auto;
     }
-
     .phone-home::after {
       content: "";
       width: 100px;
@@ -449,10 +390,7 @@
       gap: 10px;
       overflow: hidden;
     }
-
-    .screen-body--space {
-      justify-content: space-between;
-    }
+    .screen-body--space { justify-content: space-between; }
 
     .bubble {
       width: fit-content;
@@ -466,33 +404,19 @@
       line-height: 1.45;
       color: var(--ink);
     }
-
     .bubble--user {
       align-self: flex-end;
       background: var(--day);
       border-radius: 16px 16px 5px 16px;
     }
-
     .bubble--agent {
       align-self: flex-start;
       border-radius: 5px 16px 16px 16px;
     }
 
-    .mark-dot {
-      border-bottom: 2px dotted var(--ink);
-      padding-bottom: 1px;
-    }
-
-    .mark-squig {
-      text-decoration: underline wavy var(--coral);
-      text-underline-offset: 3px;
-    }
-
-    .mark-bracket {
-      border-left: 2px solid var(--blue);
-      border-right: 2px solid var(--blue);
-      padding: 0 2px;
-    }
+    .mark-dot     { border-bottom: 2px dotted var(--ink); padding-bottom: 1px; }
+    .mark-squig   { text-decoration: underline wavy var(--coral); text-underline-offset: 3px; }
+    .mark-bracket { border-left: 2px solid var(--blue); border-right: 2px solid var(--blue); padding: 0 2px; }
 
     .tag-row,
     .mini-chip-row,
@@ -504,9 +428,7 @@
       flex-wrap: wrap;
     }
 
-    .tag,
-    .mini-chip,
-    .tiny-pill {
+    .tag, .mini-chip, .tiny-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -520,22 +442,10 @@
       color: var(--ink);
     }
 
-    .tag--day {
-      background: var(--day);
-    }
-
-    .tag--morning {
-      background: var(--morning);
-    }
-
-    .tag--night {
-      background: var(--night);
-    }
-
-    .tag--coral {
-      background: var(--coral);
-      color: #fff;
-    }
+    .tag--day     { background: var(--day); }
+    .tag--morning { background: var(--morning); }
+    .tag--night   { background: var(--night); }
+    .tag--coral   { background: var(--coral); color: #fff; }
 
     .chat-header {
       padding: 12px 16px 8px;
@@ -544,33 +454,12 @@
       flex: 0 0 auto;
       color: var(--ink);
     }
+    .chat-header--night { background: rgba(255, 255, 255, 0.18); color: #2d1a5e; }
+    .chat-title    { font-family: "Black Han Sans", sans-serif; font-size: 16px; line-height: 1.2; }
+    .chat-subtitle { margin-top: 3px; font-size: 10px; color: var(--ink-muted); }
 
-    .chat-header--night {
-      background: rgba(255, 255, 255, 0.18);
-      color: #2d1a5e;
-    }
-
-    .chat-title {
-      font-family: "Black Han Sans", sans-serif;
-      font-size: 16px;
-      line-height: 1.2;
-    }
-
-    .chat-subtitle {
-      margin-top: 3px;
-      font-size: 10px;
-      color: var(--ink-muted);
-    }
-
-    .screen-card,
-    .screen-drawer,
-    .feed-card,
-    .story-card,
-    .widget-card,
-    .peek-card,
-    .note-card,
-    .annotation-card,
-    .stack-card {
+    .screen-card, .screen-drawer, .feed-card, .story-card,
+    .widget-card, .peek-card, .note-card, .annotation-card, .stack-card {
       border: var(--border);
       border-radius: 18px;
       background: var(--card);
@@ -578,88 +467,36 @@
       color: var(--ink);
     }
 
-    .screen-card {
-      padding: 12px;
-    }
-
+    .screen-card { padding: 12px; }
     .screen-drawer {
       position: absolute;
-      left: 10px;
-      right: 10px;
-      bottom: 0;
+      left: 10px; right: 10px; bottom: 0;
       border-radius: 22px 22px 28px 28px;
       padding: 10px 14px 18px;
     }
-
     .drawer-handle {
-      width: 42px;
-      height: 4px;
+      width: 42px; height: 4px;
       border-radius: 999px;
       background: rgba(22, 22, 26, 0.2);
       margin: 0 auto 10px;
     }
+    .peek-card { padding: 10px; font-size: 11px; line-height: 1.5; }
+    .peek-card--popover { position: absolute; top: 140px; left: 12px; right: 12px; }
+    .peek-card--inline  { margin-top: -4px; }
 
-    .peek-card {
-      padding: 10px;
-      font-size: 11px;
-      line-height: 1.5;
-    }
+    .story-card { padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; line-height: 1.45; }
+    .widget-card, .note-card, .annotation-card { padding: 12px; font-size: 11px; line-height: 1.45; }
+    .feed-card { padding: 10px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; line-height: 1.45; }
 
-    .peek-card--popover {
-      position: absolute;
-      top: 140px;
-      left: 12px;
-      right: 12px;
-    }
-
-    .peek-card--inline {
-      margin-top: -4px;
-    }
-
-    .story-card {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .widget-card,
-    .note-card,
-    .annotation-card {
-      padding: 12px;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .feed-card {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .feed-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .feed-head { display: flex; align-items: center; gap: 8px; }
     .avatar {
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       border: 2px solid var(--ink);
       border-radius: 50%;
       background: var(--morning);
       flex: 0 0 auto;
     }
-
-    .feed-actions .tiny-pill {
-      background: var(--card-soft);
-    }
+    .feed-actions .tiny-pill { background: var(--card-soft); }
 
     .share-sheet {
       margin-top: auto;
@@ -670,72 +507,34 @@
       box-shadow: 0 -4px 0 rgba(22, 22, 26, 0.06);
       color: var(--ink);
     }
-
-    .share-grid {
-      margin-top: 12px;
-      gap: 12px;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-    }
-
+    .share-grid { margin-top: 12px; gap: 12px; flex-wrap: nowrap; justify-content: space-between; }
     .share-app {
       width: 64px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      text-align: center;
-      color: var(--ink-muted);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-size: 11px; text-align: center; color: var(--ink-muted);
     }
-
     .share-app-icon {
-      width: 48px;
-      height: 48px;
+      width: 48px; height: 48px;
       border: 2px solid var(--ink);
       border-radius: 16px;
       background: var(--card-soft);
       box-shadow: 3px 3px 0 var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 18px;
     }
+    .share-app--primary .share-app-icon { background: var(--night); }
 
-    .share-app--primary .share-app-icon {
-      background: var(--night);
-    }
-
-    .mini-line,
-    .story-line,
-    .text-line,
-    .timeline-line {
+    .mini-line, .story-line, .text-line, .timeline-line {
       height: 10px;
       border-radius: 999px;
       background: rgba(22, 22, 26, 0.12);
     }
+    .text-line--short { width: 56%; }
+    .text-line--mid   { width: 72%; }
+    .text-line--long  { width: 88%; }
 
-    .text-line--short {
-      width: 56%;
-    }
-
-    .text-line--mid {
-      width: 72%;
-    }
-
-    .text-line--long {
-      width: 88%;
-    }
-
-    .screen-note {
-      font-size: 11px;
-      line-height: 1.5;
-      color: var(--ink-muted);
-    }
-
-    .screen-note--night {
-      color: rgba(255, 255, 255, 0.86);
-    }
+    .screen-note       { font-size: 11px; line-height: 1.5; color: var(--ink-muted); }
+    .screen-note--night { color: rgba(255, 255, 255, 0.86); }
 
     .save-banner {
       margin-top: 10px;
@@ -744,28 +543,19 @@
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 12px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
+      display: flex; gap: 10px; align-items: center;
       color: var(--ink);
     }
-
     .save-banner-icon {
-      width: 32px;
-      height: 32px;
+      width: 32px; height: 32px;
       border: 2px solid var(--ink);
       border-radius: 10px;
       background: var(--night);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 14px;
     }
 
-    .widget-card {
-      margin-top: 28px;
-    }
-
+    .widget-card { margin-top: 28px; }
     .widget-input {
       width: 100%;
       border: 2px solid var(--ink);
@@ -775,7 +565,6 @@
       color: var(--ink-soft);
       margin: 12px 0 10px;
     }
-
     .widget-button {
       width: 100%;
       border: var(--border);
@@ -789,28 +578,10 @@
       color: var(--ink);
     }
 
-    .aha-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .aha-row {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-    }
-
-    .aha-row .phone-variant {
-      min-width: 0;
-    }
-
-    .aha-row--bottom .variant-title {
-      min-width: 192px;
-      padding-left: 12px;
-      padding-right: 12px;
-      font-size: 12px;
-    }
+    .aha-layout  { display: flex; flex-direction: column; gap: 24px; }
+    .aha-row     { display: flex; gap: 18px; align-items: flex-start; }
+    .aha-row .phone-variant { min-width: 0; }
+    .aha-row--bottom .variant-title { min-width: 192px; padding-left: 12px; padding-right: 12px; font-size: 12px; }
 
     .halo-card {
       margin-top: -4px;
@@ -822,7 +593,6 @@
       font-size: 11px;
       line-height: 1.4;
     }
-
     .agent-banner {
       border: var(--border);
       border-radius: 16px;
@@ -832,7 +602,6 @@
       font-size: 11px;
       line-height: 1.45;
     }
-
     .os-banner {
       margin: 12px 0;
       border: var(--border);
@@ -843,17 +612,8 @@
       font-size: 11px;
       line-height: 1.4;
     }
-
-    .response-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .response-actions .tiny-pill {
-      background: var(--card-soft);
-    }
+    .response-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .response-actions .tiny-pill { background: var(--card-soft); }
 
     .timeline-card {
       border: var(--border);
@@ -861,20 +621,15 @@
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 11px;
-      line-height: 1.45;
+      display: flex; flex-direction: column; gap: 10px;
+      font-size: 11px; line-height: 1.45;
       color: var(--ink);
     }
-
     .timeline-bar {
       height: 10px;
       border: 2px solid var(--ink);
       border-radius: 999px;
-      background:
-        linear-gradient(90deg, var(--morning) 0 58%, var(--night) 58% 100%);
+      background: linear-gradient(90deg, var(--morning) 0 58%, var(--night) 58% 100%);
     }
 
     .envelope-card {
@@ -884,11 +639,9 @@
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 14px;
-      font-size: 11px;
-      line-height: 1.5;
+      font-size: 11px; line-height: 1.5;
       color: var(--ink);
     }
-
     .quiet-room {
       flex: 1;
       border: var(--border);
@@ -897,61 +650,33 @@
       box-shadow: 4px 4px 0 var(--ink);
       color: #fff;
       padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 10px;
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
     }
-
     .letter-card {
       border: var(--border);
       border-radius: 18px;
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 14px;
-      font-size: 11px;
-      line-height: 1.55;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      font-size: 11px; line-height: 1.55;
+      display: flex; flex-direction: column; gap: 10px;
       color: var(--ink);
     }
-
-    .timeline-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .timeline-stack { display: flex; flex-direction: column; gap: 10px; }
     .timeline-node {
       border: var(--border);
       border-radius: 16px;
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 10px;
-      font-size: 11px;
-      line-height: 1.45;
+      font-size: 11px; line-height: 1.45;
       color: var(--ink);
     }
 
-    .stack-card {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .stack-card--tilt-a {
-      transform: rotate(-3deg);
-    }
-
-    .stack-card--tilt-b {
-      transform: rotate(3deg);
-    }
-
-    .stack-card--tilt-c {
-      transform: rotate(-2deg);
-    }
+    .stack-card  { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .stack-card--tilt-a { transform: rotate(-3deg); }
+    .stack-card--tilt-b { transform: rotate(3deg); }
+    .stack-card--tilt-c { transform: rotate(-2deg); }
 
     .knowledge-chip {
       border: var(--border);
@@ -959,18 +684,11 @@
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 8px 10px;
-      font-size: 11px;
-      line-height: 1.35;
+      font-size: 11px; line-height: 1.35;
       min-width: 86px;
       color: var(--ink);
     }
-
-    .knowledge-chip strong {
-      display: block;
-      font-family: "Black Han Sans", sans-serif;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
+    .knowledge-chip strong { display: block; font-family: "Black Han Sans", sans-serif; font-size: 12px; margin-bottom: 2px; }
 
     .event-group {
       border: var(--border);
@@ -978,11 +696,8 @@
       background: var(--card);
       box-shadow: 4px 4px 0 var(--ink);
       padding: 10px;
-      font-size: 11px;
-      line-height: 1.45;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      font-size: 11px; line-height: 1.45;
+      display: flex; flex-direction: column; gap: 8px;
       color: var(--ink);
     }
 
@@ -996,36 +711,19 @@
       position: relative;
       overflow: hidden;
     }
-
-    .woven-field::before,
-    .woven-field::after {
+    .woven-field::before, .woven-field::after {
       content: "";
       position: absolute;
-      left: 24px;
-      right: 24px;
+      left: 24px; right: 24px;
       height: 2px;
       border-top: 2px dashed rgba(255, 255, 255, 0.5);
     }
+    .woven-field::before { top: 84px; transform: rotate(8deg); }
+    .woven-field::after  { top: 152px; transform: rotate(-7deg); }
 
-    .woven-field::before {
-      top: 84px;
-      transform: rotate(8deg);
-    }
-
-    .woven-field::after {
-      top: 152px;
-      transform: rotate(-7deg);
-    }
-
-    .constellation-row {
-      position: relative;
-      z-index: 1;
-      justify-content: space-between;
-    }
-
+    .constellation-row { position: relative; z-index: 1; justify-content: space-between; }
     .constellation-node {
-      width: 64px;
-      height: 24px;
+      width: 64px; height: 24px;
       border: 2px solid var(--ink);
       border-radius: 999px;
       background: var(--card);
@@ -1042,13 +740,7 @@
       font-size: 13px;
       line-height: 1.55;
     }
-
-    .shared-bottom-annotation p {
-      margin: 0;
-      max-width: 940px;
-      color: var(--ink-muted);
-    }
-
+    .shared-bottom-annotation p { margin: 0; max-width: 940px; color: var(--ink-muted); }
     .annotation-badge {
       flex: 0 0 auto;
       border: var(--border);
@@ -1071,7 +763,6 @@
       box-shadow: var(--shadow-lg);
       overflow: hidden;
     }
-
     .legacy-frame {
       display: block;
       width: 100%;
@@ -1080,30 +771,154 @@
       border: 0;
       background: #fff;
     }
+
+    /* ═══════════════════════════════════════════════
+       AGENTIC CANVAS — vote system
+    ═══════════════════════════════════════════════ */
+
+    /* ── Vote cluster ── */
+    .vote-cluster {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+      min-height: 18px;
+      margin-bottom: 2px;
+    }
+
+    .vote-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .vote-dot.popped { transform: scale(1); }
+
+    /* agent = solid fill; human = fill + outer glow ring */
+    .vd-ux       { background: var(--ux-agent); }
+    .vd-research { background: var(--research-agent); }
+    .vd-human    { background: var(--human); box-shadow: 0 0 0 2.5px rgba(200,169,110,0.45); }
+
+    /* ── Star badge ── */
+    .star-badge {
+      position: absolute;
+      top: -14px;
+      right: -8px;
+      font-size: 20px;
+      line-height: 1;
+      transform: scale(0) rotate(-30deg);
+      transition: transform 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      filter: drop-shadow(0 1px 6px rgba(255, 190, 0, 0.75));
+      user-select: none;
+    }
+    .star-badge.popped { transform: scale(1) rotate(0deg); }
+
+    /* Starred variant-title highlight states */
+    .variant-title.is-starred-ux {
+      background: rgba(47, 155, 255, 0.13);
+      border-color: var(--ux-agent);
+      box-shadow: 6px 6px 0 var(--ux-agent);
+    }
+    .variant-title.is-starred-research {
+      background: rgba(155, 125, 212, 0.13);
+      border-color: var(--research-agent);
+      box-shadow: 6px 6px 0 var(--research-agent);
+    }
+
+    /* ── Agent cursor ── */
+    .acursor {
+      position: absolute;
+      top: 64px;
+      left: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      pointer-events: none;
+      z-index: 30;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .acursor.shown {
+      opacity: 1;
+      animation: cursorFloat 2.8s ease-in-out 0.3s infinite;
+    }
+
+    @keyframes cursorFloat {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-3px); }
+    }
+
+    .acursor-label {
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 10px;
+      color: #fff;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Speech bubble ── */
+    .acursor-bubble {
+      position: absolute;
+      top: -2px;
+      left: 26px;
+      padding: 8px 15px;
+      border-radius: 999px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 12px;
+      color: #fff;
+      white-space: nowrap;
+      opacity: 0;
+      transform: scale(0.82) translateY(4px);
+      transition: opacity 0.32s ease, transform 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      letter-spacing: 0.4px;
+      z-index: 40;
+    }
+    .acursor-bubble.shown {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .acursor-bubble.hide {
+      opacity: 0;
+      transform: scale(0.9) translateY(-5px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    /* ── Consensus glow (all three voted) ── */
+    .variant-title.is-starred-ux.is-consensus {
+      box-shadow: 6px 6px 0 var(--ux-agent), 0 0 18px rgba(47,155,255,0.22);
+    }
   </style>
 </head>
 <body>
+  <!-- canvas dot grid -->
+  <div id="canvas-bg"></div>
+
   <div class="showcase-shell">
     <header class="showcase-masthead">
       <div class="masthead-top">
         <div class="masthead-brand">
           <h1>UX SHOWCASE</h1>
-          <p>Language Diary V2.0 reframed as a portfolio-style presentation surface: each section is carried by a fixed-width `1920px` spread, each device stays the same size, and shared commentary moves below the main composition instead of occupying the right side.</p>
+          <p>Language Diary V2.0 — agentic canvas session. Each section is a design decision row. UX Agent, Research Agent, and Human vote on options in real time.</p>
         </div>
         <div class="masthead-side">
-          <div class="side-label">Default View · New Layout</div>
+          <div class="side-label">Agentic Canvas · Design Session</div>
           <div class="side-copy">
-            <div><strong>What changed:</strong> the old long page is preserved as backup, but the default entry now behaves like a case-study deck rather than a responsive dashboard wall.</div>
-            <div><strong>Hard rules:</strong> fixed phone dimensions, floating variant titles, no right-side note blocks, and a shared bottom annotation for each spread.</div>
+            <div><strong>How it works:</strong> scroll down and watch agents deliberate. Each row shows a design decision — starred options carry the team's vote.</div>
           </div>
         </div>
       </div>
       <div class="masthead-bottom">
         <div class="layout-tabs" role="tablist" aria-label="Showcase layout switcher">
-          <button class="layout-tab is-active" type="button" data-layout-tab="new" role="tab" aria-selected="true" aria-controls="layout-new">New Layout</button>
+          <button class="layout-tab is-active" type="button" data-layout-tab="new" role="tab" aria-selected="true" aria-controls="layout-new">Agentic Canvas</button>
           <button class="layout-tab" type="button" data-layout-tab="legacy" role="tab" aria-selected="false" aria-controls="layout-legacy">Legacy Layout</button>
         </div>
-        <div class="masthead-note">Default enters the new portfolio system. The legacy page is still available as a safe fallback inside the second tab.</div>
+        <div class="masthead-note">Agentic canvas view — watch UX Agent, Research Agent, and Human vote together.</div>
       </div>
     </header>
 
@@ -1121,17 +936,24 @@
         </nav>
 
         <div class="portfolio-page">
+
+          <!-- ═══ S01 ═══ -->
           <section class="portfolio-spread portfolio-spread--day" id="s01">
             <aside class="spread-rail">
               <div class="spread-step">01</div>
               <h2 class="spread-title">白天捕获 · 主聊天 Agent</h2>
-              <p class="spread-subtitle">Natural conversation capture becomes a spread of three equally weighted device studies instead of a stacked long-page wall.</p>
+              <p class="spread-subtitle">Natural conversation capture. Three marking approaches — the team votes on which notation feels lightest.</p>
               <div class="spread-stage">daytime · chat capture</div>
-              <p class="spread-rule">All three phones keep the same footprint. Variation lives in the marking language and the spread pacing, not in screen scale.</p>
+              <p class="spread-rule">All three phones keep the same footprint. Variation lives in the marking language only.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread phone-stage--transition">
-                <div class="phone-variant">
+
+                <!-- A: Research Agent votes -->
+                <div class="phone-variant pv-vote-research">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                  </div>
                   <div class="variant-title">A · dotted underline</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
@@ -1153,8 +975,16 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
-                  <div class="variant-title">B · margin dots</div>
+                <!-- B: STARRED by UX Agent + Human votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
+                  <div class="variant-title">
+                    B · margin dots
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
                       <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
@@ -1175,7 +1005,9 @@
                   </div>
                 </div>
 
+                <!-- C: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">C · signal strength</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
@@ -1196,26 +1028,32 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: this section stays closest to the original capture flow, but the presentation now reads like a portfolio comparison board. Each title floats above the device, and the spread note lives below the full composition rather than intruding into the viewing field.</p>
+                <p>Shared annotation: this section stays closest to the original capture flow. The team lands on margin dots — lightest footprint inside the chat stream.</p>
                 <div class="annotation-badge">shared bottom annotation</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S02 ═══ -->
           <section class="portfolio-spread portfolio-spread--day-alt" id="s02">
             <aside class="spread-rail">
               <div class="spread-step">02</div>
               <h2 class="spread-title">白天捕获 · 社交媒体评论</h2>
-              <p class="spread-subtitle">The source moves outside the main chat, but the spread format stays stable: three fixed phones, floating titles, one shared note below.</p>
+              <p class="spread-subtitle">The source moves outside the main chat. Three surface patterns — which saves the word without interrupting the social experience?</p>
               <div class="spread-stage">daytime · social capture</div>
-              <p class="spread-rule">This page should feel like one exhibit about capture sources, not like a second layout system fighting the main one.</p>
+              <p class="spread-rule">This page should feel like one exhibit about capture sources.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
-                <div class="phone-variant">
+
+                <!-- A: Human votes -->
+                <div class="phone-variant pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
                   <div class="variant-title">A · comment view</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
@@ -1242,8 +1080,16 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
-                  <div class="variant-title">B · highlight &amp; save</div>
+                <!-- B: STARRED by UX Agent + Research Agent votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-research">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                  </div>
+                  <div class="variant-title">
+                    B · highlight &amp; save
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
                       <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1257,7 +1103,7 @@
                         </div>
                         <div class="screen-card">
                           <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Save for tonight</div>
-                          <div class="screen-note">Long-press action appears directly in context without pulling the user into a lesson flow.</div>
+                          <div class="screen-note">Long-press action appears directly in context.</div>
                         </div>
                       </div>
                       <div class="phone-home"></div>
@@ -1265,7 +1111,9 @@
                   </div>
                 </div>
 
+                <!-- C: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">C · auto-capture pill</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
@@ -1290,26 +1138,30 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: external capture surfaces still stay language-first. The redesign keeps that idea clear by letting the devices carry the variation while the page scaffolding stays stable and portfolio-like.</p>
+                <p>Shared annotation: external capture surfaces still stay language-first. Highlight-and-save wins — it keeps the user in social context while logging the fragment.</p>
                 <div class="annotation-badge">source shift · same spread logic</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S03 ═══ -->
           <section class="portfolio-spread portfolio-spread--surface" id="s03">
             <aside class="spread-rail">
               <div class="spread-step">03</div>
               <h2 class="spread-title">白天捕获 · OS 系统分享</h2>
-              <p class="spread-subtitle">This spread stays closest to your reference board: three equal devices on one clean portfolio page with no side explanation blocks.</p>
+              <p class="spread-subtitle">Three OS touchpoints. The confirmation banner earns a rare full-team vote.</p>
               <div class="spread-stage">os · user initiated save</div>
-              <p class="spread-rule">The page composition supports the devices. Any explanation belongs below, not in the right-side focal space.</p>
+              <p class="spread-rule">The page composition supports the devices. Any explanation belongs below.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
+
+                <!-- A: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">A · iOS share sheet</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1339,8 +1191,17 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
-                  <div class="variant-title">B · saved confirmation banner</div>
+                <!-- B: STARRED by UX Agent + Research + Human (full consensus) -->
+                <div class="phone-variant pv-starred-ux pv-vote-research pv-vote-human pv-consensus">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
+                  <div class="variant-title">
+                    B · saved confirmation banner
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
                       <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
@@ -1361,7 +1222,11 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
+                <!-- C: Human votes (alternative pick) -->
+                <div class="phone-variant pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
                   <div class="variant-title">C · home screen widget</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1382,27 +1247,35 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: this page is intentionally clean and reference-like. The spread carries three OS touchpoints without using the right side for notes, so the center of gravity stays on the devices and their titles.</p>
+                <p>Shared annotation: rare full-team consensus on the confirmation banner. It's the only moment in the session where all three voters align without debate.</p>
                 <div class="annotation-badge">reference-led spread</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S04 ═══ -->
           <section class="portfolio-spread portfolio-spread--aha" id="s04">
             <aside class="spread-rail">
               <div class="spread-step">04</div>
               <h2 class="spread-title">Aha Moment</h2>
-              <p class="spread-subtitle">The only section that gets a more elaborate spread rhythm. It still obeys the hard rules: fixed phones, floating titles, no right-side notes, and one shared bottom annotation.</p>
+              <p class="spread-subtitle">Two rows, two decisions. Row A: how the aha surfaces. Row B: what happens next. Agents split their votes.</p>
               <div class="spread-stage">aha · featured spread</div>
-              <p class="spread-rule">This section earns complexity through narrative staging, not by breaking the layout system. The page becomes richer, but the device scale remains untouched.</p>
+              <p class="spread-rule">This section earns complexity through narrative staging, not by breaking the layout system.</p>
             </aside>
             <div class="spread-main">
               <div class="aha-layout">
+
+                <!-- Row A -->
                 <div class="aha-row">
-                  <div class="phone-variant">
+
+                  <!-- A1: Research Agent votes -->
+                  <div class="phone-variant pv-vote-research">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-research" title="Research Agent"></div>
+                    </div>
                     <div class="variant-title">A1 · inline halo card</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
@@ -1421,7 +1294,9 @@
                     </div>
                   </div>
 
+                  <!-- A2: no votes -->
                   <div class="phone-variant">
+                    <div class="vote-cluster"></div>
                     <div class="variant-title">A2 · OS banner push</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
@@ -1436,7 +1311,7 @@
                           </div>
                           <div class="os-banner">
                             <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">✦ Language Diary</div>
-                            <div style="margin-top:4px;">“might as well” shows up again. Worth keeping?</div>
+                            <div style="margin-top:4px;">"might as well" shows up again. Worth keeping?</div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -1444,8 +1319,15 @@
                     </div>
                   </div>
 
-                  <div class="phone-variant">
-                    <div class="variant-title">A3 · agent micro-message</div>
+                  <!-- A3: STARRED by UX Agent -->
+                  <div class="phone-variant pv-starred-ux">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    </div>
+                    <div class="variant-title">
+                      A3 · agent micro-message
+                      <span class="star-badge">★</span>
+                    </div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
@@ -1455,17 +1337,22 @@
                         </div>
                         <div class="screen-body">
                           <div class="bubble bubble--user">Maybe I should just go ahead and finish it.</div>
-                          <div class="agent-banner">noticed something worth keeping ↗<br>feels like another “might as well” moment.</div>
+                          <div class="agent-banner">noticed something worth keeping ↗<br>feels like another "might as well" moment.</div>
                           <div class="bubble bubble--agent">the system offers a thread, not a forced detour</div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
                   </div>
+
                 </div>
 
+                <!-- Row B -->
                 <div class="aha-row aha-row--bottom">
+
+                  <!-- B1: no votes -->
                   <div class="phone-variant">
+                    <div class="vote-cluster"></div>
                     <div class="variant-title">B1 · open now</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
@@ -1486,8 +1373,16 @@
                     </div>
                   </div>
 
-                  <div class="phone-variant">
-                    <div class="variant-title">B2 · save for later</div>
+                  <!-- B2: STARRED by Research Agent + Human votes -->
+                  <div class="phone-variant pv-starred-research pv-vote-human">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-research" title="Research Agent"></div>
+                      <div class="vote-dot vd-human" title="Human"></div>
+                    </div>
+                    <div class="variant-title">
+                      B2 · save for later
+                      <span class="star-badge">★</span>
+                    </div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
@@ -1504,7 +1399,9 @@
                     </div>
                   </div>
 
+                  <!-- B3: no votes -->
                   <div class="phone-variant">
+                    <div class="vote-cluster"></div>
                     <div class="variant-title">B3 · chat now</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
@@ -1514,7 +1411,7 @@
                           <div class="chat-subtitle">fork into main chat</div>
                         </div>
                         <div class="screen-body">
-                          <div class="bubble bubble--agent">you said “might as well” three times this week.</div>
+                          <div class="bubble bubble--agent">you said "might as well" three times this week.</div>
                           <div class="bubble bubble--agent">want to unpack what that pattern shows?</div>
                           <div class="bubble bubble--user">yes, let's talk about it.</div>
                         </div>
@@ -1523,7 +1420,9 @@
                     </div>
                   </div>
 
+                  <!-- B4: no votes -->
                   <div class="phone-variant">
+                    <div class="vote-cluster"></div>
                     <div class="variant-title">B4 · dismiss</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
@@ -1539,27 +1438,34 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
 
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: `A` variants show how the aha surfaces; `B` variants show what the user can do next. This is the only featured page with a richer composition, but it still follows the same portfolio rule set as the rest of the deck.</p>
-                <div class="annotation-badge">featured section · fixed phones</div>
+                <p>Shared annotation: row A reveals the aha moment — UX Agent picks the agent micro-message (keeps voice inside the product). Row B decides what happens next — Research Agent and Human both prefer quiet save.</p>
+                <div class="annotation-badge">featured section · split vote</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S05 ═══ -->
           <section class="portfolio-spread portfolio-spread--surface" id="s05">
             <aside class="spread-rail">
               <div class="spread-step">05</div>
               <h2 class="spread-title">Candidate Peek</h2>
-              <p class="spread-subtitle">Three reveal patterns, still organized as one spread instead of three stacked mobile screenshots.</p>
+              <p class="spread-subtitle">Three reveal depths. Research Agent and Human converge on inline — UX Agent holds out for the popover.</p>
               <div class="spread-stage">peek · low commitment</div>
-              <p class="spread-rule">The redesign keeps the viewing habit consistent: compare the devices first, then read the bottom note for the interpretation.</p>
+              <p class="spread-rule">Compare the devices first, then read the bottom note for the interpretation.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
-                <div class="phone-variant">
+
+                <!-- A: UX Agent votes -->
+                <div class="phone-variant pv-vote-ux">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                  </div>
                   <div class="variant-title">A · overlay popover</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1580,8 +1486,16 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
-                  <div class="variant-title">B · inline expansion</div>
+                <!-- B: STARRED by Research Agent + Human votes -->
+                <div class="phone-variant pv-starred-research pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
+                  <div class="variant-title">
+                    B · inline expansion
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
                       <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
@@ -1602,7 +1516,9 @@
                   </div>
                 </div>
 
+                <!-- C: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">C · bottom drawer</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1622,27 +1538,37 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: the spread compares three reveal depths while keeping the presentation language stable. The viewer reads the devices first, then uses the shared note to understand why each reveal feels lighter or heavier.</p>
+                <p>Shared annotation: the spread compares three reveal depths. Inline expansion wins — Research Agent argues it doesn't interrupt the thread; Human confirms it feels natural.</p>
                 <div class="annotation-badge">glance without lesson mode</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S06 ═══ -->
           <section class="portfolio-spread portfolio-spread--transition" id="s06">
             <aside class="spread-rail">
               <div class="spread-step">06</div>
               <h2 class="spread-title">Day → Night 过渡</h2>
-              <p class="spread-subtitle">This page preserves the hard-cut day/night doctrine, but frames it as a portfolio spread rather than a long-page transition strip.</p>
+              <p class="spread-subtitle">How the day compresses before narrative mode opens. Agents vote on the metaphor.</p>
               <div class="spread-stage">transition · hard line</div>
-              <p class="spread-rule">The mood can change, but the layout still obeys the same comparison rhythm and shared annotation placement.</p>
+              <p class="spread-rule">The mood can change, but the layout still obeys the same comparison rhythm.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread phone-stage--transition">
-                <div class="phone-variant">
-                  <div class="variant-title">A · sunset timeline</div>
+
+                <!-- A: STARRED by UX Agent + Research votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-research">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                  </div>
+                  <div class="variant-title">
+                    A · sunset timeline
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
                       <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
@@ -1663,7 +1589,9 @@
                   </div>
                 </div>
 
+                <!-- B: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">B · envelope</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
@@ -1683,7 +1611,11 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
+                <!-- C: Human votes (prefers the dark hard-cut) -->
+                <div class="phone-variant pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
                   <div class="variant-title">C · quiet room</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
@@ -1698,27 +1630,38 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: the transition page stays restrained. It compares three moods for closing the day while keeping the same fixed-device scale and the same page-level reading pattern.</p>
+                <p>Shared annotation: two agents vote for the timeline — it shows the day's arc visually. Human likes the quiet room's starkness but both agents worry it's too abrupt without context.</p>
                 <div class="annotation-badge">hard cut · same spread system</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S07 ═══ -->
           <section class="portfolio-spread portfolio-spread--night" id="s07">
             <aside class="spread-rail">
               <div class="spread-step">07</div>
               <h2 class="spread-title">夜间叙事 · Night Narrative</h2>
-              <p class="spread-subtitle">Night pages become atmospheric, but they do not switch into a single-hero poster. Three fixed devices still carry the comparison.</p>
+              <p class="spread-subtitle">A second full-team consensus. The letter format — all three actors vote for it, no debate.</p>
               <div class="spread-stage">night · companion-authored artifact</div>
-              <p class="spread-rule">The devices remain equal citizens of the spread so the page still reads like a case-study board, not a landing-page hero.</p>
+              <p class="spread-rule">The devices remain equal citizens so the page still reads like a case-study board.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
-                <div class="phone-variant">
-                  <div class="variant-title">A · letter</div>
+
+                <!-- A: STARRED by UX Agent + Research + Human (full consensus) -->
+                <div class="phone-variant pv-starred-ux pv-vote-research pv-vote-human pv-consensus">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
+                  <div class="variant-title">
+                    A · letter
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
                       <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
@@ -1728,7 +1671,7 @@
                       </div>
                       <div class="screen-body">
                         <div class="letter-card">
-                          <div>你今天说了三次 “might as well”。每一次都不是放弃，而是在疲惫里决定继续推进一点点。</div>
+                          <div>你今天说了三次 "might as well"。每一次都不是放弃，而是在疲惫里决定继续推进一点点。</div>
                           <div class="tag-row">
                             <div class="tag tag--night">pattern</div>
                             <div class="tag">companion authored</div>
@@ -1740,7 +1683,9 @@
                   </div>
                 </div>
 
+                <!-- B: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">B · chaptered scroll</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
@@ -1761,7 +1706,9 @@
                   </div>
                 </div>
 
+                <!-- C: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">C · card stack</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
@@ -1782,26 +1729,30 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: the night narrative pages can become more emotional, but the redesign refuses the single-device hero move. The spread still asks the viewer to compare three narrative containers side by side.</p>
-                <div class="annotation-badge">night without hero poster</div>
+                <p>Shared annotation: full consensus again — the letter wins unanimously. It's the only format where the companion's voice and the user's day both have room to breathe.</p>
+                <div class="annotation-badge">night · unanimous vote</div>
               </div>
             </div>
           </section>
 
+          <!-- ═══ S08 ═══ -->
           <section class="portfolio-spread portfolio-spread--deep" id="s08">
             <aside class="spread-rail">
               <div class="spread-step">08</div>
               <h2 class="spread-title">知识梳理 · Knowledge Constellation</h2>
-              <p class="spread-subtitle">The last page becomes denser and more atmospheric, but it still follows the same spread law: three fixed devices in view, shared interpretation below.</p>
+              <p class="spread-subtitle">The final decision. Agents align on the woven cluster — it maps how language fragments connect rather than just listing them.</p>
               <div class="spread-stage">night · structured knowledge</div>
-              <p class="spread-rule">Even the most visual clustering page should preserve portfolio readability. The composition can deepen, but it cannot collapse into a single-device concept poster.</p>
+              <p class="spread-rule">The composition can deepen, but it cannot collapse into a single-device concept poster.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
+
+                <!-- A: no votes -->
                 <div class="phone-variant">
+                  <div class="vote-cluster"></div>
                   <div class="variant-title">A · by type</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
@@ -1816,7 +1767,11 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
+                <!-- B: Human votes -->
+                <div class="phone-variant pv-vote-human">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-human" title="Human"></div>
+                  </div>
                   <div class="variant-title">B · by event anchor</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
@@ -1836,8 +1791,16 @@
                   </div>
                 </div>
 
-                <div class="phone-variant">
-                  <div class="variant-title">C · woven cluster</div>
+                <!-- C: STARRED by UX Agent + Research votes -->
+                <div class="phone-variant pv-starred-ux pv-vote-research">
+                  <div class="vote-cluster">
+                    <div class="vote-dot vd-ux" title="UX Agent"></div>
+                    <div class="vote-dot vd-research" title="Research Agent"></div>
+                  </div>
+                  <div class="variant-title">
+                    C · woven cluster
+                    <span class="star-badge">★</span>
+                  </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
                       <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
@@ -1863,14 +1826,15 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
+              </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: this final spread is allowed to feel denser and darker, but it still honors the same portfolio reading habit. The devices stay fixed, the titles float above, and the interpretation sits below the whole composition instead of occupying the focal plane.</p>
+                <p>Shared annotation: agents push for the woven cluster because it shows relationships, not just categories. Human prefers event anchors but defers to the stronger argument.</p>
                 <div class="annotation-badge">comparison first · reading second</div>
               </div>
             </div>
           </section>
+
         </div>
       </section>
 
@@ -1883,27 +1847,157 @@
   </div>
 
   <script>
+    /* ── Layout tab switcher ── */
     (() => {
-      const tabs = Array.from(document.querySelectorAll('[data-layout-tab]'));
+      const tabs   = Array.from(document.querySelectorAll('[data-layout-tab]'));
       const panels = Array.from(document.querySelectorAll('[data-layout-panel]'));
 
       const setLayout = (layout) => {
-        tabs.forEach((tab) => {
+        tabs.forEach(tab => {
           const isActive = tab.dataset.layoutTab === layout;
           tab.classList.toggle('is-active', isActive);
           tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
-
-        panels.forEach((panel) => {
+        panels.forEach(panel => {
           panel.classList.toggle('is-active', panel.dataset.layoutPanel === layout);
         });
       };
 
-      tabs.forEach((tab) => {
-        tab.addEventListener('click', () => setLayout(tab.dataset.layoutTab));
+      tabs.forEach(tab => tab.addEventListener('click', () => setLayout(tab.dataset.layoutTab)));
+      setLayout('new');
+    })();
+
+    /* ── Canvas panning (drag outside the shell) ── */
+    (() => {
+      const bg = document.getElementById('canvas-bg');
+      const shell = document.querySelector('.showcase-shell');
+      let dragging = false, ox = 0, oy = 0, bgX = 0, bgY = 0;
+
+      document.addEventListener('mousedown', e => {
+        if (shell.contains(e.target)) return;
+        dragging = true;
+        ox = e.clientX;
+        oy = e.clientY;
+        document.body.style.cursor = 'grabbing';
       });
 
-      setLayout('new');
+      document.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        bgX += e.clientX - ox;
+        bgY += e.clientY - oy;
+        ox = e.clientX;
+        oy = e.clientY;
+        bg.style.backgroundPosition = bgX + 'px ' + bgY + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        dragging = false;
+        document.body.style.cursor = '';
+      });
+      document.addEventListener('mouseleave', () => { dragging = false; });
+    })();
+
+    /* ── Agentic vote animations (scroll-triggered per section) ── */
+    (() => {
+      const COLORS = { ux: '#2f9bff', research: '#9b7dd4', human: '#c8a96e' };
+      const LABELS = { ux: 'UX Agent', research: 'Research Agent', human: 'Human' };
+
+      function starredLabel(actor) {
+        if (actor === 'human') return 'HUMAN : STARRED !';
+        if (actor === 'ux')    return 'UX AGENT : STARRED !';
+        return 'RESEARCH AGENT : STARRED !';
+      }
+
+      function actorFromClasses(classList) {
+        if (classList.contains('pv-starred-ux'))       return 'ux';
+        if (classList.contains('pv-starred-research')) return 'research';
+        return null;
+      }
+
+      function buildCursor(pv, actor) {
+        const color = COLORS[actor];
+        const wrap  = document.createElement('div');
+        wrap.className = 'acursor acursor-' + actor;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '20');
+        svg.setAttribute('height', '24');
+        svg.setAttribute('viewBox', '0 0 20 24');
+        svg.innerHTML = `
+          <path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" fill="${color}"/>
+          <path d="M3 2L17 9.5L11 12L7.5 20.5L3 2Z" stroke="rgba(255,255,255,0.45)" stroke-width="1" fill="none"/>
+        `;
+
+        const label = document.createElement('span');
+        label.className = 'acursor-label';
+        label.style.background = color;
+        label.textContent = LABELS[actor];
+
+        const bubble = document.createElement('div');
+        bubble.className = 'acursor-bubble';
+        bubble.style.background = color;
+        bubble.textContent = starredLabel(actor);
+
+        wrap.appendChild(svg);
+        wrap.appendChild(label);
+        wrap.appendChild(bubble);
+        pv.appendChild(wrap);
+        return { wrap, bubble };
+      }
+
+      function animateSection(section) {
+        const starredPVs = section.querySelectorAll('[class*="pv-starred-"]');
+
+        starredPVs.forEach((pv, idx) => {
+          const delay  = idx * 700;
+          const actor  = actorFromClasses(pv.classList);
+          if (!actor) return;
+
+          const starEl  = pv.querySelector('.star-badge');
+          const titleEl = pv.querySelector('.variant-title');
+          const allDots = pv.querySelectorAll('.vote-dot');
+          const isConsensus = pv.classList.contains('pv-consensus');
+
+          const { wrap, bubble } = buildCursor(pv, actor);
+
+          // 1. cursor appears
+          setTimeout(() => wrap.classList.add('shown'), delay);
+          // 2. speech bubble pops
+          setTimeout(() => bubble.classList.add('shown'), delay + 500);
+          // 3. star badge + title highlight
+          setTimeout(() => {
+            if (starEl) starEl.classList.add('popped');
+            titleEl.classList.add('is-starred-' + actor);
+            if (isConsensus) titleEl.classList.add('is-consensus');
+          }, delay + 820);
+          // 4. vote dots pop in (star actor first, then others)
+          allDots.forEach((dot, i) => {
+            setTimeout(() => dot.classList.add('popped'), delay + 1100 + i * 200);
+          });
+          // 5. bubble fades
+          setTimeout(() => bubble.classList.add('hide'), delay + 2300);
+        });
+
+        // Pop in non-starred vote dots (after starred animation ends)
+        const nonStarredPVs = section.querySelectorAll('.phone-variant:not([class*="pv-starred-"])');
+        nonStarredPVs.forEach(pv => {
+          const dots = pv.querySelectorAll('.vote-dot');
+          dots.forEach((dot, i) => {
+            setTimeout(() => dot.classList.add('popped'), 1600 + i * 200);
+          });
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateSection(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      document.querySelectorAll('.portfolio-spread').forEach(s => observer.observe(s));
     })();
   </script>
 </body>
