@@ -1,6 +1,9 @@
 import type { SectionData } from './H5DocContentSlideFactory';
-import { getLanguageDiarySlideSections } from './languageDiary/getLanguageDiarySlideSections';
+import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
 
 export function getPersonalLanguageDiarySlide06Sections(accentColor: string): SectionData[] {
-  return getLanguageDiarySlideSections(3, accentColor, 5);
+  return getPersonalLanguageDiarySlide05Sections(accentColor).map((section) => ({
+    ...section,
+    numeral: '06',
+  }));
 }

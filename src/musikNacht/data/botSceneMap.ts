@@ -814,7 +814,17 @@ export function buildBotSceneConfigs(entries: BotSongMapEntry[]) {
 }
 
 export function filterPortfolioVisibleBotSceneConfigs(entries: BotSceneConfig[]) {
-  return entries.filter((entry) => !PORTFOLIO_HIDDEN_BOT_IDS.has(entry.botId))
+  const visibleEntries = entries.filter((entry) => !PORTFOLIO_HIDDEN_BOT_IDS.has(entry.botId))
+  const preferredFirstBotId = 'clawd-rain-waiter'
+  const preferredIndex = visibleEntries.findIndex((entry) => entry.botId === preferredFirstBotId)
+
+  if (preferredIndex <= 0) return visibleEntries
+
+  return [
+    visibleEntries[preferredIndex],
+    ...visibleEntries.slice(0, preferredIndex),
+    ...visibleEntries.slice(preferredIndex + 1),
+  ]
 }
 
 export const FALLBACK_BOT_SCENE_MAP = buildBotSceneConfigs(FALLBACK_BOT_SCENE_ENTRIES)

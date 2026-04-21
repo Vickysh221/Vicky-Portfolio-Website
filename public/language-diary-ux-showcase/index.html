@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Diary · UX v2.0 Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Han+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/language-diary-ux-showcase/styles/index.css">
+  <style>
+    :root {
+      --ink: #16161a;
+      --paper: #f7f3eb;
+      --paper-soft: #fffdf8;
+      --paper-cool: #f2eef7;
+      --day: #9fffcf;
+      --day-soft: #dff9ed;
+      --morning: #fdc032;
+      --night: #bda2d9;
+      --night-deep: #8a7aa8;
+      --coral: #fd7265;
+      --blue: #2f9bff;
+      --shadow-lg: 12px 12px 0 var(--ink);
+      --shadow-md: 8px 8px 0 var(--ink);
+      --border: 3px solid var(--ink);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, #f3efe9 0 240px, #efeaf6 240px 100%);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: auto;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .showcase-shell {
+      width: 100%;
+      max-width: 2400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .showcase-masthead {
+      width: 100%;
+      margin: 0 auto 22px;
+      border: var(--border);
+      border-radius: 36px;
+      background: rgba(255, 253, 248, 0.94);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .masthead-top {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 0;
+      border-bottom: var(--border);
+    }
+
+    .masthead-brand {
+      padding: 32px 36px 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0 62%, rgba(242, 238, 247, 0.92) 62% 100%);
+    }
+
+    .masthead-brand h1 {
+      margin: 0;
+      font-family: "Bangers", cursive;
+      font-size: 88px;
+      letter-spacing: 2px;
+      line-height: 0.92;
+    }
+
+    .masthead-brand p {
+      margin: 10px 0 0;
+      max-width: 720px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: rgba(22, 22, 26, 0.68);
+    }
+
+    .masthead-side {
+      padding: 28px 32px;
+      background: #f3efe7;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .side-label {
+      width: fit-content;
+      border: var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .side-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(22, 22, 26, 0.66);
+    }
+
+    .side-copy strong {
+      color: var(--ink);
+    }
+
+    .masthead-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 24px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .layout-tabs {
+      display: inline-flex;
+      gap: 10px;
+    }
+
+    .layout-tab {
+      appearance: none;
+      border: var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px 18px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .layout-tab.is-active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .masthead-note {
+      font-size: 13px;
+      color: rgba(22, 22, 26, 0.62);
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .layout-panel {
+      display: none;
+    }
+
+    .layout-panel.is-active {
+      display: block;
+    }
+
+    .section-nav {
+      position: sticky;
+      top: 18px;
+      z-index: 30;
+      width: 100%;
+      margin: 0 auto 16px;
+      border: var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-md);
+      padding: 10px 16px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .section-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .section-pill {
+      white-space: nowrap;
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+
+    .portfolio-page {
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .portfolio-spread {
+      min-height: 760px;
+      border: var(--border);
+      border-radius: 38px;
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: var(--shadow-lg);
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .portfolio-spread--day {
+      background:
+        linear-gradient(180deg, rgba(223, 249, 237, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+    }
+
+    .portfolio-spread--day-alt {
+      background:
+        linear-gradient(180deg, rgba(222, 243, 229, 0.95) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+    }
+
+    .portfolio-spread--surface {
+      background:
+        linear-gradient(180deg, rgba(242, 238, 247, 0.82) 0 100px, rgba(255, 253, 248, 0.98) 100px 100%);
+    }
+
+    .portfolio-spread--aha {
+      min-height: 1180px;
+      background:
+        linear-gradient(180deg, rgba(253, 114, 101, 0.14) 0 110px, rgba(255, 249, 246, 0.98) 110px 100%);
+    }
+
+    .portfolio-spread--transition {
+      width: 100%;
+      background:
+        linear-gradient(180deg, rgba(253, 192, 50, 0.18) 0 100px, rgba(255, 253, 248, 0.98) 100px 52%, rgba(189, 162, 217, 0.18) 52% 100%);
+    }
+
+    .portfolio-spread--night {
+      background:
+        linear-gradient(180deg, rgba(189, 162, 217, 0.24) 0 100px, rgba(249, 245, 252, 0.98) 100px 100%);
+    }
+
+    .portfolio-spread--deep {
+      background:
+        linear-gradient(180deg, rgba(138, 122, 168, 0.28) 0 100px, rgba(245, 240, 250, 0.98) 100px 100%);
+    }
+
+    .spread-rail {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-right: 18px;
+      border-right: 2px solid rgba(22, 22, 26, 0.14);
+    }
+
+    .spread-step {
+      font-family: "Bangers", cursive;
+      font-size: 118px;
+      line-height: 0.82;
+      color: rgba(22, 22, 26, 0.12);
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .spread-title {
+      margin: 0;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 36px;
+      line-height: 1.2;
+    }
+
+    .spread-subtitle {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(22, 22, 26, 0.68);
+    }
+
+    .spread-stage {
+      width: fit-content;
+      border: var(--border);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 6px 12px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .spread-rule {
+      margin-top: auto;
+      border-left: var(--border);
+      padding-left: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(22, 22, 26, 0.66);
+    }
+
+    .spread-main {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      justify-content: space-between;
+    }
+
+    .phone-stage {
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+    }
+
+    .phone-stage--spread {
+      width: 100%;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .phone-stage--transition {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .phone-stage--dense {
+      gap: 16px;
+    }
+
+    .phone-variant {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      flex: 0 0 auto;
+    }
+
+    .variant-title {
+      min-width: 220px;
+      padding: 10px 22px;
+      border: var(--border);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 6px 6px 0 var(--ink);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+    }
+
+    .phone {
+      width: 260px;
+      height: 540px;
+      background: var(--ink);
+      border: var(--border);
+      border-radius: 38px;
+      box-shadow: var(--shadow-md);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-screen {
+      flex: 1;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--paper-soft);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .phone-screen--day {
+      background: #f8fffb;
+    }
+
+    .phone-screen--day-alt {
+      background: #edfdf5;
+    }
+
+    .phone-screen--surface {
+      background: #faf9f5;
+    }
+
+    .phone-screen--coral {
+      background: #fff5f2;
+    }
+
+    .phone-screen--night {
+      background: #bda2d9;
+    }
+
+    .phone-screen--deep {
+      background: #8a7aa8;
+    }
+
+    .phone-statusbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 18px 6px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 11px;
+      color: var(--ink);
+      flex: 0 0 auto;
+    }
+
+    .phone-home {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .phone-home::after {
+      content: "";
+      width: 100px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(22, 22, 26, 0.22);
+    }
+
+    .screen-body {
+      flex: 1;
+      padding: 10px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .screen-body--space {
+      justify-content: space-between;
+    }
+
+    .bubble {
+      width: fit-content;
+      max-width: 80%;
+      padding: 9px 12px;
+      border: 2px solid var(--ink);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .bubble--user {
+      align-self: flex-end;
+      background: var(--day);
+      border-radius: 16px 16px 5px 16px;
+    }
+
+    .bubble--agent {
+      align-self: flex-start;
+      border-radius: 5px 16px 16px 16px;
+    }
+
+    .mark-dot {
+      border-bottom: 2px dotted var(--ink);
+      padding-bottom: 1px;
+    }
+
+    .mark-squig {
+      text-decoration: underline wavy var(--coral);
+      text-underline-offset: 3px;
+    }
+
+    .mark-bracket {
+      border-left: 2px solid var(--blue);
+      border-right: 2px solid var(--blue);
+      padding: 0 2px;
+    }
+
+    .tag-row,
+    .mini-chip-row,
+    .share-grid,
+    .feed-actions,
+    .constellation-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag,
+    .mini-chip,
+    .tiny-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #fff;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .tag--day {
+      background: var(--day);
+    }
+
+    .tag--morning {
+      background: var(--morning);
+    }
+
+    .tag--night {
+      background: var(--night);
+    }
+
+    .tag--coral {
+      background: var(--coral);
+      color: #fff;
+    }
+
+    .chat-header {
+      padding: 12px 16px 8px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--day);
+      flex: 0 0 auto;
+    }
+
+    .chat-header--night {
+      background: rgba(255, 255, 255, 0.18);
+      color: #2d1a5e;
+    }
+
+    .chat-title {
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .chat-subtitle {
+      margin-top: 3px;
+      font-size: 10px;
+      color: rgba(22, 22, 26, 0.58);
+    }
+
+    .screen-card,
+    .screen-drawer,
+    .feed-card,
+    .story-card,
+    .widget-card,
+    .peek-card,
+    .note-card,
+    .annotation-card,
+    .stack-card {
+      border: var(--border);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .screen-card {
+      padding: 12px;
+    }
+
+    .screen-drawer {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 0;
+      border-radius: 22px 22px 28px 28px;
+      padding: 10px 14px 18px;
+    }
+
+    .drawer-handle {
+      width: 42px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(22, 22, 26, 0.2);
+      margin: 0 auto 10px;
+    }
+
+    .peek-card {
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .peek-card--popover {
+      position: absolute;
+      top: 140px;
+      left: 12px;
+      right: 12px;
+    }
+
+    .peek-card--inline {
+      margin-top: -4px;
+    }
+
+    .story-card {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .widget-card,
+    .note-card,
+    .annotation-card {
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .feed-card {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .feed-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--morning);
+      flex: 0 0 auto;
+    }
+
+    .feed-actions .tiny-pill {
+      background: var(--paper);
+    }
+
+    .share-sheet {
+      margin-top: auto;
+      border-top: var(--border);
+      background: #fff;
+      border-radius: 22px 22px 28px 28px;
+      padding: 10px 12px 18px;
+      box-shadow: 0 -4px 0 rgba(22, 22, 26, 0.06);
+    }
+
+    .share-grid {
+      margin-top: 12px;
+      gap: 12px;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+
+    .share-app {
+      width: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      text-align: center;
+      color: rgba(22, 22, 26, 0.72);
+    }
+
+    .share-app-icon {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--ink);
+      border-radius: 16px;
+      background: #f0eef5;
+      box-shadow: 3px 3px 0 var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .share-app--primary .share-app-icon {
+      background: var(--night);
+    }
+
+    .mini-line,
+    .story-line,
+    .text-line,
+    .timeline-line {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(22, 22, 26, 0.12);
+    }
+
+    .text-line--short {
+      width: 56%;
+    }
+
+    .text-line--mid {
+      width: 72%;
+    }
+
+    .text-line--long {
+      width: 88%;
+    }
+
+    .screen-note {
+      font-size: 11px;
+      line-height: 1.5;
+      color: rgba(22, 22, 26, 0.68);
+    }
+
+    .screen-note--night {
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .save-banner {
+      margin-top: 10px;
+      border: var(--border);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .save-banner-icon {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      background: var(--night);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .widget-card {
+      margin-top: 28px;
+    }
+
+    .widget-input {
+      width: 100%;
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      padding: 8px 10px;
+      background: var(--paper-soft);
+      color: rgba(22, 22, 26, 0.54);
+      margin: 12px 0 10px;
+    }
+
+    .widget-button {
+      width: 100%;
+      border: var(--border);
+      border-radius: 14px;
+      background: var(--day);
+      box-shadow: 3px 3px 0 var(--ink);
+      padding: 10px 12px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .aha-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .aha-row {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .aha-row .phone-variant {
+      min-width: 0;
+    }
+
+    .aha-row--bottom .variant-title {
+      min-width: 192px;
+      padding-left: 12px;
+      padding-right: 12px;
+      font-size: 12px;
+    }
+
+    .halo-card {
+      margin-top: -4px;
+      border: var(--border);
+      border-radius: 16px;
+      background: rgba(253, 114, 101, 0.14);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .agent-banner {
+      border: var(--border);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .os-banner {
+      margin: 12px 0;
+      border: var(--border);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .response-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .response-actions .tiny-pill {
+      background: var(--paper);
+    }
+
+    .timeline-card {
+      border: var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .timeline-bar {
+      height: 10px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, var(--morning) 0 58%, var(--night) 58% 100%);
+    }
+
+    .envelope-card {
+      margin-top: auto;
+      border: var(--border);
+      border-radius: 18px;
+      background: #fff8ef;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 14px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .quiet-room {
+      flex: 1;
+      border: var(--border);
+      border-radius: 18px;
+      background: rgba(36, 32, 58, 0.86);
+      box-shadow: 4px 4px 0 var(--ink);
+      color: #fff;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .letter-card {
+      border: var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 14px;
+      font-size: 11px;
+      line-height: 1.55;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .timeline-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .timeline-node {
+      border: var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .stack-card {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stack-card--tilt-a {
+      transform: rotate(-3deg);
+    }
+
+    .stack-card--tilt-b {
+      transform: rotate(3deg);
+    }
+
+    .stack-card--tilt-c {
+      transform: rotate(-2deg);
+    }
+
+    .knowledge-chip {
+      border: var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.35;
+      min-width: 86px;
+    }
+
+    .knowledge-chip strong {
+      display: block;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .event-group {
+      border: var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .woven-field {
+      flex: 1;
+      border: var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .woven-field::before,
+    .woven-field::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      border-top: 2px dashed rgba(255, 255, 255, 0.5);
+    }
+
+    .woven-field::before {
+      top: 84px;
+      transform: rotate(8deg);
+    }
+
+    .woven-field::after {
+      top: 152px;
+      transform: rotate(-7deg);
+    }
+
+    .constellation-row {
+      position: relative;
+      z-index: 1;
+      justify-content: space-between;
+    }
+
+    .constellation-node {
+      width: 64px;
+      height: 24px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .shared-bottom-annotation {
+      border-top: var(--border);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-end;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .shared-bottom-annotation p {
+      margin: 0;
+      max-width: 940px;
+      color: rgba(22, 22, 26, 0.72);
+    }
+
+    .annotation-badge {
+      flex: 0 0 auto;
+      border: var(--border);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 8px 14px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .legacy-panel {
+      width: 100%;
+      margin: 0 auto;
+      border: var(--border);
+      border-radius: 38px;
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .legacy-frame {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 190px);
+      min-height: 960px;
+      border: 0;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="showcase-shell">
+    <header class="showcase-masthead">
+      <div class="masthead-top">
+        <div class="masthead-brand">
+          <h1>UX SHOWCASE</h1>
+          <p>Language Diary V2.0 reframed as a portfolio-style presentation surface: each section is carried by a fixed-width `1920px` spread, each device stays the same size, and shared commentary moves below the main composition instead of occupying the right side.</p>
+        </div>
+        <div class="masthead-side">
+          <div class="side-label">Default View · New Layout</div>
+          <div class="side-copy">
+            <div><strong>What changed:</strong> the old long page is preserved as backup, but the default entry now behaves like a case-study deck rather than a responsive dashboard wall.</div>
+            <div><strong>Hard rules:</strong> fixed phone dimensions, floating variant titles, no right-side note blocks, and a shared bottom annotation for each spread.</div>
+          </div>
+        </div>
+      </div>
+      <div class="masthead-bottom">
+        <div class="layout-tabs" role="tablist" aria-label="Showcase layout switcher">
+          <button class="layout-tab is-active" type="button" data-layout-tab="new" role="tab" aria-selected="true" aria-controls="layout-new">New Layout</button>
+          <button class="layout-tab" type="button" data-layout-tab="legacy" role="tab" aria-selected="false" aria-controls="layout-legacy">Legacy Layout</button>
+        </div>
+        <div class="masthead-note">Default enters the new portfolio system. The legacy page is still available as a safe fallback inside the second tab.</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="layout-panel is-active" id="layout-new" data-layout-panel="new" role="tabpanel">
+        <nav class="section-nav" aria-label="Showcase sections">
+          <a class="section-pill" href="#s01">01 · Main Chat</a>
+          <a class="section-pill" href="#s02">02 · Social Feed</a>
+          <a class="section-pill" href="#s03">03 · OS Share</a>
+          <a class="section-pill" href="#s04">04 · Aha</a>
+          <a class="section-pill" href="#s05">05 · Candidate Peek</a>
+          <a class="section-pill" href="#s06">06 · Day → Night</a>
+          <a class="section-pill" href="#s07">07 · Night Narrative</a>
+          <a class="section-pill" href="#s08">08 · Knowledge</a>
+        </nav>
+
+        <div class="portfolio-page">
+          <section class="portfolio-spread portfolio-spread--day" id="s01">
+            <aside class="spread-rail">
+              <div class="spread-step">01</div>
+              <h2 class="spread-title">白天捕获 · 主聊天 Agent</h2>
+              <p class="spread-subtitle">Natural conversation capture becomes a spread of three equally weighted device studies instead of a stacked long-page wall.</p>
+              <div class="spread-stage">daytime · chat capture</div>
+              <p class="spread-rule">All three phones keep the same footprint. Variation lives in the marking language and the spread pacing, not in screen scale.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread phone-stage--transition">
+                <div class="phone-variant">
+                  <div class="variant-title">A · dotted underline</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="chat-header">
+                        <div class="chat-title">Language Diary</div>
+                        <div class="chat-subtitle">quiet inline noticing</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">今天真的太累了，完全 <span class="mark-dot">drained</span>。早上 might as well 出门买了杯咖啡。</div>
+                        <div class="bubble bubble--agent">marked quietly · held for tonight</div>
+                        <div class="tag-row">
+                          <div class="tag tag--day">day</div>
+                          <div class="tag">noticed</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · margin dots</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="chat-header">
+                        <div class="chat-title">Language Diary</div>
+                        <div class="chat-subtitle">outer-edge notation</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">I was literally running on fumes today.</div>
+                        <div class="mini-chip-row">
+                          <div class="mini-chip">··</div>
+                          <div class="mini-chip">held</div>
+                        </div>
+                        <div class="bubble bubble--agent">kept outside the bubble so the chat flow stays light</div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · signal strength</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="chat-header">
+                        <div class="chat-title">Language Diary</div>
+                        <div class="chat-subtitle">strength-coded marks</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">I was <span class="mark-dot">kind of</span> tired, then <span class="mark-squig">might as well</span> went out anyway.</div>
+                        <div class="bubble bubble--agent">dots / squiggle / bracket signal different confidence</div>
+                        <div class="tag-row">
+                          <div class="tag">quiet</div>
+                          <div class="tag tag--coral">strong</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: this section stays closest to the original capture flow, but the presentation now reads like a portfolio comparison board. Each title floats above the device, and the spread note lives below the full composition rather than intruding into the viewing field.</p>
+                <div class="annotation-badge">shared bottom annotation</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--day-alt" id="s02">
+            <aside class="spread-rail">
+              <div class="spread-step">02</div>
+              <h2 class="spread-title">白天捕获 · 社交媒体评论</h2>
+              <p class="spread-subtitle">The source moves outside the main chat, but the spread format stays stable: three fixed phones, floating titles, one shared note below.</p>
+              <div class="spread-stage">daytime · social capture</div>
+              <p class="spread-rule">This page should feel like one exhibit about capture sources, not like a second layout system fighting the main one.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread">
+                <div class="phone-variant">
+                  <div class="variant-title">A · comment view</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day-alt">
+                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="feed-card">
+                          <div class="feed-head">
+                            <div class="avatar"></div>
+                            <div>
+                              <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">@afternoonmemo</div>
+                              <div style="font-size:10px;color:rgba(22,22,26,.56);">Xiaohongshu comment</div>
+                            </div>
+                          </div>
+                          <div>今天有点 <span class="mark-dot">drained</span>，但 still managed to finish the draft.</div>
+                          <div class="feed-actions">
+                            <div class="tiny-pill">like</div>
+                            <div class="tiny-pill">reply</div>
+                            <div class="tiny-pill">save</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · highlight &amp; save</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day-alt">
+                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="feed-card">
+                          <div class="feed-head">
+                            <div class="avatar"></div>
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">@afternoonmemo</div>
+                          </div>
+                          <div>I <span class="mark-bracket">might as well</span> go, since I'm already downstairs.</div>
+                        </div>
+                        <div class="screen-card">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Save for tonight</div>
+                          <div class="screen-note">Long-press action appears directly in context without pulling the user into a lesson flow.</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · auto-capture pill</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--day-alt">
+                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="feed-card">
+                          <div class="feed-head">
+                            <div class="avatar"></div>
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">@afternoonmemo</div>
+                          </div>
+                          <div>That trip was exhausting but also weirdly worth it.</div>
+                        </div>
+                        <div class="screen-card">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">1 language point noticed</div>
+                          <div class="tag-row">
+                            <div class="tag tag--day">candidate</div>
+                            <div class="tag">see tonight</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: external capture surfaces still stay language-first. The redesign keeps that idea clear by letting the devices carry the variation while the page scaffolding stays stable and portfolio-like.</p>
+                <div class="annotation-badge">source shift · same spread logic</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--surface" id="s03">
+            <aside class="spread-rail">
+              <div class="spread-step">03</div>
+              <h2 class="spread-title">白天捕获 · OS 系统分享</h2>
+              <p class="spread-subtitle">This spread stays closest to your reference board: three equal devices on one clean portfolio page with no side explanation blocks.</p>
+              <div class="spread-stage">os · user initiated save</div>
+              <p class="spread-rule">The page composition supports the devices. Any explanation belongs below, not in the right-side focal space.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread">
+                <div class="phone-variant">
+                  <div class="variant-title">A · iOS share sheet</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="screen-body screen-body--space">
+                        <div class="bubble bubble--user" style="align-self:flex-start;max-width:100%;background:#fff;border-radius:18px;">今天真的太累了，完全 drained。早上 might as well 出门买了杯咖啡，感觉好多了。</div>
+                        <div class="share-sheet">
+                          <div class="drawer-handle"></div>
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:18px;">Share via...</div>
+                          <div class="share-grid">
+                            <div class="share-app share-app--primary">
+                              <div class="share-app-icon">🗂</div>
+                              <div style="font-family:'Black Han Sans',sans-serif;color:var(--ink);">Language Diary</div>
+                            </div>
+                            <div class="share-app">
+                              <div class="share-app-icon">📋</div>
+                              <div>Copy</div>
+                            </div>
+                            <div class="share-app">
+                              <div class="share-app-icon">💬</div>
+                              <div>Messages</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · saved confirmation banner</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--night">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="save-banner">
+                          <div class="save-banner-icon">🗂</div>
+                          <div>
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Language Diary</div>
+                            <div style="font-size:11px;color:rgba(22,22,26,.68);">Saved for tonight ✓</div>
+                            <div class="tag-row" style="margin-top:6px;">
+                              <div class="tag tag--day">pattern</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · home screen widget</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="widget-card">
+                          <div class="tag-row" style="margin-bottom:10px;">
+                            <div style="width:18px;height:18px;border:2px solid var(--ink);border-radius:6px;background:var(--night);"></div>
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Language Diary</div>
+                          </div>
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:20px;line-height:1.1;">save a clip</div>
+                          <div class="widget-input">paste or type...</div>
+                          <div class="widget-button">save for tonight</div>
+                          <div style="margin-top:10px;color:rgba(22,22,26,.56);">3 candidates today</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: this page is intentionally clean and reference-like. The spread carries three OS touchpoints without using the right side for notes, so the center of gravity stays on the devices and their titles.</p>
+                <div class="annotation-badge">reference-led spread</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--aha" id="s04">
+            <aside class="spread-rail">
+              <div class="spread-step">04</div>
+              <h2 class="spread-title">Aha Moment</h2>
+              <p class="spread-subtitle">The only section that gets a more elaborate spread rhythm. It still obeys the hard rules: fixed phones, floating titles, no right-side notes, and one shared bottom annotation.</p>
+              <div class="spread-stage">aha · featured spread</div>
+              <p class="spread-rule">This section earns complexity through narrative staging, not by breaking the layout system. The page becomes richer, but the device scale remains untouched.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="aha-layout">
+                <div class="aha-row">
+                  <div class="phone-variant">
+                    <div class="variant-title">A1 · inline halo card</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="chat-header">
+                          <div class="chat-title">Language Diary</div>
+                          <div class="chat-subtitle">trigger inside the chat stream</div>
+                        </div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--user">I <span class="mark-squig">might as well</span> go now since I'm already downstairs.</div>
+                          <div class="halo-card">noticed something worth keeping ↗</div>
+                          <div class="bubble bubble--agent">the aha stays invitation-shaped, not lesson-shaped</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="variant-title">A2 · OS banner push</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="feed-card">
+                            <div class="feed-head">
+                              <div class="avatar"></div>
+                              <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Xiaohongshu</div>
+                            </div>
+                            <div>今天真的很累，但是 might as well 还是把事情做完了。</div>
+                          </div>
+                          <div class="os-banner">
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">✦ Language Diary</div>
+                            <div style="margin-top:4px;">“might as well” shows up again. Worth keeping?</div>
+                          </div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="variant-title">A3 · agent micro-message</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="chat-header">
+                          <div class="chat-title">Language Diary</div>
+                          <div class="chat-subtitle">low-interruption prompt</div>
+                        </div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--user">Maybe I should just go ahead and finish it.</div>
+                          <div class="agent-banner">noticed something worth keeping ↗<br>feels like another “might as well” moment.</div>
+                          <div class="bubble bubble--agent">the system offers a thread, not a forced detour</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="aha-row aha-row--bottom">
+                  <div class="phone-variant">
+                    <div class="variant-title">B1 · open now</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--user">might as well go now.</div>
+                        </div>
+                        <div class="screen-drawer">
+                          <div class="drawer-handle"></div>
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">might as well</div>
+                          <div class="screen-note">Reluctant agreement. Since the cost of not doing it is higher.</div>
+                          <div class="response-actions">
+                            <div class="tiny-pill">save</div>
+                            <div class="tiny-pill">dismiss</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="variant-title">B2 · save for later</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--user">I might as well go now.</div>
+                          <div class="screen-card">
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">added · see tonight ✓</div>
+                            <div class="screen-note">Candidate enters quietly and the chat keeps moving.</div>
+                          </div>
+                          <div class="bubble bubble--agent">okay, holding it for later</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="variant-title">B3 · chat now</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="chat-header">
+                          <div class="chat-title">Language Diary</div>
+                          <div class="chat-subtitle">fork into main chat</div>
+                        </div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--agent">you said “might as well” three times this week.</div>
+                          <div class="bubble bubble--agent">want to unpack what that pattern shows?</div>
+                          <div class="bubble bubble--user">yes, let's talk about it.</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="variant-title">B4 · dismiss</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--coral">
+                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="bubble bubble--user">might as well go.</div>
+                          <div class="screen-card">
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">dismissed</div>
+                            <div class="screen-note">No follow-up. The fragment can still survive as a low-confidence night candidate.</div>
+                          </div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: `A` variants show how the aha surfaces; `B` variants show what the user can do next. This is the only featured page with a richer composition, but it still follows the same portfolio rule set as the rest of the deck.</p>
+                <div class="annotation-badge">featured section · fixed phones</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--surface" id="s05">
+            <aside class="spread-rail">
+              <div class="spread-step">05</div>
+              <h2 class="spread-title">Candidate Peek</h2>
+              <p class="spread-subtitle">Three reveal patterns, still organized as one spread instead of three stacked mobile screenshots.</p>
+              <div class="spread-stage">peek · low commitment</div>
+              <p class="spread-rule">The redesign keeps the viewing habit consistent: compare the devices first, then read the bottom note for the interpretation.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread">
+                <div class="phone-variant">
+                  <div class="variant-title">A · overlay popover</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="chat-header">
+                        <div class="chat-title">Language Diary</div>
+                        <div class="chat-subtitle">anchored glance</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">I was <span class="mark-dot">running on fumes</span> by the end of the meeting.</div>
+                        <div class="peek-card peek-card--popover">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">running on fumes</div>
+                          <div>Feels like functioning with almost no energy left.</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · inline expansion</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="chat-header">
+                        <div class="chat-title">Language Diary</div>
+                        <div class="chat-subtitle">within the thread</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">I was <span class="mark-squig">running on fumes</span> by the end of the meeting.</div>
+                        <div class="peek-card peek-card--inline">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">running on fumes</div>
+                          <div>Meaning stays near the original line so the user does not fall into a separate mode.</div>
+                        </div>
+                        <div class="bubble bubble--agent">peek, not teaching</div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · bottom drawer</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="bubble bubble--user">I was <span class="mark-bracket">running on fumes</span> by the end.</div>
+                      </div>
+                      <div class="screen-drawer">
+                        <div class="drawer-handle"></div>
+                        <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">running on fumes</div>
+                        <div class="screen-note">Reluctant, drained, still operating. The drawer offers more room without turning into a lesson page.</div>
+                        <div class="response-actions">
+                          <div class="tiny-pill">save</div>
+                          <div class="tiny-pill">close</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: the spread compares three reveal depths while keeping the presentation language stable. The viewer reads the devices first, then uses the shared note to understand why each reveal feels lighter or heavier.</p>
+                <div class="annotation-badge">glance without lesson mode</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--transition" id="s06">
+            <aside class="spread-rail">
+              <div class="spread-step">06</div>
+              <h2 class="spread-title">Day → Night 过渡</h2>
+              <p class="spread-subtitle">This page preserves the hard-cut day/night doctrine, but frames it as a portfolio spread rather than a long-page transition strip.</p>
+              <div class="spread-stage">transition · hard line</div>
+              <p class="spread-rule">The mood can change, but the layout still obeys the same comparison rhythm and shared annotation placement.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread phone-stage--transition">
+                <div class="phone-variant">
+                  <div class="variant-title">A · sunset timeline</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="timeline-card">
+                          <div class="timeline-bar"></div>
+                          <div class="story-line"></div>
+                          <div class="story-line" style="width:72%;"></div>
+                          <div class="screen-note">3 captures · 1 aha · narrative forming</div>
+                        </div>
+                        <div class="screen-card" style="margin-top:auto;">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">night is ready</div>
+                          <div class="screen-note">The day compresses before the rewrite begins.</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · envelope</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--surface">
+                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
+                      <div class="screen-body screen-body--space">
+                        <div class="envelope-card">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:18px;">today's fragments</div>
+                          <div class="tag-row" style="margin:12px 0;">
+                            <div class="tag tag--morning">3 captures</div>
+                            <div class="tag tag--night">1 story</div>
+                          </div>
+                          <div class="screen-note">the day folds shut before narrative mode opens</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · quiet room</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--deep">
+                      <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">9:14</span><span style="color:#fff;">●●●</span></div>
+                      <div class="screen-body">
+                        <div class="quiet-room">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;">narrative composing...</div>
+                          <div class="screen-note screen-note--night">no gradient, no softness. just a hard shift into the night surface.</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: the transition page stays restrained. It compares three moods for closing the day while keeping the same fixed-device scale and the same page-level reading pattern.</p>
+                <div class="annotation-badge">hard cut · same spread system</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--night" id="s07">
+            <aside class="spread-rail">
+              <div class="spread-step">07</div>
+              <h2 class="spread-title">夜间叙事 · Night Narrative</h2>
+              <p class="spread-subtitle">Night pages become atmospheric, but they do not switch into a single-hero poster. Three fixed devices still carry the comparison.</p>
+              <div class="spread-stage">night · companion-authored artifact</div>
+              <p class="spread-rule">The devices remain equal citizens of the spread so the page still reads like a case-study board, not a landing-page hero.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread">
+                <div class="phone-variant">
+                  <div class="variant-title">A · letter</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--night">
+                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="chat-header chat-header--night">
+                        <div class="chat-title">Tonight's Letter</div>
+                        <div class="chat-subtitle">one flowing artifact</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="letter-card">
+                          <div>你今天说了三次 “might as well”。每一次都不是放弃，而是在疲惫里决定继续推进一点点。</div>
+                          <div class="tag-row">
+                            <div class="tag tag--night">pattern</div>
+                            <div class="tag">companion authored</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · chaptered scroll</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--night">
+                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="chat-header chat-header--night">
+                        <div class="chat-title">Night Narrative</div>
+                        <div class="chat-subtitle">morning / afternoon / evening</div>
+                      </div>
+                      <div class="screen-body">
+                        <div class="timeline-stack">
+                          <div class="timeline-node">Morning · coffee + drained but moving</div>
+                          <div class="timeline-node">Afternoon · social comment became a candidate</div>
+                          <div class="timeline-node">Evening · might as well became visible as a pattern</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · card stack</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--night">
+                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="screen-body">
+                        <div class="stack-card stack-card--tilt-a">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">hero card</div>
+                          <div class="screen-note">the day held together by one repeated phrase</div>
+                        </div>
+                        <div class="stack-card stack-card--tilt-b">
+                          <div class="screen-note">coffee run</div>
+                        </div>
+                        <div class="stack-card stack-card--tilt-c">
+                          <div class="screen-note">late draft</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: the night narrative pages can become more emotional, but the redesign refuses the single-device hero move. The spread still asks the viewer to compare three narrative containers side by side.</p>
+                <div class="annotation-badge">night without hero poster</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="portfolio-spread portfolio-spread--deep" id="s08">
+            <aside class="spread-rail">
+              <div class="spread-step">08</div>
+              <h2 class="spread-title">知识梳理 · Knowledge Constellation</h2>
+              <p class="spread-subtitle">The last page becomes denser and more atmospheric, but it still follows the same spread law: three fixed devices in view, shared interpretation below.</p>
+              <div class="spread-stage">night · structured knowledge</div>
+              <p class="spread-rule">Even the most visual clustering page should preserve portfolio readability. The composition can deepen, but it cannot collapse into a single-device concept poster.</p>
+            </aside>
+            <div class="spread-main">
+              <div class="phone-stage phone-stage--spread">
+                <div class="phone-variant">
+                  <div class="variant-title">A · by type</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--deep">
+                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="screen-body">
+                        <div class="knowledge-chip"><strong>pattern</strong>might as well</div>
+                        <div class="knowledge-chip"><strong>vocab</strong>drained</div>
+                        <div class="knowledge-chip"><strong>grammar</strong>reluctant agreement</div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">B · by event anchor</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--deep">
+                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="screen-body">
+                        <div class="event-group">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">coffee run</div>
+                          <div>drained · might as well</div>
+                        </div>
+                        <div class="event-group">
+                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">late draft</div>
+                          <div>running on fumes · kept going</div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="phone-variant">
+                  <div class="variant-title">C · woven cluster</div>
+                  <div class="phone">
+                    <div class="phone-screen phone-screen--deep">
+                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="screen-body">
+                        <div class="woven-field">
+                          <div class="constellation-row" style="margin-top:12px;">
+                            <div class="constellation-node"></div>
+                            <div class="constellation-node"></div>
+                            <div class="constellation-node"></div>
+                          </div>
+                          <div class="constellation-row" style="margin-top:56px;">
+                            <div class="constellation-node"></div>
+                            <div class="constellation-node"></div>
+                          </div>
+                          <div class="constellation-row" style="margin-top:54px;">
+                            <div class="constellation-node"></div>
+                            <div class="constellation-node"></div>
+                            <div class="constellation-node"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shared-bottom-annotation">
+                <p>Shared annotation: this final spread is allowed to feel denser and darker, but it still honors the same portfolio reading habit. The devices stay fixed, the titles float above, and the interpretation sits below the whole composition instead of occupying the focal plane.</p>
+                <div class="annotation-badge">comparison first · reading second</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="layout-panel" id="layout-legacy" data-layout-panel="legacy" role="tabpanel">
+        <div class="legacy-panel">
+          <iframe class="legacy-frame" src="/language-diary-ux-showcase/legacy.html" title="Legacy UX Showcase"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const tabs = Array.from(document.querySelectorAll('[data-layout-tab]'));
+      const panels = Array.from(document.querySelectorAll('[data-layout-panel]'));
+
+      const setLayout = (layout) => {
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.layoutTab === layout;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle('is-active', panel.dataset.layoutPanel === layout);
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => setLayout(tab.dataset.layoutTab));
+      });
+
+      setLayout('new');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Diary · UX v2.0 Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Han+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/language-diary-ux-showcase/styles/index.css">
+  <style>
+    /* ── Showcase layout ── */
+    body { background: #faf9f5; margin: 0; font-family: -apple-system, sans-serif; }
+
+    /* Sticky nav */
+    .sc-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: #fff; border-bottom: 3px solid #1b1b1f;
+      padding: 10px 24px; display: flex; gap: 8px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .sc-nav::-webkit-scrollbar { display: none; }
+    .sc-nav a {
+      white-space: nowrap; text-decoration: none;
+      font-family: 'Black Han Sans', sans-serif; font-size: 12px;
+      color: #1b1b1f; padding: 4px 12px;
+      border: 2px solid #1b1b1f; border-radius: 10px;
+      box-shadow: 2px 2px 0 #1b1b1f; background: #fff;
+    }
+    .sc-nav a:hover { transform: translateY(-1px); box-shadow: 3px 3px 0 #1b1b1f; }
+
+    /* Page header */
+    .sc-page-header {
+      padding: 48px 40px 32px;
+      border-bottom: 3px solid #1b1b1f;
+      background: #fff;
+    }
+    .sc-page-header h1 {
+      font-family: 'Bangers', cursive; font-size: 64px;
+      letter-spacing: 2px; line-height: 1; color: #1b1b1f;
+    }
+    .sc-page-header p {
+      font-size: 14px; color: rgba(27,27,31,.6);
+      margin-top: 6px;
+    }
+
+    /* Section */
+    .sc-section {
+      padding: 48px 40px 56px;
+      border-bottom: 3px solid #1b1b1f;
+    }
+    .sc-section-header {
+      display: flex; align-items: flex-start;
+      gap: 16px; margin-bottom: 36px;
+      position: relative;
+    }
+    .sc-step-num {
+      font-family: 'Bangers', cursive; font-size: 80px;
+      color: #1b1b1f; opacity: 0.12; line-height: 1;
+      flex-shrink: 0; margin-top: -12px;
+    }
+    .sc-section-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 24px; color: #1b1b1f; margin: 0;
+    }
+    .sc-section-sub {
+      font-size: 13px; color: rgba(27,27,31,.6);
+      margin: 4px 0 10px;
+    }
+    .sc-stage-pill {
+      display: inline-block; font-family: 'Black Han Sans', sans-serif;
+      font-size: 11px; padding: 3px 10px;
+      border: 2px solid #1b1b1f; border-radius: 10px;
+      box-shadow: 2px 2px 0 #1b1b1f;
+    }
+    .sc-design-note {
+      margin-top: 20px; font-size: 12px; font-style: italic;
+      color: rgba(27,27,31,.5); border-left: 3px solid #1b1b1f;
+      padding-left: 10px;
+    }
+
+    /* Variant row */
+    .sc-variant-row {
+      display: flex; gap: 32px; flex-wrap: wrap;
+    }
+    .sc-variant-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .sc-variant-label {
+      font-family: 'Black Han Sans', sans-serif; font-size: 11px;
+      padding: 3px 10px; border: 2px solid #1b1b1f;
+      border-radius: 10px; box-shadow: 2px 2px 0 #1b1b1f;
+      background: #fff; color: #1b1b1f;
+    }
+
+    /* Sub-row label */
+    .sc-subrow-label {
+      font-family: 'Black Han Sans', sans-serif; font-size: 13px;
+      color: #1b1b1f; margin: 28px 0 14px;
+      padding-bottom: 6px; border-bottom: 2px dashed rgba(27,27,31,.3);
+    }
+
+    /* ── Phone shell ── */
+    .phone {
+      width: 260px; height: 540px; flex-shrink: 0;
+      background: #1b1b1f;
+      border: 3px solid #1b1b1f;
+      border-radius: 36px;
+      box-shadow: 8px 8px 0 #1b1b1f;
+      padding: 10px;
+      display: flex; flex-direction: column;
+    }
+    .phone-screen {
+      flex: 1; background: #faf9f5;
+      border-radius: 28px; overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .phone-statusbar {
+      padding: 8px 16px 4px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0;
+    }
+    .phone-statusbar span {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 11px; color: #1b1b1f;
+    }
+    .phone-home {
+      height: 20px; display: flex; justify-content: center; align-items: center;
+      flex-shrink: 0;
+    }
+    .phone-home::after {
+      content: ''; width: 100px; height: 4px;
+      background: rgba(27,27,31,.25); border-radius: 2px;
+    }
+    .phone-content {
+      flex: 1; overflow: hidden;
+      display: flex; flex-direction: column;
+      padding: 8px 12px; gap: 8px;
+    }
+
+    /* ── Chat bubbles ── */
+    .bubble {
+      padding: 8px 12px; border-radius: 16px;
+      font-size: 13px; line-height: 1.4;
+      border: 2px solid #1b1b1f; max-width: 80%;
+    }
+    .bubble.user {
+      align-self: flex-end; background: #9FFFCD;
+      border-radius: 16px 16px 4px 16px;
+      box-shadow: 2px 2px 0 #1b1b1f;
+    }
+    .bubble.agent {
+      align-self: flex-start; background: #fff;
+      border-radius: 4px 16px 16px 16px;
+      box-shadow: 2px 2px 0 #1b1b1f;
+    }
+
+    /* ── Language marks ── */
+    .mark-dot {
+      border-bottom: 2px dotted #1b1b1f;
+      padding-bottom: 1px;
+    }
+    .mark-squig {
+      text-decoration: underline wavy #FD7265;
+      text-underline-offset: 3px;
+    }
+    .mark-bracket {
+      border-left: 2px solid #2f9bff;
+      border-right: 2px solid #2f9bff;
+      padding: 0 2px;
+    }
+    .mark-double {
+      border-bottom: 3px double #FD7265;
+      padding-bottom: 1px;
+    }
+
+    /* ── Tags ── */
+    .tag {
+      display: inline-block; font-size: 10px;
+      padding: 1px 6px; border: 1.5px solid #1b1b1f;
+      border-radius: 8px; font-family: 'Black Han Sans', sans-serif;
+    }
+    .tag.day { background: #9FFFCD; }
+    .tag.morning { background: #FDC032; }
+    .tag.night { background: #BDA2D9; }
+    .tag.coral { background: #FD7265; color: #fff; }
+    .tag.k1 { background: #2f9bff; color: #fff; }
+
+    /* ── Knowledge chips ── */
+    .k-chip {
+      border: 2px solid #1b1b1f; border-radius: 12px;
+      padding: 6px 10px; background: #fff;
+      box-shadow: 2px 2px 0 #1b1b1f; font-size: 11px;
+      display: inline-flex; flex-direction: column; gap: 3px;
+    }
+    .k-chip .phrase {
+      font-family: 'Black Han Sans', sans-serif; font-size: 13px;
+    }
+    .k-chip.heat3 { border-width: 3px; }
+
+    /* ── OS notification card ── */
+    .os-card {
+      width: 260px; border: 3px solid #1b1b1f;
+      border-radius: 16px; padding: 12px;
+      background: #fff; box-shadow: 6px 6px 0 #1b1b1f;
+    }
+    .os-card-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .os-app-icon {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: #BDA2D9; border: 1.5px solid #1b1b1f;
+      flex-shrink: 0;
+    }
+    .os-app-name {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 11px; color: #1b1b1f; flex: 1;
+    }
+    .os-time { font-size: 10px; color: rgba(27,27,31,.5); }
+    .os-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 13px; color: #1b1b1f; margin-bottom: 4px;
+    }
+    .os-body { font-size: 11px; color: rgba(27,27,31,.7); line-height: 1.4; }
+    .os-action {
+      margin-top: 8px; padding: 4px 10px; display: inline-block;
+      border: 2px solid #1b1b1f; border-radius: 10px;
+      font-family: 'Black Han Sans', sans-serif; font-size: 11px;
+      box-shadow: 2px 2px 0 #1b1b1f;
+    }
+
+    /* ── Input bar ── */
+    .input-bar {
+      display: flex; gap: 6px; padding: 8px 12px;
+      border-top: 2px solid #1b1b1f; flex-shrink: 0;
+      background: #fff;
+    }
+    .input-field {
+      flex: 1; border: 2px solid #1b1b1f; border-radius: 12px;
+      padding: 5px 10px; font-size: 12px;
+      background: #faf9f5; color: rgba(27,27,31,.5);
+    }
+    .send-btn {
+      width: 32px; height: 32px; background: #2f9bff;
+      border: 2px solid #1b1b1f; border-radius: 10px;
+      box-shadow: 2px 2px 0 #1b1b1f;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #fff; flex-shrink: 0;
+    }
+
+    /* ── Chat screen header ── */
+    .chat-header {
+      padding: 10px 14px 6px;
+      border-bottom: 2px solid #1b1b1f;
+      background: #9FFFCD; flex-shrink: 0;
+    }
+    .chat-header .title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 16px; color: #1b1b1f;
+    }
+    .chat-header .sub {
+      font-size: 10px; color: rgba(27,27,31,.6);
+    }
+
+    /* ── Night header ── */
+    .night-header {
+      padding: 10px 14px 6px;
+      border-bottom: 2px solid #1b1b1f;
+      background: #BDA2D9; flex-shrink: 0;
+    }
+    .night-header .title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 16px; color: #2D1A5E;
+    }
+
+    /* ── Bottom drawer ── */
+    .bottom-drawer {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #fff; border-top: 3px solid #1b1b1f;
+      border-radius: 18px 18px 28px 28px;
+      padding: 10px 14px 20px;
+    }
+    .drawer-handle {
+      width: 40px; height: 4px; background: rgba(27,27,31,.25);
+      border-radius: 2px; margin: 0 auto 10px;
+    }
+
+    /* ── Popover card ── */
+    .popover {
+      position: absolute; left: 12px; right: 12px;
+      background: #fff; border: 3px solid #1b1b1f;
+      border-radius: 14px; padding: 10px;
+      box-shadow: 4px 4px 0 #1b1b1f;
+    }
+
+    /* ── Social feed ── */
+    .social-post {
+      background: #fff; border: 2px solid #1b1b1f;
+      border-radius: 12px; padding: 10px;
+      box-shadow: 3px 3px 0 #1b1b1f; font-size: 12px;
+    }
+    .social-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #FDC032; border: 2px solid #1b1b1f;
+      display: inline-block; flex-shrink: 0;
+    }
+    .social-username {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 12px; color: #1b1b1f;
+    }
+
+    /* ── 2×2 grid for aha response paths ── */
+    .sc-grid-2x2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+
+    /* ── Margin dot (DayCapture variant B) ── */
+    .margin-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      border: 1.5px solid #1b1b1f; background: #faf9f5;
+      flex-shrink: 0; margin-top: 12px;
+    }
+
+    /* Section backgrounds */
+    .bg-daytime { background: #9FFFCD; }
+    .bg-daytime-mid { background: #7FEDB5; }
+    .bg-surface { background: #faf9f5; }
+    .bg-coral-tint { background: rgba(253,114,101,0.12); }
+    .bg-night { background: #BDA2D9; }
+    .bg-night-deep { background: #8A7AA8; }
+    .bg-morning { background: #FDC032; }
+    .bg-white { background: #fff; }
+
+    /* Day/Night hard split for section 06 */
+    .bg-day-night-split { background: #faf9f5; }
+    .split-top { background: #FDC032; padding: 24px 40px 20px; border-bottom: 3px solid #1b1b1f; }
+    .split-bottom { background: #BDA2D9; padding: 20px 40px 40px; }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE HEADER -->
+  <div class="sc-page-header">
+    <h1>UX v2.0 · A DAY IN THE LIFE</h1>
+    <p>Language Diary — 8 scenes · all phone shells · 3 variants each</p>
+  </div>
+
+  <!-- STICKY NAV -->
+  <nav class="sc-nav">
+    <a href="#s01">① 主聊天</a>
+    <a href="#s02">② 社交媒体</a>
+    <a href="#s03">③ OS分享</a>
+    <a href="#s04">④ Aha</a>
+    <a href="#s05">⑤ Peek</a>
+    <a href="#s06">⑥ 过渡</a>
+    <a href="#s07">⑦ 夜间叙事</a>
+    <a href="#s08">⑧ 知识梳理</a>
+  </nav>
+
+  <!-- ═══ SECTION 01 — DayCapture · Main Chat ═══ -->
+  <section id="s01" class="sc-section bg-daytime">
+    <div class="sc-section-header">
+      <div class="sc-step-num">01</div>
+      <div>
+        <h2 class="sc-section-title">白天捕获 · 主聊天 Agent</h2>
+        <p class="sc-section-sub">Natural conversation capture — how language marks appear inline in chat</p>
+        <span class="sc-stage-pill" style="background:#9FFFCD">daytime</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: Dotted underline -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · dotted underline</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header">
+              <div class="title">Koi</div>
+              <div class="sub">daytime · capturing</div>
+            </div>
+            <div class="phone-content">
+              <div class="bubble user">I was <span class="mark-dot">totally knackered</span> after the flight</div>
+              <div class="bubble agent">mm, long one? how'd sleep go</div>
+              <div class="bubble user">couldn't. ended up <span class="mark-dot">doomscrolling til 3</span></div>
+              <div style="align-self:flex-start;font-size:11px;color:rgba(27,27,31,.5);padding-left:4px">· 2 saved for tonight</div>
+              <div class="bubble user">anyway <span class="mark-dot">might as well</span> get coffee</div>
+            </div>
+            <div class="input-bar">
+              <div class="input-field">say something…</div>
+              <div class="send-btn">↑</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Margin dots -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · margin dots</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header">
+              <div class="title">Koi</div>
+              <div class="sub">daytime · capturing</div>
+            </div>
+            <div class="phone-content">
+              <div style="display:flex;flex-direction:row-reverse;align-items:flex-start;gap:4px">
+                <div class="bubble user" style="max-width:76%">I was totally knackered after the flight</div>
+                <div class="margin-dot"></div>
+              </div>
+              <div class="bubble agent">mm, long one?</div>
+              <div style="display:flex;flex-direction:row-reverse;align-items:flex-start;gap:4px">
+                <div class="bubble user" style="max-width:76%">couldn't. ended up doomscrolling til 3</div>
+                <div class="margin-dot"></div>
+              </div>
+              <div style="display:flex;flex-direction:row-reverse;align-items:flex-start;gap:4px">
+                <div class="bubble user" style="max-width:76%">anyway might as well get coffee</div>
+                <div class="margin-dot"></div>
+              </div>
+              <div class="bubble agent">sounds good</div>
+            </div>
+            <div class="input-bar">
+              <div class="input-field">say something…</div>
+              <div class="send-btn">↑</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Weight-varied marks -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · weight-varied marks</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header">
+              <div class="title">Koi</div>
+              <div class="sub">daytime · capturing</div>
+            </div>
+            <div class="phone-content">
+              <div class="bubble user">I was <span class="mark-dot">totally knackered</span></div>
+              <div class="bubble user">couldn't sleep — just <span class="mark-squig">doomscrolling til 3</span></div>
+              <div class="bubble agent">oh. that's rough.</div>
+              <div class="bubble user">meeting ben <span class="mark-bracket">around noon</span> at ours</div>
+              <div class="bubble user"><span class="mark-squig">might as well</span> get proper coffee first</div>
+              <div style="border:1.5px dashed #1b1b1f;border-radius:10px;padding:6px 8px;font-size:10px;line-height:1.8;background:#fff">
+                <div><span class="mark-dot">dotted</span> &nbsp;lightly noticed</div>
+                <div><span class="mark-squig">squiggle</span> &nbsp;worth keeping</div>
+                <div><span class="mark-bracket">bracket</span> &nbsp;phrase fragment</div>
+              </div>
+            </div>
+            <div class="input-bar">
+              <div class="input-field">say something…</div>
+              <div class="send-btn">↑</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">mark = noticed, held quietly. no interruption to the conversation flow.</p>
+  </section>
+
+  <!-- ═══ SECTION 02 — DayCapture · 社交媒体评论 ═══ -->
+  <section id="s02" class="sc-section bg-daytime-mid">
+    <div class="sc-section-header">
+      <div class="sc-step-num">02</div>
+      <div>
+        <h2 class="sc-section-title">白天捕获 · 社交媒体评论</h2>
+        <p class="sc-section-sub">Capture from Xiaohongshu / social feed — agent marks language points in context</p>
+        <span class="sc-stage-pill" style="background:#9FFFCD">daytime · social</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: Inline mark in feed -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · inline mark in feed</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="padding:10px 12px 6px;border-bottom:2px solid #1b1b1f;background:#fff;font-family:'Black Han Sans',sans-serif;font-size:14px;flex-shrink:0">小红书</div>
+            <div class="phone-content" style="gap:10px;overflow-y:auto">
+              <div class="social-post">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <div class="social-avatar"></div>
+                  <span class="social-username">@vicky_abroad</span>
+                </div>
+                <div style="font-size:12px;line-height:1.6;color:#1b1b1f">
+                  终于到了！虽然 <span class="mark-squig">totally knackered</span> 但好开心。时差还没倒过来，昨晚 <span class="mark-dot">kept tossing and turning</span> 到天亮。
+                </div>
+                <div style="margin-top:8px;display:flex;gap:4px">
+                  <span class="tag day">vocab</span>
+                  <span class="tag" style="background:#fff2cf">· just noticed</span>
+                </div>
+              </div>
+              <div style="padding:0 4px">
+                <div style="font-size:10px;color:rgba(27,27,31,.5);margin-bottom:4px">comments</div>
+                <div style="font-size:12px;line-height:1.5">
+                  <span style="font-family:'Black Han Sans',sans-serif">@friend:</span> 哈哈 <span class="mark-squig">might as well</span> 就当做时差调整！
+                </div>
+                <div style="margin-top:6px;display:flex;gap:4px;align-items:center">
+                  <span class="tag day">pattern</span>
+                  <span style="font-size:10px;color:rgba(27,27,31,.5)">· agent noticed</span>
+                </div>
+              </div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Long-press highlight → save action -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · highlight &amp; save</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="padding:10px 12px 6px;border-bottom:2px solid #1b1b1f;background:#fff;font-family:'Black Han Sans',sans-serif;font-size:14px;flex-shrink:0">小红书</div>
+            <div class="phone-content">
+              <div class="social-post">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <div class="social-avatar"></div>
+                  <span class="social-username">@vicky_abroad</span>
+                </div>
+                <div style="font-size:12px;line-height:1.6">
+                  终于到了！虽然 <span style="background:#FDC032;border-radius:3px;padding:0 2px">totally knackered</span> 但好开心。
+                </div>
+              </div>
+            </div>
+            <!-- selection action menu -->
+            <div style="position:absolute;top:130px;left:30px;right:30px;background:#1b1b1f;border-radius:10px;padding:6px 0;display:flex;justify-content:space-around">
+              <span style="color:#fff;font-size:11px;font-family:'Black Han Sans',sans-serif;padding:4px 10px">Copy</span>
+              <span style="color:#9FFFCD;font-size:11px;font-family:'Black Han Sans',sans-serif;padding:4px 10px;border-left:1px solid rgba(255,255,255,.2);border-right:1px solid rgba(255,255,255,.2)">Save to Diary ✦</span>
+              <span style="color:#fff;font-size:11px;font-family:'Black Han Sans',sans-serif;padding:4px 10px">Share</span>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Auto-capture pill below post -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · auto-capture pill</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="padding:10px 12px 6px;border-bottom:2px solid #1b1b1f;background:#fff;font-family:'Black Han Sans',sans-serif;font-size:14px;flex-shrink:0">小红书</div>
+            <div class="phone-content">
+              <div class="social-post">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <div class="social-avatar"></div>
+                  <span class="social-username">@vicky_abroad</span>
+                </div>
+                <div style="font-size:12px;line-height:1.6">
+                  总算 <span class="mark-dot">made it</span> 了。时差让人 <span class="mark-dot">drained</span>，但 <span class="mark-squig">might as well</span> 出去走走。
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border:2px solid #1b1b1f;border-radius:12px;background:#fff;box-shadow:2px 2px 0 #1b1b1f">
+                <div style="width:8px;height:8px;border-radius:50%;background:#FD7265;border:1.5px solid #1b1b1f;flex-shrink:0"></div>
+                <span style="font-size:11px;font-family:'Black Han Sans',sans-serif;flex:1">✦ 2 language points noticed</span>
+                <span style="font-size:10px;color:rgba(27,27,31,.5)">peek →</span>
+              </div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">capture semantics stay language-first even outside the main chat. the feed is not disrupted.</p>
+  </section>
+
+  <!-- ═══ SECTION 03 — DayCapture · OS 系统分享 ═══ -->
+  <section id="s03" class="sc-section bg-surface" style="border:3px solid #1b1b1f;margin:0">
+    <div class="sc-section-header">
+      <div class="sc-step-num">03</div>
+      <div>
+        <h2 class="sc-section-title">白天捕获 · OS 系统分享</h2>
+        <p class="sc-section-sub">User-initiated save via iOS share sheet, banner confirmation, or home widget</p>
+        <span class="sc-stage-pill" style="background:#faf9f5;border:2px solid #1b1b1f">os · system</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: iOS Share Sheet -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · iOS share sheet</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="flex:1;padding:12px;opacity:0.4">
+              <div style="font-size:12px;line-height:1.8;color:#1b1b1f">
+                今天真的太累了，完全 drained。早上 might as well 出门买了杯咖啡，感觉好多了。
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border:3px solid #1b1b1f;border-radius:18px 18px 28px 28px;padding:12px 14px 22px">
+              <div class="drawer-handle"></div>
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;margin-bottom:12px;color:#1b1b1f">Share via…</div>
+              <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px">
+                  <div style="width:44px;height:44px;border-radius:12px;background:#BDA2D9;border:2px solid #1b1b1f;box-shadow:2px 2px 0 #1b1b1f;display:flex;align-items:center;justify-content:center;font-size:18px">📔</div>
+                  <span style="font-size:9px;font-family:'Black Han Sans',sans-serif;color:#1b1b1f;text-align:center">Language<br>Diary</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px">
+                  <div style="width:44px;height:44px;border-radius:12px;background:#e0e0e0;border:2px solid #1b1b1f;display:flex;align-items:center;justify-content:center;font-size:18px">📋</div>
+                  <span style="font-size:9px;color:rgba(27,27,31,.5);text-align:center">Copy</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px">
+                  <div style="width:44px;height:44px;border-radius:12px;background:#e0e0e0;border:2px solid #1b1b1f;display:flex;align-items:center;justify-content:center;font-size:18px">💬</div>
+                  <span style="font-size:9px;color:rgba(27,27,31,.5);text-align:center">Messages</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Banner notification after save -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · saved confirmation banner</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#BDA2D9"><span>9:41</span><span>●●●</span></div>
+            <div style="flex:1;background:#BDA2D9;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="font-family:'Bangers',cursive;font-size:36px;color:#2D1A5E;letter-spacing:1px">9:41</div>
+              <div style="font-size:11px;color:rgba(45,26,94,.7)">Monday, 21 April</div>
+            </div>
+            <div style="position:absolute;top:48px;left:8px;right:8px;background:#fff;border:2px solid #1b1b1f;border-radius:14px;padding:8px 12px;box-shadow:3px 3px 0 #1b1b1f;display:flex;align-items:center;gap:10px">
+              <div style="width:28px;height:28px;border-radius:8px;background:#BDA2D9;border:2px solid #1b1b1f;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px">📔</div>
+              <div style="flex:1">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:11px">Language Diary</div>
+                <div style="font-size:11px;color:rgba(27,27,31,.7)">Saved for tonight ✓ &nbsp;<span class="tag day" style="font-size:9px">pattern</span></div>
+              </div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Home screen widget -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · home screen widget</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="flex:1;padding:12px;background:#faf9f5;display:flex;flex-direction:column;gap:10px">
+              <div style="border:3px solid #1b1b1f;border-radius:18px;padding:12px;background:#fff;box-shadow:4px 4px 0 #1b1b1f">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                  <div style="width:16px;height:16px;border-radius:4px;background:#BDA2D9;border:1.5px solid #1b1b1f"></div>
+                  <span style="font-family:'Black Han Sans',sans-serif;font-size:11px">Language Diary</span>
+                </div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;margin-bottom:8px;color:#1b1b1f">save a clip</div>
+                <div style="border:2px solid #1b1b1f;border-radius:10px;padding:6px 10px;font-size:11px;color:rgba(27,27,31,.4);background:#faf9f5;margin-bottom:8px">paste or type…</div>
+                <div style="flex:1;border:2px solid #1b1b1f;border-radius:8px;padding:4px 8px;background:#9FFFCD;font-family:'Black Han Sans',sans-serif;font-size:11px;text-align:center;box-shadow:2px 2px 0 #1b1b1f">save for tonight</div>
+                <div style="margin-top:8px;font-size:10px;color:rgba(27,27,31,.5)">3 candidates today</div>
+              </div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">user-initiated save. light confirmation. no teaching or explanation at save time.</p>
+  </section>
+
+  <!-- ═══ SECTION 04 — Aha Moment ═══ -->
+  <section id="s04" class="sc-section bg-coral-tint">
+    <div class="sc-section-header">
+      <div class="sc-step-num">04</div>
+      <div>
+        <h2 class="sc-section-title">Aha Moment</h2>
+        <p class="sc-section-sub">Agent detects a strong language-event connection — how it surfaces and what the user does next</p>
+        <span class="sc-stage-pill" style="background:#FD7265;color:#fff">aha · coral</span>
+      </div>
+    </div>
+
+    <!-- Sub-row A: How aha surfaces -->
+    <div class="sc-subrow-label">Sub-row A — How the Aha surfaces (trigger mechanisms)</div>
+    <div class="sc-variant-row">
+
+      <!-- A1: Inline halo card -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A1 · inline halo card</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div><div class="sub">daytime · live</div></div>
+            <div class="phone-content">
+              <div class="bubble user">I <span class="mark-double">couldn't go through with</span> the call</div>
+              <div style="align-self:flex-end;max-width:88%;border:3px solid #FD7265;border-radius:4px 14px 14px 14px;padding:8px 10px;background:#fff;box-shadow:3px 3px 0 #1b1b1f;position:relative">
+                <div style="position:absolute;top:-10px;right:8px;font-family:'Bangers',cursive;font-size:16px;color:#FD7265">✦ aha</div>
+                <div style="display:flex;gap:4px;margin-bottom:4px">
+                  <span class="tag coral">pattern</span>
+                  <span class="tag" style="background:#ffd8d2">emotion</span>
+                </div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:13px">"couldn't go through with"</div>
+                <div style="font-size:11px;color:rgba(27,27,31,.6);margin-top:3px">same shape as last monday's phrase — connected.</div>
+              </div>
+              <div class="bubble agent">noted. that one sounds heavy.</div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A2: OS banner push (social media context) -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A2 · OS banner (social context)</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="padding:10px 12px 6px;border-bottom:2px solid #1b1b1f;background:#fff;font-family:'Black Han Sans',sans-serif;font-size:14px;flex-shrink:0">小红书</div>
+            <div class="phone-content" style="opacity:0.5">
+              <div class="social-post">
+                <div style="font-size:12px;line-height:1.6">今晚和Ben的通话，我 <span class="mark-double">couldn't go through with</span> 那段话。算了。</div>
+              </div>
+            </div>
+            <div style="position:absolute;top:44px;left:8px;right:8px;background:#fff;border:2px solid #1b1b1f;border-radius:14px;padding:8px 12px;box-shadow:4px 4px 0 #1b1b1f">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:28px;height:28px;border-radius:8px;background:#BDA2D9;border:2px solid #1b1b1f;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px">📔</div>
+                <div style="flex:1">
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:11px">Language Diary &nbsp;<span style="font-size:10px;color:rgba(27,27,31,.5)">now</span></div>
+                  <div style="font-size:11px;color:#FD7265;font-family:'Black Han Sans',sans-serif">✦ "couldn't go through with" — interesting one</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A3: Agent low-interruption message -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A3 · agent micro-message</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div><div class="sub">daytime · live</div></div>
+            <div class="phone-content">
+              <div class="bubble user">couldn't do the call in the end.</div>
+              <div class="bubble user">felt off about it all day honestly</div>
+              <div class="bubble agent">yeah that tracks.</div>
+              <div class="bubble agent" style="border-color:#FD7265;background:#fff2f0">
+                <div style="font-size:10px;color:#FD7265;font-family:'Black Han Sans',sans-serif;margin-bottom:3px">✦ noticed something ↗</div>
+                <div style="font-size:11px;color:rgba(27,27,31,.7)">"couldn't go through with" — worth keeping for tonight</div>
+              </div>
+              <div class="bubble user">oh yeah? tell me more</div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-row B: User response paths -->
+    <div class="sc-subrow-label">Sub-row B — User response paths (what happens after the aha)</div>
+    <div class="sc-grid-2x2">
+
+      <!-- B1: Open now -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B1 · open now</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content" style="opacity:0.4">
+              <div class="bubble user">couldn't do the call in the end.</div>
+              <div class="bubble agent" style="border-color:#FD7265">✦ noticed something ↗</div>
+            </div>
+            <div class="bottom-drawer">
+              <div class="drawer-handle"></div>
+              <div style="display:flex;gap:4px;margin-bottom:6px">
+                <span class="tag coral">pattern</span>
+                <span class="tag" style="background:#ffd8d2">emotion</span>
+              </div>
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;margin-bottom:4px">"couldn't go through with"</div>
+              <div style="font-size:11px;color:rgba(27,27,31,.65);line-height:1.5;margin-bottom:8px">reluctant avoidance — when you've decided but can't execute. also appeared last mon.</div>
+              <div style="font-size:10px;color:rgba(27,27,31,.4);margin-bottom:8px;border:1.5px dashed #1b1b1f;border-radius:8px;padding:5px 8px">example from last week → "couldn't bring myself to call"</div>
+              <div style="display:flex;gap:6px">
+                <div style="flex:1;border:2px solid #1b1b1f;border-radius:8px;padding:4px 0;text-align:center;background:#9FFFCD;font-family:'Black Han Sans',sans-serif;font-size:11px;box-shadow:2px 2px 0 #1b1b1f">save · keep</div>
+                <div style="border:2px dashed #1b1b1f;border-radius:8px;padding:4px 10px;font-family:'Black Han Sans',sans-serif;font-size:11px">dismiss</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B2: Save for later -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B2 · save for later</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content">
+              <div class="bubble user">couldn't do the call in the end.</div>
+              <div class="bubble agent" style="border-color:#FD7265;background:#fff2f0">
+                <div style="font-size:10px;color:#FD7265;font-family:'Black Han Sans',sans-serif;margin-bottom:2px">✦ noticed something ↗</div>
+                <div style="font-size:11px">"couldn't go through with" — worth keeping</div>
+                <div style="margin-top:6px;display:flex;gap:6px">
+                  <div style="border:2px solid #1b1b1f;border-radius:8px;padding:3px 8px;background:#FDC032;font-family:'Black Han Sans',sans-serif;font-size:10px;box-shadow:1px 1px 0 #1b1b1f">save for tonight</div>
+                  <div style="border:1.5px dashed #1b1b1f;border-radius:8px;padding:3px 8px;font-size:10px">later</div>
+                </div>
+              </div>
+              <div style="align-self:center;font-size:11px;color:rgba(27,27,31,.5);display:flex;align-items:center;gap:4px">
+                <span style="color:#8bd35c;font-size:12px">✓</span> added · see tonight
+              </div>
+              <div class="bubble user">anyway, how was your day</div>
+              <div class="bubble agent">I don't have days — but yours sounds full.</div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B3: Chat now (core scenario: Xiaohongshu → Language Diary chat) -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B3 · chat now ← core scenario</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div style="padding:8px 12px 6px;border-bottom:2px solid #1b1b1f;background:#FD7265;flex-shrink:0">
+              <div style="font-size:10px;color:rgba(255,255,255,.8);font-family:'Black Han Sans',sans-serif">← from 小红书</div>
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:15px;color:#fff">Koi · talking about this ✦</div>
+            </div>
+            <div style="margin:8px 8px 0;border:2px solid #FD7265;border-radius:10px;padding:6px 8px;background:#fff2f0;font-size:11px;flex-shrink:0">
+              <div style="font-size:10px;color:#FD7265;font-family:'Black Han Sans',sans-serif;margin-bottom:2px">captured from your post</div>
+              <div>"我 <span class="mark-double">couldn't go through with</span> 那段话"</div>
+            </div>
+            <div class="phone-content" style="margin-top:6px">
+              <div class="bubble agent">you used this phrase again — "couldn't go through with". it keeps showing up around calls with people you care about.</div>
+              <div class="bubble user">yeah… I always plan what to say and then</div>
+              <div class="bubble agent">and then it doesn't come out the way you had it.</div>
+              <div class="bubble user">exactly</div>
+            </div>
+            <div class="input-bar"><div class="input-field">keep going…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B4: Dismiss -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B4 · dismiss</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content">
+              <div class="bubble user">couldn't do the call in the end.</div>
+              <div class="bubble agent" style="border-color:#FD7265;background:#fff2f0;opacity:0.5;text-decoration:line-through;text-decoration-color:#FD7265">
+                <div style="font-size:11px">✦ "couldn't go through with"</div>
+              </div>
+              <div style="align-self:center;font-size:10px;color:rgba(27,27,31,.35)">dismissed · may surface at night</div>
+              <div class="bubble user">anyway what should I cook tonight</div>
+              <div class="bubble agent">depends. are you cooking to avoid thinking about the call?</div>
+              <div class="bubble user">...maybe</div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">the aha is an invitation, not a lesson. the user decides the depth and timing.</p>
+  </section>
+
+  <!-- ═══ SECTION 05 — Candidate Peek ═══ -->
+  <section id="s05" class="sc-section bg-surface">
+    <div class="sc-section-header">
+      <div class="sc-step-num">05</div>
+      <div>
+        <h2 class="sc-section-title">Candidate Peek</h2>
+        <p class="sc-section-sub">User taps a mark — three ways the peek expands</p>
+        <span class="sc-stage-pill" style="background:#faf9f5;border:2px solid #1b1b1f">peek · daytime</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: Overlay popover -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · overlay popover</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content">
+              <div class="bubble user">I was totally knackered</div>
+              <div class="bubble user" style="outline:2px solid #FD7265;outline-offset:2px"><span class="mark-squig">might as well</span> get coffee</div>
+              <div class="bubble agent">...</div>
+            </div>
+            <div style="position:absolute;inset:0;background:rgba(27,27,31,.3);border-radius:28px"></div>
+            <div class="popover" style="top:175px">
+              <div style="display:flex;gap:4px;margin-bottom:6px">
+                <span class="tag">grammar</span>
+                <span class="tag day">event · morning</span>
+              </div>
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:18px;margin-bottom:4px">"might as well"</div>
+              <div style="font-size:11px;color:rgba(27,27,31,.65);line-height:1.45;margin-bottom:8px">reluctant agreement — since i'm here anyway. use when no better option exists.</div>
+              <div style="display:flex;gap:6px">
+                <div style="flex:1;border:2px solid #1b1b1f;border-radius:8px;padding:4px 0;text-align:center;background:#FDC032;font-family:'Black Han Sans',sans-serif;font-size:11px;box-shadow:2px 2px 0 #1b1b1f">keep for tonight</div>
+                <div style="border:1.5px dashed #1b1b1f;border-radius:8px;padding:4px 8px;font-size:11px">dismiss</div>
+              </div>
+              <div style="position:absolute;bottom:-11px;left:80px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #1b1b1f"></div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Inline expansion -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · inline expansion</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content">
+              <div class="bubble user">I was totally knackered</div>
+              <div style="align-self:flex-end;max-width:88%;display:flex;flex-direction:column;gap:4px">
+                <div class="bubble user" style="max-width:100%"><span class="mark-squig">might as well</span> get coffee</div>
+                <div style="border:2px dashed #1b1b1f;border-radius:10px;padding:8px;background:#fff2cf">
+                  <div style="display:flex;gap:4px;margin-bottom:4px"><span class="tag">pattern</span></div>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:15px;margin-bottom:2px">"might as well"</div>
+                  <div style="font-size:10px;color:rgba(27,27,31,.6);line-height:1.45;margin-bottom:6px">reluctant yes — since i'm here anyway.</div>
+                  <div style="display:flex;gap:8px;font-size:10px;color:rgba(27,27,31,.5)">
+                    <span>＋ save</span><span>✕ hide</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bubble agent">sounds good</div>
+            </div>
+            <div class="input-bar"><div class="input-field">say something…</div><div class="send-btn">↑</div></div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Bottom drawer -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · bottom drawer</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="chat-header"><div class="title">Koi</div></div>
+            <div class="phone-content" style="opacity:0.5">
+              <div class="bubble user">I was totally knackered</div>
+              <div class="bubble user"><span class="mark-squig">might as well</span> get coffee</div>
+              <div class="bubble agent">...</div>
+            </div>
+            <div class="bottom-drawer">
+              <div class="drawer-handle"></div>
+              <div style="display:flex;gap:4px;margin-bottom:6px">
+                <span class="tag">pattern</span>
+                <span class="tag day">event · morning</span>
+                <span class="tag coral">preference</span>
+              </div>
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:18px;margin-bottom:4px">"might as well"</div>
+              <div style="font-size:11px;color:rgba(27,27,31,.65);line-height:1.5;margin-bottom:6px">Reluctant agreement — since i'm already here. Use when no better option is realistically on the table.</div>
+              <div style="border:1.5px dashed #1b1b1f;border-radius:8px;padding:5px 8px;font-size:10px;color:rgba(27,27,31,.5);margin-bottom:8px">example from yesterday → "might as well finish the series"</div>
+              <div style="display:flex;gap:6px">
+                <div style="flex:1;border:2px solid #1b1b1f;border-radius:8px;padding:4px 0;text-align:center;background:#FDC032;font-family:'Black Han Sans',sans-serif;font-size:11px;box-shadow:2px 2px 0 #1b1b1f">keep for tonight</div>
+                <div style="border:1.5px dashed #1b1b1f;border-radius:8px;padding:4px 10px;font-size:11px">hide</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">peek, not teaching. user should be able to glance without falling into a lesson flow.</p>
+  </section>
+
+  <!-- ═══ SECTION 06 — Day → Night 过渡 ═══ -->
+  <section id="s06" class="sc-section bg-day-night-split" style="padding:0">
+    <div class="split-top">
+      <div class="sc-section-header" style="margin-bottom:24px">
+        <div class="sc-step-num">06</div>
+        <div>
+          <h2 class="sc-section-title">Day → Night 过渡</h2>
+          <p class="sc-section-sub">The moment the day closes and night begins — three moods, no gradients</p>
+          <span class="sc-stage-pill" style="background:#FDC032">morning → night</span>
+        </div>
+      </div>
+      <div class="sc-variant-row">
+
+        <!-- A: Timeline + invitation -->
+        <div class="sc-variant-col">
+          <span class="sc-variant-label">A · timeline invitation</span>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar" style="background:#FDC032"><span>7:42</span><span>●●●</span></div>
+              <div style="padding:10px 14px 6px;background:#FDC032;border-bottom:2px solid #1b1b1f;flex-shrink:0">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;color:#5B3F00">today, closing</div>
+                <div style="font-size:10px;color:rgba(91,63,0,.6)">7:42 pm · light is going</div>
+              </div>
+              <div class="phone-content" style="background:#FDC032">
+                <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#5B3F00">
+                  <span>morn</span>
+                  <div style="flex:1;height:6px;border:1.5px solid #5B3F00;border-radius:3px;display:flex;overflow:hidden">
+                    <div style="width:30%;background:#FDC032;border-right:1.5px solid #5B3F00"></div>
+                    <div style="width:40%;background:#9FFFCD;border-right:1.5px solid #5B3F00"></div>
+                    <div style="width:30%;background:#BDA2D9"></div>
+                  </div>
+                  <span>night</span>
+                </div>
+                <div style="font-size:11px;color:#5B3F00;padding-left:36px">▲ now (70%)</div>
+                <div style="display:flex;flex-direction:column;gap:4px;opacity:0.6">
+                  <div class="bubble user" style="font-size:10px;padding:4px 8px">knackered after flight</div>
+                  <div class="bubble user" style="font-size:10px;padding:4px 8px">might as well get coffee</div>
+                  <div class="bubble user" style="font-size:10px;padding:4px 8px">couldn't go through with it</div>
+                </div>
+                <div style="margin-top:auto;border:3px solid #5B3F00;border-radius:14px;padding:10px;background:rgba(255,255,255,.6);box-shadow:3px 3px 0 #5B3F00">
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;color:#5B3F00">gather the day?</div>
+                  <div style="font-size:10px;color:rgba(91,63,0,.7);margin-top:2px">12 fragments · 3 worth keeping</div>
+                  <div style="margin-top:8px;border:2px solid #5B3F00;border-radius:8px;padding:5px 0;text-align:center;background:#BDA2D9;font-family:'Black Han Sans',sans-serif;font-size:12px;color:#2D1A5E;box-shadow:2px 2px 0 #5B3F00">open tonight's page →</div>
+                </div>
+              </div>
+              <div class="phone-home"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- B: Envelope -->
+        <div class="sc-variant-col">
+          <span class="sc-variant-label">B · sealed envelope</span>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar" style="background:#FDC032"><span>7:42</span><span>●●●</span></div>
+              <div style="padding:10px 14px 6px;background:#FDC032;border-bottom:2px solid #1b1b1f;flex-shrink:0">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;color:#5B3F00">evening</div>
+                <div style="font-size:10px;color:rgba(91,63,0,.6)">wed, apr 21</div>
+              </div>
+              <div class="phone-content" style="background:#FDC032;align-items:center;justify-content:center">
+                <div style="width:180px;height:120px;border:3px solid #5B3F00;border-radius:4px;background:#fff2cf;box-shadow:4px 4px 0 #5B3F00;position:relative;flex-shrink:0">
+                  <svg viewBox="0 0 180 120" style="position:absolute;inset:0;width:100%;height:100%">
+                    <path d="M0 0 L90 68 L180 0" fill="none" stroke="#5B3F00" stroke-width="1.5"/>
+                    <path d="M0 120 L60 68" fill="none" stroke="#5B3F00" stroke-width="1.2"/>
+                    <path d="M180 120 L120 68" fill="none" stroke="#5B3F00" stroke-width="1.2"/>
+                  </svg>
+                  <div style="position:absolute;left:50%;top:52px;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:#FD7265;border:2px solid #5B3F00;display:flex;align-items:center;justify-content:center;font-family:'Black Han Sans',sans-serif;color:#fff;font-size:13px">12</div>
+                  <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#5B3F00">wednesday</div>
+                </div>
+                <div style="border:2px solid #5B3F00;border-radius:10px;padding:8px 0;text-align:center;background:#BDA2D9;font-family:'Black Han Sans',sans-serif;font-size:14px;color:#2D1A5E;box-shadow:3px 3px 0 #5B3F00;width:180px">open the day ✦</div>
+                <div style="font-size:10px;color:rgba(91,63,0,.6);text-align:center">tap when you're ready to sit with it</div>
+              </div>
+              <div class="phone-home"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C: Quiet room (flat dark, no gradient) -->
+        <div class="sc-variant-col">
+          <span class="sc-variant-label">C · quiet room</span>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar" style="background:#24203a"><span style="color:#e8e2f5">9:14</span><span style="color:#e8e2f5">●●●</span></div>
+              <div style="flex:1;background:#24203a;color:#e8e2f5;padding:10px 14px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:16px">quiet hours</div>
+                <div style="align-self:center;width:80px;height:80px;border-radius:50%;background:#f5c573;border:3px solid #e8e2f5;flex-shrink:0"></div>
+                <div style="font-size:13px;line-height:1.8;opacity:0.85">
+                  <div>you got in late &nbsp;<span style="opacity:0.4">·</span></div>
+                  <div>kept moving anyway <span style="opacity:0.3">...</span></div>
+                  <div style="opacity:0.45">and that call — </div>
+                  <div style="opacity:0.25;font-style:italic">gathering what it meant_</div>
+                </div>
+                <div style="margin-top:auto;font-size:10px;opacity:0.5;border-top:1px dashed rgba(255,255,255,.25);padding-top:8px">the page is writing itself. come back in a moment — or open it now.</div>
+                <div style="border:2px solid rgba(255,255,255,.5);border-radius:10px;padding:6px 0;text-align:center;font-family:'Black Han Sans',sans-serif;font-size:12px;color:#fff;background:rgba(255,255,255,.08)">open early</div>
+              </div>
+              <div class="phone-home" style="background:#24203a"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="split-bottom">
+      <p class="sc-design-note" style="color:rgba(45,26,94,.7);margin-top:0">no gradient. brutalist hard line between day and night. the cut is the statement.</p>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 07 — Night Narrative ═══ -->
+  <section id="s07" class="sc-section bg-night">
+    <div class="sc-section-header">
+      <div class="sc-step-num">07</div>
+      <div>
+        <h2 class="sc-section-title">夜间叙事 · Night Narrative</h2>
+        <p class="sc-section-sub">Companion-authored night artifact — three layout approaches + OS push card</p>
+        <span class="sc-stage-pill" style="background:#BDA2D9;color:#2D1A5E">night</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: Letter -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · flowing letter</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#BDA2D9"><span style="color:#2D1A5E">10:12</span><span style="color:#2D1A5E">●●●</span></div>
+            <div class="night-header"><div class="title">Wednesday, it went like this —</div></div>
+            <div class="phone-content" style="background:#BDA2D9;overflow-y:auto">
+              <div style="background:#fff;border:2px solid #2D1A5E;border-radius:14px;padding:12px;box-shadow:3px 3px 0 #2D1A5E;font-size:12px;line-height:1.75;color:#1b1b1f">
+                You came in <span class="mark-dot">knackered</span> <span class="tag morning" style="font-size:9px">event · travel</span> and couldn't sleep — just <span class="mark-squig">doomscrolling til 3</span>. By morning you said you <span class="mark-squig">might as well</span> get proper coffee <span class="tag morning" style="font-size:9px">preference</span>, and you did. The day softened a bit after that. Then the call with Ben — you <span class="mark-double">couldn't go through with</span> the part you'd rehearsed <span class="tag coral" style="font-size:9px">emotion</span>. You moved on. It rained. You stayed in.
+              </div>
+              <div style="font-size:10px;color:rgba(45,26,94,.6);display:flex;gap:8px;flex-wrap:wrap">
+                <span>3 fragments woven in</span>
+                <span style="text-decoration:underline wavy;text-decoration-color:#2D1A5E;cursor:pointer">edit</span>
+                <span style="text-decoration:underline wavy;text-decoration-color:#2D1A5E;cursor:pointer">ask about tonight</span>
+              </div>
+            </div>
+            <div class="input-bar" style="background:#BDA2D9;border-color:#2D1A5E">
+              <div class="input-field" style="border-color:#2D1A5E">continue…</div>
+              <div class="send-btn" style="background:#2D1A5E">↑</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+        <div class="os-card" style="margin-top:12px">
+          <div class="os-card-header">
+            <div class="os-app-icon"></div>
+            <div class="os-app-name">Language Diary</div>
+            <div class="os-time">now</div>
+          </div>
+          <div class="os-title">Wednesday, it went like this —</div>
+          <div class="os-body">You came in knackered and couldn't sleep — just doomscrolling til 3…</div>
+          <div class="os-action">open tonight's page →</div>
+        </div>
+      </div>
+
+      <!-- B: Chaptered scroll -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · three beats</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#BDA2D9"><span style="color:#2D1A5E">10:12</span><span style="color:#2D1A5E">●●●</span></div>
+            <div class="night-header"><div class="title">Wednesday · three beats</div></div>
+            <div class="phone-content" style="background:#BDA2D9;overflow-y:auto">
+              <div style="display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:flex-start">
+                <div style="font-size:10px;color:rgba(45,26,94,.6);text-align:right;padding-top:4px">morning</div>
+                <div style="border-left:2px solid #2D1A5E;padding-left:10px;position:relative">
+                  <div style="position:absolute;left:-5px;top:5px;width:7px;height:7px;background:#2D1A5E;border-radius:50%"></div>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#2D1A5E">arriving, tired</div>
+                  <div style="font-size:11px;line-height:1.5;margin-top:2px;color:#1b1b1f"><span class="mark-dot">knackered</span>, ended up <span class="mark-squig">doomscrolling til 3</span>.</div>
+                  <div style="margin-top:4px"><span class="tag day" style="font-size:9px">event · travel</span></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:flex-start">
+                <div style="font-size:10px;color:rgba(45,26,94,.6);text-align:right;padding-top:4px">noon</div>
+                <div style="border-left:2px solid #2D1A5E;padding-left:10px;position:relative">
+                  <div style="position:absolute;left:-5px;top:5px;width:7px;height:7px;background:#2D1A5E;border-radius:50%"></div>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#2D1A5E">small repair</div>
+                  <div style="font-size:11px;line-height:1.5;margin-top:2px;color:#1b1b1f">decided to <span class="mark-squig">might as well</span> get proper coffee. day softened.</div>
+                  <div style="margin-top:4px"><span class="tag morning" style="font-size:9px">preference</span></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:flex-start">
+                <div style="font-size:10px;color:rgba(45,26,94,.6);text-align:right;padding-top:4px">evening</div>
+                <div style="border-left:2px solid #2D1A5E;padding-left:10px;position:relative">
+                  <div style="position:absolute;left:-5px;top:5px;width:7px;height:7px;background:#FD7265;border-radius:50%;border:1.5px solid #2D1A5E"></div>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#2D1A5E">the call with Ben</div>
+                  <div style="font-size:11px;line-height:1.5;margin-top:2px;color:#1b1b1f"><span class="mark-double">couldn't go through with</span> the hard part. you stayed in.</div>
+                  <div style="margin-top:4px;display:flex;gap:4px"><span class="tag coral" style="font-size:9px">emotion</span><span class="tag" style="font-size:9px;background:#faf9f5">goal</span></div>
+                </div>
+              </div>
+              <div style="font-size:10px;color:rgba(45,26,94,.5)">3 fragments gathered · keep reading ↓</div>
+            </div>
+            <div class="input-bar" style="background:#BDA2D9;border-color:#2D1A5E">
+              <div class="input-field" style="border-color:#2D1A5E">continue…</div>
+              <div class="send-btn" style="background:#2D1A5E">↑</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+        <div class="os-card" style="margin-top:12px">
+          <div class="os-card-header">
+            <div class="os-app-icon"></div>
+            <div class="os-app-name">Language Diary</div>
+            <div class="os-time">now</div>
+          </div>
+          <div class="os-title">Wednesday · three beats</div>
+          <div class="os-body">morning → arriving, tired · noon → small repair · evening → the call with Ben</div>
+          <div class="os-action">open tonight's page →</div>
+        </div>
+      </div>
+
+      <!-- C: Card stack -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · card stack</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#BDA2D9"><span style="color:#2D1A5E">10:12</span><span style="color:#2D1A5E">●●●</span></div>
+            <div class="night-header"><div class="title">wednesday — in three cards</div></div>
+            <div class="phone-content" style="background:#BDA2D9;overflow-y:auto">
+              <div style="border:3px solid #2D1A5E;border-radius:14px;padding:10px;background:#fff;box-shadow:4px 4px 0 #2D1A5E;transform:rotate(-0.5deg)">
+                <div style="font-size:10px;color:rgba(45,26,94,.5)">the thread</div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;color:#2D1A5E;margin:3px 0">a day of "might as well"</div>
+                <div style="font-size:11px;line-height:1.6;color:#1b1b1f">Tired from the flight, you kept saying it was fine. <span class="mark-squig">Might as well</span> get coffee. <span class="mark-squig">Might as well</span> stay in. Then came the call you couldn't quite make.</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <div style="border:2px solid #2D1A5E;border-radius:12px;padding:8px;background:#d8ffe8;box-shadow:2px 2px 0 #2D1A5E;transform:rotate(0.6deg)">
+                  <span class="tag day" style="font-size:9px">travel</span>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#2D1A5E;margin:3px 0">arrival</div>
+                  <div style="font-size:10px"><span class="mark-dot">knackered</span>, couldn't sleep.</div>
+                </div>
+                <div style="border:2px solid #2D1A5E;border-radius:12px;padding:8px;background:#fff2cf;box-shadow:2px 2px 0 #2D1A5E;transform:rotate(-0.8deg)">
+                  <span class="tag morning" style="font-size:9px">preference</span>
+                  <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#2D1A5E;margin:3px 0">morning</div>
+                  <div style="font-size:10px">"<span class="mark-squig">might as well</span>" — coffee.</div>
+                </div>
+              </div>
+              <div style="border:3px solid #2D1A5E;border-radius:12px;padding:8px;background:#ffd8d2;box-shadow:3px 3px 0 #2D1A5E">
+                <span class="tag coral" style="font-size:9px">emotion · hard</span>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#2D1A5E;margin:3px 0">the call</div>
+                <div style="font-size:10px">you "<span class="mark-double">couldn't go through with</span>" it. noted, gently.</div>
+              </div>
+              <div style="font-size:10px;color:rgba(45,26,94,.5)">3 cards · scroll for knowledge ↓</div>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+        <div class="os-card" style="margin-top:12px">
+          <div class="os-card-header">
+            <div class="os-app-icon"></div>
+            <div class="os-app-name">Language Diary</div>
+            <div class="os-time">now</div>
+          </div>
+          <div class="os-title">wednesday — in three cards</div>
+          <div class="os-body">a day of "might as well" · 3 fragments · arrival, morning, the call</div>
+          <div class="os-action">open tonight's page →</div>
+        </div>
+      </div>
+
+    </div>
+    <p class="sc-design-note">companion-authored. belongs to the user's day. not a lesson summary.</p>
+  </section>
+
+  <!-- ═══ SECTION 08 — Knowledge Constellation ═══ -->
+  <section id="s08" class="sc-section bg-night-deep">
+    <div class="sc-section-header">
+      <div class="sc-step-num">08</div>
+      <div>
+        <h2 class="sc-section-title" style="color:#fff">知识梳理 · Knowledge Constellation</h2>
+        <p class="sc-section-sub" style="color:rgba(255,255,255,.6)">The day's language surfaced in full — three clustering strategies + OS lock-screen card</p>
+        <span class="sc-stage-pill" style="background:#BDA2D9;color:#2D1A5E">night · knowledge</span>
+      </div>
+    </div>
+
+    <div class="sc-variant-row">
+
+      <!-- A: By type -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">A · by kind</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#8A7AA8"><span style="color:#fff">10:12</span><span style="color:#fff">●●●</span></div>
+            <div style="padding:8px 12px;background:#8A7AA8;border-bottom:2px solid #2D1A5E;flex-shrink:0">
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff">knowledge today · by kind</div>
+            </div>
+            <div class="phone-content" style="background:#8A7AA8;overflow-y:auto">
+              <div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#fff;margin-bottom:4px">patterns <span style="opacity:.6;font-size:10px">· 2</span></div>
+                <div style="border-bottom:1px dashed rgba(255,255,255,.3);margin-bottom:6px"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <div class="k-chip heat3"><div class="phrase">"might as well"</div><div style="display:flex;gap:3px"><span class="tag" style="font-size:9px;background:#9FFFCD">pattern</span><span class="tag morning" style="font-size:9px">morning</span></div></div>
+                  <div class="k-chip heat3"><div class="phrase">"couldn't go through with"</div><div style="display:flex;gap:3px"><span class="tag" style="font-size:9px;background:#9FFFCD">pattern</span><span class="tag coral" style="font-size:9px">emotion</span></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#fff;margin-bottom:4px">vocab <span style="opacity:.6;font-size:10px">· 3</span></div>
+                <div style="border-bottom:1px dashed rgba(255,255,255,.3);margin-bottom:6px"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <div class="k-chip"><div class="phrase">knackered</div><div><span class="tag day" style="font-size:9px">travel</span></div></div>
+                  <div class="k-chip"><div class="phrase">doomscrolling</div><div><span class="tag coral" style="font-size:9px">emotion</span></div></div>
+                  <div class="k-chip"><div class="phrase">stay in</div><div><span class="tag night" style="font-size:9px">pref</span></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#fff;margin-bottom:4px">grammar <span style="opacity:.6;font-size:10px">· 1</span></div>
+                <div style="border-bottom:1px dashed rgba(255,255,255,.3);margin-bottom:6px"></div>
+                <div class="k-chip"><div class="phrase">had barely landed when…</div><div><span class="tag day" style="font-size:9px">travel</span></div></div>
+              </div>
+            </div>
+            <div class="phone-home" style="background:#8A7AA8"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: By event anchor -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">B · by event anchor</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#8A7AA8"><span style="color:#fff">10:12</span><span style="color:#fff">●●●</span></div>
+            <div style="padding:8px 12px;background:#8A7AA8;border-bottom:2px solid #2D1A5E;flex-shrink:0">
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff">knowledge today · around the day</div>
+            </div>
+            <div class="phone-content" style="background:#8A7AA8;overflow-y:auto">
+              <div style="border:2px dashed #2D1A5E;border-radius:12px;padding:8px;background:#d8ffe8">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#1b1b1f;margin-bottom:6px">travel · arrival</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px">
+                  <div class="k-chip" style="background:#d8ffe8"><div class="phrase">knackered</div><div><span class="tag" style="font-size:9px;background:#9FFFCD">vocab</span></div></div>
+                  <div class="k-chip" style="background:#d8ffe8"><div class="phrase">had barely landed when…</div><div><span class="tag" style="font-size:9px">grammar</span></div></div>
+                </div>
+              </div>
+              <div style="border:2px dashed #2D1A5E;border-radius:12px;padding:8px;background:#fff2cf">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#1b1b1f;margin-bottom:6px">morning · slow start</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px">
+                  <div class="k-chip" style="background:#fff2cf"><div class="phrase">"might as well"</div><div><span class="tag" style="font-size:9px;background:#9FFFCD">pattern</span></div></div>
+                  <div class="k-chip" style="background:#fff2cf"><div class="phrase">stay in</div><div><span class="tag" style="font-size:9px">vocab</span></div></div>
+                </div>
+              </div>
+              <div style="border:3px solid #2D1A5E;border-radius:12px;padding:8px;background:#ffd8d2">
+                <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;color:#1b1b1f;margin-bottom:6px">evening · the call ✦</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px">
+                  <div class="k-chip" style="background:#ffd8d2"><div class="phrase">"couldn't go through with"</div><div><span class="tag coral" style="font-size:9px">pattern</span></div></div>
+                  <div class="k-chip" style="background:#ffd8d2"><div class="phrase">doomscrolling</div><div><span class="tag" style="font-size:9px">vocab</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-home" style="background:#8A7AA8"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Relation cluster (woven) -->
+      <div class="sc-variant-col">
+        <span class="sc-variant-label">C · woven / relation cluster</span>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-statusbar" style="background:#8A7AA8"><span style="color:#fff">10:12</span><span style="color:#fff">●●●</span></div>
+            <div style="padding:8px 12px;background:#8A7AA8;border-bottom:2px solid #2D1A5E;flex-shrink:0">
+              <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff">knowledge today · woven</div>
+            </div>
+            <div class="phone-content" style="background:#8A7AA8;position:relative;overflow:hidden">
+              <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 236 420">
+                <path d="M80 80 Q 120 140 160 160" stroke="rgba(255,255,255,.3)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+                <path d="M160 160 Q 140 240 90 280" stroke="rgba(255,255,255,.3)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+                <path d="M90 280 Q 60 200 80 80" stroke="rgba(255,255,255,.2)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+                <path d="M180 60 Q 190 130 170 160" stroke="rgba(255,255,255,.2)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+                <text x="90" y="130" font-family="Black Han Sans" font-size="9" fill="rgba(255,255,255,.5)">reluctant-yes cluster</text>
+              </svg>
+              <div class="k-chip" style="position:absolute;left:18px;top:55px"><div class="phrase">"might as well"</div><div><span class="tag day" style="font-size:9px">morning</span></div></div>
+              <div class="k-chip" style="position:absolute;left:130px;top:145px"><div class="phrase">stay in</div><div><span class="tag night" style="font-size:9px">pref</span></div></div>
+              <div class="k-chip" style="position:absolute;left:50px;top:255px"><div class="phrase">"couldn't go through"</div><div><span class="tag coral" style="font-size:9px">emotion</span></div></div>
+              <div class="k-chip" style="position:absolute;left:140px;top:60px"><div class="phrase">knackered</div><div><span class="tag day" style="font-size:9px">travel</span></div></div>
+              <div class="k-chip" style="position:absolute;left:110px;top:320px"><div class="phrase">doomscrolling</div><div><span class="tag coral" style="font-size:9px">emotion</span></div></div>
+              <div style="position:absolute;bottom:12px;left:12px;font-size:9px;color:rgba(255,255,255,.4)">↳ pattern cluster emerges. use sparingly.</div>
+            </div>
+            <div class="phone-home" style="background:#8A7AA8"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- OS lock-screen widget card -->
+    <div style="margin-top:28px">
+      <div class="sc-subrow-label" style="color:#fff;border-color:rgba(255,255,255,.3)">OS lock-screen widget</div>
+      <div class="os-card" style="max-width:320px">
+        <div class="os-card-header">
+          <div class="os-app-icon"></div>
+          <div class="os-app-name">Language Diary</div>
+          <div class="os-time">tonight</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div style="flex:1;border:2px solid #1b1b1f;border-radius:10px;padding:6px 8px;text-align:center;background:#9FFFCD">
+            <div style="font-family:'Black Han Sans',sans-serif;font-size:16px">2</div>
+            <div style="font-size:9px;color:rgba(27,27,31,.6)">patterns</div>
+          </div>
+          <div style="flex:1;border:2px solid #1b1b1f;border-radius:10px;padding:6px 8px;text-align:center;background:#BDA2D9">
+            <div style="font-family:'Black Han Sans',sans-serif;font-size:16px">3</div>
+            <div style="font-size:9px;color:rgba(45,26,94,.7)">vocab</div>
+          </div>
+          <div style="flex:1;border:2px solid #1b1b1f;border-radius:10px;padding:6px 8px;text-align:center;background:#FDC032">
+            <div style="font-family:'Black Han Sans',sans-serif;font-size:16px">1</div>
+            <div style="font-size:9px;color:rgba(91,63,0,.7)">grammar</div>
+          </div>
+        </div>
+        <div class="os-action">tap to review →</div>
+      </div>
+    </div>
+
+    <p class="sc-design-note" style="color:rgba(255,255,255,.5)">knowledge grown from the day, not a lesson summary. the constellation belongs to what was lived.</p>
+  </section>
+
+</body>
+</html>

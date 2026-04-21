@@ -16,3 +16,8 @@ test('portfolio musik-nacht gallery hides the configured scene subset', () => {
     assert.equal(visibleBotIds.has(hiddenBotId), false, `Hidden bot ${hiddenBotId} should not be visible in the portfolio`);
   }
 });
+
+test('portfolio musik-nacht gallery starts from いつも雨', () => {
+  assert.equal(PORTFOLIO_VISIBLE_FALLBACK_BOT_SCENE_MAP[0]?.botId, 'clawd-rain-waiter');
+  assert.equal(PORTFOLIO_VISIBLE_FALLBACK_BOT_SCENE_MAP[0]?.songTitle, 'いつも雨');
+});

@@ -34,9 +34,10 @@ import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFo
 import { getPersonalCompanionsSlideSections } from './H5DocContentPersonalCompanions';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
 import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalLanguageDiarySlide02';
-import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
-import { getPersonalLanguageDiarySlide04Sections } from './H5DocContentPersonalLanguageDiarySlide04';
-import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
+import { getPersonalLanguageDiarySlide03ShowcaseSections } from './H5DocContentPersonalLanguageDiarySlide03Showcase';
+import { getPersonalLanguageDiarySlide04ShiftedSections } from './H5DocContentPersonalLanguageDiarySlide04Shifted';
+import { getPersonalLanguageDiarySlide05ShiftedSections } from './H5DocContentPersonalLanguageDiarySlide05Shifted';
+import { getPersonalLanguageDiarySlide06Sections } from './H5DocContentPersonalLanguageDiarySlide06';
 import {
   getAgenticDrivingPersonalizationSlide01Sections,
   getAgenticDrivingPersonalizationSlide02Sections,
@@ -128,9 +129,10 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
   '/agentic-design-development/language-diary:0': getPersonalLanguageDiarySlide01Sections,
   '/agentic-design-development/language-diary:1': getPersonalLanguageDiarySlide02Sections,
-  '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,
-  '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04Sections,
-  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05Sections,
+  '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03ShowcaseSections,
+  '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04ShiftedSections,
+  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05ShiftedSections,
+  '/agentic-design-development/language-diary:5': getPersonalLanguageDiarySlide06Sections,
   '/agentic-design-development/agentic-driving:0': getAgenticDrivingPersonalizationSlide01Sections,
   '/agentic-design-development/agentic-driving:1': getAgenticDrivingPersonalizationSlide02Sections,
   '/agentic-design-development/agentic-driving:2': getAgenticDrivingPersonalizationSlide03Sections,
