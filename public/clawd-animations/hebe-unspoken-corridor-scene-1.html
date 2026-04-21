@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无人知晓 - Scene 1 Corridor Return</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #090c12;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: monospace;
+    }
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      display: block;
+      background: #090c12;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const GW = 48, GH = 48, PX = 16, DUR = 10, FPS = 30, TOTAL = DUR * FPS;
+
+function fit() {
+  const s = Math.max(1, Math.floor(Math.min(window.innerWidth / cv.width, window.innerHeight / cv.height)));
+  cv.style.width = `${cv.width * s}px`;
+  cv.style.height = `${cv.height * s}px`;
+}
+window.addEventListener('resize', fit); fit();
+
+const C = {
+  bg: '#090c12',
+  bg2: '#10141c',
+  ceiling: '#131925',
+  wall: '#1a212d',
+  wall2: '#232c3a',
+  floor: '#283140',
+  floor2: '#313b4b',
+  door: '#4d596b',
+  doorShadow: '#2f3746',
+  frame: '#6c7787',
+  mail: '#8f98a9',
+  mailDark: '#667083',
+  mailSlot: '#454e5e',
+  sodium: '#d3a26b',
+  sodiumGlow: '#f0d4a8',
+  cold: '#8ba5c9',
+  cold2: '#bfd1ef',
+  liftDark: '#0b0e14',
+  liftLight: '#d96666',
+  key: '#d5bf8d',
+  paper: '#d7cec0',
+  coat: '#d0b4be',
+  hair: '#2d3647',
+  skin: '#efe7dc',
+  eye: '#111111',
+  boot: '#705c5b'
+};
+
+const woman = [
+  [0,0,1,1,1,1,0,0],
+  [0,1,1,1,1,1,1,0],
+  [1,1,2,2,2,2,1,1],
+  [1,2,2,3,3,2,2,1],
+  [1,2,2,2,2,2,2,1],
+  [0,1,2,2,2,2,1,0],
+  [0,4,4,1,1,4,4,0],
+  [4,4,5,5,5,5,4,4],
+  [0,5,5,5,5,5,5,0],
+  [0,5,5,5,5,5,5,0],
+  [5,0,5,0,0,5,0,5],
+  [5,0,0,0,0,0,0,5],
+  [6,0,0,0,0,0,0,6]
+];
+const PAL = {
+  1: C.hair,
+  2: C.skin,
+  3: C.eye,
+  4: '#7c6f82',
+  5: C.coat,
+  6: C.boot
+};
+
+function px(x, y, color, a = 1) {
+  if (x < 0 || y < 0 || x >= GW || y >= GH) return;
+  ctx.globalAlpha = a;
+  ctx.fillStyle = color;
+  ctx.fillRect(Math.round(x) * PX, Math.round(y) * PX, PX, PX);
+  ctx.globalAlpha = 1;
+}
+function rect(x, y, w, h, color, a = 1) {
+  for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) px(x + xx, y + yy, color, a);
+}
+function glow(cx, cy, rx, ry, color, a) {
+  for (let y = Math.floor(cy - ry); y <= cy + ry; y++) {
+    for (let x = Math.floor(cx - rx); x <= cx + rx; x++) {
+      const v = a - Math.abs(cx - x) / (rx * 7.5) - Math.abs(cy - y) / (ry * 7.5);
+      if (v > 0) px(x, y, color, v);
+    }
+  }
+}
+function clear() {
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) if ((x + y) % 2 === 0) px(x, y, C.bg2, 0.16);
+}
+function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+function drawWoman(x, y, facing = 'right', bob = 0, alpha = 1) {
+  for (let gy = 0; gy < woman.length; gy++) {
+    for (let gx = 0; gx < woman[gy].length; gx++) {
+      const v = woman[gy][gx];
+      if (!v) continue;
+      const sx = facing === 'left' ? (woman[gy].length - 1 - gx) : gx;
+      px(x + sx, y + gy + bob, PAL[v], alpha);
+    }
+  }
+}
+
+function drawCorridorBase() {
+  rect(0, 0, GW, 6, C.ceiling, 0.98);
+  rect(0, 6, GW, 27, C.wall, 0.98);
+  rect(0, 33, GW, 15, C.floor, 0.98);
+
+  for (let x = 0; x < GW; x++) px(x, 32, C.frame, 0.45);
+  for (let y = 33; y < 48; y++) {
+    for (let x = 0; x < GW; x++) {
+      if ((x + y) % 2 === 0) px(x, y, C.floor2, 0.22);
+    }
+  }
+
+  // corridor perspective lines
+  for (let i = 0; i < 7; i++) {
+    px(18 + i, 10 + i * 2, C.wall2, 0.3);
+    px(30 - i, 10 + i * 2, C.wall2, 0.3);
+  }
+}
+
+function drawMailboxes() {
+  rect(2, 13, 15, 12, C.mailDark, 0.65);
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 4; col++) {
+      const mx = 3 + col * 3;
+      const my = 14 + row * 3;
+      rect(mx, my, 2, 2, C.mail, 0.92);
+      px(mx, my + 1, C.mailSlot, 0.82);
+      px(mx + 1, my + 1, C.mailSlot, 0.82);
+    }
+  }
+  rect(4, 26, 7, 1, C.mail, 0.36);
+}
+
+function drawLiftPanel(blink = 0) {
+  rect(34, 11, 7, 17, C.liftDark, 0.95);
+  rect(35, 12, 5, 15, C.doorShadow, 0.9);
+  rect(36, 13, 3, 13, C.wall2, 0.32);
+  rect(35, 9, 4, 2, C.frame, 0.85);
+  px(36, 10, C.liftLight, 0.55 + blink * 0.45);
+  px(37, 10, C.liftLight, 0.4 + blink * 0.4);
+  rect(41, 15, 1, 5, C.frame, 0.82);
+  px(41, 18, C.paper, 0.5);
+}
+
+function drawDoorArea() {
+  rect(22, 12, 9, 18, C.doorShadow, 0.98);
+  rect(23, 13, 7, 16, C.door, 0.72);
+  rect(24, 14, 5, 13, C.wall2, 0.26);
+  rect(24, 15, 2, 2, C.paper, 0.12);
+  px(28, 20, C.key, 0.95);
+  px(28, 21, C.key, 0.75);
+  px(21, 15, C.frame, 0.55);
+  px(21, 16, C.frame, 0.55);
+  px(21, 17, C.frame, 0.55);
+}
+
+function drawCeilingLamp(pulse = 0) {
+  rect(20, 4, 7, 1, C.frame, 0.75);
+  rect(21, 5, 5, 1, C.sodium, 0.9);
+  glow(23.5, 8, 12, 7, C.sodiumGlow, 0.13 + pulse * 0.04);
+  glow(23.5, 14, 16, 11, C.sodium, 0.06 + pulse * 0.03);
+}
+
+function drawColdLeak(strength = 1) {
+  for (let y = 8; y < 27; y++) {
+    const a = (0.065 - (y - 8) * 0.0025) * strength;
+    if (a > 0) {
+      px(46, y, C.cold2, a);
+      px(45, y, C.cold, a * 0.7);
+      if (y % 3 === 0) px(44, y, C.cold, a * 0.35);
+    }
+  }
+  glow(42, 18, 8, 12, C.cold, 0.05 * strength);
+}
+
+function drawFloorReflections(warm = 1, cold = 1) {
+  for (let x = 7; x < 39; x++) {
+    if (x % 4 !== 0) px(x, 39, C.sodium, 0.025 * warm);
+    if (x % 5 === 0) px(x, 40, C.cold2, 0.028 * cold);
+  }
+  for (let y = 34; y < 45; y++) {
+    for (let x = 19; x < 30; x++) {
+      const a = (0.055 - Math.abs(24 - x) * 0.008 - Math.abs(39 - y) * 0.009) * warm;
+      if (a > 0) px(x, y, C.sodiumGlow, a);
+    }
+  }
+}
+
+function drawLetter(x, y, drift = 0, alpha = 1) {
+  rect(x, y + drift, 4, 2, C.paper, 0.92 * alpha);
+  px(x + 1, y + drift, C.mailSlot, 0.34 * alpha);
+  px(x + 2, y + 1 + drift, C.mailSlot, 0.25 * alpha);
+}
+
+function drawDust(frame) {
+  for (let i = 0; i < 10; i++) {
+    const x = 9 + (i * 4 + frame * 0.06) % 26;
+    const y = 10 + (i * 3) % 11;
+    px(x, y, C.paper, 0.05);
+    if (i % 2 === 0) px(x + 1, y + 1, C.cold2, 0.04);
+  }
+}
+
+function render(frame) {
+  clear();
+  const t = frame / TOTAL;
+  const e = ease(t);
+  const lampPulse = (Math.sin(t * Math.PI * 4) + 1) / 2;
+  const blink = Math.max(0, Math.sin(t * Math.PI * 8));
+  const arrive = Math.min(1, t / 0.42);
+  const settle = Math.max(0, (t - 0.48) / 0.52);
+
+  drawCorridorBase();
+  drawMailboxes();
+  drawLiftPanel(blink * 0.9);
+  drawDoorArea();
+  drawCeilingLamp(lampPulse);
+  drawColdLeak(1.05);
+  drawFloorReflections(1.15, 1.05);
+  drawDust(frame);
+
+  // note/letter near the mailboxes and door, to make the corridor feel inhabited
+  drawLetter(8, 29, Math.sin(t * Math.PI * 2) * 0.15, 0.85);
+  drawLetter(26, 31, 0, 0.45 + settle * 0.2);
+
+  const x = 6 + arrive * 15.5;
+  const y = 23 + Math.sin(t * Math.PI * 6) * 0.08;
+  const facing = t < 0.68 ? 'right' : 'left';
+  drawWoman(x, y, facing, 0, 0.98);
+
+  // stopping at the door, slight warm catch-light
+  if (t > 0.58) {
+    glow(25, 22, 6, 5, C.sodiumGlow, 0.06 + settle * 0.06);
+    glow(27, 24, 4, 4, C.paper, 0.015 + settle * 0.02);
+  }
+
+  // key glint when pausing
+  if (t > 0.64) {
+    const a = (t - 0.64) / 0.36;
+    px(28, 20, C.sodiumGlow, 0.2 * a);
+    px(29, 20, C.sodiumGlow, 0.08 * a);
+  }
+}
+
+let start = null;
+function loop(ts) {
+  if (!start) start = ts;
+  const elapsed = (ts - start) / 1000;
+  const frame = Math.floor((elapsed % DUR) * FPS);
+  render(frame);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

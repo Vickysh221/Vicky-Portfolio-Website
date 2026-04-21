@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Age Neon Walker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #090b10; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+    .stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; flex: none; }
+  </style>
+</head>
+<body>
+<div class="stage"><canvas id="c" width="720" height="720"></canvas></div>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const PX = 20, GW = 36, GH = 36, FPS = 30, DUR = 10, TOTAL = FPS * DUR;
+
+const P = {
+  bg:'#090b10', bg2:'#10141b',
+  sunset1:'#2a1b16', sunset2:'#4b2d20', sunset3:'#7a4b2c', sunset4:'#c78553',
+  goldLight:'#e5bf7d', paper:'#ddd0b0', paper2:'#aa9067',
+  steel1:'#27303d', steel2:'#394453', steel3:'#596579',
+  glass1:'#74859b', glass2:'#b7c7dd', glass3:'#dbe5f2',
+  cool1:'#6981a3', cool2:'#8fa6c7', cool3:'#c8d8ee',
+  alley1:'#141926', alley2:'#1b2130', alley3:'#262c39',
+  bench1:'#43362e', bench2:'#665346', crate1:'#54463a', crate2:'#756252',
+  neon1:'#da6d58', neon2:'#cd4b89', neon3:'#efba6a', neon4:'#6fe0d1',
+  wet1:'#6f839e', wet2:'#90a5c2', cable:'#1b2128',
+  figure:'#161616', figure2:'#262626', figure3:'#3a3a3a',
+  white:'#f3efe6'
+};
+
+function px(x,y,c,a=1){ctx.globalAlpha=a;ctx.fillStyle=c;ctx.fillRect(Math.round(x)*PX,Math.round(y)*PX,PX,PX);ctx.globalAlpha=1}
+function clear(){ctx.fillStyle=P.bg;ctx.fillRect(0,0,720,720);for(let y=0;y<GH;y++)for(let x=0;x<GW;x++)if((x+y)%2===0)px(x,y,P.bg2,0.12)}
+function lerp(a,b,t){return a+(b-a)*t}
+function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function fit(){const s=Math.max(1,Math.floor(Math.min(window.innerWidth/720,window.innerHeight/720)));cv.style.width=`${720*s}px`;cv.style.height=`${720*s}px`}window.addEventListener('resize',fit);fit();
+
+function drawFigure(x,y,opts={}){
+  const pose = opts.pose || 'stand';
+  const dir = opts.dir || 'right';
+  const flip = dir === 'left' ? -1 : 1;
+  const ox = dir === 'left' ? x + 6 : x;
+  const a = opts.alpha ?? 1;
+  px(ox + 2*flip, y, P.figure2, a); px(ox + 3*flip, y, P.figure3, a);
+  for(let yy=1; yy<6; yy++) { px(ox + 2*flip, y+yy, P.figure, a); px(ox + 3*flip, y+yy, P.figure2, a); }
+  px(ox + 2*flip, y+2, P.goldLight, a*0.18);
+  if (pose === 'bend') {
+    px(ox + 4*flip, y+2, P.figure2, a); px(ox + 5*flip, y+3, P.figure2, a);
+    px(ox + 5*flip, y+4, P.paper, a*0.9);
+    px(ox + 4*flip, y+5, P.figure, a);
+  } else if (pose === 'walk') {
+    px(ox + 1*flip, y+6, P.figure2, a); px(ox + 4*flip, y+6, P.figure2, a);
+    px(ox + 2*flip, y+7, P.figure, a); px(ox + 3*flip, y+5, P.figure2, a);
+  } else if (pose === 'sit') {
+    px(ox + 1*flip, y+4, P.figure2, a); px(ox + 1*flip, y+5, P.figure2, a);
+    px(ox + 2*flip, y+6, P.figure, a); px(ox + 3*flip, y+6, P.figure, a);
+  } else {
+    px(ox + 2*flip, y+6, P.figure2, a); px(ox + 3*flip, y+6, P.figure2, a);
+  }
+}
+
+function drawSkyBand(y0, y1, c1, c2, c3) {
+  for (let y = y0; y < y1; y++) {
+    for (let x = 0; x < GW; x++) {
+      const c = y < (y0+y1)/3 ? c1 : y < (y0+y1)*2/3 ? c2 : c3;
+      px(x, y, c, 0.9);
+    }
+  }
+}
+
+function phase1(local){
+  // background sky and distant city
+  drawSkyBand(0, 11, P.sunset1, P.sunset2, P.sunset3);
+  for(let x=0;x<GW;x++) px(x,11,P.sunset4,0.08);
+  for(let x=0;x<GW;x++) for(let y=12;y<18;y++) px(x,y,(x+y)%2?'#16181f':'#11141a',0.96);
+  for(let x=0;x<5;x++) for(let y=13;y<19;y++) px(x,y,'#171c24',0.8);
+  for(let x=12;x<18;x++) for(let y=14;y<19;y++) px(x,y,'#191d26',0.75);
+  for(let x=22;x<27;x++) for(let y=13;y<18;y++) px(x,y,'#171b22',0.72);
+  // main ground
+  for(let y=26;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2?'#22252d':'#2a2d36',0.98);
+  // foreground curb and paper near camera
+  for(let x=0;x<16;x++) px(x,30,'#3a3d45',0.45);
+  px(4,31,P.paper,0.55); px(5,31,P.paper2,0.4);
+  // poster board midground anchor
+  for(let x=4;x<13;x++) for(let y=9;y<23;y++) px(x,y,(x+y)%2?P.steel1:P.steel2,0.96);
+  for(let x=5;x<12;x++) for(let y=11;y<21;y++) px(x,y,(x+y)%2?P.paper2:P.paper,0.2);
+  for(let y=23;y<30;y++){ px(7,y,P.steel3,0.98); px(10,y,P.steel3,0.98); }
+  // bench
+  for(let x=15;x<24;x++) for(let y=24;y<27;y++) px(x,y,(x+y)%2?P.bench1:P.bench2,0.95);
+  // vending machine
+  for(let x=26;x<32;x++) for(let y=15;y<28;y++) px(x,y,(x+y)%2?P.steel1:P.steel2,0.98);
+  for(let x=27;x<31;x++) for(let y=18;y<23;y++) px(x,y,(x+y)%2?P.cool1:P.cool2,0.22);
+  px(28,24,P.sunset4,0.4); px(29,24,P.goldLight,0.25);
+  // props
+  px(13,30,P.paper,0.88); px(14,30,P.paper2,0.62); px(12,31,P.paper,0.7);
+  px(18,30,P.paper2,0.7); px(19,30,P.paper,0.48);
+  px(22,30,P.sunset3,0.62); px(22,31,P.sunset4,0.26);
+  // figure
+  const x = local < 0.58 ? 16 : lerp(16, 17, (local-0.58)/0.42);
+  const pose = local < 0.42 ? 'stand' : local < 0.7 ? 'bend' : 'stand';
+  drawFigure(x, 22, { pose, dir:'right' });
+}
+
+function phase2(local){
+  // deep corridor with glass, escalator, store light
+  for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2?P.alley1:P.alley2,0.98);
+  // foreground handrail / edge
+  for(let x=0;x<10;x++) px(x,31,'#303643',0.45);
+  for(let x=0;x<9;x++) px(x,32,'#252b36',0.35);
+  // glass wall left
+  for(let y=4;y<30;y++){ px(8,y,P.glass1,0.28); px(9,y,P.glass2,0.18); px(10,y,P.glass3,0.08); }
+  // reflected figure hint
+  drawFigure(6.5, 22, { pose:'stand', dir:'right', alpha:0.2 + (1-local)*0.08 });
+  // escalator diagonal
+  for(let i=0;i<10;i++){ px(19+i,29-i,P.steel2,0.88); px(20+i,29-i,P.steel3,0.66); }
+  // door frame / metal passage
+  for(let y=8;y<30;y++){ px(22,y,P.steel1,0.98); px(23,y,P.steel2,0.95); }
+  // convenience store glow in back
+  for(let x=26;x<35;x++) for(let y=13;y<24;y++) px(x,y,(x+y)%2?P.cool2:P.cool3,0.14);
+  px(30,21,P.sunset4,0.18); px(31,21,P.goldLight,0.14);
+  const x = lerp(13, 19, ease(local));
+  drawFigure(x, 22, { pose: local < 0.18 ? 'stand' : 'walk', dir:'right' });
+}
+
+function phase3(local){
+  // billboard backside service space
+  for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2?'#0f1319':'#151a21',0.98);
+  // back steel structure left
+  for(let x=2;x<13;x++) for(let y=4;y<28;y++) px(x,y,(x+y)%2?P.cable:P.steel1,0.98);
+  for(let x=5;x<9;x++) for(let y=6;y<26;y+=3) px(x,y,P.steel3,0.92);
+  for(let x=10;x<12;x++) for(let y=7;y<25;y+=4) px(x,y,P.steel2,0.86);
+  // long bench midground
+  for(let x=16;x<28;x++) for(let y=25;y<28;y++) px(x,y,(x+y)%2?P.bench1:P.bench2,0.98);
+  // crates near figure
+  for(let x=13;x<17;x++) for(let y=22;y<27;y++) px(x,y,(x+y)%2?P.crate1:P.crate2,0.96);
+  // leak-light door and far neon residue
+  for(let x=30;x<34;x++) for(let y=10;y<24;y++) px(x,y,P.neon1,0.08 + Math.sin(local*Math.PI)*0.02);
+  for(let y=13;y<24;y++) px(28,y,P.steel2,0.72);
+  // ticket / pass in hand zone
+  px(19,24,P.paper,0.86); px(20,24,P.paper2,0.62);
+  // foreground cable bundle
+  px(4,30,P.cable,0.8); px(5,30,P.cable,0.8); px(6,31,P.cable,0.7);
+  drawFigure(21, 20, { pose:'sit', dir:'right' });
+}
+
+function phase4(frame, local){
+  for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2?P.alley1:P.alley2,0.98);
+  // main wet ground
+  for(let y=27;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2?P.alley3:'#2b313d',0.98);
+  // left signs
+  for(let x=4;x<9;x++) for(let y=7;y<21;y++) px(x,y,P.neon1,0.19);
+  for(let x=10;x<13;x++) for(let y=10;y<19;y++) px(x,y,P.neon4,0.14);
+  // right signs
+  for(let x=26;x<31;x++) for(let y=8;y<22;y++) px(x,y,P.neon2,0.16);
+  for(let x=31;x<34;x++) for(let y=11;y<24;y++) px(x,y,P.neon3,0.13);
+  // mid alley rail
+  for(let y=16;y<30;y++) px(22,y,P.steel3,0.72);
+  // wet reflection strips
+  for(let i=0;i<13;i++){
+    px(5+i*2,31+(i%2),P.wet1,0.08);
+    px(6+i*2,32,P.wet2,0.07);
+    if(i%3===0) px(6+i*2,30,P.goldLight,0.05);
+  }
+  // far car light movement
+  for(let i=0;i<5;i++){
+    const lx = 35 - ((frame*0.9 + i*7)%44);
+    px(lx,12+i*2,P.cool2,0.11); px(lx+1,13+i*2,P.goldLight,0.08);
+  }
+  const x = lerp(17, 24, ease(local));
+  drawFigure(x, 21, { pose:'walk', dir:'right' });
+  const roll = 11 + local*11;
+  px(roll,31,P.paper2,0.64); px(roll+1,31,P.paper,0.5);
+}
+
+function render(frame){
+  clear();
+  const t = frame / TOTAL;
+  if (t < 0.2) phase1(t/0.2);
+  else if (t < 0.5) phase2((t-0.2)/0.3);
+  else if (t < 0.8) phase3((t-0.5)/0.3);
+  else phase4(frame, (t-0.8)/0.2);
+}
+
+let start = null;
+function loop(ts){ if(!start) start = ts; const elapsed = (ts-start)/1000; const frame = Math.floor((elapsed % DUR)*FPS); render(frame); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

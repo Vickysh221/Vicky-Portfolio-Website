@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无人知晓 - Scene 3 Desk Window Mirror</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#091019; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#091019; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, DUR=10, FPS=30, TOTAL=DUR*FPS;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(innerWidth/cv.width, innerHeight/cv.height))); cv.style.width=`${cv.width*s}px`; cv.style.height=`${cv.height*s}px`; } addEventListener('resize', fit); fit();
+const C={ bg:'#091019', bg2:'#101722', wall:'#1a2431', wall2:'#233041', floor:'#273343', floor2:'#314051', wood:'#6d5849', wood2:'#856a59', steel:'#7d8897', lamp:'#efd7ad', lamp2:'#d8ae73', cold:'#87a3cc', cold2:'#c6d6ef', mirror:'#9fb7d6', paper:'#d8d0c5', red:'#b56e77', dark:'#0d1218', coat:'#d0b4be', hair:'#2d3647', skin:'#efe7dc', eye:'#111111', boot:'#705c5b'};
+const woman=[[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,2,2,2,2,1,1],[1,2,2,3,3,2,2,1],[1,2,2,2,2,2,2,1],[0,1,2,2,2,2,1,0],[0,4,4,1,1,4,4,0],[4,4,5,5,5,5,4,4],[0,5,5,5,5,5,5,0],[0,5,5,5,5,5,5,0],[5,0,5,0,0,5,0,5],[5,0,0,0,0,0,0,5],[6,0,0,0,0,0,0,6]];
+const PAL={1:C.hair,2:C.skin,3:C.eye,4:'#7c6f82',5:C.coat,6:C.boot};
+function px(x,y,c,a=1){ if(x<0||y<0||x>=GW||y>=GH) return; ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX, Math.round(y)*PX, PX, PX); ctx.globalAlpha=1; }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=Math.floor(cy-ry); y<=cy+ry; y++) for(let x=Math.floor(cx-rx); x<=cx+rx; x++){ const v=a-Math.abs(cx-x)/(rx*7.4)-Math.abs(cy-y)/(ry*7.4); if(v>0) px(x,y,c,v);} }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,.15); }
+function drawWoman(x,y,facing='left',bob=0,a=1){ for(let gy=0;gy<woman.length;gy++) for(let gx=0;gx<woman[gy].length;gx++){ const v=woman[gy][gx]; if(!v) continue; const sx=facing==='left'?(woman[gy].length-1-gx):gx; px(x+sx,y+gy+bob,PAL[v],a);} }
+function base(){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.17); }
+function desk(){ rect(7,27,18,3,C.wood,.97); rect(7,30,18,1,C.wood2,.95); rect(9,30,1,8,C.wood2,.78); rect(22,30,1,8,C.wood2,.78); rect(10,24,4,3,C.paper,.92); rect(15,25,4,2,C.paper,.82); px(17,24,C.red,.52); rect(20,22,2,5,C.lamp2,.95); rect(19,21,4,1,C.steel,.75); glow(21,20,9,7,C.lamp,.17); }
+function windowArea(frame){ rect(31,10,11,13,C.dark,.96); rect(32,11,9,11,C.cold,.16); for(let x=33;x<40;x+=2) rect(x,11,1,11,C.cold2,.05); for(let y=12;y<21;y+=2){ px(40,y,C.cold2,.08); px(39,y+1,C.cold,.06); }
+ for(let i=0;i<6;i++){ const rx = 33 + ((frame*0.06 + i*1.5)%7); px(rx, 18+i%3, C.cold2, .05); }
+ glow(36,17,11,9,C.cold,.09);
+}
+function mirror(){ rect(6,14,6,11,C.steel,.75); rect(7,15,4,9,C.mirror,.22); for(let y=16;y<23;y+=2) px(8,y,C.cold2,.06); }
+function chair(){ rect(25,30,5,1,C.wood,.92); rect(26,25,3,5,C.wood2,.84); rect(25,31,1,7,C.wood2,.72); rect(29,31,1,7,C.wood2,.72); }
+function reflectionGhost(alpha=1){ px(9,18,C.hair,.22*alpha); px(9,19,C.skin,.18*alpha); px(8,21,C.coat,.15*alpha); px(9,21,C.coat,.15*alpha); px(10,21,C.coat,.15*alpha); px(9,23,C.boot,.12*alpha); }
+function dust(frame){ for(let i=0;i<10;i++){ const x=11+(i*3+frame*0.05)%20, y=12+(i*2)%13; px(x,y,C.paper,.05); if(i%2===0) px(x+1,y+1,C.cold2,.04);} }
+function render(frame){ clear(); const t=frame/TOTAL; const walk=Math.min(1,t/.4), settle=Math.max(0,(t-.44)/.56); const lampPulse=(Math.sin(t*Math.PI*3)+1)/2; base(); mirror(); desk(); chair(); windowArea(frame); dust(frame); glow(21,20,11,8,C.lamp,.12+.04*lampPulse); glow(35,18,12,10,C.cold,.08+.02*Math.sin(t*Math.PI*2));
+ const x=11+walk*9; const bob=Math.sin(t*Math.PI*5)*.08; drawWoman(x,20,'left',bob,.98); if(t>.46) reflectionGhost(.4+.4*settle); if(t>.58){ glow(16,24,6,4,C.paper,.02+.03*settle); px(13,25,C.red,.05+.06*settle); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor((((ts-start)/1000)%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

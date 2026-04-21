@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Christmas Eve Ghost Scene</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0c1018;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: monospace;
+      overflow: hidden;
+    }
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      border-radius: 10px;
+      box-shadow: 0 14px 46px rgba(0,0,0,0.38);
+      border: 1px solid rgba(255,255,255,0.06);
+      background: #0c1018;
+    }
+    .info {
+      color: rgba(255,255,255,0.45);
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c" width="720" height="720"></canvas>
+<div class="info">クリスマス・イブ — 山下達郎<br>ghost / christmas wreath / christmas tree</div>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const PX = 20, GW = 36, GH = 36, FPS = 30, DUR = 10;
+
+function fit(){
+  const s = Math.max(1, Math.floor(Math.min(window.innerWidth / 720, window.innerHeight / 720)));
+  cv.style.width = `${720 * s}px`;
+  cv.style.height = `${720 * s}px`;
+}
+window.addEventListener('resize', fit); fit();
+
+const PALETTE = {
+  nightBg: '#0C1018',
+  nightDot: '#141B28',
+  snow: '#EAF2F7',
+  snowSoft: '#CADBE8',
+  coldGlow: '#91AFC7',
+  coldGlow2: '#C3D6E6',
+  windowGold: '#E3B06D',
+  windowGold2: '#B77943',
+  windowGold3: '#F0D3A2',
+  stone: '#334054',
+  stone2: '#46556A',
+  stone3: '#5B6A7F',
+  floor: '#1D2432',
+  floor2: '#232C3C',
+  tree: '#295344',
+  tree2: '#3A6E5C',
+  tree3: '#183A31',
+  wreath: '#2E5B43',
+  wreath2: '#40765A',
+  red: '#C85B66',
+  gold: '#E7C270',
+  gold2: '#B88A48',
+  ribbon: '#D36C7A',
+  ghostHat: '#C58586',
+  ghostHatLine: '#E26B73',
+  ghostBody: '#F4F1EB',
+  ghostBlush: '#F0B9C6',
+  ghostEye: '#111111',
+  ghostShade: '#D7D4CF'
+};
+
+const SPRITES = {
+  ghost: {
+    label: 'ghost',
+    role: 'character',
+    width: 16, height: 16,
+    palette: {
+      1: PALETTE.ghostHat,
+      2: PALETTE.ghostBody,
+      3: PALETTE.ghostBlush,
+      4: PALETTE.ghostEye,
+      5: PALETTE.ghostShade,
+      6: PALETTE.ghostHatLine
+    },
+    data: [
+      [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],
+      [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+      [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+      [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+      [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+      [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+      [0,6,6,6,6,6,6,0,6,6,6,6,6,6,6,0],
+      [0,0,0,2,2,2,2,2,2,2,2,2,2,0,0,0],
+      [0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
+      [0,2,2,2,2,4,2,2,2,2,4,2,2,2,2,0],
+      [0,2,2,3,2,2,2,4,2,2,2,3,2,2,2,0],
+      [0,2,2,2,2,2,2,2,4,2,2,2,2,2,2,0],
+      [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0],
+      [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0],
+      [0,0,2,2,5,2,0,2,2,0,5,2,2,2,0,0],
+      [0,0,0,5,2,0,0,0,0,0,0,2,5,0,0,0]
+    ]
+  },
+  wreath: {
+    label: 'wreath',
+    role: 'prop',
+    width: 14, height: 14,
+    palette: {
+      1: PALETTE.wreath,
+      2: PALETTE.wreath2,
+      3: PALETTE.red,
+      4: PALETTE.gold,
+      5: PALETTE.ribbon,
+      6: PALETTE.snowSoft
+    },
+    data: [
+      [0,0,0,1,1,2,2,2,2,1,1,0,0,0],
+      [0,0,1,2,2,1,1,1,1,2,2,1,0,0],
+      [0,1,2,2,1,1,0,0,1,1,2,2,1,0],
+      [1,2,2,1,1,0,0,0,0,1,1,2,2,1],
+      [1,2,1,1,0,0,0,0,0,0,1,1,2,1],
+      [2,1,1,0,0,0,0,0,0,0,0,1,1,2],
+      [2,1,0,0,0,0,0,0,0,0,0,0,1,2],
+      [2,1,0,0,0,0,0,0,0,0,0,0,1,2],
+      [2,1,1,0,0,0,0,0,0,0,0,1,1,2],
+      [1,2,1,1,0,0,0,0,0,0,1,1,2,1],
+      [1,2,2,1,1,0,4,4,0,1,1,2,2,1],
+      [0,1,2,2,1,3,5,5,3,1,2,2,1,0],
+      [0,0,1,2,2,1,6,6,1,2,2,1,0,0],
+      [0,0,0,1,1,0,0,0,0,1,1,0,0,0]
+    ]
+  },
+  tree: {
+    label: 'tree',
+    role: 'decoration',
+    width: 18, height: 20,
+    palette: {
+      1: PALETTE.tree,
+      2: PALETTE.tree2,
+      3: PALETTE.tree3,
+      4: PALETTE.red,
+      5: PALETTE.gold,
+      6: PALETTE.windowGold2
+    },
+    data: [
+      [0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,1,1,2,2,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,0,0],
+      [0,0,0,1,1,2,2,4,2,2,2,1,1,0,0,0,0,0],
+      [0,0,1,1,2,2,2,2,2,2,2,2,1,1,0,0,0,0],
+      [0,0,0,1,1,1,2,2,5,2,1,1,1,0,0,0,0,0],
+      [0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,0,0],
+      [0,0,0,1,1,2,2,2,2,2,2,1,1,0,0,0,0,0],
+      [0,0,1,1,2,2,2,4,2,2,2,2,1,1,0,0,0,0],
+      [0,1,1,2,2,2,2,2,2,2,2,2,2,1,1,0,0,0],
+      [0,0,1,1,1,2,2,5,2,2,2,1,1,1,0,0,0,0],
+      [0,0,0,1,1,2,2,2,2,2,1,1,0,0,0,0,0,0],
+      [0,0,1,1,2,2,2,2,2,2,2,1,1,0,0,0,0,0],
+      [0,1,1,2,2,2,2,4,2,2,2,2,1,1,0,0,0,0],
+      [1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,0,0,0],
+      [0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0]
+    ]
+  }
+};
+
+const SCENE_LAYERS = [
+  { key: 'snow', x: 0, y: 0, z: 0, animated: true },
+  { key: 'architecture', x: 0, y: 0, z: 1, animated: false },
+  { key: 'tree', x: 22, y: 11, z: 2, animated: false },
+  { key: 'wreath', x: 11, y: 10, z: 3, animated: false },
+  { key: 'ghost', x: 12, y: 19, z: 4, animated: true },
+  { key: 'floor-glow', x: 0, y: 0, z: 5, animated: true }
+];
+
+function drawSprite(key, ox, oy){
+  const s = SPRITES[key];
+  if(!s) return;
+  for(let y=0;y<s.height;y++){
+    for(let x=0;x<s.width;x++){
+      const v = s.data[y][x];
+      if(!v) continue;
+      px(ox+x, oy+y, s.palette[v]);
+    }
+  }
+}
+
+function drawBackground(frame){
+  for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2===0?PALETTE.nightBg:PALETTE.nightDot);
+  // distant snow sky glow
+  for(let x=7;x<29;x++){
+    px(x,4,PALETTE.coldGlow,0.04);
+    if(x>10 && x<26) px(x,5,PALETTE.coldGlow2,0.03);
+  }
+}
+function drawArchitecture(frame){
+  // floor
+  for(let y=29;y<GH;y++) for(let x=0;x<GH;x++) px(x,y,(x+y)%2===0?PALETTE.floor:PALETTE.floor2,0.98);
+  // wall / window scene
+  for(let y=7;y<29;y++) for(let x=2;x<34;x++) px(x,y,(x+y)%2===0?PALETTE.stone:PALETTE.stone2,0.96);
+
+  // left warm window alcove
+  for(let y=8;y<20;y++) for(let x=6;x<16;x++) px(x,y,(x+y)%2===0?PALETTE.windowGold:PALETTE.windowGold2,0.26);
+  for(let x=5;x<17;x++){ px(x,8,PALETTE.stone3); px(x,20,PALETTE.stone3); }
+  for(let y=8;y<21;y++){ px(5,y,PALETTE.stone3); px(16,y,PALETTE.stone3); }
+  for(let x=4;x<18;x++) px(x,7,PALETTE.stone3,0.85);
+  for(let y=9;y<20;y++){
+    px(8,y,PALETTE.windowGold3,0.12);
+    px(10,y,PALETTE.windowGold3,0.18);
+    px(12,y,PALETTE.windowGold3,0.12);
+  }
+
+  // right-side darker church depth / panel rhythm
+  for(let y=9;y<27;y++){
+    px(22,y,PALETTE.stone3,0.45);
+    px(27,y,PALETTE.stone3,0.38);
+    px(31,y,PALETTE.stone3,0.32);
+  }
+  for(let x=21;x<33;x++) px(x,9,PALETTE.stone3,0.28);
+
+  // garland line across upper wall
+  for(let x=17;x<31;x++){
+    const yy = 11 + ((x%4===0||x%4===1)?0:1);
+    px(x, yy, PALETTE.wreath, 0.95);
+    if(x%5===0) px(x, yy-1, PALETTE.red, 0.8);
+    if(x%6===0) px(x, yy+1, PALETTE.gold, 0.8);
+  }
+
+  // candle / fairy lights
+  const flick = (Math.sin(frame*0.12)+1)*0.5;
+  px(19,15,PALETTE.gold,0.45 + flick*0.2); px(20,15,PALETTE.gold2,0.24 + flick*0.16);
+  px(18,19,PALETTE.gold,0.28 + flick*0.16); px(19,19,PALETTE.gold2,0.18 + flick*0.12);
+  px(29,17,PALETTE.gold,0.22 + flick*0.14); px(30,17,PALETTE.gold2,0.15 + flick*0.1);
+}
+function drawSnow(frame){
+  for(let i=0;i<24;i++){
+    const x = (i*5 + frame*0.22) % GW;
+    const y = (i*7 + frame*0.18) % GH;
+    px(x, y, i%3===0?PALETTE.snowSoft:PALETTE.snow, 0.85);
+  }
+}
+function drawTreeLights(frame){
+  const twinkle = (Math.sin(frame*0.18)+1)*0.5;
+  const lights = [
+    [28,14,PALETTE.red],[31,15,PALETTE.gold],[26,17,PALETTE.gold2],[30,18,PALETTE.red],
+    [27,20,PALETTE.gold],[32,20,PALETTE.gold2],[29,22,PALETTE.red],[25,23,PALETTE.gold]
+  ];
+  lights.forEach(([x,y,c],i)=> px(x,y,c,0.35 + (((i%3)*0.08)+twinkle*0.3)));
+}
+
+function drawFloorGlow(frame){
+  const warm = (Math.sin(frame*0.12)+1)*0.5;
+  for(let i=0;i<10;i++){
+    px(9+i*2, 31 + (i%2), PALETTE.coldGlow, 0.06);
+    if(i%3===0) px(10+i*2, 32, PALETTE.gold, 0.04 + warm*0.03);
+  }
+  // stronger warm spill from window
+  for(let y=27;y<34;y++){
+    for(let x=6;x<15;x++){
+      const a = (34-y)*0.018 - Math.abs(10-x)*0.01;
+      if(a>0) px(x,y,PALETTE.windowGold3,a);
+    }
+  }
+}
+
+function render(frame){
+  drawBackground(frame);
+  drawSnow(frame);
+  drawArchitecture(frame);
+  drawSprite('tree', 22, 11);
+  drawTreeLights(frame);
+  drawSprite('wreath', 9, 8);
+  const bob = Math.sin(frame*0.08)*0.35;
+  drawSprite('ghost', 12, 19 + bob);
+  drawFloorGlow(frame);
+}
+
+function px(x,y,c,a=1){
+  ctx.globalAlpha = a;
+  ctx.fillStyle = c;
+  ctx.fillRect(Math.round(x)*PX, Math.round(y)*PX, PX, PX);
+  ctx.globalAlpha = 1;
+}
+
+let start = null;
+function loop(ts){
+  if(!start) start = ts;
+  const elapsed = (ts-start)/1000;
+  const frame = Math.floor((elapsed % DUR) * FPS);
+  render(frame);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

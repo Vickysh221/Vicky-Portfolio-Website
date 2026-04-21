@@ -1,25 +1,10 @@
 import type { CSSProperties } from 'react';
-import { VideoWithStatus } from '../components/MediaWithStatus';
 import type { LocalizedSectionData } from '../i18n/sectionBuilders.ts';
 import {
   getPersonalCompanionsOverviewSectionDefinition,
   getPersonalCompanionsSlideSectionDefinition,
 } from './H5DocContentSectionTitles.ts';
 import { blockLabelStyle, dividerStyle, kickerStyle, noteCardStyle, paragraphStyle } from './h5Styles';
-
-import christmasEveVideo from '../images/companions/christmas eve.mp4';
-import dancingVideo from '../images/companions/dancing.mp4';
-import greenVideo from '../images/companions/green-1.mp4';
-import neverOneVideo from '../images/companions/never1-1(1).mp4';
-import neverTwoVideo from '../images/companions/never2-1.mp4';
-import nightcarVideo from '../images/companions/nightcar-1.mp4';
-import submarineVideo from '../images/companions/submarine-1.mp4';
-
-type CompanionSlideMedia = {
-  note: string;
-  src: string;
-  frameAspectRatio?: string;
-};
 
 const projectDescription = [
   '这是一些陪你听歌的 bots。它是我最近在做的一个小探索：把网易云音乐的实际播放链路，和一个会响应歌曲情绪的像素场景系统接起来。',
@@ -30,41 +15,7 @@ const projectDescription = [
   '网易云音乐 CLI 在这里负责搜歌、确认 songId、判断某首歌是不是可播、控制播放，再把歌曲真正接进 bot 页面 / scene prototype。最后它慢慢长成了一个混合体：一部分是音乐界面，一部分是场景引擎，一部分是角色系统，一部分是情绪翻译器。它也是我 being with my string figure player 的一部分。',
 ];
 
-type CompanionSlideKey = ReturnType<typeof getPersonalCompanionsSlideSectionDefinition>['key'];
-
-const companionSlideMedia: Record<CompanionSlideKey, CompanionSlideMedia> = {
-  christmasEve: {
-    note: '一段节日夜色里的陪伴感，像把人慢慢带进同一个呼吸节奏。',
-    src: christmasEveVideo,
-  },
-  green: {
-    note: '更偏生长感和环境氛围，让角色关系先通过空间气息被感知。',
-    src: greenVideo,
-  },
-  dancing: {
-    note: '把陪伴感放进更轻的身体节奏里，让音乐先通过动作和停顿被看见。',
-    src: dancingVideo,
-    frameAspectRatio: '742 / 1080',
-  },
-  neverOne: {
-    note: '把人物和场景压进更私密的观看距离里，保留一种不完全说破的情绪。',
-    src: neverOneVideo,
-  },
-  neverTwo: {
-    note: '像前一段关系的延续版本，重点不在事件，而在陪伴是如何被停留住的。',
-    src: neverTwoVideo,
-  },
-  nightCar: {
-    note: '把移动中的空间当成情绪容器，车窗内外共同构成观看的时间感。',
-    src: nightcarVideo,
-  },
-  submarine: {
-    note: '更像一个被包裹起来的小世界，关系在封闭环境里变得更清楚。',
-    src: submarineVideo,
-  },
-};
-
-function videoFrameStyle(aspectRatio = '2188 / 1080'): CSSProperties {
+function mediaFrameStyle(aspectRatio = '2188 / 1080'): CSSProperties {
   return {
     border: '1px solid rgba(200,169,110,0.16)',
     borderRadius: '18px',
@@ -101,6 +52,15 @@ function introGridStyle(): CSSProperties {
   };
 }
 
+function sceneEmbedStyle(): CSSProperties {
+  return {
+    ...mediaFrameStyle('1250 / 780'),
+    width: '100%',
+    minHeight: '520px',
+    height: 'min(70vh, 640px)',
+  };
+}
+
 function getProjectDescriptionSections(): LocalizedSectionData[] {
   const [lead, ...body] = projectDescription;
   const sectionDefinition = getPersonalCompanionsOverviewSectionDefinition();
@@ -133,34 +93,32 @@ export function getPersonalCompanionsSlideSections(slideIndex: number, shouldPla
   if (slideIndex === 0) return getProjectDescriptionSections();
 
   const sectionDefinition = getPersonalCompanionsSlideSectionDefinition(slideIndex);
-  const slideMedia = companionSlideMedia[sectionDefinition.key];
+  const _shouldPlayMedia = shouldPlayMedia;
+  void _shouldPlayMedia;
 
   return [
     {
       ...sectionDefinition,
       blocks: [
-        <div style={videoFrameStyle(slideMedia.frameAspectRatio)}>
-          <VideoWithStatus
-            sources={[{ src: slideMedia.src, type: 'video/mp4' }]}
-            autoPlay
-            loop
-            controls
-            playsInline
-            activePlayback={shouldPlayMedia}
+        <div style={sceneEmbedStyle()}>
+          <iframe
+            src="/#/musik-nacht-scenes-embed"
+            title="musik nacht scene gallery"
             style={{
               width: '100%',
               height: '100%',
               display: 'block',
+              border: 'none',
               background: '#050403',
-              objectFit: 'contain',
             }}
+            allow="autoplay; fullscreen"
           />
         </div>,
         <p style={{ ...noteStyle(), marginTop: '18px' }}>
-          {slideMedia.note}
+          这里直接嵌入了迁移进作品集的 musik-nacht 原始 scene gallery。scene 切换、歌词层和本地播放器控制都留在这个正文显示框里完成。
         </p>,
         <p style={{ ...noteStyle(), fontSize: '14px', color: '#8f816c', marginTop: '10px' }}>
-          视频已转为更适合网页播放的 H.264 MP4，优先保证浏览器内联播放和构建兼容性。
+          如果本机还没重新登录网易云，播放按钮会提示登录；动画和 scene 切换仍然可以正常使用。
         </p>,
       ],
     },

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无人知晓 - Scene 2 Kitchen</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#0a0d12; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#0a0d12; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv=document.getElementById('c'); const ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, DUR=10, FPS=30, TOTAL=DUR*FPS;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(innerWidth/cv.width,innerHeight/cv.height))); cv.style.width=`${cv.width*s}px`; cv.style.height=`${cv.height*s}px`; } addEventListener('resize',fit); fit();
+const C={ bg:'#0a0d12', bg2:'#11161d', wall:'#1c2430', wall2:'#26303e', floor:'#2a3341', floor2:'#313c4c', wood:'#6d5647', wood2:'#846a58', steel:'#8791a3', steel2:'#677181', kettle:'#b9c1ce', mug:'#ddd5c9', paper:'#d4cab9', sodium:'#d2a26e', sodiumGlow:'#f0d3a7', cold:'#8ba6ca', cold2:'#bfd0ec', dark:'#0d1117', tile:'#364154', plant:'#748976', coat:'#d0b4be', hair:'#2d3647', skin:'#efe7dc', eye:'#111111', boot:'#705c5b' };
+const woman=[[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,2,2,2,2,1,1],[1,2,2,3,3,2,2,1],[1,2,2,2,2,2,2,1],[0,1,2,2,2,2,1,0],[0,4,4,1,1,4,4,0],[4,4,5,5,5,5,4,4],[0,5,5,5,5,5,5,0],[0,5,5,5,5,5,5,0],[5,0,5,0,0,5,0,5],[5,0,0,0,0,0,0,5],[6,0,0,0,0,0,0,6]];
+const PAL={1:C.hair,2:C.skin,3:C.eye,4:'#7c6f82',5:C.coat,6:C.boot};
+function px(x,y,c,a=1){ if(x<0||y<0||x>=GW||y>=GH) return; ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX,Math.round(y)*PX,PX,PX); ctx.globalAlpha=1; }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=Math.floor(cy-ry); y<=cy+ry; y++) for(let x=Math.floor(cx-rx); x<=cx+rx; x++){ const v=a-Math.abs(cx-x)/(rx*7.5)-Math.abs(cy-y)/(ry*7.5); if(v>0) px(x,y,c,v);} }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,.16); }
+function drawWoman(x,y,facing='left',bob=0,a=1){ for(let gy=0;gy<woman.length;gy++) for(let gx=0;gx<woman[gy].length;gx++){ const v=woman[gy][gx]; if(!v) continue; const sx=facing==='left'?(woman[gy].length-1-gx):gx; px(x+sx,y+gy+bob,PAL[v],a);} }
+function drawBase(){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let x=0;x<GW;x++) px(x,31,C.steel,.3); for(let y=8;y<31;y++) for(let x=0;x<48;x++) if((x+y)%5===0) px(x,y,C.tile,.09); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.18); }
+function drawCounter(){ rect(5,22,20,3,C.wood,.96); rect(5,25,20,5,C.wood2,.96); rect(7,26,4,4,C.dark,.28); rect(13,24,5,1,C.paper,.18); rect(28,17,7,13,C.steel,.92); rect(29,18,5,5,C.cold2,.18); rect(38,18,6,12,C.steel2,.88); rect(39,17,4,1,C.steel,.82); }
+function drawKettle(steam=0){ rect(14,18,4,4,C.kettle,.96); px(15,17,C.kettle,.95); px(16,17,C.kettle,.95); px(18,19,C.steel2,.9); px(17,20,C.dark,.18); if(steam>0){ px(15,16,C.paper,.12*steam); px(16,15,C.paper,.1*steam); px(15,14,C.paper,.08*steam); } }
+function drawMug(x,y,warm=1){ rect(x,y,2,3,C.mug,.95); px(x+2,y+1,C.mug,.7); px(x+1,y,C.paper,.25); glow(x+1,y+2,3,2,C.sodiumGlow,.04*warm); }
+function drawShelf(){ rect(6,12,10,1,C.steel,.72); rect(7,10,1,2,C.steel2,.62); rect(14,10,1,2,C.steel2,.62); rect(8,9,2,3,C.paper,.82); rect(11,8,2,4,C.paper,.7); px(13,10,C.plant,.85); }
+function drawChair(){ rect(31,31,5,1,C.wood,.9); rect(32,26,3,5,C.wood2,.84); rect(31,32,1,7,C.wood2,.74); rect(35,32,1,7,C.wood2,.74); }
+function drawWindowLeak(frame){ rect(39,9,7,10,C.dark,.95); rect(40,10,5,8,C.cold,.14); for(let i=0;i<5;i++){ const y=10+i*2; px(44,y,C.cold2,.08); if(i%2===0) px(43,y+1,C.cold,.06); } glow(42,15,9,8,C.cold,.08); for(let i=0;i<4;i++){ const rx = 40 + ((frame*0.08+i)%4); px(rx,17+i,C.cold2,.05); } }
+function drawFloorReflections(){ for(let x=10;x<34;x++){ if(x%3===0) px(x,39,C.sodium,.03); if(x%5===0) px(x,40,C.cold2,.025);} glow(18,36,10,5,C.sodiumGlow,.08); }
+function render(frame){ clear(); const t=frame/TOTAL; drawBase(); drawCounter(); drawShelf(); drawChair(); drawWindowLeak(frame); drawFloorReflections();
+  const pulse=(Math.sin(t*Math.PI*4)+1)/2; glow(18,14,12,7,C.sodiumGlow,.12+.03*pulse); glow(22,18,16,10,C.sodium,.05+.02*pulse);
+  drawKettle(.7+.3*pulse); drawMug(9,19,1); drawMug(20,20,.7);
+  rect(19,23,3,2,C.paper,.88); rect(23,24,2,2,C.paper,.6);
+  const walk=Math.min(1,t/.42), settle=Math.max(0,(t-.45)/.55); const x=8+walk*10.5; const bob=Math.sin(t*Math.PI*6)*.08; drawWoman(x,20,'left',bob,0.98);
+  if(t>.5){ glow(16,21,5,4,C.sodiumGlow,.04+.05*settle); px(15,18,C.paper,.07+.06*settle); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor(((ts-start)/1000%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

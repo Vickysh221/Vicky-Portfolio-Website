@@ -145,7 +145,7 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
   if (hasAiInteriorSystemCaseStudy(route, slideIndex)) return true;
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
-  if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 8) return true;
+  if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 2) return true;
   return `${route}:${slideIndex}` in sectionMap;
 }
 

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hebe Unspoken Corridor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#090c12; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#090c12; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const GW = 48, GH = 48, PX = 16, DUR = 10, FPS = 30, TOTAL = DUR * FPS;
+function fit(){ const s = Math.max(1, Math.floor(Math.min(innerWidth/cv.width, innerHeight/cv.height))); cv.style.width = `${cv.width*s}px`; cv.style.height = `${cv.height*s}px`; }
+addEventListener('resize', fit); fit();
+const C = {
+  bg:'#090c12', bg2:'#0f141c', wall:'#171d28', wall2:'#202837', floor:'#212938', floor2:'#283243',
+  sodium:'#d5a66d', sodiumGlow:'#f2cf9b', blue:'#8ea8d4', blue2:'#bfd0ef', dark:'#0a0d12',
+  metal:'#697487', metal2:'#8d98ab', paper:'#d3c9b7', wood:'#5a4538', wood2:'#786050',
+  mug:'#cfc7bc', red:'#b36d74', plant:'#6d8d72', lamp:'#f0d7ab', glass:'#9db6d4'
+};
+const girl = [
+[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,2,2,2,2,1,1],[1,2,2,3,2,2,2,1],[1,2,2,2,2,2,2,1],[0,1,2,2,2,2,1,0],[0,4,4,1,1,4,4,0],[4,4,5,5,5,5,4,4],[0,5,5,5,5,5,5,0],[0,5,0,5,5,0,5,0],[5,0,0,0,0,0,0,5],[5,0,0,0,0,0,0,5]];
+const PAL = {1:'#2f3646',2:'#f1e8dc',3:'#111111',4:'#7d6979',5:'#d6b2ba'};
+function px(x,y,c,a=1){ ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX, Math.round(y)*PX, PX, PX); ctx.globalAlpha=1; }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,0.18); }
+function ease(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2 }
+function drawRect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=Math.floor(cy-ry); y<=cy+ry; y++) for(let x=Math.floor(cx-rx); x<=cx+rx; x++){ const v = a - Math.abs(cx-x)/(rx*9) - Math.abs(cy-y)/(ry*8); if(v>0) px(x,y,c,v); } }
+function drawGirl(x,y,flip=false,bob=0,a=1){ for(let gy=0;gy<girl.length;gy++) for(let gx=0;gx<girl[gy].length;gx++){ const v=girl[gy][gx]; if(!v) continue; const sx=flip?(girl[gy].length-1-gx):gx; px(x+sx,y+gy+bob,PAL[v],a);} }
+function drawMailboxWall(){ drawRect(0,8,48,26,C.wall,.98); drawRect(0,34,48,14,C.floor,.98); for(let x=3;x<19;x+=4){ drawRect(x,14,3,3,C.metal,.85); drawRect(x,18,3,3,C.metal2,.78); } drawRect(24,11,10,19,C.dark,.95); drawRect(25,12,8,17,C.wall2,.85); drawRect(26,13,6,2,C.red,.45); drawRect(36,10,5,3,C.metal2,.9); glow(38,11,4,3,C.sodiumGlow,.16); for(let y=36;y<46;y++) for(let x=0;x<48;x++) if((x+y)%3===0) px(x,y,C.sodium,.03); }
+function drawKitchen(){ drawRect(0,8,48,24,C.wall,.98); drawRect(0,32,48,16,C.floor2,.98); drawRect(6,24,18,4,C.wood,.95); drawRect(6,28,18,4,C.wood2,.95); drawRect(28,18,6,12,C.metal2,.9); drawRect(29,19,4,4,C.glass,.35); drawRect(36,20,6,10,C.metal,.9); drawRect(39,18,1,2,C.sodium,.8); drawRect(11,21,2,3,C.mug,.95); drawRect(14,20,3,4,C.metal2,.9); drawRect(14,19,2,1,C.dark,.8); drawRect(19,20,3,4,C.paper,.95); drawRect(9,34,5,8,C.wood2,.85); drawRect(10,33,3,2,C.wood,.95); glow(40,15,8,7,C.sodiumGlow,.12); }
+function drawDeskRoom(){ drawRect(0,7,48,26,C.wall,.98); drawRect(0,33,48,15,C.floor,.98); drawRect(28,11,14,13,C.dark,.95); drawRect(29,12,12,11,C.blue,.18); for(let y=12;y<23;y++) px(34,y,C.blue2,.06); drawRect(6,28,17,3,C.wood,.96); drawRect(6,31,17,1,C.wood2,.96); drawRect(7,24,4,4,C.paper,.92); drawRect(12,25,5,3,C.paper,.82); drawRect(19,23,2,5,C.lamp,.95); glow(20,22,8,6,C.lamp,.16); drawRect(24,18,5,10,C.metal2,.85); drawRect(25,19,3,8,C.glass,.28); drawRect(36,31,6,8,C.wood2,.85); }
+function drawSilentRoom(){ drawRect(0,8,48,25,C.wall,.98); drawRect(0,33,48,15,C.floor2,.98); drawRect(8,27,14,3,C.wood,.95); drawRect(9,22,3,5,C.paper,.9); drawRect(13,23,2,4,C.paper,.8); drawRect(18,20,2,7,C.lamp,.95); glow(19,21,10,8,C.lamp,.17); drawRect(29,12,12,14,C.dark,.95); drawRect(30,13,10,12,C.blue,.16); drawRect(4,16,4,8,C.metal2,.75); drawRect(5,17,2,6,C.glass,.18); drawRect(34,35,8,6,C.wood2,.82); for(let x=30;x<40;x++) px(x,25,C.blue2,.05); }
+function drawLyricsDust(frame){ for(let i=0;i<8;i++){ const x = 10 + (i*4 + frame*.08)%28; const y = 13 + (i*3)%10; px(x,y,C.paper,.08); if(i%2===0) px(x+1,y+1,C.blue2,.06);} }
+function render(frame){ clear(); const t=frame/TOTAL; const phase=t<.25?0:t<.5?1:t<.75?2:3; const local = phase===0?t/.25:phase===1?(t-.25)/.25:phase===2?(t-.5)/.25:(t-.75)/.25; const e=ease(local);
+  if(phase===0){ drawMailboxWall(); glow(38,11,6,5,C.sodium,.18); drawLyricsDust(frame); const gx = 8 + e*8; drawGirl(gx,23,false,Math.sin(local*Math.PI*4)*.15); drawRect(20,36,3,5,C.paper,.9); }
+  if(phase===1){ drawKitchen(); drawLyricsDust(frame); const gx = 13 + Math.sin(local*Math.PI)*1.4; drawGirl(gx,21,true,Math.sin(local*Math.PI*6)*.1); drawRect(16,22,2,3,C.mug,.95); glow(16,21,4,3,C.sodiumGlow,.08); }
+  if(phase===2){ drawDeskRoom(); drawLyricsDust(frame); const gx = 16 + e*4; drawGirl(gx,20,true,Math.sin(local*Math.PI*5)*.08); drawRect(9,25,4,2,C.paper,.9); drawRect(15,26,2,2,C.red,.55); glow(35,18,9,8,C.blue2,.12); }
+  if(phase===3){ drawSilentRoom(); drawLyricsDust(frame); const gx = 16 + Math.sin(local*Math.PI)*.8; drawGirl(gx,21,true,Math.sin(local*Math.PI*3)*.05,.96); glow(19,21,12,10,C.lamp,.14); glow(34,18,10,9,C.blue,.08); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor(((ts-start)/1000%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

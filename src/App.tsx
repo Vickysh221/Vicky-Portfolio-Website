@@ -12,6 +12,7 @@ import PageTemplate from './pages/PageTemplate';
 import SubPageCarousel from './pages/SubPageCarousel';
 import { PROJECT_COLORS } from './projectRegistry';
 import { SceneManager } from './three/SceneManager';
+import CompanionsSceneGalleryPage from './musikNacht/CompanionsSceneGalleryPage';
 
 export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
@@ -31,6 +32,7 @@ export default function App() {
     ? locationState.focusProjectRoute
     : null;
   const isHome = location.pathname === '/';
+  const isMusikNachtEmbedRoute = location.pathname === '/musik-nacht-scenes-embed';
   const isProjectRootPath = isProjectRootRoute(location.pathname);
   const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname] && !isProjectRootPath;
 
@@ -82,6 +84,22 @@ export default function App() {
     if (!isHome) return;
     dispatchHomeAction('background-activate');
   };
+
+  if (isMusikNachtEmbedRoute) {
+    return (
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100vh',
+          overflow: 'hidden',
+          background: '#050403',
+        }}
+      >
+        <CompanionsSceneGalleryPage />
+      </div>
+    );
+  }
 
   return (
     <div

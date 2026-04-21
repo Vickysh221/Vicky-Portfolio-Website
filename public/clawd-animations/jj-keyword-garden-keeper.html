@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JJ Keyword Garden Keeper</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#0a0e12; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#0a0e12; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, DUR=10, FPS=30, TOTAL=DUR*FPS;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(innerWidth/cv.width,innerHeight/cv.height))); cv.style.width=`${cv.width*s}px`; cv.style.height=`${cv.height*s}px`; } addEventListener('resize',fit); fit();
+const C={ bg:'#0a0e12', bg2:'#111722', wall:'#1a222c', wall2:'#202a35', floor:'#293340', floor2:'#324051', amber:'#e2b776', amber2:'#f5ddb0', rain:'#8ea8c6', glass:'#a8c0db', leaf:'#7d9b74', flower:'#c98d90', paper:'#dcc7a6', wood:'#725748', wood2:'#8a6a58', dark:'#0d1218', cream:'#f3eee5' };
+const a=[
+[0,1,1,1,1,0],[1,1,2,2,1,1],[1,2,2,3,2,1],[1,2,2,2,2,1],[0,1,2,2,1,0],[4,4,1,1,4,4],[4,5,5,5,5,4],[0,5,5,5,5,0],[5,0,5,5,0,5],[5,0,0,0,0,5]
+], b=[
+[0,1,1,1,0,0],[1,1,2,1,1,0],[1,2,2,3,1,1],[1,2,2,2,2,1],[0,1,2,2,1,0],[4,1,1,1,4,0],[4,5,5,5,5,4],[0,5,5,5,5,0],[5,0,5,5,0,5],[5,0,0,0,0,5]
+];
+const P={1:'#37475d',2:'#f4eee6',3:'#111111',4:'#846f82',5:'#d8b9bc'};
+function px(x,y,c,a=1){ ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX,Math.round(y)*PX,PX,PX); ctx.globalAlpha=1; }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,.16); }
+function ease(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2 }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=cy-ry|0;y<=cy+ry;y++) for(let x=cx-rx|0;x<=cx+rx;x++){ const v=a-Math.abs(cx-x)/(rx*8)-Math.abs(cy-y)/(ry*8); if(v>0) px(x,y,c,v);} }
+function person(data,x,y,flip=false,bob=0,a=1){ for(let gy=0;gy<data.length;gy++) for(let gx=0;gx<data[gy].length;gx++){ const v=data[gy][gx]; if(!v) continue; const sx=flip?(data[gy].length-1-gx):gx; px(x+sx,y+gy+bob,P[v],a);} }
+function florist(){ rect(0,9,48,24,C.wall,.98); rect(0,33,48,15,C.floor,.98); rect(6,15,14,13,C.glass,.16); rect(7,16,12,11,C.dark,.92); rect(22,14,7,14,C.wood,.95); rect(23,15,5,12,C.wood2,.95); rect(32,17,6,11,C.wood2,.9); for(let i=0;i<4;i++){ rect(32+i,28-i,1,3+i,C.leaf,.9); px(33+i,26-i,C.flower,.9);} rect(11,31,5,8,C.wood2,.85); rect(4,35,6,7,C.wood,.84); rect(5,34,4,1,C.paper,.95); glow(24,12,9,6,C.amber2,.16); for(let x=0;x<48;x++) if(x%3===0) px(x,41,C.rain,.05); }
+function bookstore(){ rect(0,8,48,25,C.wall2,.98); rect(0,33,48,15,C.floor2,.98); rect(5,14,8,11,C.wood2,.94); for(let y=15;y<24;y+=2){ rect(6,y,6,1,C.paper,.85); px(7,y,C.amber,.4); }
+ rect(18,27,10,2,C.wood,.96); rect(20,24,2,3,C.wood2,.9); rect(24,24,2,3,C.wood2,.9); rect(21,21,2,3,C.amber2,.95); glow(22,20,7,5,C.amber2,.15); rect(34,20,3,8,C.wood2,.88); rect(35,17,1,3,C.rain,.9); rect(39,13,6,14,C.glass,.16); rect(40,14,4,12,C.dark,.9); }
+function discovery(){ rect(0,8,48,24,C.wall,.98); rect(0,32,48,16,C.floor,.98); rect(7,28,34,2,C.wood,.95); rect(12,22,10,6,C.wood2,.92); rect(27,22,8,6,C.wood2,.92); rect(23,20,3,5,C.paper,.92); rect(24,19,1,1,C.flower,.9); rect(16,24,2,2,C.cream,.95); rect(30,24,2,2,C.cream,.95); rect(6,13,10,12,C.glass,.15); rect(32,12,10,13,C.glass,.15); glow(24,18,12,8,C.amber2,.14); for(let x=10;x<38;x+=5) px(x,31,C.rain,.04); }
+function warmNook(){ rect(0,8,48,24,C.wall2,.98); rect(0,32,48,16,C.floor2,.98); rect(5,13,12,14,C.glass,.16); rect(6,14,10,12,C.dark,.92); rect(26,26,12,2,C.wood,.95); rect(28,22,8,4,C.wood2,.92); rect(29,20,1,2,C.amber2,.95); rect(33,20,1,2,C.amber2,.95); rect(21,18,3,8,C.wood2,.88); rect(22,15,1,3,C.rain,.86); rect(12,29,5,9,C.wood2,.84); for(let i=0;i<4;i++){ rect(8+i*2,28-i,1,3+i,C.leaf,.9); px(9+i*2,26-i,C.flower,.9);} glow(31,19,12,8,C.amber2,.18); glow(11,18,9,8,C.rain,.08); }
+function dust(frame){ for(let i=0;i<10;i++){ const x=6+(i*5+frame*.07)%36, y=11+(i*2)%16; px(x,y,C.paper,.07); if(i%3===0) px(x+1,y+1,C.amber,.05); } }
+function render(frame){ clear(); const t=frame/TOTAL; const ph=t<.25?0:t<.5?1:t<.75?2:3; const local=ph===0?t/.25:ph===1?(t-.25)/.25:ph===2?(t-.5)/.25:(t-.75)/.25; const e=ease(local);
+ if(ph===0){ florist(); dust(frame); person(a,11+e*4,22,false,Math.sin(local*Math.PI*6)*.1); rect(18,23,2,5,C.paper,.94); }
+ if(ph===1){ bookstore(); dust(frame); person(a,18,22,true,Math.sin(local*Math.PI*5)*.08); rect(34,21,2,5,C.paper,.92); }
+ if(ph===2){ const s=Math.max(0,1-Math.abs(local-.55)/.28); discovery(); dust(frame); glow(24,20,13,9,C.amber,s*.16); person(a,14+e*2,22,false,0,.98); person(b,29-e*1.5,22,true,0,.92); }
+ if(ph===3){ warmNook(); dust(frame); person(a,24,22,false,Math.sin(local*Math.PI*3)*.05,.98); person(b,31,22,true,Math.sin(local*Math.PI*3)*.05,.96); glow(31,19,14,10,C.amber2,.18); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor(((ts-start)/1000%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

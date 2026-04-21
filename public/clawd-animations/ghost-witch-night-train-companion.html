@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Night Train Ghost Witch Sleeping Companion</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080a0f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: monospace;
+    }
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      display: block;
+      background: #080a0f;
+    }
+    .meta {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: .08em;
+      line-height: 1.5;
+      text-align: right;
+    }
+    .meta summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      padding: 3px 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      background: rgba(4, 7, 12, 0.22);
+      color: rgba(255,255,255,0.22);
+      backdrop-filter: blur(6px);
+      transition: color .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .meta summary::-webkit-details-marker {
+      display: none;
+    }
+    .meta summary:hover {
+      color: rgba(255,255,255,0.4);
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(4, 7, 12, 0.34);
+    }
+    .meta[open] summary {
+      color: rgba(255,255,255,0.5);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .meta-panel {
+      max-width: min(42vw, 340px);
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(4, 7, 12, 0.36);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+    }
+    .meta-panel .meta-id {
+      color: rgba(255,255,255,0.24);
+      font-size: 9px;
+      word-break: break-word;
+    }
+    .meta-panel .meta-flow {
+      margin-top: 4px;
+      color: rgba(255,255,255,0.34);
+    }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<details class="meta">
+  <summary>debug</summary>
+  <div class="meta-panel">
+    <div class="meta-id">ghost-witch × 夜车 × sleeping companion</div>
+    <div class="meta-flow">station → moving train → discovery → stay beside</div>
+  </div>
+</details>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const GW = 48, GH = 48, PX = 16;
+const DUR = 10, FPS = 30, TOTAL = DUR * FPS;
+
+function fit() {
+  const s = Math.max(1, Math.floor(Math.min(window.innerWidth / cv.width, window.innerHeight / cv.height)));
+  cv.style.width = `${cv.width * s}px`;
+  cv.style.height = `${cv.height * s}px`;
+}
+window.addEventListener('resize', fit); fit();
+
+const C = {
+  bg: '#080a0f',
+  bg2: '#0e1320',
+  stationDark: '#101621',
+  platform: '#1a2230',
+  platform2: '#222c3b',
+  rail: '#334052',
+  post: '#3d4658',
+  sign: '#adb7cf',
+  signText: '#2d3340',
+  cold: '#94b8e8',
+  tungsten: '#f0c78a',
+  tungstenSoft: '#c48b4e',
+  tungstenGlow: '#f6d8b2',
+  moon: '#bfd2f2',
+  moonGlow: '#6f83b6',
+  tree: '#10151d',
+  tree2: '#171e29',
+  trainWall: '#111925',
+  trainWall2: '#172130',
+  windowFrame: '#415067',
+  seat: '#283142',
+  seatEdge: '#364157',
+  seatSoft: '#4b5971',
+  bottle: '#5f8177',
+  bottleLight: '#96b6aa',
+  key: '#d7be82',
+  zzz: '#d5dcf4',
+  ghost1: '#C58586',
+  ghost2: '#F4F1EB',
+  ghost3: '#F0B9C6',
+  ghost4: '#111111',
+  ghost5: '#D7D4CF',
+  ghost6: '#E26B73'
+};
+
+const ghostWitchData = [
+  [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],
+  [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+  [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [0,6,6,6,6,6,6,0,6,6,6,6,6,6,6,0],
+  [0,0,0,2,2,2,2,2,2,2,2,2,2,0,0,0],
+  [0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
+  [0,2,2,2,2,4,2,2,2,2,4,2,2,2,2,0],
+  [0,2,2,3,2,2,2,4,2,2,2,3,2,2,2,0],
+  [0,2,2,2,2,2,2,2,4,2,2,2,2,2,2,0],
+  [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0],
+  [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0],
+  [0,0,2,2,5,2,0,2,2,0,5,2,2,2,0,0],
+  [0,0,0,5,2,0,0,0,0,0,0,2,5,0,0,0]
+];
+
+const ghostFeatherSleeperData = [
+  [0,0,0,0,0,0,0,8,8,0,0,0,0,0,0,0],
+  [0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0],
+  [0,0,0,0,1,1,1,2,2,2,1,1,1,0,0,0],
+  [0,0,0,1,1,1,2,2,2,2,2,1,1,1,0,0],
+  [0,0,1,1,1,2,2,2,2,2,2,2,1,1,1,0],
+  [0,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1],
+  [0,3,3,3,3,3,3,6,3,3,3,3,3,3,3,0],
+  [0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0],
+  [0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0],
+  [0,4,4,5,4,6,4,4,6,4,4,5,4,4,4,0],
+  [0,4,4,4,4,4,6,4,4,6,4,4,4,4,4,0],
+  [0,4,4,4,4,4,4,6,4,4,4,4,4,4,4,0],
+  [0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0],
+  [0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0],
+  [0,0,4,4,7,4,0,4,4,0,7,4,4,4,0,0],
+  [0,0,0,7,4,0,0,0,0,0,0,4,7,0,0,0]
+];
+
+function px(x, y, color, a = 1) {
+  ctx.globalAlpha = a;
+  ctx.fillStyle = color;
+  ctx.fillRect(Math.round(x) * PX, Math.round(y) * PX, PX, PX);
+  ctx.globalAlpha = 1;
+}
+function clear() {
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) if ((x + y) % 2 === 0) px(x, y, C.bg2, 0.2);
+}
+function lerp(a,b,t){return a+(b-a)*t}
+function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+
+function drawMoon(x,y,r,a=1){
+  ctx.globalAlpha = a;
+  ctx.fillStyle = C.moon;
+  ctx.beginPath(); ctx.arc(x*PX, y*PX, r*PX, 0, Math.PI*2); ctx.fill();
+  ctx.globalAlpha = a*0.28;
+  ctx.fillStyle = C.moonGlow;
+  ctx.beginPath(); ctx.arc(x*PX, y*PX, r*PX*1.9, 0, Math.PI*2); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+function drawGhost(x, y, opts = {}) {
+  const facing = opts.facing || 'right';
+  const sleep = opts.sleep || false;
+  const bob = opts.bob || 0;
+  const alpha = opts.alpha ?? 1;
+  const ghostScale = opts.scale || 1;
+  const tailLift = opts.tailLift || 0;
+  const variant = opts.variant || 'witch';
+  const eyeY = sleep ? 10 : 9;
+  const data = variant === 'feather-sleeper' ? ghostFeatherSleeperData : ghostWitchData;
+  const palette = variant === 'feather-sleeper'
+    ? { 1: '#2F3E63', 2: '#C38A8A', 3: '#E96D83', 4: '#F4F1E9', 5: '#F4C3D3', 6: '#111111', 7: '#D9D5CF', 8: '#D7D9F4' }
+    : { 1: C.ghost1, 2: C.ghost2, 3: C.ghost3, 4: C.ghost4, 5: C.ghost5, 6: C.ghost6 };
+
+  for (let gy = 0; gy < data.length; gy++) {
+    for (let gx = 0; gx < data[gy].length; gx++) {
+      const val = data[gy][gx];
+      if (!val) continue;
+      const sx = facing === 'left' ? (data[gy].length - 1 - gx) : gx;
+      for (let sy = 0; sy < ghostScale; sy++) {
+        for (let sx2 = 0; sx2 < ghostScale; sx2++) {
+          px(x + sx * ghostScale + sx2, y + gy * ghostScale + sy + bob, palette[val], alpha);
+        }
+      }
+    }
+  }
+  if (sleep) {
+    const eye1 = facing === 'left' ? x + 10 * ghostScale : x + 5 * ghostScale;
+    const eye2 = facing === 'left' ? x + 5 * ghostScale : x + 10 * ghostScale;
+    const eyeColor = variant === 'feather-sleeper' ? '#111111' : C.ghost4;
+    px(eye1, y + eyeY * ghostScale + bob, eyeColor, alpha);
+    px(eye2, y + eyeY * ghostScale + bob, eyeColor, alpha);
+  }
+  if (variant !== 'feather-sleeper') {
+    px(x + (facing === 'left' ? 1 : 14) * ghostScale, y + (13 - tailLift) * ghostScale + bob, C.ghost2, 0.9 * alpha);
+  }
+}
+
+function drawZZZ(x, y, phase) {
+  const drift = Math.sin(phase * Math.PI * 2) * 0.4;
+  px(x, y + drift, C.zzz, 0.85);
+  px(x + 1, y + drift, C.zzz, 0.85);
+  px(x + 2, y + 1 + drift, C.zzz, 0.85);
+  px(x + 4, y - 2 + drift, C.zzz, 0.75);
+  px(x + 5, y - 2 + drift, C.zzz, 0.75);
+  px(x + 6, y - 1 + drift, C.zzz, 0.75);
+  px(x + 8, y - 4 + drift, C.zzz, 0.62);
+  px(x + 9, y - 4 + drift, C.zzz, 0.62);
+  px(x + 10, y - 3 + drift, C.zzz, 0.62);
+}
+
+function drawStationBase() {
+  for (let y = 36; y < GH; y++) for (let x = 0; x < GW; x++) px(x, y, (x + y) % 2 ? C.platform : C.platform2, 0.98);
+  for (let x = 0; x < GW; x++) px(x, 35, C.rail, 0.9);
+  for (let x = 3; x < 45; x++) if (x % 5 !== 0) px(x, 41, C.rail, 0.22);
+}
+function drawStationBench() {
+  for (let x = 28; x < 40; x++) px(x, 33, C.post, 0.8);
+  for (let x = 29; x < 39; x++) px(x, 31, C.sign, 0.55);
+  for (let x = 29; x < 39; x++) px(x, 32, C.post, 0.42);
+  px(31,30,C.tungsten,0.28); px(35,30,C.tungsten,0.28);
+}
+function drawStationLamp() {
+  for (let y = 7; y < 28; y++) px(39, y, C.post, 0.86);
+  for (let x = 36; x < 43; x++) for (let y = 7; y < 10; y++) px(x, y, C.sign, 0.75);
+  for (let y = 10; y < 18; y++) for (let x = 34; x < 45; x++) {
+    const a = 0.08 - Math.abs(39 - x) * 0.01 - (y - 10) * 0.006;
+    if (a > 0) px(x, y, C.tungsten, a);
+  }
+}
+function drawStationSign() {
+  for (let y = 12; y < 32; y++) px(10, y, C.post, 0.95);
+  for (let y = 10; y < 17; y++) for (let x = 11; x < 24; x++) px(x, y, C.sign, 0.96);
+  px(13,12,C.signText,0.8); px(14,12,C.signText,0.8); px(16,12,C.signText,0.8); px(17,12,C.signText,0.8);
+  px(13,14,C.signText,0.8); px(14,14,C.signText,0.8); px(18,14,C.signText,0.8); px(19,14,C.signText,0.8);
+}
+function drawGroundReflections(moonBoost = 1, warmBoost = 1) {
+  for (let i = 0; i < 14; i++) {
+    px(5 + i*2, 39 + (i%2), C.cold, 0.05 * moonBoost);
+    px(6 + i*2, 40 + (i%3===0?1:0), C.moon, 0.05 * moonBoost);
+    if (i % 4 === 0) px(6 + i*2, 38, C.tungsten, 0.04 * warmBoost);
+  }
+  for (let y = 36; y < 42; y++) {
+    for (let x = 33; x < 44; x++) {
+      const a = (0.06 - Math.abs(39 - x) * 0.008 - Math.abs(38 - y) * 0.01) * warmBoost;
+      if (a > 0) px(x, y, C.tungstenSoft, a);
+    }
+  }
+  for (let y = 36; y < 43; y++) {
+    for (let x = 0; x < 32; x++) {
+      const a = (0.05 - Math.abs(15 - x) * 0.003 - Math.abs(39 - y) * 0.012) * moonBoost;
+      if (a > 0) px(x, y, C.moon, a);
+    }
+  }
+}
+function drawPlatformBench() {
+  for (let x = 28; x < 38; x++) px(x, 31, C.post, 0.72);
+  for (let x = 27; x < 39; x++) px(x, 32, C.sign, 0.62);
+  for (let y = 33; y < 36; y++) { px(29, y, C.post, 0.66); px(36, y, C.post, 0.66); }
+}
+function drawPlatformLamp(warmBoost = 1) {
+  for (let y = 8; y < 29; y++) px(40, y, C.post, 0.85);
+  for (let x = 38; x < 43; x++) for (let y = 6; y < 10; y++) px(x, y, C.tungsten, 0.72 * warmBoost);
+  for (let x = 34; x < 46; x++) for (let y = 9; y < 22; y++) {
+    const a = (0.14 - Math.abs(40 - x) * 0.012 - (y - 9) * 0.008) * warmBoost;
+    if (a > 0) px(x, y, C.tungstenSoft, a);
+  }
+  for (let x = 35; x < 45; x++) for (let y = 8; y < 16; y++) {
+    const a = (0.1 - Math.abs(40 - x) * 0.013 - Math.abs(10 - y) * 0.015) * warmBoost;
+    if (a > 0) px(x, y, C.tungstenGlow, a);
+  }
+}
+
+function drawMoonReflectionPool(strength = 1) {
+  for (let y = 34; y < 42; y++) {
+    for (let x = 24; x < 46; x++) {
+      const a = (0.065 - Math.abs(37 - x) * 0.004 - Math.abs(37 - y) * 0.01) * strength;
+      if (a > 0) px(x, y, C.moon, a);
+    }
+  }
+  for (let y = 35; y < 40; y++) {
+    for (let x = 28; x < 42; x++) {
+      const a = (0.05 - Math.abs(36 - x) * 0.005 - Math.abs(36 - y) * 0.012) * strength;
+      if (a > 0) px(x, y, C.cold, a);
+    }
+  }
+  for (let y = 36; y < 41; y++) {
+    for (let x = 30; x < 40; x++) {
+      const a = (0.035 - Math.abs(35 - x) * 0.006 - Math.abs(37 - y) * 0.014) * strength;
+      if (a > 0) px(x, y, '#ffffff', a * 0.35);
+    }
+  }
+}
+function drawArrivalHint(p) {
+  const x = lerp(44, 34, p);
+  for (let i = 0; i < 4; i++) px(x + i, 30 + (i%2), C.cold, 0.18 + p*0.18);
+}
+
+function drawTrainInterior() {
+  for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) px(x, y, y < 34 ? ((x+y)%2?C.trainWall:C.trainWall2) : ((x+y)%2?C.platform:C.platform2), 0.98);
+  // upper carriage strip + warm bulbs
+  for (let x = 0; x < GW; x++) px(x, 4, C.windowFrame, 0.58);
+  for (let x = 8; x < 41; x += 10) {
+    px(x, 5, C.tungsten, 0.82); px(x+1, 5, C.tungsten, 0.82);
+    px(x, 6, C.tungstenSoft, 0.46); px(x+1, 6, C.tungstenSoft, 0.46);
+  }
+  for (let x = 4; x < 44; x++) { px(x, 8, C.windowFrame, 0.95); px(x, 26, C.windowFrame, 0.95); }
+  for (let y = 8; y < 27; y++) { px(4, y, C.windowFrame, 0.95); px(43, y, C.windowFrame, 0.95); }
+  for (let y = 9; y < 26; y++) px(24, y, C.windowFrame, 0.8);
+  // luggage rack hint
+  for (let x = 7; x < 41; x++) px(x, 11, C.windowFrame, 0.24);
+  // seats
+  for (let x = 7; x < 18; x++) for (let y = 31; y < 40; y++) px(x, y, (x+y)%2?C.seat:C.seatEdge, 0.97);
+  for (let x = 29; x < 40; x++) for (let y = 31; y < 40; y++) px(x, y, (x+y)%2?C.seat:C.seatEdge, 0.97);
+  for (let x = 7; x < 18; x++) px(x, 30, C.seatSoft, 0.9);
+  for (let x = 29; x < 40; x++) px(x, 30, C.seatSoft, 0.9);
+  // aisle reflection / floor sheen
+  for (let x = 19; x < 29; x++) {
+    px(x, 37, C.cold, 0.06);
+    if (x % 3 === 0) px(x, 38, C.tungstenSoft, 0.055);
+    if (x % 4 === 1) px(x, 36, C.tungstenGlow, 0.03);
+  }
+}
+
+function drawExteriorMoonReflections(frame, strength = 1) {
+  for (let i = 0; i < 6; i++) {
+    const sweep = 47 - ((frame * 0.7 + i * 8) % 60);
+    for (let y = 12; y < 26; y++) {
+      const a = (0.06 - i * 0.005 - Math.abs(18 - y) * 0.004) * strength;
+      if (a > 0) {
+        px(sweep, y, C.moon, a);
+        if (y % 3 === 0) px(sweep - 1, y, C.cold, a * 0.7);
+      }
+    }
+  }
+}
+function drawPassingLights(frame, strength=1) {
+  for (let i = 0; i < 6; i++) {
+    const bx = 50 - ((frame * 1.25 + i * 9) % 62);
+    const by = 11 + (i % 4) * 3;
+    for (let w = 0; w < 5; w++) {
+      px(bx + w, by, C.cold, (0.08 + w * 0.03) * strength);
+      px(bx + w, by + 1, C.moon, (0.05 + w * 0.02) * strength);
+    }
+  }
+}
+function drawTreeBands(frame, strength=0.18) {
+  for (let i = 0; i < 7; i++) {
+    const base = 48 - ((frame * 0.9 + i * 7) % 58);
+    for (let y = 10; y < 25; y++) {
+      const wobble = Math.sin(y * 0.7 + i) > 0 ? 0 : 1;
+      px(base + wobble, y, C.tree, strength);
+      if (y % 4 === 0) px(base - 1 + wobble, y, C.tree2, strength * 0.8);
+    }
+  }
+}
+function drawMoonWash(a) {
+  ctx.globalAlpha = a;
+  ctx.fillStyle = C.moon;
+  ctx.fillRect(6 * PX, 9 * PX, 36 * PX, 15 * PX);
+  ctx.globalAlpha = 1;
+}
+function drawCarriageLampSpill(strength=0.08, warmth=1) {
+  for (let y = 5; y < 19; y++) {
+    for (let x = 8; x < 40; x++) {
+      const a = (strength - Math.abs(24 - x) * 0.0045 - (y - 5) * 0.007) * warmth;
+      if (a > 0) px(x, y, C.tungsten, a);
+    }
+  }
+  for (let y = 6; y < 14; y++) {
+    for (let x = 11; x < 37; x++) {
+      const a = (strength * 0.82 - Math.abs(24 - x) * 0.006 - Math.abs(8 - y) * 0.012) * warmth;
+      if (a > 0) px(x, y, C.tungstenGlow, a);
+    }
+  }
+  for (let y = 19; y < 33; y++) {
+    for (let x = 9; x < 39; x++) {
+      const a = (strength * 0.48 - Math.abs(24 - x) * 0.0048 - Math.abs(22 - y) * 0.01) * warmth;
+      if (a > 0) px(x, y, C.tungstenSoft, a);
+    }
+  }
+}
+
+function drawDiscoverySpotlight(strength = 1) {
+  for (let y = 10; y < 34; y++) {
+    const spread = Math.floor((y - 10) * 0.46);
+    for (let x = 20 - spread; x < 20 + spread + 10; x++) {
+      const a = (0.11 - Math.abs(25 - x) * 0.0075 - (y - 10) * 0.0032) * strength;
+      if (a > 0) px(x, y, C.tungstenGlow, a);
+    }
+  }
+  for (let y = 16; y < 35; y++) {
+    for (let x = 16; x < 37; x++) {
+      const a = (0.075 - Math.abs(26 - x) * 0.0055 - Math.abs(25 - y) * 0.0045) * strength;
+      if (a > 0) px(x, y, C.tungsten, a);
+    }
+  }
+  for (let y = 20; y < 31; y++) {
+    for (let x = 21; x < 34; x++) {
+      const a = (0.035 - Math.abs(27 - x) * 0.006 - Math.abs(25 - y) * 0.007) * strength;
+      if (a > 0) px(x, y, '#fff4de', a);
+    }
+  }
+}
+function drawWindowReflections(frame, strength=0.08, warmRim=0.03) {
+  for (let i = 0; i < 5; i++) {
+    const rx = 8 + ((frame * 0.55 + i * 6) % 28);
+    for (let y = 10; y < 24; y += 3) {
+      px(rx, y, C.moon, strength);
+      if (y % 2 === 0) px(rx + 1, y + 1, C.cold, strength * 0.65);
+      if (y > 12) px(rx - 1, y, C.tungstenGlow, warmRim);
+    }
+  }
+}
+function drawSeatPocket(x, y, a=0.4) {
+  for (let xx = 0; xx < 5; xx++) px(x + xx, y, C.windowFrame, a);
+  for (let yy = 1; yy < 3; yy++) { px(x, y + yy, C.windowFrame, a * 0.8); px(x + 4, y + yy, C.windowFrame, a * 0.8); }
+}
+function drawSeatBayNook() {
+  for (let x = 25; x < 44; x++) px(x, 29, C.windowFrame, 0.26);
+  for (let y = 12; y < 30; y++) px(27, y, C.windowFrame, 0.28);
+  for (let y = 12; y < 30; y++) px(41, y, C.windowFrame, 0.22);
+  for (let x = 29; x < 41; x++) for (let y = 13; y < 18; y++) {
+    const a = 0.1 - Math.abs(35 - x) * 0.01 - (y - 13) * 0.01;
+    if (a > 0) px(x, y, C.tungsten, a);
+  }
+}
+function drawSharedLightPocket() {
+  for (let y = 21; y < 39; y++) {
+    for (let x = 22; x < 43; x++) {
+      const a = 0.11 - Math.abs(32 - x) * 0.007 - Math.abs(30 - y) * 0.009;
+      if (a > 0) px(x, y, C.tungstenSoft, a);
+    }
+  }
+  for (let y = 23; y < 35; y++) {
+    for (let x = 25; x < 40; x++) {
+      const a = 0.07 - Math.abs(32 - x) * 0.008 - Math.abs(28 - y) * 0.012;
+      if (a > 0) px(x, y, C.tungstenGlow, a);
+    }
+  }
+}
+function drawBottle(x, y, flash=0.1) {
+  px(x+1,y,C.bottleLight,0.75+flash*0.2);
+  px(x,y+1,C.bottleLight,0.65); px(x+1,y+1,C.bottle,0.95); px(x+2,y+1,C.bottleLight,0.7);
+  px(x,y+2,C.bottle,0.95); px(x+1,y+2,C.bottle,0.95); px(x+2,y+2,C.bottle,0.95);
+  px(x,y+3,C.bottle,0.95); px(x+1,y+3,C.bottle,0.95); px(x+2,y+3,C.bottle,0.95);
+}
+function drawTicket(x, y, a=0.9) {
+  for (let xx = 0; xx < 5; xx++) px(x + xx, y, C.sign, a);
+  for (let xx = 1; xx < 4; xx++) px(x + xx, y + 1, C.sign, a * 0.88);
+  px(x + 1, y, C.signText, a * 0.55);
+  px(x + 3, y, C.signText, a * 0.55);
+}
+function drawKey(x, y, swing=0) {
+  const s = Math.round(swing);
+  px(x+s,y,C.key,0.92); px(x+1+s,y,C.key,0.92); px(x+2+s,y,C.key,0.92); px(x+3+s,y,C.key,0.92);
+  px(x+2+s,y+1,C.key,0.82); px(x+4+s,y+1,C.key,0.82);
+}
+
+const anchors = {
+  phase1End: { x: 13, y: 20, facing: 'right', stance: 'stand', gaze: 'arrive' },
+  phase2Start: { x: 13, y: 20, facing: 'right', stance: 'seat', gaze: 'window' },
+  phase2End: { x: 14, y: 20, facing: 'left', stance: 'seat', gaze: 'neighbor' },
+  phase3Start: { x: 14, y: 20, facing: 'left', stance: 'seat', gaze: 'neighbor' },
+  phase3End: { x: 18, y: 21, facing: 'left', stance: 'seat', gaze: 'sleeping-ghost' },
+  phase4Start: { x: 18, y: 21, facing: 'left', stance: 'seat', gaze: 'sleeping-ghost' }
+};
+
+function render(frame) {
+  clear();
+  const t = frame / TOTAL;
+  const phase = t < 0.2 ? 0 : t < 0.5 ? 1 : t < 0.8 ? 2 : 3;
+  const local = phase === 0 ? (t / 0.2) : phase === 1 ? ((t - 0.2) / 0.3) : phase === 2 ? ((t - 0.5) / 0.3) : ((t - 0.8) / 0.2);
+  const e = ease(local);
+
+  if (phase === 0) {
+    drawMoon(38, 9, 2.1, 0.88);
+    drawStationBase();
+    drawGroundReflections(1.25, 1.2);
+    drawMoonReflectionPool(1.15);
+    drawStationSign();
+    drawPlatformBench();
+    drawPlatformLamp(1.2);
+    drawArrivalHint(Math.max(0, (local - 0.65) / 0.35));
+    const gx = lerp(12, anchors.phase1End.x, e);
+    const gy = 20 + Math.sin(local * Math.PI * 3) * 0.18;
+    drawGhost(gx, gy, { facing: local > 0.72 ? 'right' : 'forward', tailLift: local > 0.72 ? 1 : 0, bob: 0 });
+    drawKey(16, 37, Math.sin(local * Math.PI * 2) * 0.4);
+    drawTicket(30, 29, 0.64);
+  }
+
+  if (phase === 1) {
+    drawTrainInterior();
+    drawCarriageLampSpill(0.078 + Math.sin(local * Math.PI) * 0.014, 1.26);
+    drawMoonWash(0.065 + Math.sin(local * Math.PI) * 0.05);
+    drawWindowReflections(frame, 0.075, 0.05);
+    drawExteriorMoonReflections(frame, 0.7);
+    drawPassingLights(frame, 0.75);
+    drawTreeBands(frame, 0.18);
+    drawSeatPocket(11, 32, 0.22);
+    const gx = lerp(anchors.phase2Start.x, anchors.phase2End.x, e);
+    const gy = lerp(20, 21, e) + Math.sin(local * Math.PI * 8) * 0.22;
+    drawGhost(gx, gy, { facing: local < 0.82 ? 'right' : 'left', tailLift: 1, bob: 0 });
+    drawBottle(17, 35, 0.09);
+    drawTicket(12, 34, 0.55);
+  }
+
+  if (phase === 2) {
+    const discovery = Math.max(0, 1 - Math.abs(local - 0.55) / 0.28) * 0.82;
+    const sleeperBob = Math.sin(local * Math.PI * 2) * 0.05;
+    drawTrainInterior();
+    drawSeatBayNook();
+    drawCarriageLampSpill(0.084, 1.3);
+    drawMoonWash(0.085 + Math.sin(local * Math.PI) * 0.06);
+    drawWindowReflections(frame, 0.09, 0.055);
+    drawExteriorMoonReflections(frame, 0.9);
+    drawDiscoverySpotlight(discovery);
+    drawPassingLights(frame, 0.45);
+    drawTreeBands(frame, 0.14);
+    drawSeatPocket(33, 32, 0.22);
+    drawGhost(30, 22, { variant: 'feather-sleeper', facing: 'left', sleep: true, alpha: 0.97, bob: sleeperBob, tailLift: 0 });
+    for (let x = 30; x < 38; x++) px(x, 35, C.seatSoft, 0.26 + discovery * 0.08);
+    drawZZZ(35, 18, local);
+    const gx = lerp(anchors.phase3Start.x, anchors.phase3End.x, e);
+    const gy = lerp(21, 21.2, e) + Math.sin(local * Math.PI * 6) * 0.12;
+    drawGhost(gx, gy, { facing: 'left', tailLift: local > 0.4 ? 1 : 0, bob: 0 });
+    drawKey(18, 36, Math.sin(local * Math.PI * 3) * 0.35);
+    drawBottle(33, 34, 0.07 + discovery * 0.04);
+  }
+
+  if (phase === 3) {
+    const settle = Math.max(0, (local - 0.55) / 0.45);
+    const sleeperBob = Math.sin(local * Math.PI * 2) * 0.04;
+    drawTrainInterior();
+    drawSharedLightPocket();
+    drawCarriageLampSpill(0.056, 1.14);
+    drawMoonWash(0.08 + (1 - local) * 0.045);
+    drawWindowReflections(frame, 0.065, 0.04);
+    drawExteriorMoonReflections(frame, 0.78);
+    drawPassingLights(frame, 0.28);
+    drawTreeBands(frame, 0.11);
+    drawSeatPocket(33, 32, 0.18);
+    const gx = lerp(anchors.phase4Start.x, 19, e * 0.2);
+    const gy = lerp(21.2, 21.35, settle) + Math.sin(local * Math.PI * 4) * 0.05;
+    drawGhost(gx, gy, { facing: 'left', tailLift: 0, bob: 0 });
+    drawGhost(30, 22.2, { variant: 'feather-sleeper', facing: 'left', sleep: true, alpha: 0.97, bob: sleeperBob });
+    for (let x = 30; x < 38; x++) px(x, 35, C.seatSoft, 0.28);
+    drawZZZ(35, 18.2, local);
+    drawBottle(33, 34, 0.055);
+    drawTicket(11, 34, 0.34);
+    if (local > 0.7) {
+      const a = (local - 0.7) / 0.3;
+      drawMoon(38, 9, 2.1, 0.16 + a * 0.24);
+    }
+  }
+}
+
+let start = null;
+function loop(ts) {
+  if (!start) start = ts;
+  const elapsed = (ts - start) / 1000;
+  const frame = Math.floor((elapsed % DUR) * FPS);
+  render(frame);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

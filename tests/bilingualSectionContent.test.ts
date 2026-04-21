@@ -19,13 +19,13 @@ test('companions section-definition selector exposes the localized title path us
   assert.equal(resolveSectionTitle(overview.title, localize('zh')), '项目叙述');
   assert.equal(resolveSectionTitle(overview.title, localize('en')), 'Project Narrative');
 
-  const slide = getPersonalCompanionsSlideSectionDefinition(4);
-  assert.equal(slide.id, 'companions-slide-5');
-  assert.equal(resolveSectionTitle(slide.title, localize('en')), 'Never I');
+  const slide = getPersonalCompanionsSlideSectionDefinition(1);
+  assert.equal(slide.id, 'companions-slide-2');
+  assert.equal(resolveSectionTitle(slide.title, localize('en')), 'Live Scene Gallery');
 
   const fallback = getPersonalCompanionsSlideSectionDefinition(999);
   assert.equal(fallback.id, 'companions-slide-2');
-  assert.equal(resolveSectionTitle(fallback.title, localize('en')), 'Christmas Eve');
+  assert.equal(resolveSectionTitle(fallback.title, localize('en')), 'Live Scene Gallery');
 });
 
 test('agentic driving section-definition selector exposes the localized title path used by migrated factories', () => {

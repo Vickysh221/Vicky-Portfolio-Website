@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remember Summer Days 4-Scene MV</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background:#08131d;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      font-family:monospace;
+      overflow:hidden;
+    }
+    canvas{
+      image-rendering:pixelated;
+      image-rendering:crisp-edges;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 18px 54px rgba(0,0,0,.42);
+      background:#08131d;
+    }
+    .info{
+      margin-top:12px;
+      color:rgba(255,255,255,.48);
+      text-align:center;
+      font-size:11px;
+      line-height:1.6;
+      letter-spacing:.08em;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<div class="info">Remember Summer Days · 杏里<br>scene-variety 4-scene 10s MV</div>
+<script>
+const cv=document.getElementById('c');
+const ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, FPS=30, DUR=10;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(window.innerWidth/768,window.innerHeight/768))); cv.style.width=`${768*s}px`; cv.style.height=`${768*s}px`; }
+window.addEventListener('resize', fit); fit();
+
+const C={
+  blue1:'#6B98BD', blue2:'#8DB7CF', blue3:'#B9D7E7',
+  gold1:'#F2B57C', gold2:'#FFD6A2', pink1:'#D78692', rose:'#C56F82', lavender:'#8D7AA8', violet:'#5B587E',
+  sea1:'#63B5C2', sea2:'#3D8998', sea3:'#1E5A6D', sea4:'#163B49',
+  foam:'#EAF6F2', shimmer:'#FFF1D8',
+  sand1:'#F2E0BE', sand2:'#D8BF97', sand3:'#F7CA8F',
+  rail:'#F0F4F0', rail2:'#BCD0D2', post:'#DCE8E7',
+  umbrellaRed:'#E96E75', umbrellaLight:'#FFF4EA', umbrellaPole:'#D8E4E4', sun:'#FFD875', sunGlow:'#FFF0B8',
+  kiosk:'#6CC0B7', kiosk2:'#3E8E89', awning:'#F7E1C2', sign:'#F6A06D', glass:'#CFE5EE',
+  road:'#66737E', road2:'#55616A', line:'#EADFA9', palm:'#6B8E6D', palm2:'#4E6E56',
+  skin:'#E8B59F', hair:'#2F2634', dress:'#F5F0EA', dress2:'#D4CBC4', memory:'#FFF2D8',
+  heart:'#F08AA0', gull:'#F9FCFA', gull2:'#CCD8DA', shadow:'#8C7F7A'
+};
+
+function px(x,y,c,a=1){ if(x<0||x>=GW||y<0||y>=GH) return; ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX,Math.round(y)*PX,PX,PX); ctx.globalAlpha=1; }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function ease(t){ return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
+function mix(a,b,t){ return a+(b-a)*t; }
+
+function drawCloud(x,y,a,colA=C.gold2,colB=C.memory,scale=1){
+  const pts=[[0,1],[1,0],[2,0],[3,1],[4,1],[5,2],[6,2],[7,1],[8,1],[9,2],[10,3],[8,3],[7,4],[4,4],[3,3],[1,3]];
+  pts.forEach(([dx,dy],i)=>px(x+dx*scale,y+dy*scale,i%2===0?colA:colB,a));
+}
+
+function drawSun(cx,cy,r=3,alpha=1){
+  for(let y=-r-1;y<=r+1;y++) for(let x=-r-1;x<=r+1;x++){
+    const d=Math.sqrt(x*x+y*y);
+    if(d<=r+0.2) px(cx+x,cy+y,C.sun,alpha);
+    else if(d<=r+1) px(cx+x,cy+y,C.sunGlow,alpha*0.35);
+  }
+}
+
+function drawSky(mode, frame){
+  for(let y=0;y<24;y++) for(let x=0;x<GW;x++){
+    let col;
+    if(mode===1) col = y<9?((x+y)%2===0?C.blue1:C.blue2): y<16?((x+y)%2===0?C.blue2:C.blue3): ((x+y)%2===0?C.gold2:C.blue3);
+    else if(mode===2) col = y<7?C.blue2: y<14?((x+y)%2===0?C.gold1:C.pink1): y<20?((x+y)%2===0?C.gold2:C.gold1): ((x+y)%2===0?C.memory:C.gold2);
+    else if(mode===3) col = y<6?C.blue2: y<12?((x+y)%2===0?C.pink1:C.gold1): y<18?((x+y)%2===0?C.gold2:C.rose): ((x+y)%2===0?C.memory:C.gold1);
+    else col = y<7?C.violet: y<14?((x+y)%2===0?C.lavender:C.rose): y<20?((x+y)%2===0?C.pink1:C.gold1): ((x+y)%2===0?C.gold2:C.pink1);
+    px(x,y,col,.95);
+  }
+  if(mode===1){ drawSun(38,8,3,0.42); drawCloud(6+Math.sin(frame*.01)*.7,8,.5,C.gold2,C.blue3,1); drawCloud(26,11,.42,C.memory,C.blue3,1.2); }
+  if(mode===2){ drawSun(37,9,4,0.56); drawCloud(9,8,.46,C.gold2,C.memory,1.1); drawCloud(28,10,.4,C.gold1,C.memory,1.1); }
+  if(mode===3){ drawSun(35,11,5,0.68); drawCloud(8,9,.34,C.gold1,C.memory,1.2); drawCloud(29,11,.3,C.rose,C.gold2,1.1); }
+  if(mode===4){ drawSun(39,12,2,0.22); drawCloud(9,9,.22,C.lavender,C.gold2,1.1); drawCloud(29,12,.2,C.rose,C.gold2,1); }
+}
+
+function drawSea(frame, deep=1){
+  for(let y=20;y<34;y++) for(let x=0;x<GW;x++){
+    const col = y<24 ? C.sea1 : y<28 ? C.sea2 : deep>1 ? C.sea4 : C.sea3;
+    px(x,y,(x+y)%2===0?col:(y<24?C.sea2:y<28?C.sea3:C.sea2),.96);
+  }
+  for(let x=6;x<42;x++){
+    if((x+Math.floor(frame*.24))%3===0) px(x,20,C.shimmer,.34);
+    if((x+Math.floor(frame*.18))%4===0) px(x,21,C.gold2,.18);
+  }
+  for(let i=0;i<4;i++){
+    const yy=24+i*2;
+    for(let x=2;x<46;x++) if(((x+i*2+Math.floor(frame*.21))%7)<3) px(x,yy,C.foam,.18-i*.025);
+  }
+}
+
+function drawSand(printAlpha=.2, warm=.08){
+  for(let y=34;y<GH;y++) for(let x=0;x<GW;x++) px(x,y,(x+y)%2===0?C.sand1:C.sand2,.99);
+  for(let y=34;y<41;y++) for(let x=14;x<35;x++){
+    const a = warm - Math.abs(24-x)*.004 - (y-34)*.012;
+    if(a>0) px(x,y,C.sand3,a);
+  }
+  const prints=[[19,37],[22,38],[24,39],[27,40],[29,41]];
+  prints.forEach(([x,y],i)=>{ px(x,y,C.shadow,printAlpha); if(i<4) px(x+1,y,C.shadow,printAlpha*.65); });
+}
+
+function drawFigure(x,y,frame,{alpha=1,memory=false,facing='right'}={}){
+  const bob=Math.sin(frame*.08)*.22;
+  const xx=x, yy=y+bob;
+  const hair=memory?C.memory:C.hair, skin=memory?C.memory:C.skin, dress=memory?C.memory:C.dress;
+  rect(xx+4,yy+1,4,2,hair,alpha); rect(xx+3,yy+2,6,2,hair,alpha); rect(xx+4,yy+3,4,4,skin,alpha);
+  px(xx+(facing==='right'?5:6),yy+4,hair,alpha*.85); px(xx+(facing==='right'?6:5),yy+4,hair,alpha*.85);
+  rect(xx+3,yy+7,6,6,dress,alpha); rect(xx+2,yy+9,8,5,dress,alpha);
+  rect(xx+3,yy+11,6,4,memory?C.gold2:C.dress2,alpha*(memory?.18:.55));
+  rect(xx+2,yy+8,1,3,skin,alpha); rect(xx+4,yy+14,1,3,C.shadow,alpha*.45); rect(xx+7,yy+14,1,3,C.shadow,alpha*.45);
+}
+
+function drawRailing(alpha=1, dx=0){
+  rect(4+dx,30,1,10,C.post,alpha); rect(15+dx,29,1,11,C.post,alpha); rect(31+dx,29,1,11,C.post,alpha); rect(43+dx,30,1,10,C.post,alpha);
+  for(let x=4+dx;x<44+dx;x++){
+    if(x!==15+dx && x!==31+dx) px(x,31,C.rail,.9*alpha);
+    if(x!==15+dx && x!==31+dx) px(x,34,C.rail2,.76*alpha);
+  }
+}
+
+function drawUmbrella(x,y,alpha=1){
+  [[0,2],[1,1],[2,0],[3,0],[4,0],[5,1],[6,2],[1,2],[2,2],[3,2],[4,2],[5,2],[3,3],[3,4],[3,5]].forEach(([dx,dy])=>{
+    const c = dy<3 ? ((dx%2===0)?C.umbrellaRed:C.umbrellaLight) : C.umbrellaPole;
+    px(x+dx,y+dy,c,alpha);
+  });
+}
+
+function drawGulls(frame,alpha=1){
+  const d=Math.sin(frame*.05)*1.1;
+  [[9+d,8],[15+d*.6,7],[35-d,10]].forEach(([x,y])=>{ px(x,y,C.gull,.82*alpha); px(x+1,y-1,C.gull2,.6*alpha); px(x+2,y,C.gull,.82*alpha); });
+}
+
+function drawHeartCluster(x,y,alpha=1){
+  const pts=[[0,1],[1,0],[2,1],[1,2],[4,1],[5,0],[6,1],[5,2],[3,3]];
+  pts.forEach(([dx,dy])=>px(x+dx,y+dy,C.heart,alpha));
+}
+
+function drawKiosk(){
+  rect(30,23,10,8,C.kiosk2,.98); rect(31,24,8,6,C.kiosk,.96);
+  rect(29,22,12,2,C.awning,.98); for(let x=29;x<41;x++) if(x%2===0) px(x,23,C.sign,.8);
+  rect(33,25,4,3,C.glass,.75); rect(30,30,10,2,C.road2,.45);
+}
+
+function drawBeachRoad(){
+  for(let y=33;y<GH;y++) for(let x=26;x<48;x++) px(x,y,(x+y)%2===0?C.road:C.road2,.96);
+  for(let y=33;y<48;y++) if(y%2===0) px(36,y,C.line,.78);
+  rect(27,28,1,11,C.post,.8); rect(42,29,1,10,C.post,.8);
+  for(let x=28;x<42;x++) px(x,31,C.rail,.72);
+}
+
+function drawPalm(x,y,a=1){
+  rect(x+2,y+4,1,7,C.post,a*.7);
+  [[0,3],[1,2],[2,1],[3,1],[4,2],[5,3],[1,4],[2,3],[3,3],[4,4],[0,2],[5,2]].forEach(([dx,dy])=>px(x+dx,y+dy,(dx%2===0?C.palm:C.palm2),a));
+}
+
+function drawWind(frame,alpha=.1){
+  const lines=[{x:5,y:26,len:10,spd:.18},{x:12,y:14,len:12,spd:.22},{x:28,y:26,len:11,spd:.16},{x:30,y:11,len:9,spd:.2}];
+  lines.forEach((l,idx)=>{
+    const off=(frame*l.spd+idx*3)%6;
+    for(let i=0;i<l.len;i++){
+      const xx=l.x+i-off, yy=l.y+Math.sin((i+frame*.08+idx)*.6)*.5;
+      px(xx,yy,C.memory,alpha);
+    }
+  });
+}
+
+function scene1(frame,t){
+  drawSky(1,frame); drawSea(frame,1); drawSand(.08,.04); drawRailing(1,0); drawWind(frame,.08+.02*t); drawGulls(frame,.55);
+  drawUmbrella(8,34,.48);
+  drawFigure(23,27,frame,{alpha:1});
+}
+
+function scene2(frame,t){
+  const k=ease(t);
+  drawSky(2,frame); drawSea(frame,1); drawSand(.24,.11); drawWind(frame,.11); drawUmbrella(6,31,.98); drawUmbrella(15,33,.74); drawUmbrella(37,33,.8); drawGulls(frame,.45);
+  drawFigure(mix(21,24,k),27.3,frame,{alpha:1});
+  drawFigure(mix(17,20.5,k),28,frame,{alpha:.16+.3*k,memory:true});
+}
+
+function scene3(frame,t){
+  const k=ease(t);
+  drawSky(3,frame); drawSea(frame,1); drawSand(.28,.14); drawWind(frame,.12); drawGulls(frame,.8); drawUmbrella(5,34,.55);
+  // open horizon, little structure
+  drawFigure(19.5,27.6,frame,{alpha:.72,memory:true});
+  drawFigure(25,27.4,frame,{alpha:1});
+  drawHeartCluster(33,30,.18+.16*k); drawHeartCluster(37,32,.1+.08*k);
+  for(let x=14;x<34;x++) if((x+Math.floor(frame*.25))%2===0) px(x,20,C.shimmer,.24);
+}
+
+function scene4(frame,t){
+  const k=ease(t);
+  drawSky(4,frame); drawSea(frame,2); drawBeachRoad(); drawKiosk(); drawPalm(5,25,.85); drawPalm(11,27,.65); drawWind(frame,.08); drawGulls(frame,.2);
+  // sand strip only left side to keep coastal connection
+  for(let y=34;y<48;y++) for(let x=0;x<23;x++) px(x,y,(x+y)%2===0?C.sand1:C.sand2,.94);
+  for(let y=34;y<39;y++) for(let x=7;x<18;x++) if(0.06-Math.abs(12-x)*.005-(y-34)*.015>0) px(x,y,C.sand3,.06-Math.abs(12-x)*.005-(y-34)*.015);
+  drawFigure(20,26.8,frame,{alpha:1});
+  drawFigure(15.5,27.2,frame,{alpha:.22*(1-k),memory:true});
+  // window memory trace
+  if((Math.floor(frame*.18)%4)<2){ px(35,26,C.memory,.2*(1-k)); px(36,26,C.memory,.15*(1-k)); }
+}
+
+function render(frame){
+  const p=(frame%(FPS*DUR))/(FPS*DUR);
+  if(p<.22) scene1(frame,p/.22);
+  else if(p<.48) scene2(frame,(p-.22)/.26);
+  else if(p<.75) scene3(frame,(p-.48)/.27);
+  else scene4(frame,(p-.75)/.25);
+}
+
+let start=null;
+function loop(ts){
+  if(!start) start=ts;
+  const elapsed=(ts-start)/1000;
+  const frame=Math.floor((elapsed%DUR)*FPS);
+  render(frame);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

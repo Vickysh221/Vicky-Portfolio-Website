@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无人知晓 - Scene 4 Silent Room</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#090d12; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#090d12; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, DUR=10, FPS=30, TOTAL=DUR*FPS;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(innerWidth/cv.width, innerHeight/cv.height))); cv.style.width=`${cv.width*s}px`; cv.style.height=`${cv.height*s}px`; } addEventListener('resize', fit); fit();
+const C={ bg:'#090d12', bg2:'#10141b', wall:'#1a222b', wall2:'#222c38', floor:'#273240', floor2:'#304050', wood:'#6c5647', wood2:'#84695a', lamp:'#efd7ad', lamp2:'#d6ac72', cold:'#88a4cb', cold2:'#c3d4ef', paper:'#d9d0c4', dark:'#0d1218', steel:'#7e8797', coat:'#d0b4be', hair:'#2d3647', skin:'#efe7dc', eye:'#111111', boot:'#705c5b' };
+const woman=[[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,2,2,2,2,1,1],[1,2,2,3,3,2,2,1],[1,2,2,2,2,2,2,1],[0,1,2,2,2,2,1,0],[0,4,4,1,1,4,4,0],[4,4,5,5,5,5,4,4],[0,5,5,5,5,5,5,0],[0,5,5,5,5,5,5,0],[5,0,5,0,0,5,0,5],[5,0,0,0,0,0,0,5],[6,0,0,0,0,0,0,6]];
+const PAL={1:C.hair,2:C.skin,3:C.eye,4:'#7c6f82',5:C.coat,6:C.boot};
+function px(x,y,c,a=1){ if(x<0||y<0||x>=GW||y>=GH) return; ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX, Math.round(y)*PX, PX, PX); ctx.globalAlpha=1; }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=Math.floor(cy-ry); y<=cy+ry; y++) for(let x=Math.floor(cx-rx); x<=cx+rx; x++){ const v=a-Math.abs(cx-x)/(rx*7.8)-Math.abs(cy-y)/(ry*7.8); if(v>0) px(x,y,c,v);} }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,.15); }
+function drawWoman(x,y,facing='left',bob=0,a=1){ for(let gy=0;gy<woman.length;gy++) for(let gx=0;gx<woman[gy].length;gx++){ const v=woman[gy][gx]; if(!v) continue; const sx=facing==='left'?(woman[gy].length-1-gx):gx; px(x+sx,y+gy+bob,PAL[v],a);} }
+function base(){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.17); }
+function tableLamp(){ rect(11,27,12,2,C.wood,.95); rect(12,29,10,1,C.wood2,.92); rect(13,24,2,3,C.paper,.92); rect(16,25,3,2,C.paper,.82); rect(21,22,2,5,C.lamp2,.95); rect(20,21,4,1,C.steel,.75); glow(22,21,11,8,C.lamp,.19); }
+function windowBench(frame){ rect(31,11,11,13,C.dark,.96); rect(32,12,9,11,C.cold,.14); for(let y=13;y<22;y+=2){ px(40,y,C.cold2,.08); if(y%4===1) px(39,y+1,C.cold,.06); } glow(36,18,12,10,C.cold,.09); for(let i=0;i<6;i++){ const rx = 33 + ((frame*0.05 + i*1.3)%7); px(rx, 14+i, C.cold2, .04); } rect(31,24,9,2,C.wood2,.65); }
+function cabinet(){ rect(5,15,5,11,C.wood2,.82); rect(6,16,3,9,C.dark,.18); px(9,20,C.paper,.2); }
+function chair(){ rect(26,31,5,1,C.wood,.9); rect(27,26,3,5,C.wood2,.84); rect(26,32,1,6,C.wood2,.72); rect(30,32,1,6,C.wood2,.72); }
+function floorShine(){ for(let x=12;x<38;x++){ if(x%3===0) px(x,39,C.lamp2,.025); if(x%5===0) px(x,40,C.cold2,.022);} glow(22,36,12,6,C.lamp,.07); }
+function render(frame){ clear(); const t=frame/TOTAL; const sit=Math.min(1,t/.5), still=Math.max(0,(t-.52)/.48); const pulse=(Math.sin(t*Math.PI*3)+1)/2; base(); cabinet(); tableLamp(); chair(); windowBench(frame); floorShine(); glow(22,21,12,9,C.lamp,.15+.03*pulse); glow(36,18,13,10,C.cold,.08+.02*Math.sin(t*Math.PI*2));
+ const x=18+sit*4.5, y=21+still*.3, bob=Math.sin(t*Math.PI*2.5)*.04; drawWoman(x,y,'left',bob,.98); if(t>.6){ px(15,25,C.paper,.05+.05*still); px(17,25,C.paper,.04+.04*still); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor((((ts-start)/1000)%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

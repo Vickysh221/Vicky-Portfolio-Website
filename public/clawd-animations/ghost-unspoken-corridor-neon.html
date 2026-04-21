@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghost Unspoken Corridor Neon</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background:#090a14; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    canvas { image-rendering: pixelated; image-rendering: crisp-edges; display:block; background:#090a14; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="768" height="768"></canvas>
+<script>
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const GW=48, GH=48, PX=16, DUR=10, FPS=30, TOTAL=DUR*FPS;
+function fit(){ const s=Math.max(1,Math.floor(Math.min(innerWidth/cv.width, innerHeight/cv.height))); cv.style.width=`${cv.width*s}px`; cv.style.height=`${cv.height*s}px`; } addEventListener('resize',fit); fit();
+const C={ bg:'#090a14', bg2:'#121526', violet:'#8a46ff', violet2:'#d888ff', blue:'#4ea1ff', cyan:'#74f0ff', amber:'#ffb24d', amber2:'#ffd595', magenta:'#ff5ab3', wall:'#1d2240', wall2:'#2b3157', floor:'#1e2a42', floor2:'#243451', dark:'#0d1220', steel:'#77819b', steel2:'#97a6c6', paper:'#efe3d5', key:'#ffe19b', wood:'#6d5048', wood2:'#8d675a', glass:'#b8d9ff' };
+const ghost=[
+[0,0,1,1,1,1,0,0,0,0],[0,1,1,1,1,1,1,0,0,0],[1,1,1,1,1,1,1,1,0,0],[1,1,2,2,1,1,2,1,1,0],[1,2,1,1,1,1,1,1,1,0],[1,1,1,3,1,1,3,1,1,0],[1,1,1,1,1,1,1,1,1,0],[0,1,1,1,1,1,1,1,0,0],[0,0,1,1,1,1,1,0,0,0],[0,1,1,1,1,1,1,1,0,0],[1,1,1,1,0,1,1,1,1,0],[1,1,0,1,0,1,0,1,1,0],[0,1,0,0,0,0,0,0,1,0]];
+const GP={1:'#f3f4ff',2:'#ff9dd2',3:'#111111'};
+function px(x,y,c,a=1){ if(x<0||y<0||x>=GW||y>=GH) return; ctx.globalAlpha=a; ctx.fillStyle=c; ctx.fillRect(Math.round(x)*PX,Math.round(y)*PX,PX,PX); ctx.globalAlpha=1; }
+function rect(x,y,w,h,c,a=1){ for(let yy=0;yy<h;yy++) for(let xx=0;xx<w;xx++) px(x+xx,y+yy,c,a); }
+function glow(cx,cy,rx,ry,c,a){ for(let y=Math.floor(cy-ry); y<=cy+ry; y++) for(let x=Math.floor(cx-rx); x<=cx+rx; x++){ const v=a-Math.abs(cx-x)/(rx*7.2)-Math.abs(cy-y)/(ry*7.2); if(v>0) px(x,y,c,v);} }
+function clear(){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height); for(let y=0;y<GH;y++) for(let x=0;x<GW;x++) if((x+y)%2===0) px(x,y,C.bg2,.16); }
+function ease(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+function drawGhost(x,y,facing='left',bob=0,a=1,ache=0,dance=0){ for(let gy=0;gy<ghost.length;gy++) for(let gx=0;gx<ghost[gy].length;gx++){ const v=ghost[gy][gx]; if(!v) continue; const sx=facing==='left'?(ghost[gy].length-1-gx):gx; const sway = dance ? Math.sin((gy*0.7)+dance*Math.PI*2)*0.12 : 0; px(x+sx+sway,y+gy+bob,GP[v],a);} 
+  const eyeY = y + 5 + bob;
+  const leftEyeX = facing==='left' ? x + 6 : x + 3;
+  const rightEyeX = facing==='left' ? x + 2 : x + 6;
+  px(leftEyeX, eyeY, GP[3], a);
+  px(rightEyeX, eyeY + 0.2, GP[3], a);
+  if(ache>0){
+    px(leftEyeX-1, eyeY+2, GP[3], 0.55*ache*a);
+    px(rightEyeX, eyeY+2, GP[3], 0.55*ache*a);
+    px(leftEyeX, eyeY+3, C.magenta, 0.18*ache*a);
+  }
+  glow(x+4.5,y+6+bob,6,6,C.violet2,(0.05+ache*0.02)*a); }
+function scene1(local){ rect(0,0,GW,6,C.wall,.98); rect(0,6,GW,27,C.wall2,.98); rect(0,33,GW,15,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.2); rect(2,12,16,13,C.steel,.24); for(let r=0;r<3;r++) for(let c=0;c<4;c++){ const mx=3+c*3,my=13+r*3; rect(mx,my,2,2,C.steel2,.92); px(mx,my+1,C.dark,.5); }
+ rect(34,10,7,18,C.dark,.96); rect(35,11,5,16,C.wall,.35); rect(35,8,4,2,C.magenta,.8); px(36,9,C.paper,.4); rect(22,11,9,18,'#3f4767',.98); rect(23,12,7,16,'#58637f',.76); px(28,19,C.key,.95); px(29,19,C.key,.5); rect(19,4,9,1,C.steel,.6); rect(20,5,7,1,C.amber,.95); glow(23.5,8,14,8,C.amber2,.16); glow(39,14,8,7,C.magenta,.1); glow(42,20,8,11,C.blue,.08);
+ for(let x=0;x<48;x+=4){ px(x,41,C.violet,.05); if(x%8===0) px(x+1,40,C.cyan,.04);} const a=Math.min(1,local/.42), s=Math.max(0,(local-.55)/.45); const dance = local*0.22; drawGhost(8+a*6,22+Math.sin(local*Math.PI*2)*0.28,local<.7?'right':'left',Math.sin(local*Math.PI*2.4)*.22,.98,0.55+s*0.25,dance); glow(26,22,7,5,C.amber,.04+s*.07); }
+function scene2(local){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.18); for(let y=8;y<31;y++) for(let x=0;x<48;x++) if((x+y)%4===0) px(x,y,'#41506a',.12);
+ rect(5,22,21,3,C.wood,.97); rect(5,25,21,5,C.wood2,.97); rect(28,16,7,14,C.steel,.94); rect(38,17,6,13,C.steel2,.82); rect(7,12,11,1,C.cyan,.36); rect(8,9,2,3,C.paper,.86); rect(11,8,2,4,C.paper,.75); rect(14,18,4,4,'#d9e5f4',.96); px(15,17,'#d9e5f4',.95); px(16,17,'#d9e5f4',.95); rect(9,19,2,3,C.paper,.95); rect(20,20,2,3,C.paper,.95); rect(31,31,5,1,C.wood,.9); rect(32,26,3,5,C.wood2,.84); rect(39,9,7,10,C.dark,.95); rect(40,10,5,8,C.blue,.16); rect(29,18,4,1,C.magenta,.4); rect(29,20,3,1,C.cyan,.3); glow(17,14,12,8,C.amber2,.12); glow(41,15,10,8,C.blue,.1); glow(33,22,7,5,C.magenta,.08);
+ const a=Math.min(1,local/.42), s=Math.max(0,(local-.52)/.48); const dance = 0.18 + local*0.24; drawGhost(10+a*4.5,20+Math.sin(local*Math.PI*2)*0.3,'left',Math.sin(local*Math.PI*2.2)*.28,.98,0.65+s*0.2,dance); if(local>.55){ px(15,16,C.paper,.05+s*.07); px(16,15,C.paper,.04+s*.05);} }
+function scene3(local, frame){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.18); rect(6,13,6,12,C.steel,.72); rect(7,14,4,10,C.glass,.22); rect(7,27,18,3,C.wood,.97); rect(10,24,4,3,C.paper,.92); rect(15,25,4,2,C.paper,.84); px(17,24,C.magenta,.58); rect(20,22,2,5,C.amber,.95); rect(19,21,4,1,C.cyan,.3); glow(21,20,10,8,C.amber2,.18); rect(31,9,11,14,C.dark,.96); rect(32,10,9,12,C.blue,.18); for(let x=33;x<40;x+=2) rect(x,10,1,12,C.cyan,.06); for(let i=0;i<6;i++){ const rx=33+((frame*.07+i*1.5)%7); px(rx,18+i%3,C.glass,.06); }
+ rect(25,30,5,1,C.wood,.92); rect(26,25,3,5,C.wood2,.84); rect(42,12,2,10,C.magenta,.18); glow(36,17,12,10,C.blue,.1); glow(39,18,7,7,C.violet2,.08);
+ const a=Math.min(1,local/.42), s=Math.max(0,(local-.5)/.5); const dance = 0.22 + local*0.26; drawGhost(13+a*3.8,20+Math.sin(local*Math.PI*2)*0.34,'left',Math.sin(local*Math.PI*2)*.3,.98,0.78+s*0.18,dance); if(local>.46){ px(9,18,GP[1],.22+.12*s); px(9,19,GP[1],.18+.1*s); px(8,21,C.violet2,.14+.08*s); px(9,21,C.violet2,.14+.08*s); px(10,21,C.violet2,.14+.08*s);} }
+function scene4(local){ rect(0,0,GW,7,C.wall,.98); rect(0,7,GW,25,C.wall2,.98); rect(0,32,GW,16,C.floor,.98); for(let y=33;y<48;y++) for(let x=0;x<48;x++) if((x+y)%2===0) px(x,y,C.floor2,.18); rect(5,15,5,11,C.wood2,.84); rect(11,27,12,2,C.wood,.95); rect(13,24,2,3,C.paper,.92); rect(16,25,3,2,C.paper,.84); rect(21,22,2,5,C.amber,.95); rect(20,21,4,1,C.violet2,.32); glow(22,21,12,9,C.amber2,.2); rect(31,11,11,13,C.dark,.96); rect(32,12,9,11,C.blue,.16); glow(36,18,13,10,C.blue,.1); rect(26,31,5,1,C.wood,.9); rect(27,26,3,5,C.wood2,.84); rect(33,28,9,2,C.magenta,.14); rect(36,30,8,2,C.cyan,.1);
+ for(let x=12;x<38;x++){ if(x%3===0) px(x,39,C.amber,.03); if(x%5===0) px(x,40,C.cyan,.028);} const a=Math.min(1,local/.5), s=Math.max(0,(local-.55)/.45); const dance = 0.2 + local*0.22; drawGhost(20+a*2.2,21+s*.4+Math.sin(local*Math.PI*2)*0.22,'left',Math.sin(local*Math.PI*1.8)*.26,.98,0.9,dance); glow(22,23,10,7,C.violet,.04+s*.05); }
+function render(frame){ clear(); const t=frame/TOTAL; const phase=t<.25?0:t<.5?1:t<.75?2:3; const local=phase===0?t/.25:phase===1?(t-.25)/.25:phase===2?(t-.5)/.25:(t-.75)/.25; const e=ease(local);
+ if(phase===0) scene1(e);
+ if(phase===1) scene2(e);
+ if(phase===2) scene3(e, frame);
+ if(phase===3) scene4(e);
+ if(local>.88 && phase<3){ const fade=(local-.88)/.12; rect(0,0,GW,GH,C.bg,fade*.65); }
+}
+let start=null; function loop(ts){ if(!start) start=ts; const frame=Math.floor((((ts-start)/1000)%DUR)*FPS); render(frame); requestAnimationFrame(loop);} requestAnimationFrame(loop);
+</script>
+</body>
+</html>

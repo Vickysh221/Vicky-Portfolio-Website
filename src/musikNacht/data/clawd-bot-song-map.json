@@ -1,0 +1,672 @@
+[
+  {
+    "songId": "1364351242",
+    "songTitle": "春を待って",
+    "artist": "never young beach",
+    "botId": "clawd-spring-traveler",
+    "botRole": "初春旅人 bot",
+    "theme": ["spring", "waiting", "departure", "rain-after", "hesitation"],
+    "prompt": "clawd 在初春刚停的细雨后，提着一盏小灯和小包从画面外慢慢走进来，停下来像是在整理想说的话，然后带着一点笨拙和寂寞继续出发去见某个人。",
+    "lyricIntent": "熬过冬天之后，带着一点犹豫去见某个人。",
+    "sceneZone": "entry-walkway",
+    "phaseHints": [
+      "enter with bag and lamp",
+      "pause and hesitate",
+      "resume walking toward someone"
+    ],
+    "playbackBinding": {
+      "selected": "soft warm glow around lamp and bag",
+      "playing": "main walking animation with short pause",
+      "paused": "gentle breathing idle with light sway",
+      "inactive": "dim silhouette near doorway"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "left-window-near-entry",
+      "style": "soft fading handwritten"
+    },
+    "scenePrototype": {
+      "sceneId": "spring-waiting-scene",
+      "environment": "rainy-early-spring-entry",
+      "playerPlacement": "bench-radio",
+      "visualMood": "wet floor, pale spring light, quiet departure",
+      "components": [
+        "clawd traveler sprite",
+        "small lamp sprite",
+        "small bag sprite",
+        "fogged window lyric surface",
+        "compact radio player object",
+        "wet floor reflection layer"
+      ]
+    }
+  },
+  {
+    "songId": "1364351247",
+    "songTitle": "いつも雨",
+    "artist": "never young beach",
+    "botId": "clawd-rain-waiter",
+    "botRole": "雨中等待 bot",
+    "theme": ["rain", "waiting", "missed-connection", "night-walk", "melancholy"],
+    "prompt": "clawd 在夜晚的细雨里沿着湿漉漉的路面缓慢前行，偶尔停在路灯下等待、回望，却始终没有等到要见的人，最后又在雨里继续往前走。",
+    "lyricIntent": "一直在路上，也一直在错过；每到关键处，总是下雨。",
+    "sceneZone": "rain-lamp-corner",
+    "phaseHints": [
+      "walk through drizzle",
+      "pause under lamp and look back",
+      "continue walking alone in rain"
+    ],
+    "playbackBinding": {
+      "selected": "cool light reflection appears on wet ground",
+      "playing": "main rain-walk animation with pause and look-back",
+      "paused": "light rain idle with minimal sway",
+      "inactive": "faint bot outline under dark lamp"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "window-or-wet-wall-near-lamp",
+      "style": "blurred reflective subtitles"
+    },
+    "scenePrototype": {
+      "sceneId": "rain-waiting-scene",
+      "environment": "night-rain-lamp-corner",
+      "playerPlacement": "signal-box-or-window-radio",
+      "visualMood": "streetlamp reflection, damp glass, missed encounter",
+      "components": [
+        "clawd waiting sprite",
+        "rain particle layer",
+        "lamp light cone",
+        "wet ground reflection strip",
+        "small radio or signal box player object",
+        "rain-glass lyric surface"
+      ]
+    }
+  },
+  {
+    "songId": "1435628297",
+    "songTitle": "La lune",
+    "artist": "L'Impératrice",
+    "botId": "clawd-lunar-goddess",
+    "botRole": "月桂女神 bot",
+    "theme": ["moon", "ritual", "night", "cold-blue", "goddess", "field-shift"],
+    "prompt": "clawd 化身为月桂女神般的夜之使者，在深蓝夜色中缓缓显现，抬起钳子召来银白月光与星屑，让周围的空气和地面一点点染上月亮般的冷蓝光。",
+    "lyricIntent": "不是赶路，而是作为高位存在改变整个场域。",
+    "sceneZone": "moon-altar",
+    "phaseHints": [
+      "slow reveal from darkness",
+      "raise claw and summon silver light",
+      "hold lunar field and drifting particles"
+    ],
+    "playbackBinding": {
+      "selected": "silver shimmer activates around altar",
+      "playing": "main summon-moonlight animation",
+      "paused": "gentle lunar glow with drifting particles",
+      "inactive": "faint silhouette in upper darkness"
+    },
+    "lyricSurface": {
+      "type": "moonlight-glyph",
+      "placement": "upper-wall-or-altar-air",
+      "style": "thin silver text fading in and out"
+    },
+    "scenePrototype": {
+      "sceneId": "lunar-altar-scene",
+      "environment": "upper-blue-night-altar",
+      "playerPlacement": "altar-console",
+      "visualMood": "deep blue darkness, silver particles, ritual calm",
+      "components": [
+        "clawd goddess sprite",
+        "silver particle field",
+        "moonlight beam layer",
+        "altar or pedestal player object",
+        "cold blue ground tint",
+        "moonlight lyric glyph surface"
+      ]
+    }
+  },
+  {
+    "songId": "1808923954",
+    "songTitle": "Submarine",
+    "artist": "L'Impératrice",
+    "botId": "clawd-submarine-drifter",
+    "botRole": "潜航漂流 bot",
+    "theme": ["underwater", "drift", "neon", "submerged-night", "aqua"],
+    "prompt": "clawd 像一艘小小的潜艇一样在幽暗蓝绿色空间里缓慢漂浮，身边有微弱霓虹气泡和流线光点，偶尔轻轻调整方向，像在夜里的水下舞池巡游。",
+    "lyricIntent": "不是直线前进，而是在带着节奏感的水下夜色里漂流。",
+    "sceneZone": "submarine-basin",
+    "phaseHints": [
+      "drift into frame",
+      "float with gentle pulse",
+      "adjust direction and continue gliding"
+    ],
+    "playbackBinding": {
+      "selected": "soft aqua shimmer around the shell",
+      "playing": "main drifting motion with bubble field",
+      "paused": "low-gravity hover idle",
+      "inactive": "dim submerged silhouette"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "mid-water-center",
+      "style": "soft aqua glow captions"
+    },
+    "scenePrototype": {
+      "sceneId": "submarine-drift-scene",
+      "environment": "aqua-neon-submerged-room",
+      "playerPlacement": "bubble-console",
+      "visualMood": "teal darkness, neon bubbles, slow disco drift",
+      "components": [
+        "clawd drifter sprite",
+        "bubble particle field",
+        "soft current lines",
+        "floating lyric strip",
+        "bubble-console player object",
+        "submerged glow layer"
+      ]
+    }
+  },
+  {
+    "songId": "340376",
+    "songTitle": "夜车",
+    "artist": "曾轶可",
+    "botId": "clawd-night-train-watcher",
+    "botRole": "夜车凝望 bot",
+    "theme": ["night", "train", "passing-lights", "distance", "solitude"],
+    "prompt": "clawd 坐在深夜列车窗边，随着窗外一格格掠过的灯光轻微摇晃，偶尔抬眼看向远处，像在被移动的夜色中想一个很远的人。",
+    "lyricIntent": "人一直在前进，但情绪停在窗边和掠过的夜色里。",
+    "sceneZone": "train-window-booth",
+    "phaseHints": [
+      "sit in dim carriage light",
+      "watch passing lights through window",
+      "small sway with the train rhythm"
+    ],
+    "playbackBinding": {
+      "selected": "warm tungsten edge-light appears in the window",
+      "playing": "carriage sway with passing light bands",
+      "paused": "faint seated idle by the window",
+      "inactive": "dark outline in the carriage"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "train-window-reflection",
+      "style": "passing light text bands"
+    },
+    "scenePrototype": {
+      "sceneId": "night-train-scene",
+      "environment": "moving-night-carriage",
+      "playerPlacement": "seat-side-cassette",
+      "visualMood": "dark carriage, passing lights, restrained loneliness",
+      "components": [
+        "clawd watcher sprite",
+        "train window frame",
+        "passing light band layer",
+        "seat-side player object",
+        "window reflection lyric surface",
+        "carriage sway cue"
+      ]
+    }
+  },
+  {
+    "songId": "340376",
+    "songTitle": "夜车",
+    "artist": "曾轶可",
+    "botId": "ghost-witch-night-train-companion",
+    "botRole": "夜车陪伴幽灵 bot",
+    "theme": ["night", "train", "ghost", "sleeping-companion", "quiet-discovery", "passing-lights"],
+    "prompt": "ghost-witch 在夜里的站牌前等待，上车后在飞驰列车中被窗外灯光和树影掠过，随后发现另一只戴羽毛帽的小幽灵已经安静睡着，最后只是在他身旁坐下看着他。",
+    "lyricIntent": "这不是相认，而是在漫长夜路里发现原来还有另一个安静存在一起被载着向前。",
+    "sceneZone": "train-companion-booth",
+    "phaseHints": [
+      "wait at station sign",
+      "sit in moving carriage under passing lights",
+      "notice sleeping ghost companion",
+      "stay beside them quietly"
+    ],
+    "playbackBinding": {
+      "selected": "cold moon glow and carriage edge-light gather around both ghosts",
+      "playing": "4-phase stitched train collage with station, movement, discovery, and companionship",
+      "paused": "quiet seated idle beside sleeping companion",
+      "inactive": "dim double-ghost silhouette in the carriage"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "train-window-and-seat-reflection",
+      "style": "soft drifting night text bands"
+    },
+    "scenePrototype": {
+      "sceneId": "night-train-sleeping-companion-scene",
+      "environment": "moving-night-carriage-with-station-memory",
+      "playerPlacement": "seat-side-cassette",
+      "visualMood": "dark carriage, station residue, moon fragments, passing lights, soft companionship",
+      "components": [
+        "ghost-witch sprite",
+        "ghost-feather-sleeper sprite",
+        "station sign intro layer",
+        "train window frame",
+        "passing light band layer",
+        "tree shadow layer",
+        "zzz glyph layer",
+        "seat-side player object"
+      ]
+    }
+  },
+  {
+    "songId": "1836021414",
+    "songTitle": "黄金时代",
+    "artist": "声音碎片乐队",
+    "botId": "golden-age-neon-walker",
+    "botRole": "黄金时代夜行者 bot",
+    "theme": ["golden-age", "city", "afterglow", "neon", "trade-residue", "night-walk"],
+    "prompt": "一个在现实里周旋太久的人，从散场后的夏夜空地，走过玻璃和扶梯构成的现实通道，坐到时代广场背后的广告牌钢架下，最后再起身走进更深的霓虹巷道。",
+    "lyricIntent": "不是怀旧成功学，而是一个人穿过黄金时代残影后，带着代价继续往夜色深处走。",
+    "sceneZone": "neon-afterglow-lane",
+    "phaseHints": [
+      "stand in an after-show summer square",
+      "move through glass and metal city passages",
+      "sit behind the bright square with ticket residue",
+      "rise and keep walking into the neon depth"
+    ],
+    "playbackBinding": {
+      "selected": "warm afterglow and cold neon reflections wake around the figure",
+      "playing": "4-phase stitched city-night collage with afterglow, reflection, back-lane emptiness, and forward motion",
+      "paused": "faint standing silhouette under cooling light",
+      "inactive": "dark figure near a fading sign"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "glass-door-and-neon-reflection-plane",
+      "style": "soft broken city text bands"
+    },
+    "scenePrototype": {
+      "sceneId": "golden-age-neon-scene",
+      "environment": "afterglow-city-backlane",
+      "playerPlacement": "bench-side-cassette",
+      "visualMood": "summer afterglow fading into cold urban neon and wet-night continuation",
+      "components": [
+        "neon walker silhouette",
+        "faded poster layer",
+        "glass reflection passage layer",
+        "billboard-back steel frame",
+        "ticket residue prop",
+        "rainy neon alley reflection layer"
+      ]
+    }
+  },
+  {
+    "songId": "540931",
+    "songTitle": "クリスマス・イブ",
+    "artist": "山下達郎",
+    "botId": "ghost-christmas-eve-wreath",
+    "botRole": "圣诞夜花环幽灵 bot",
+    "theme": ["christmas", "winter", "ghost", "wreath", "tree", "quiet-night", "warm-window"],
+    "prompt": "一个小幽灵站在被布置过的圣诞夜室内一角，左侧墙上挂着红蝴蝶结花环，右侧立着亮起小灯的圣诞树，背后有暖色窗光渗出，空气里有安静落下的雪点。",
+    "lyricIntent": "不是热闹庆典，而是圣诞夜里带着等待与怀念的安静停驻。",
+    "sceneZone": "christmas-window-nook",
+    "phaseHints": [
+      "hold in still winter interior glow",
+      "let tree lights and warm window quietly breathe",
+      "keep the ghost suspended in a soft waiting mood"
+    ],
+    "playbackBinding": {
+      "selected": "warm window spill and tree lights become more noticeable around the ghost",
+      "playing": "single-scene Christmas night loop with drifting snow, subtle ghost bob, and quiet twinkling lights",
+      "paused": "soft idle under wreath and tree glow",
+      "inactive": "dim winter silhouette in the decorated corner"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "warm-window-center-left",
+      "style": "soft warm handwritten glow"
+    },
+    "scenePrototype": {
+      "sceneId": "christmas-eve-ghost-scene",
+      "environment": "winter-church-window-nook",
+      "playerPlacement": "floor-center-beneath-scene",
+      "visualMood": "quiet Christmas interior, warm window glow, wreath memory, tree lights, drifting snow",
+      "components": [
+        "ghost sprite",
+        "wreath sprite",
+        "christmas tree sprite",
+        "warm window alcove",
+        "garland and wall light accents",
+        "snow particle layer",
+        "floor light spill"
+      ]
+    }
+  },
+  {
+    "songId": "1888864514",
+    "songTitle": "踊り子",
+    "artist": "Vaundy",
+    "botId": "clawd-dusk-dancer",
+    "botRole": "黄昏舞者 bot",
+    "theme": ["dance", "dusk", "warm-light", "motion", "intimacy"],
+    "prompt": "clawd 在暖色黄昏灯影里轻轻旋转和侧步，像一个不太张扬却很投入的舞者，动作轻盈，四周有柔和光斑跟着节奏慢慢晃动。",
+    "lyricIntent": "不是张扬表演，而是在暧昧的光线和节奏里小幅度地沉浸起舞。",
+    "sceneZone": "dusk-stage-nook",
+    "phaseHints": [
+      "step into warm spotlight",
+      "small turn and side-step",
+      "hold rhythm in a gentle loop"
+    ],
+    "playbackBinding": {
+      "selected": "soft amber halo rises around the stage nook",
+      "playing": "small turn, side-step, and warm light pulse",
+      "paused": "gentle poised idle in the spotlight",
+      "inactive": "soft silhouette in dusk haze"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "soft-backdrop-center",
+      "style": "warm blurred lyric glow"
+    },
+    "scenePrototype": {
+      "sceneId": "dusk-dancer-scene",
+      "environment": "amber-twilight-stage",
+      "playerPlacement": "floor-monitor-console",
+      "visualMood": "amber haze, soft spotlight, intimate motion",
+      "components": [
+        "clawd dancer sprite",
+        "warm light pool",
+        "soft lyric glow backdrop",
+        "floor-monitor player object",
+        "drifting spotlight particles",
+        "stage floor layer"
+      ]
+    }
+  },
+  {
+    "songId": "22817985",
+    "songTitle": "Remember Summer Days",
+    "artist": "杏里",
+    "botId": "remember-summer-days-variety",
+    "botRole": "夏日回忆场 bot",
+    "theme": ["city-pop", "summer", "memory", "beach", "sunset", "love", "afterglow"],
+    "prompt": "在同一首歌里切出四个彼此区分明确的夏日海边记忆场景：海边步道栏杆、白沙滩与沙滩伞、晚霞海平线的双人凝望、以及海边小店和路边灯牌残留着夏日关系的日常节点。",
+    "lyricIntent": "不是强烈失恋戏，而是海风把过去那段温暖关系重新吹回空气里；四幕强调夏日记忆场景的多样性，而不是同地微变。",
+    "sceneZone": "summer-memory-coastline",
+    "phaseHints": [
+      "stand at beachside railing in soft blue dusk",
+      "open into white sand and umbrellas as memory companion appears",
+      "reach the sunset horizon peak with shared gaze and romance accent",
+      "shift into a seaside kiosk and road-edge afterglow where memory recedes"
+    ],
+    "playbackBinding": {
+      "selected": "warm sea shimmer and afterglow highlights wake across the four summer scenes",
+      "playing": "4-scene seaside memory MV with walkway, sand, horizon peak, and kiosk-afterglow variety",
+      "paused": "soft coastal afterglow idle with faint memory residue",
+      "inactive": "dim summer coastline silhouette"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "upper-sky-and-kiosk-glass-zone",
+      "style": "soft warm handwritten afterglow"
+    },
+    "scenePrototype": {
+      "sceneId": "remember-summer-days-4scene-mv",
+      "environment": "varied-summer-coastal-memory-spaces",
+      "playerPlacement": "bottom-center-coastal-console",
+      "visualMood": "soft blue dusk, white sand memory, sunset romance peak, seaside afterglow residue",
+      "components": [
+        "present-time figure sprite",
+        "memory companion sprite",
+        "white railing layer",
+        "beach umbrella sprites",
+        "sunset horizon shimmer layer",
+        "heart accent glyphs",
+        "seaside kiosk and road-edge set",
+        "gull and wind accent layer"
+      ]
+    }
+  },
+  {
+    "songId": "34078194",
+    "songTitle": "Milestones",
+    "artist": "Shook",
+    "botId": "glow-panel-drifter",
+    "botRole": "漂移面板体",
+    "theme": ["electronic", "floating", "glow-panel", "cool-space", "milestone"],
+    "prompt": "一个圆滑流动的发光面板存在在低重力合成器空间中缓慢漂移，边缘与内部细光带轻微明灭，像在校准方向的坐标体。",
+    "lyricIntent": "不是人物表演，而是一个被看见的空间坐标正在安静漂移。",
+    "sceneZone": "synth-drift-bay",
+    "phaseHints": ["slow drift", "gentle turn", "panel glow pulse"],
+    "playbackBinding": {
+      "selected": "cool cyan glow intensifies",
+      "playing": "main drifting motion with soft panel pulse",
+      "paused": "hover idle with low light",
+      "inactive": "dim coordinate silhouette"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "mid-space-center",
+      "style": "soft spectral captions"
+    },
+    "scenePrototype": {
+      "sceneId": "milestones-panel-scene",
+      "environment": "cool-synth-low-gravity-space",
+      "playerPlacement": "synth-console",
+      "visualMood": "cold cyan, spacious, floating coordinates",
+      "components": ["glow panel entity", "spectrum lines", "soft particles", "synth-console player"]
+    }
+  },
+  {
+    "songId": "1294604159",
+    "songTitle": "Sentiment Acide (Jennifer Cardini Remix)",
+    "artist": "Jennifer Cardini, David Shaw and The Beat",
+    "botId": "acid-neon-shard",
+    "botRole": "酸性霓虹切片",
+    "theme": ["electronic", "acid", "neon", "sharp", "night"],
+    "prompt": "一个尖锐切面的冷霓虹存在在夜色里短促显形，边缘酸绿色与冷紫色电流式闪动，像夜间空间中的危险标志物。",
+    "lyricIntent": "它不是角色，而是一个被看见的酸夜切片。",
+    "sceneZone": "acid-neon-edge",
+    "phaseHints": ["flash in", "edge pulse", "withdraw slightly"],
+    "playbackBinding": {
+      "selected": "acid edge light sharpens",
+      "playing": "main shard pulse and scan motion",
+      "paused": "faint neon hum",
+      "inactive": "barely visible shard outline"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "right-side-neon-wall",
+      "style": "sharp cold captions"
+    },
+    "scenePrototype": {
+      "sceneId": "acid-shard-scene",
+      "environment": "dark-neon-acid-night",
+      "playerPlacement": "edge-console",
+      "visualMood": "sharp acid green and violet on black",
+      "components": ["acid shard entity", "scan lines", "neon edge glow", "edge-console player"]
+    }
+  },
+  {
+    "songId": "17089071",
+    "songTitle": "The Whistler",
+    "artist": "Claude VonStroke",
+    "botId": "brass-whistle-engine",
+    "botRole": "黄铜哨引擎",
+    "theme": ["electronic", "mechanical", "brass", "underground", "guide"],
+    "prompt": "一个怪轮廓的旧机械黄铜存在在地下空间前探后撤，哨口与喇叭口周期性亮起，像在节拍点上示意你往更深处走。",
+    "lyricIntent": "它更像带路的地下机械引路器，而不是被观看的主角。",
+    "sceneZone": "underground-whistle-lane",
+    "phaseHints": ["lean forward", "whistle light", "pull back and beckon"],
+    "playbackBinding": {
+      "selected": "brass whistle tip glows",
+      "playing": "main beckoning machine rhythm",
+      "paused": "small ticking idle",
+      "inactive": "shadowy brass frame"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "left-industrial-wall",
+      "style": "mechanical cue text"
+    },
+    "scenePrototype": {
+      "sceneId": "whistle-engine-scene",
+      "environment": "underground-brass-corridor",
+      "playerPlacement": "pipe-console",
+      "visualMood": "brass, rust, weird underground cues",
+      "components": ["brass engine entity", "whistle light", "pipe shadows", "pipe-console player"]
+    }
+  },
+  {
+    "songId": "5069277",
+    "songTitle": "Jungle HeartBeat",
+    "artist": "Suduaya",
+    "botId": "biolume-pulse-totem",
+    "botRole": "生物荧光脉冲图腾",
+    "theme": ["electronic", "tribal", "bioluminescent", "pulse", "jungle"],
+    "prompt": "一个有机不规则的生物荧光图腾以心跳般的节律收缩扩张，中央脉冲核心不断向外扩散光圈，像在把节奏递给你。",
+    "lyricIntent": "它不是人物，而是会召唤你进入节律的图腾存在。",
+    "sceneZone": "jungle-pulse-core",
+    "phaseHints": ["pulse inward", "radiate outward", "lean and summon"],
+    "playbackBinding": {
+      "selected": "core glow intensifies",
+      "playing": "main pulse expansion and organic resonance",
+      "paused": "slow breathing biolume idle",
+      "inactive": "dark jungle outline"
+    },
+    "lyricSurface": {
+      "type": "moonlight-glyph",
+      "placement": "totem-air-ring",
+      "style": "organic pulse glyphs"
+    },
+    "scenePrototype": {
+      "sceneId": "jungle-pulse-scene",
+      "environment": "biolume-jungle-ritual-space",
+      "playerPlacement": "totem-console",
+      "visualMood": "dark green, pulse core, ritual biolume",
+      "components": ["pulse totem entity", "core rings", "organic tendrils", "totem-console player"]
+    }
+  },
+  {
+    "songId": "1481929839",
+    "songTitle": "无人知晓",
+    "artist": "田馥甄",
+    "botId": "hebe-unspoken-corridor",
+    "botRole": "无人知晓走廊 bot",
+    "theme": ["city-night", "solitude", "corridor", "unspoken", "private-room", "objects"],
+    "prompt": "一个人在深夜楼道与房间之间穿行：先经过昏黄电梯口和信箱墙，再回到狭小厨房把水壶与杯子放下，随后在窗边书桌前听见远处列车或风声，最后只剩台灯、镜子、椅子和未说出口的话陪着她。",
+    "lyricIntent": "不是宏大的失去，而是所有没被看见的情绪，都藏进了走廊灯、玻璃窗、水杯和房间角落里。",
+    "sceneZone": "private-night-corridor",
+    "phaseHints": [
+      "enter apartment corridor past mailbox and elevator light",
+      "pause in tiny kitchen with kettle mug and chair",
+      "move to desk window with curtain notebook and mirror reflection",
+      "sit in lamp glow while the room keeps the secret"
+    ],
+    "playbackBinding": {
+      "selected": "hallway sodium light and desk lamp wake the space",
+      "playing": "4-phase private night collage with corridor, kitchen, window desk, and silent room hold",
+      "paused": "still seated idle under desk lamp with faint city spill",
+      "inactive": "dim silhouette between corridor and room"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "window-glass-and-hallway-wall",
+      "style": "faint private text reflected across glass and painted wall"
+    },
+    "scenePrototype": {
+      "sceneId": "unspoken-corridor-scene",
+      "environment": "apartment-night-interior-chain",
+      "playerPlacement": "desk-side-cassette",
+      "visualMood": "low apartment light, sodium corridor glow, blue window leak, intimate domestic objects",
+      "components": [
+        "mailbox wall",
+        "elevator indicator",
+        "tiny kitchen counter",
+        "kettle and mug",
+        "window desk",
+        "lamp and chair",
+        "mirror panel",
+        "notebook and folded letter"
+      ]
+    }
+  },
+  {
+    "songId": "40147554",
+    "songTitle": "关键词",
+    "artist": "林俊杰",
+    "botId": "jj-keyword-garden-keeper",
+    "botRole": "关键词拾光 bot",
+    "theme": ["warmth", "recognition", "objects", "garden", "bookstore", "rain-after", "gentle-discovery"],
+    "prompt": "一个人带着一束花和一本书经过雨后的街角花店与书店，在有玻璃门、长椅、雨伞架与招牌灯的小空间里，慢慢辨认出另一个人留下的痕迹；最后他们没有大动作，只是让灯、花、纸袋和桌上的杯子一起把关系照亮。",
+    "lyricIntent": "所谓关键词，不是宣告式告白，而是一个个具体小物件让你终于认出对方为什么重要。",
+    "sceneZone": "book-flower-lantern-nook",
+    "phaseHints": [
+      "arrive at rain-cleared florist storefront with bouquet and signboard",
+      "step into bookstore table zone with stacked books lamp and umbrella stand",
+      "notice the other presence through shared objects on a small table",
+      "remain together in a warm window nook with flowers cups and paper bag"
+    ],
+    "playbackBinding": {
+      "selected": "shop lanterns, table lamp, and flower color accents rise gently",
+      "playing": "4-phase recognition collage with florist frontage, bookstore interior, shared table discovery, and warm window stay",
+      "paused": "quiet two-person idle among flowers books and cups",
+      "inactive": "soft silhouettes behind warm shop glass"
+    },
+    "lyricSurface": {
+      "type": "fog-window",
+      "placement": "shop-glass-and-reading-table-air",
+      "style": "warm handwritten glow drifting around flowers and books"
+    },
+    "scenePrototype": {
+      "sceneId": "keyword-garden-keeper-scene",
+      "environment": "warm-rain-cleared-shop-chain",
+      "playerPlacement": "reading-table-player",
+      "visualMood": "amber storefront lights, wet pavement reflections, flowers, books, paper textures, gentle recognition",
+      "components": [
+        "flower bucket cluster",
+        "sandwich-board sign",
+        "book stacks",
+        "small round table",
+        "desk lamp",
+        "umbrella stand",
+        "paper bag",
+        "cups and window bench"
+      ]
+    }
+  },
+  {
+    "songId": "1481929839",
+    "songTitle": "无人知晓",
+    "artist": "田馥甄",
+    "botId": "ghost-unspoken-corridor-neon",
+    "botRole": "无人知晓霓彩幽灵 bot",
+    "theme": ["ghost", "saturated-night", "apartment", "neon-memory", "private-objects", "secret"],
+    "prompt": "一个带着高饱和夜色边缘光的幽灵，在回家楼道、厨房、书桌窗边和台灯房间四个空间之间移动。每一幕都要有明确物体：信箱、电梯灯、钥匙、热水壶、杯子、便利贴、镜子、书桌灯、窗帘、纸张、椅子、床边柜。整体不是灰暗写实，而是更浓的蓝紫、琥珀、玫红和冷青交织出的私人夜景。",
+    "lyricIntent": "没有人真正知道她在想什么，但每个房间都替她记住了一点：门口停顿、热水蒸气、镜中影子、台灯下没有说出口的话。",
+    "sceneZone": "saturated-private-night-chain",
+    "phaseHints": [
+      "enter vivid corridor with mailbox wall, elevator digits, key glint, and door light spill",
+      "move through a richer kitchen with kettle steam, cups, tile backsplash, chair, and fridge notes",
+      "pause at desk window with mirror reflection, scattered papers, curtain, lamp, and colored city leaks",
+      "settle in a lamp room with side cabinet, bed edge, chair, and layered blue-amber night glow"
+    ],
+    "playbackBinding": {
+      "selected": "amber, magenta, and cyan night accents wake across the four interiors",
+      "playing": "4-scene saturated ghost MV with corridor return, kitchen steam, mirror desk pause, and silent room hold",
+      "paused": "quiet ghost idle inside a richly colored private room",
+      "inactive": "dim neon-edged ghost silhouette in the apartment dark"
+    },
+    "lyricSurface": {
+      "type": "rain-glass-projection",
+      "placement": "doors, window glass, mirror edge, and table air",
+      "style": "soft spectral text drifting through saturated reflections"
+    },
+    "scenePrototype": {
+      "sceneId": "ghost-unspoken-corridor-neon-scene",
+      "environment": "saturated-private-night-interiors",
+      "playerPlacement": "desk-side-cassette",
+      "visualMood": "blue-violet night, amber lamp pools, magenta residue, reflective domestic objects, intimate ghost presence",
+      "components": [
+        "ghost sprite",
+        "mailbox wall and lift panel",
+        "kettle and mug set",
+        "fridge note cluster",
+        "desk lamp and papers",
+        "mirror panel",
+        "window curtain and colored city leak",
+        "chair and bed-edge cabinet"
+      ]
+    }
+  }
+]

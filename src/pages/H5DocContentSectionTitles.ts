@@ -1,4 +1,4 @@
-import { createLocalizedTitle, createMirroredTitle, type LocalizedSectionDefinition } from '../i18n/sectionBuilders.ts';
+import { createLocalizedTitle, type LocalizedSectionDefinition } from '../i18n/sectionBuilders.ts';
 
 export const PERSONAL_COMPANIONS_SECTION_DEFINITIONS = {
   projectOverview: {
@@ -8,46 +8,10 @@ export const PERSONAL_COMPANIONS_SECTION_DEFINITIONS = {
   },
   slides: [
     {
-      key: 'christmasEve',
+      key: 'sceneGallery',
       id: 'companions-slide-2',
       numeral: '02',
-      title: createMirroredTitle('Christmas Eve'),
-    },
-    {
-      key: 'green',
-      id: 'companions-slide-3',
-      numeral: '03',
-      title: createMirroredTitle('Green'),
-    },
-    {
-      key: 'dancing',
-      id: 'companions-slide-4',
-      numeral: '04',
-      title: createMirroredTitle('Dancing'),
-    },
-    {
-      key: 'neverOne',
-      id: 'companions-slide-5',
-      numeral: '05',
-      title: createMirroredTitle('Never I'),
-    },
-    {
-      key: 'neverTwo',
-      id: 'companions-slide-6',
-      numeral: '06',
-      title: createMirroredTitle('Never II'),
-    },
-    {
-      key: 'nightCar',
-      id: 'companions-slide-7',
-      numeral: '07',
-      title: createMirroredTitle('Night Car'),
-    },
-    {
-      key: 'submarine',
-      id: 'companions-slide-8',
-      numeral: '08',
-      title: createMirroredTitle('Submarine'),
+      title: createLocalizedTitle('Live Scene Gallery', 'Live Scene Gallery'),
     },
   ],
 } as const satisfies {
