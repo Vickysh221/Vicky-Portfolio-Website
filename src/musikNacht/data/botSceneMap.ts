@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { Song } from '../types'
+import { getLocalAudioFallbackSong } from '../localAudioFallback.ts'
 
 export type LyricSurfaceType = 'fog-window' | 'rain-glass-projection' | 'moonlight-glyph'
 
@@ -489,7 +490,7 @@ const FALLBACK_BOT_SCENE_ENTRIES: BotSongMapEntry[] = [
       placement: 'mid-water-center',
       style: 'soft aqua glow captions',
     },
-    resolvedSong: null,
+    resolvedSong: createResolvedSong(getLocalAudioFallbackSong(1808923954)!),
   },
   {
     songId: '340376',
@@ -709,7 +710,7 @@ const FALLBACK_BOT_SCENE_ENTRIES: BotSongMapEntry[] = [
       placement: 'totem-air-ring',
       style: 'organic pulse glyphs',
     },
-    resolvedSong: null,
+    resolvedSong: createResolvedSong(getLocalAudioFallbackSong(5069277)!),
   },
   {
     songId: '1481929839',

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  getLocalAudioFallbackSong,
   resolveLocalAudioFallbackSource,
   shouldUseLocalAudioFallback,
 } from '../src/musikNacht/localAudioFallback.ts';
@@ -28,6 +29,14 @@ test('maps the bundled portfolio audio assets for local fallback songs', () => {
     '/audio/jungle-heartbeat-suduaya.m4a',
   );
   assert.equal(resolveLocalAudioFallbackSource({ originalId: 1481929839 }), null);
+});
+
+test('provides local song metadata for fallback-only scenes', () => {
+  assert.equal(getLocalAudioFallbackSong(1808923954)?.name, 'Submarine');
+  assert.equal(getLocalAudioFallbackSong(5069277)?.name, 'Jungle HeartBeat');
+  assert.equal(getLocalAudioFallbackSong(1808923954)?.duration, 284940);
+  assert.equal(getLocalAudioFallbackSong(5069277)?.duration, 285380);
+  assert.equal(getLocalAudioFallbackSong(1481929839), null);
 });
 
 test('only uses the bundled audio fallback when bridge playback fails for a mapped song', () => {
