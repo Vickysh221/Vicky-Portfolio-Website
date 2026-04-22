@@ -10,6 +10,9 @@ type LocalAudioFallbackAttempt = {
 const LOCAL_AUDIO_FALLBACK_BY_ORIGINAL_ID = new Map<number, string>([
   [1364351242, '/audio/haru-o-matte-never-young-beach.m4a'],
   [1364351247, '/audio/itsumo-ame-never-young-beach.m4a'],
+  [1435628297, '/audio/la-lune-limperatrice.m4a'],
+  [1808923954, '/audio/submarine-limperatrice.m4a'],
+  [5069277, '/audio/jungle-heartbeat-suduaya.m4a'],
 ]);
 
 export function resolveLocalAudioFallbackSource(song: LocalAudioFallbackSong | null | undefined) {
