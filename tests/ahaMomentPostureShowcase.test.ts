@@ -92,6 +92,15 @@ test('mode-context title says Agent Aha Mode', () => {
   assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
 });
 
+test('ambient storyboard uses dynamic island compact and expanded', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-ambient">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /dynamic-island--compact/);
+  assert.match(block, /dynamic-island--expanded/);
+  assert.match(block, /related to your Personal OS framing/);
+  assert.match(block, /class="aha-island-dot"/);
+});
+
 test('trace storyboard has three frames with marker dot', () => {
   const html = readShowcase();
   const traceBlock = html.match(/<article class="posture-block" id="posture-trace">[\s\S]*?<\/article>/);
