@@ -92,6 +92,15 @@ test('mode-context title says Agent Aha Mode', () => {
   assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
 });
 
+test('inline storyboard suggestion bar sits above keyboard area', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-inline">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /class="inline-suggestion"/);
+  assert.match(block, /Fair point\. I'd want to explore one thing first/);
+  assert.match(block, /softer/);
+  assert.match(block, /more direct/);
+});
+
 test('ambient storyboard uses dynamic island compact and expanded', () => {
   const html = readShowcase();
   const block = html.match(/<article class="posture-block" id="posture-ambient">[\s\S]*?<\/article>/)![0];
