@@ -1604,6 +1604,97 @@
       line-height: 1.5;
       color: var(--ink);
     }
+
+    /* ============ Storyboard 元数据 ============ */
+
+    .posture-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      border: var(--border);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: var(--shadow-md);
+    }
+
+    .posture-block-head {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .posture-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      font-family: "Black Han Sans", sans-serif;
+    }
+    .posture-meta strong {
+      color: var(--aha-amber);
+      font-size: 11px;
+    }
+
+    .posture-storyboard {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .storyboard-frame {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 0 0 200px;
+    }
+
+    .storyboard-frame-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-family: "Black Han Sans", sans-serif;
+    }
+
+    .storyboard-arrow {
+      align-self: center;
+      font-size: 16px;
+      color: var(--ink-soft);
+      padding: 0 4px;
+    }
+
+    .storyboard-frame-state {
+      font-size: 10px;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .posture-block-writeback {
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--ink-muted);
+      padding-top: 6px;
+      border-top: 1px dashed rgba(22,22,26,0.12);
+    }
+
+    .posture-block-rebuttal {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .posture-block-rebuttal-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--aha-amber);
+      font-family: "Black Han Sans", sans-serif;
+    }
   </style>
 </head>
 <body>

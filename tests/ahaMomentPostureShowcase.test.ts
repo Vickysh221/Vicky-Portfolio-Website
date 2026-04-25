@@ -41,3 +41,12 @@ test('showcase declares posture-specific carriers', () => {
   assert.match(html, /\.micro-session-frame\s*\{/);
   assert.match(html, /\.micro-session-step\s*\{/);
 });
+
+test('showcase declares storyboard meta classes', () => {
+  const html = readShowcase();
+  assert.match(html, /\.posture-storyboard\s*\{/);
+  assert.match(html, /\.storyboard-arrow\s*\{/);
+  assert.match(html, /\.storyboard-frame-label\s*\{/);
+  assert.match(html, /\.posture-meta\s*\{/);
+  assert.match(html, /\.posture-block\s*\{/);
+});
