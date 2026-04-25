@@ -75,3 +75,19 @@ test('legend uses seven postures instead of six forms', () => {
   assert.match(html, /\bCo-creation\b/);
   assert.match(html, /\bAgentic Action\b/);
 });
+
+test('mode-context section has seven posture blocks', () => {
+  const html = readShowcase();
+  // 旧的 V2.1–V2.6 标题应该不再出现
+  assert.equal(html.includes('V2.1 AHA banner notification'), false);
+  assert.equal(html.includes('V2.6 AHA return card'), false);
+  // 新的 7 个 posture block id
+  for (const id of ['posture-trace','posture-ambient','posture-inline','posture-morphing','posture-echo','posture-cocreation','posture-agentic']) {
+    assert.match(html, new RegExp(`id="${id}"`), `missing ${id}`);
+  }
+});
+
+test('mode-context title says Agent Aha Mode', () => {
+  const html = readShowcase();
+  assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
+});
