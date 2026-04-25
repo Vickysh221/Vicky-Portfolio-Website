@@ -92,6 +92,16 @@ test('mode-context title says Agent Aha Mode', () => {
   assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
 });
 
+test('morphing storyboard shows same fragment in three workspaces', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-morphing">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /Agents shouldn't be locked inside one app/);
+  assert.match(block, /storyboard-frame-label">A · 在写英文/);
+  assert.match(block, /storyboard-frame-label">B · 在做作品集/);
+  assert.match(block, /storyboard-frame-label">C · 在准备面试/);
+  assert.match(block, /same fragment · three workspaces/);
+});
+
 test('inline storyboard suggestion bar sits above keyboard area', () => {
   const html = readShowcase();
   const block = html.match(/<article class="posture-block" id="posture-inline">[\s\S]*?<\/article>/)![0];
