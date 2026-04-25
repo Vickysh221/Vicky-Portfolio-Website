@@ -374,6 +374,8 @@
       padding: 8px 14px 4px;
       flex: 0 0 auto;
       gap: 8px;
+      position: relative;
+      z-index: 2;
     }
     .phone-statusbar .status-time {
       font-family: "Black Han Sans", sans-serif;
@@ -1480,42 +1482,54 @@
     /* ============ iPhone Dynamic Island ============ */
 
     .dynamic-island {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 4px;
       width: 116px;
       height: 28px;
       border-radius: 999px;
       background: #0a0a0d;
-      flex: 0 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: width 0.2s ease;
+      transition: width 0.2s ease, height 0.2s ease;
+      z-index: 1;
     }
     .dynamic-island--compact {
-      width: 190px;
-      padding: 0 12px;
-      gap: 8px;
+      width: 144px;
+      padding: 0 10px;
+      gap: 6px;
       justify-content: space-between;
     }
     .dynamic-island--compact .island-text {
       color: rgba(255,255,255,0.92);
       font-family: "Black Han Sans", sans-serif;
       font-size: 9px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
     .dynamic-island--expanded {
-      width: 100%;
-      max-width: 330px;
-      height: 84px;
-      border-radius: 28px;
+      width: 210px;
+      height: auto;
+      min-height: 80px;
+      border-radius: 24px;
       flex-direction: column;
-      align-items: stretch;
-      padding: 12px 16px;
+      align-items: flex-start;
+      padding: 10px 14px;
       gap: 4px;
+      top: 4px;
+    }
+    .dynamic-island--expanded .island-text {
+      color: rgba(255,255,255,0.92);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
     .dynamic-island--expanded .island-reason {
       color: rgba(255,255,255,0.92);
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1.45;
     }
     .dynamic-island--expanded .island-actions {
