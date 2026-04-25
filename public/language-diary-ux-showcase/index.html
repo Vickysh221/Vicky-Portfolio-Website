@@ -1455,6 +1455,53 @@
       color: rgba(255,255,255,0.92);
       border-color: rgba(255,255,255,0.32);
     }
+
+    /* ============ iPhone Dynamic Island ============ */
+
+    .dynamic-island {
+      width: 116px;
+      height: 28px;
+      border-radius: 999px;
+      background: #0a0a0d;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.2s ease;
+    }
+    .dynamic-island--compact {
+      width: 190px;
+      padding: 0 12px;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .dynamic-island--compact .island-text {
+      color: rgba(255,255,255,0.92);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .dynamic-island--expanded {
+      width: 100%;
+      max-width: 330px;
+      height: 84px;
+      border-radius: 28px;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 12px 16px;
+      gap: 4px;
+    }
+    .dynamic-island--expanded .island-reason {
+      color: rgba(255,255,255,0.92);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .dynamic-island--expanded .island-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>

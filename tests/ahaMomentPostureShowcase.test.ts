@@ -22,3 +22,12 @@ test('showcase declares aha base components', () => {
   assert.match(html, /\.aha-island-dot\s*\{/);
   assert.match(html, /\.aha-hint-glow\s*\{/);
 });
+
+test('showcase declares dynamic island three states', () => {
+  const html = readShowcase();
+  assert.match(html, /\.dynamic-island\s*\{/);
+  assert.match(html, /\.dynamic-island--compact\s*\{/);
+  assert.match(html, /\.dynamic-island--expanded\s*\{/);
+  // idle 尺寸接近 116x28
+  assert.match(html, /\.dynamic-island\s*\{[\s\S]*?width:\s*116px[\s\S]*?height:\s*28px/);
+});
