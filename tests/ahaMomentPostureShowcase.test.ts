@@ -92,6 +92,22 @@ test('mode-context title says Agent Aha Mode', () => {
   assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
 });
 
+test('echo storyboard has five frames including hint glow and return sheet', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-echo">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /storyboard-frame-label">A · 白天静默保存/);
+  assert.match(block, /storyboard-frame-label">B · 白天 ambient hint/);
+  assert.match(block, /storyboard-frame-label">C · 晚上场景就位/);
+  assert.match(block, /storyboard-frame-label">D · return card/);
+  assert.match(block, /storyboard-frame-label">E · 转化菜单/);
+  assert.match(block, /aha-hint-glow/);
+  assert.match(block, /class="return-sheet/);
+  assert.match(block, /class="return-sheet-grabber"/);
+  assert.match(block, /1 from earlier/);
+  assert.match(block, /bring it in/);
+  assert.match(block, /don't connect these again/);
+});
+
 test('morphing storyboard shows same fragment in three workspaces', () => {
   const html = readShowcase();
   const block = html.match(/<article class="posture-block" id="posture-morphing">[\s\S]*?<\/article>/)![0];
