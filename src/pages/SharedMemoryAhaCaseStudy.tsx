@@ -132,12 +132,12 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
   {
     pageTitle: t('Aha Moment 的前台交互架构', 'Aha Moment Frontstage Interaction Architecture'),
     pageGoal: t(
-      '把原本埋在 Language Diary 里的 UX showcase 单独抽出来，重读为两种 agent 参与模式下的前台形态选择问题。',
-      'Pull the UX showcase out of Language Diary and reread it as a frontstage-form selection problem across two agent participation modes.',
+      '把原本埋在 Language Diary 里的 Agent Aha Mode wireframes 单独抽出来，重读为三层介入强度下的前台姿态选择问题。',
+      'Pull the Agent Aha Mode wireframes out of Language Diary and reread them as a frontstage posture-selection problem across three intervention tiers.',
     ),
     mainCopy: t(
-      '上一页的两个时刻——刷到一句精准的英文、卡在一条 Slack 回复——是两种不同的发生方式：一种是你自己撞见的，一种是你正在表达时卡住的。同一个 agent，在这两种时刻里不该用同一种姿态出现。\n\n这一页提出 Agent Aha Mode：当 Aha 候选已经成立，agent 该用哪一种姿态出现？我把它收敛成七种介入姿态——Trace（留痕）、Ambient（呼吸）、Inline（镶嵌）、Morphing（变形）、Echo（回声）、Co-creation（共创）、Agentic Action（代理行动）。每一种对应不同的置信度、上下文合法性和关系深度，分别使用灵动岛 saved pill、ambient hint、inline 建议条、跨工作区 morphing、跨时间 return sheet、共创候选、micro-session 等不同载体。\n\nAha Moment 的共同前提是 agent 主动介入：系统发现当前生活流里出现了一个可能值得学习、保存或回访的时刻。但进入前台之前，它要先分清两种参与关系——用户递交型参与（用户主动把内容、草稿、问题或意图交给 agent）和情境感知型介入（用户没有显式召唤，但 agent 通过共享上下文判断 Aha 候选成立）。Agent Aha Mode 主要服务后者。\n\n这七种姿态有一个共同底线：可反驳原则。每一次介入都附带一组反驳通道（not now / not my point / show original context / don\'t connect these again），让用户能在低代价下中止、降级或永久排除某种连接。Agent 拥有判断权，但用户拥有最终否决权。',
-      'The two moments from the previous page — stumbling on a precise English caption and getting stuck on a Slack reply — represent two different kinds of occurrence: one you walked into, one you were blocked inside. The same agent should not appear the same way in both.\n\nThis page introduces Agent Aha Mode: once an Aha candidate has been found, which posture should the agent use? I converge it into seven postures of intervention — Trace, Ambient, Inline, Morphing, Echo, Co-creation, and Agentic Action. Each corresponds to a different level of confidence, contextual legitimacy, and relationship depth, and uses a different carrier: dynamic-island saved pill, ambient hint, inline suggestion bar, cross-workspace morphing, cross-time return sheet, co-creation candidates, or a micro-session.\n\nThe shared premise of an Aha Moment is active agent intervention: the system notices that the current flow of life contains a moment worth learning from, saving, or returning to. Before it enters the foreground, it has to distinguish two participation relationships — user-handoff participation (the user actively gives content, a draft, a question, or an intention to the agent) and context-aware intervention (the user has not explicitly summoned the agent, but the agent judges from shared context that an Aha candidate exists). Agent Aha Mode primarily serves the latter.\n\nAll seven postures share a single floor: the rebuttable principle. Every intervention carries a row of rebuttal channels (not now / not my point / show original context / don\'t connect these again) so the user can stop, downgrade, or permanently exclude a connection at low cost. The agent owns judgment; the user owns the final veto.',
+      '上一页的两个时刻——刷到一句精准的英文、卡在一条 Slack 回复——是两种不同的发生方式：一种是你自己撞见的，一种是你正在表达时卡住的。同一个 agent，在这两种时刻里不该用同一种姿态出现。\n\n这一页提出 Agent Aha Mode：当 Aha 候选已经成立，agent 该用哪一种姿态出现？我不再把它写成七张平铺的功能卡，而是按你 wireframe 里的三层强度组织：Tier 1 是轻量、被动的 Trace / Ambient / Inline；Tier 2 是生成式、可延迟的 Morphing / Echo；Tier 3 是 agent 占座、共同作者式的 Co-creation / Agentic Action。\n\nAha Moment 的共同前提是 agent 主动介入：系统发现当前生活流里出现了一个可能值得学习、保存或回访的时刻。但进入前台之前，它要先分清两种参与关系——用户递交型参与（用户主动把内容、草稿、问题或意图交给 agent）和情境感知型介入（用户没有显式召唤，但 agent 通过共享上下文判断 Aha 候选成立）。Agent Aha Mode 主要服务后者。\n\n这三层介入强度有一个共同底线：可反驳原则。每一次介入都附带一组反驳通道（not now / not my point / show original context / don\'t connect these again），让用户能在低代价下中止、降级或永久排除某种连接。Agent 拥有判断权，但用户拥有最终否决权。',
+      'The two moments from the previous page — stumbling on a precise English caption and getting stuck on a Slack reply — represent two different kinds of occurrence: one you walked into, one you were blocked inside. The same agent should not appear the same way in both.\n\nThis page introduces Agent Aha Mode: once an Aha candidate has been found, which posture should the agent use? I no longer present it as seven flat feature cards. I follow the three-tier structure from your wireframe: Tier 1 is light and passive Trace / Ambient / Inline; Tier 2 is generative and deferred Morphing / Echo; Tier 3 is agentic and co-authoring Co-creation / Agentic Action.\n\nThe shared premise of an Aha Moment is active agent intervention: the system notices that the current flow of life contains a moment worth learning from, saving, or returning to. Before it enters the foreground, it has to distinguish two participation relationships — user-handoff participation (the user actively gives content, a draft, a question, or an intention to the agent) and context-aware intervention (the user has not explicitly summoned the agent, but the agent judges from shared context that an Aha candidate exists). Agent Aha Mode primarily serves the latter.\n\nAll three intervention tiers share a single floor: the rebuttable principle. Every intervention carries a row of rebuttal channels (not now / not my point / show original context / don\'t connect these again) so the user can stop, downgrade, or permanently exclude a connection at low cost. The agent owns judgment; the user owns the final veto.',
     ),
     contentBlocks: [
       {
@@ -154,63 +154,35 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
           {
             title: t('情境感知型介入', 'Context-aware intervention'),
             body: t(
-              'agent 没有收到显式递交，但已经在授权上下文里识别出 Aha 候选。系统根据 Aha 强度选择通知类型：banner、灵动岛、inline 回复、edge bubble、return card 或弹窗都可能成立。',
-              'The agent has not received an explicit handoff, but has identified an Aha candidate inside an authorized context. The system chooses the notification type according to Aha strength: banner, island, inline reply, edge bubble, return card, or modal can all be valid.',
+              'agent 没有收到显式递交，但已经在授权上下文里识别出 Aha 候选。系统根据 Aha 强度、生成潜力和打断成本选择介入姿态：留痕、呼吸、镶嵌、变形、回声、共创或代理行动都可能成立。',
+              'The agent has not received an explicit handoff, but has identified an Aha candidate inside an authorized context. The system chooses an intervention posture according to Aha strength, generative potential, and interruption cost: Trace, Ambient, Inline, Morphing, Echo, Co-creation, or Agentic Action can all be valid.',
             ),
           },
         ],
       },
       {
         type: 'comparisonCards',
-        title: t('Agent Aha Mode 的七种介入姿态', 'Agent Aha Mode · seven postures of intervention'),
+        title: t('Agent Aha Mode 的三层介入姿态', 'Agent Aha Mode · three intervention tiers'),
         items: [
           {
-            title: t('① Trace 留痕', '① Trace'),
+            title: t('Tier 1 · Trace · Ambient · Inline', 'Tier 1 · Trace · Ambient · Inline'),
             body: t(
-              '低置信度时只在灵动岛 compact 闪一下、留下 marker dot，不打断阅读，但用户回头能看见。',
-              'At low confidence, only flash the compact dynamic island and leave a marker dot. Reading is not interrupted, but the moment is visible if the user looks back.',
+              'light & passive / 低介入，用户不必停下来。Trace 留痕是 edge dot + silent seed，只保存 G0-G1；Ambient 呼吸是界面轻微变化，只给 state pill 和 tap to expand；Inline 镶嵌在用户卡住时给 reason layer + micro-asset，用户可以 insert / soften / dismiss。',
+              'Light and passive: the user does not have to stop. Trace is an edge dot and silent seed, holding only G0-G1. Ambient is a slight interface change with a state pill and tap-to-expand. Inline appears when the user is stuck, adding a reason layer plus a micro-asset the user can insert, soften, or dismiss.',
             ),
           },
           {
-            title: t('② Ambient 呼吸', '② Ambient'),
+            title: t('Tier 2 · Morphing · Echo', 'Tier 2 · Morphing · Echo'),
             body: t(
-              '中等置信度的环境提示。Hint glow 或灵动岛 expanded 短暂出现一行 "related to your Personal OS framing"，用户可点开也可忽略。',
-              'A medium-confidence ambient hint. A hint glow or expanded dynamic island briefly carries one line — "related to your Personal OS framing" — to be opened or ignored.',
+              'generative & deferred / 生成内容，把价值带回未来。Morphing 变形把同一个 fragment 居中保存，并解释为什么它适合 expression card / interview answer / portfolio bullet；Echo 回声先在低置信度时不前台化，等相关性升高后带着 bring in / not now / don\'t connect again 回来。',
+              'Generative and deferred: value is generated and brought back later. Morphing holds one fragment centrally and explains why it fits an expression card, interview answer, or portfolio bullet. Echo does not surface at low confidence; it waits until relevance rises and returns with bring in / not now / don\'t connect again.',
             ),
           },
           {
-            title: t('③ Inline 镶嵌', '③ Inline'),
+            title: t('Tier 3 · Co-creation · Agentic Action', 'Tier 3 · Co-creation · Agentic Action'),
             body: t(
-              '当用户在表达时卡住，suggestion bar 贴在键盘上方给出 softer / more direct 等候选，不替用户写。',
-              'When the user is stuck mid-expression, an inline suggestion bar sits above the keyboard with softer / more direct candidates, never writing for them.',
-            ),
-          },
-          {
-            title: t('④ Morphing 变形', '④ Morphing'),
-            body: t(
-              '同一片 fragment 在写英文 / 做作品集 / 准备面试三个工作区里以不同 lens 呈现：same fragment · three workspaces。',
-              'The same fragment appears across writing English / portfolio / interview prep with different lenses applied: same fragment, three workspaces.',
-            ),
-          },
-          {
-            title: t('⑤ Echo 回声 ★', '⑤ Echo ★'),
-            body: t(
-              '跨时间的核心姿态：白天静默保存 → 白天 ambient hint → 晚上场景就位 → return card 滑出 → 转化菜单。带 grabber 和"don\'t connect these again"反驳通道。',
-              'The cross-time hero posture: silent daytime save → ambient hint → evening context arrival → return sheet sliding up → transformation menu. Includes a grabber and a "don\'t connect these again" rebuttal channel.',
-            ),
-          },
-          {
-            title: t('⑥ Co-creation 共创', '⑥ Co-creation'),
-            body: t(
-              'agent 邀请用户挑 lens（更产品化 / 更面试化 / 更诗性），生成三条候选，由用户选取并写回。共创发生在表达层。',
-              'The agent invites the user to choose a lens (more product / more interview / more poetic), generates three candidates, and lets the user pick before writing back. Co-creation happens at the expression layer.',
-            ),
-          },
-          {
-            title: t('⑦ Agentic Action 代理行动', '⑦ Agentic Action'),
-            body: t(
-              '高置信高相关时升级为任务分叉口：灵动岛 expanded 提议 "run a 3-step prep"，进入 micro-session，每一步都可中止。',
-              'At high confidence and high relevance, the posture escalates into a task fork: the expanded dynamic island proposes "run a 3-step prep" and enters a micro-session where every step can be stopped.',
+              'agentic & co-authoring / agent 占座，必须可反驳。Co-creation 共创先声明 lens 和 criteria，生成候选而不是 verdict，用户可以 choose lens / edit / not my point；Agentic Action 代理行动只在高置信、高相关、高时效时开启 3-step mini-session：revisit → rewrite → save → write back，并保留 stop session / don\'t memorize。',
+              'Agentic and co-authoring: the agent takes a visible seat and must remain rebuttable. Co-creation declares its lens and criteria first, then offers a candidate rather than a verdict; the user can choose lens, edit, or mark not my point. Agentic Action only appears at high confidence, relevance, and timeliness, opening a 3-step mini-session: revisit, rewrite, save, write back, with stop session and don\'t memorize always available.',
             ),
           },
         ],

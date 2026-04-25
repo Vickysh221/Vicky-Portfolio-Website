@@ -6,17 +6,21 @@ function read(relativePath: string) {
   return readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8');
 }
 
-test('page-2 mainCopy frames Agent Aha Mode as seven postures', () => {
+test('page-2 mainCopy frames Agent Aha Mode as three tiers', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
   assert.match(src, /Agent Aha Mode/);
-  assert.match(src, /七种介入姿态/);
-  assert.match(src, /seven postures/);
+  assert.match(src, /三层介入/);
+  assert.match(src, /three intervention tiers/);
 });
 
-test('page-2 contentBlocks list seven posture cards', () => {
+test('page-2 contentBlocks group postures into three tiers', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
+  for (const tier of ['Tier 1 · Trace · Ambient · Inline', 'Tier 2 · Morphing · Echo', 'Tier 3 · Co-creation · Agentic Action']) {
+    assert.match(src, new RegExp(tier), `missing tier card: ${tier}`);
+  }
+
   for (const name of ['Trace 留痕', 'Ambient 呼吸', 'Inline 镶嵌', 'Morphing 变形', 'Echo 回声', 'Co-creation 共创', 'Agentic Action 代理行动']) {
-    assert.match(src, new RegExp(name), `missing posture card: ${name}`);
+    assert.match(src, new RegExp(name), `missing posture in tier copy: ${name}`);
   }
 });
 
