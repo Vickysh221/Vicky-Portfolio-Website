@@ -49,7 +49,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/web-design-develop/fuli-plus': 11,
 
   '/agentic-design-development/language-diary': 5,
-  '/agentic-design-development/aha-moment': 2,
+  '/agentic-design-development/aha-moment': 3,
   '/agentic-design-development/simo-agent-system': 2,
   '/agentic-design-development/fuli-plus': 12,
   '/agentic-design-development/ai-interior-system': 2,
@@ -307,8 +307,8 @@ export const PAGE_META: Record<string, PageMeta> = {
     subtitle: { zh: 'Agentic Design & Development · Shared-Memory Aha UX', en: 'Agentic Design & Development · Shared-Memory Aha UX' },
     year: "2025–2026",
     desc: {
-      zh: '把 Language Diary 重新定义为一个由记忆调度驱动的跨应用语言 companion，并把 Aha Moment 设计成系统进入前台时最克制、最有价值的交互接口。',
-      en: 'Reframes Language Diary as a memory-orchestrated cross-app language companion and treats the Aha Moment as the system’s most restrained, high-value frontstage interface.',
+      zh: '把 Language Diary 重新定义为一个由记忆调度驱动的跨应用语言 companion，并把 Aha Moment 设计成 agent 根据强度主动选择前台介入层级的交互接口。',
+      en: 'Reframes Language Diary as a memory-orchestrated cross-app language companion and treats the Aha Moment as an interface where the agent actively chooses a frontstage intervention level according to signal strength.',
     },
     parent: "/agentic-design-development",
     color: "#8b7db5",

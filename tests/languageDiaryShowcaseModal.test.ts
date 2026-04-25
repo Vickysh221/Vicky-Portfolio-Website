@@ -18,6 +18,7 @@ test('language diary showcase auto expand uses a centered modal frame', () => {
   assert.match(subPageCarousel, /className=\{isExpandedShowcaseOverlay \? 'showcase-expanded-modal-frame' : undefined\}/);
   assert.match(subPageCarousel, /height:\s*isExpandedShowcasePage \? '100%' : 'calc\(100vh - 120px\)'/);
   assert.match(subPageCarousel, /flex:\s*isExpandedShowcasePage \? 1 : undefined/);
+  assert.match(subPageCarousel, /shouldAutoExpandShowcase[\s\S]*slideIndex === 2/);
 });
 
 test('language diary showcase hides page meta copy so the canvas is not obstructed', () => {

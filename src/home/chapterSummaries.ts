@@ -10,7 +10,7 @@ export const CHAPTER_SUMMARIES: Record<string, string> = {
   '/agentic-design-development/language-diary':
     '把语言学习从"任务"重新组织为"抒写"——让多个智能体成为表达的陪伴者，让协作是"共同在场"。',
   '/agentic-design-development/aha-moment':
-    '把原来埋在 Language Diary 里的 showcase 单独抽出来，重新说明共享记忆如何在跨应用场景里把高价值片段变成一个值得被看见的语言学习时刻。',
+    '把原来埋在 Language Diary 里的 showcase 单独抽出来，重新说明 agent 如何在用户递交与情境感知两种参与关系里，把高价值片段变成不同强度的前台介入。',
   '/agentic-design-development/fuli-plus':
     '把创造权一部分交给系统，让一块地毯的生成，从"由人到物"，变成"由人、材料、算法三方反复商榷"。',
   '/agentic-design-development/ai-interior-system':

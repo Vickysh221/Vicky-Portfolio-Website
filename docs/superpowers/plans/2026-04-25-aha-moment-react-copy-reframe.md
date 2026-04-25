@@ -1,8 +1,10 @@
 # Aha Moment React 文案重构计划
 
 **日期**：2026-04-25  
+**2026-04-26 修订**：项目说明需要从「最克制的前台接口」改为「agent 根据 Aha 强度主动选择前台介入层级」。Aha Moment 的共同前提是 agent 主动介入；下一步产品验证不再是“能不能发现语点”，而是“能不能区分用户递交型参与与情境感知型介入，并为同一组前台形态选择不同强度的出现方式”。
+
 **文件**：`src/pages/SharedMemoryAhaCaseStudy.tsx`  
-**范围**：page 1 全量重写 + page 2 开头加过桥段；不动 H5 iframe 内容
+**范围**：page 1 补充产品下一步验证，page 2 改为两种 agent 参与模式的项目说明；H5 showcase 只重排 DOM 与文案，不改现有 UI 样式规则
 
 ---
 
@@ -149,21 +151,21 @@ EN: Aha Moment Frontstage Interaction Architecture
 ZH 过桥段：
 上一页的两个时刻——刷到一句精准的英文、卡在一条 Slack 回复——是两种不同的发生方式：一种是你自己撞见的，一种是你正在表达时卡住的。同一个 agent，在这两种时刻里不该用同一种姿态出现。
 
-这一页讨论的是：当 Aha 已经被发现，agent 怎么为自己挑一个合适的出现方式？它可以是一个轻提示、一个共读锚点、一个回复候选、一次 target language 挑战、一张晚点回来的卡片——选哪一种，取决于这一刻用户的注意力在不在你这儿、TA 当前在做什么、TA 和你之间的关系深到哪一层。
+这一页讨论的是：当 Aha 已经被发现，agent 怎么为自己挑一个合适的通知类型和出现方式？它可以是 banner notification、灵动岛式 saved pill、inline 回复、edge bubble、return card 或弹窗——选哪一种，取决于 Aha 强度、上下文合法性、当前任务连续性和关系深度。
 
 （原有 mainCopy 继续接在此处）
 
 EN 过桥段：
 The two moments from the previous page — stumbling on a precise English caption and getting stuck on a Slack reply — represent two different kinds of occurrence: one you walked into, one you were blocked inside. The same agent should not appear the same way in both.
 
-This page addresses exactly that: once an Aha has been found, how does the agent choose the right way to surface it? It could be an ambient nudge, a co-reading anchor, a reply suggestion, a target language challenge, or a deferred return card — the choice depends on whether the user's attention is available, what they are currently doing, and how deep the relationship has gone.
+This page addresses exactly that: once an Aha has been found, how does the agent choose the right notification type and way to surface it? It could be a banner notification, a Dynamic-Island-like saved pill, an inline reply, an edge bubble, a return card, or a modal — the choice depends on Aha strength, contextual legitimacy, task continuity, and relationship depth.
 
 （原有 EN mainCopy 继续接在此处）
 ```
 
 ### contentBlocks（page 2 保留不动）
 
-两种注意力模式 / 可复用的前台形态 / 前台原则 / HTML UX Showcase 四块全部保留。
+两种 agent 参与模式 / 可复用的前台形态 / 前台原则 / HTML UX Showcase 四块全部保留。
 
 ---
 

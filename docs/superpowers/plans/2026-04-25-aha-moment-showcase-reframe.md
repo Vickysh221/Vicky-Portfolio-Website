@@ -1,7 +1,14 @@
 # Aha Moment Showcase 重构计划
 
 **日期**：2026-04-25
-**目标**：把 `/agentic-design-development/aha-moment` 路由下的 UX showcase 从「Language Diary V2.0 设计决策投票会」重构为「Aha Moment 前台 UX 证据」，同时保留 agentic canvas + 投票星标这套 visual frame（它本身就是"agent 选自己的 UX"的可视化语言）。
+**2026-04-26 修订目标**：把 `/agentic-design-development/aha-moment` 路由下的 UX showcase 从「按场景分组」改成「按两种 agent 参与模式分组」。Aha Moment 的共同前提是 agent 主动介入；区别不再沿用旧的注意力命名，而是：
+
+1. **用户递交型参与**：用户主动把内容、草稿、问题或意图交给 agent。页面重点解释人如何把消息传达给 agent，以及 agent 如何接住这次递交。
+2. **情境感知型介入**：用户没有显式递交，但 agent 在授权上下文里识别到 Aha 候选。页面重点解释系统如何根据 Aha 强度选择通知类型和出现层级：banner notification、灵动岛式 saved pill、inline 回复、edge bubble、卡片 / 弹窗、保存状态或晚点回访。
+
+四个原场景（共同阅读 / 回复引导 / 关系目标 / 晚点回来）降级为最后的 **case evidence**，用于证明两种参与模式和六种前台形态如何落地。
+
+**原始目标**：把 `/agentic-design-development/aha-moment` 路由下的 UX showcase 从「Language Diary V2.0 设计决策投票会」重构为「Aha Moment 前台 UX 证据」，同时保留 agentic canvas + 投票星标这套 visual frame（它本身就是"agent 选自己的 UX"的可视化语言）。
 
 参考文档：`/Users/vickyshou/.openclaw/workspace/shared/projects/Multi-agent-lang/v3.0 Aha moment/aha-frontstage-ux-architecture.md`
 
@@ -28,7 +35,7 @@ Masthead 标题改写为：
 
 | 文件 | 改动性质 | 用途 |
 |---|---|---|
-| `public/language-diary-ux-showcase/index.html` | **全量重写正文 + 局部新增 CSS** | showcase 主体 |
+| `public/language-diary-ux-showcase/index.html` | **重排正文 + 复用现有视觉骨架** | showcase 主体 |
 | `public/language-diary-ux-showcase/agentic-canvas-v1.html`（新增） | 拷贝当前 index.html | 备份 / 可对照 |
 | `public/language-diary-ux-showcase/legacy.html` | **不动** | 仅保留文件，前台访问入口隐藏 |
 | `src/pages/SharedMemoryAhaCaseStudy.tsx` | **微调 page 2 的副本和 caption** | 与 showcase 词汇对齐 |
@@ -77,46 +84,63 @@ phone mock 内的视觉组件（halo-card / agent-floater / orchestrator-card / 
 
 ## Phase 2 · Masthead + nav 重构
 
-新的 5-pill 导航：
+2026-04-26 后新的 4-pill 导航：
 
 ```
-00 · 读图例
-01 · 共同阅读
-02 · 回复引导
-03 · 关系 / 目标话题
-04 · 晚点回来
+00 · 图例
+01 · 用户递交型参与
+02 · 情境感知型介入
+03 · 场景佐证
 ```
 
 ---
 
-## Phase 3 · Section 00「读图例」（新建，纯图例，不放 phone mock）
+## Phase 3 · Section 00「图例」（纯图例，不放 phone mock）
 
 三块内容：
 
-1. **两种注意力模式** — 左右两半，图释 Explicit / Shared 的边界条件。
+1. **两种 agent 参与模式** — 左右两半，图释「用户递交型参与」与「情境感知型介入」。
 2. **6 种前台形态** — 6 个 chip，每个一行定义：
    - Ambient nudge · Co-reading anchor · Reply suggestion
    - Target language challenge · Relation-topic invitation · Deferred return card
-3. **Orchestrator 选择模型** — 极简流程图：4 perspective dots → orchestrator → 主★ + 副✩；旁标 6 维度（注意力拥有权 / 任务连续性 / 语言负荷 / 关系深度 / 行动紧迫度 / 记忆命中置信度）。
+3. **Orchestrator 选择模型** — 极简流程图：4 perspective dots → orchestrator → 主★ + 副✩；旁标 6 维度（用户是否递交 / Aha 强度 / 任务连续性 / 语言负荷 / 关系深度 / 记忆命中置信度）。
 
-底部 annotation：「下面 4 个场景都用这套词汇。每个 spread 的星标不再表示『谁觉得 UI 好看』，而是 orchestrator 在当前条件下挑选的主/副前台形态。」
+底部 annotation：「下面先按两种参与模式列出 UX 证据；四个具体场景只作为最后的 case evidence。」
 
 ---
 
-## Phase 4 · 4 个场景 spread
+## Phase 4 · 两种参与模式 spread
 
-### 每个 spread 的固定 5 层结构
+### 01 · 用户递交型参与
 
-```
-[Rail]      场景标题 + 触发前提（中文）+ 模式 1 / 模式 2 差异说明
-[Stage]     左列 Mode 1（Explicit Attention）   |   右列 Mode 2（Shared Attention）
-            每列 2–3 个 phone 变体（case 内英文）
-            每个 phone 上挂 vote-cluster（4 perspective dots）
-            最佳变体挂 orchestrator 主 ★ / 副 ✩
-[Band]      用户被怎么带入下一步（中文，1–2 个 CTA chip）
-[Chips]     最后沉淀成什么（中文，4 颗 sediment chip）
-[Note]      Vote interpretation：orchestrator 为什么这么选，落到 6 维度（中文）
-```
+- 先讲用户如何把消息传达给 agent：选中文本、点击入口、分享内容、请求回复、保存片段、召唤 orchestrator。
+- 再列出六种 AGENT 前台形态在主动递交下的 UX 证据：
+  - Ambient nudge / handoff floater
+  - Co-reading anchor
+  - Reply suggestion
+  - Target language challenge
+  - Relation-topic invitation
+  - Deferred return card
+
+### 02 · 情境感知型介入
+
+- 先讲 Aha Moment 都是 agent 主动介入，但介入强度取决于 Aha 程度和上下文合法性。
+- 再列出六种 Aha 类通知在情境感知下的 UX 证据：
+  - AHA banner notification
+  - AHA island save notification
+  - AHA inline reply
+  - AHA edge bubble notification
+  - AHA inline challenge notification
+  - AHA return card / modal preface
+
+### 03 · 场景佐证
+
+四个原场景不再做主分类，只做 evidence matrix：
+
+- 共同阅读：用户递交时是共读锚点；情境感知时可从 banner、inline 回复或 edge bubble 升级到共读锚点。
+- 回复引导：用户递交时直接给回复候选；情境感知时先判断语气和关系负荷。
+- 关系 / 目标话题：用户递交时可直接连接目标；情境感知时更依赖记忆命中置信度。
+- 晚点回来：当下 Aha 强度不足或场景不适合时先保存状态；复盘或强相关时再升级为完整 return。
 
 ---
 
@@ -124,27 +148,22 @@ phone mock 内的视觉组件（halo-card / agent-floater / orchestrator-card / 
 
 > 所有保留的 phone mock：复用骨架 + 重写文案（case 内改为英文）。
 
-| 场景 | 列 | 变体编号 | 复用源 | 新文案要点（case 内英文） |
+| 模式 | 变体编号 | 类型标注 | 复用源 | 新文案要点（case 内英文） |
 |---|---|---|---|---|
-| **01 共同阅读** | Mode 1 | V1.1 共读锚点 | s02-A 划词触发 `select-menu` + s02-B `agent-floater` | User selects text → Mimo enters co-reading, anchors on that line |
-| | Mode 1 | V1.2 Target language challenge | s04-A3 `agent-banner` + `agent micro-message` | "Want to try reading this line in your target language?" |
-| | Mode 2 | V2.1 Ambient nudge | s04-A2 `os-banner` | Minimal edge hint: "something here worth noticing" — no expansion |
-| | Mode 2 | V2.2 Deferred return card | s04-B2 `screen-card · save for later` | "Holding this for tonight." |
-| | Mode 2 | V2.3 Co-reading anchor（轻版） | s04-A1 `halo-card` | "I noticed this line — worth a second look when you have a moment." |
-| **02 回复引导** | Mode 1 | V1.1 Reply candidates | s02-C `orchestrator-card` 骨架去掉派单语义 | Three reply options shown inline |
-| | Mode 1 | V1.2 Tone switch | s05 `peek / popover` | "More natural / more polite / sounds like you" |
-| | Mode 2 | V2.1 TL challenge nudge | s04-A3 `agent-banner` | "You could try saying this one in X first." |
-| | Mode 2 | V2.2 Co-reading first | s04-A1 `halo-card` | "Read the tone of this line together before deciding how to reply." |
-| **03 关系 / 目标** | Mode 1 | V1.1 Relation-topic invitation | s07 `letter-card`（缩小版） | "This connects to your Agent OS interview prep — want to say a line?" |
-| | Mode 1 | V1.2 Co-reading on relation | s04-A1 `halo-card` | Anchor + side-label: "same thread as what you mentioned before" |
-| | Mode 2 | V2.1 Edge bubble | s05 peek 变体 | Edge bubble: "← related to the framing you've been working on" |
-| | Mode 2 | V2.2 Deferred relation card | s04-B2 + s07 letter chip | "Tonight: turn this into the interview line you've been looking for." |
-| **04 晚点回来** | Mode 1 | V1.1 Saved-and-returned | s05 peek + s07 `letter-card` | "You saved this earlier — ready to try a version?" |
-| | Mode 1 | V1.2 Compare-then-now | s08 `knowledge-chip / event-group` | Left: original line · Right: your version now |
-| | Mode 2 | V2.1 Legitimacy preface + return | s06 `quiet-room` + return card | "I held this because it felt relevant. Want to bring it back?" |
-| | Mode 2 | V2.2 Relation re-link | s08 `woven-field / constellation` | Connecting saved fragment to today's new thread |
+| 用户递交型参与 | V1.1 | Ambient handoff nudge | `agent-floater` | User selects text → Mimo is ready to help |
+| 用户递交型参与 | V1.2 | Co-reading anchor | s02-A / s02-B | User invites Mimo into co-reading |
+| 用户递交型参与 | V1.3 | Reply suggestion | `orchestrator-card` | Three reply options shown inline |
+| 用户递交型参与 | V1.4 | Target language challenge | s04-A3 `agent-banner` | "Want to try reading this line in your target language?" |
+| 用户递交型参与 | V1.5 | Relation-topic invitation | s07 `letter-card` | Goal / relationship link after handoff |
+| 用户递交型参与 | V1.6 | Deferred return card | s05 peek + s07 `letter-card` | User-saved fragment returns later |
+| 情境感知型介入 | V2.1 | AHA banner notification | s04-A2 `os-banner` | "AHA · banner notification" |
+| 情境感知型介入 | V2.2 | AHA island save notification | `tag--coral` saved pill | "AHA · saved for tonight" |
+| 情境感知型介入 | V2.3 | AHA inline reply | `agent-banner` | Inline reply suggestion before sending |
+| 情境感知型介入 | V2.4 | AHA edge bubble notification | s05 `peek-card--popover` | Edge bubble connects current text to active framing |
+| 情境感知型介入 | V2.5 | AHA inline challenge notification | `screen-card` | Inline target-language challenge |
+| 情境感知型介入 | V2.6 | AHA return card / modal preface | s06 `quiet-room` | Stronger return card when Aha evidence is high |
 
-> 说明：Scenario 01 的 Mode 2 比其他场景多一个变体（V2.3），以展示「共读锚点」在 Shared Attention 下的轻量形式，和 Mode 1 的主动共读形成对照。其余场景维持 2+2=4 个变体。
+> 说明：情境感知型介入必须标注具体 Aha 通知类型，用来展示同一个 Aha candidate 如何从 banner、灵动岛、inline 回复、edge bubble 升级到更强 return card / modal；它不等同于低打扰。
 
 ---
 
@@ -161,16 +180,11 @@ phone mock 内的视觉组件（halo-card / agent-floater / orchestrator-card / 
 
 | 老 section | 处置 |
 |---|---|
-| s01 白天捕获主聊天 agent | 删除 DOM |
-| s02 用户主动触发 | phone mock 拆出 → Scenario 01 / 02 Mode 1 复用 |
-| s03 OS Share | 删除 DOM |
-| s04 Aha Moment | 拆解：Row A → Scenario 01 Mode 1，Row B 的 4 个 next-step 拆到各场景 next-step-band |
-| s05 Candidate Peek | 进 Scenario 02 / 04 |
-| s06 Day → Night | 仅 quiet-room 进 Scenario 04 V2.1，其余删除 |
-| s07 Night Narrative | letter-card 进 Scenario 03 / 04 sediment 区 |
-| s08 Knowledge Constellation | 进 Scenario 04 V2.2 + 各场景 sediment chip |
+| s01-s08 旧场景主线 | 保留为隐藏素材，不再参与主滚动叙事 |
+| s02 / s04 / s05 / s07 等 phone mock | 拆出骨架和文案，复用到「用户递交型参与」与「情境感知型介入」两个 spread |
+| 四个原场景 | 降级为「场景佐证」里的 evidence summary，用来说明同一组前台形态如何被不同参与关系调用 |
 
-孤儿 CSS 类（`.portfolio-spread--day` 等场景色调）保留，确保 v1 备份页可独立打开。
+孤儿 CSS 类（`.portfolio-spread--day` 等场景色调）保留；当前实现只调整 DOM 和文案，不改现有 UI 样式规则。
 
 ---
 
@@ -178,17 +192,17 @@ phone mock 内的视觉组件（halo-card / agent-floater / orchestrator-card / 
 
 1. 「可复用的前台形态」6 张卡的命名与 Section 00 chip **逐字对齐**（中英都对齐）。
 2. `showcaseEmbed` block 的 `caption` 改写为：
-   > 下方 showcase 是这一案例的前台 UX 证据。每个场景按 5 层结构展开：场景 → 模式 1/2 → agent 选中的交互形态 → 用户怎么被带入下一步 → 最后沉淀成什么。投票方从 UX / Research / Human 改为 Expression / Relationship / Timing / Review，由 Orchestrator 决定主与副。
+   > 下方 showcase 是这一案例的前台 UX 证据。它先区分用户递交型参与与情境感知型介入，再展示同一组前台形态如何在两种参与关系下被不同地调用。
 3. 不新增页，不改 `SHARED_MEMORY_AHA_CASE_STUDY_PAGE_COUNT`。
 
 ---
 
 ## Phase 7 · 验收 checklist
 
-- [ ] 5 pill 导航可点 + 锚点跳转正确
+- [ ] 4 pill 导航可点 + 锚点跳转正确
 - [ ] Section 00：2 种模式 + 6 种形态 chip + orchestrator 流程图均清晰
-- [ ] 4 个 scenario spread 都齐 5 层（场景 / 模式分列 / 形态 / next-step / sediment / vote 注解）
-- [ ] Scenario 01 Mode 2 有 3 个变体（V2.1 / V2.2 / V2.3），其余各 2 个
+- [ ] 两个模式 spread 都列出 6 种 AGENT 前台形态的 UX 证据
+- [ ] 情境感知型介入明确标注不同 Aha 通知类型：banner notification、灵动岛式 saved pill、inline 回复、edge bubble、inline challenge、return card / 弹窗
 - [ ] 每个 spread 的 vote 注解都点名至少 2 个 6 维度坐标
 - [ ] 主★ 唯一，副✩ 0 或 1 个
 - [ ] Section 00 的 6 chip 命名 = React page 2 的 6 cards 命名 = scenario spread 内的形态名
