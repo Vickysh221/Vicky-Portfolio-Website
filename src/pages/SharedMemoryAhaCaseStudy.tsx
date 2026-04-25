@@ -133,22 +133,22 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
   {
     pageTitle: t('Aha Moment 的前台交互架构', 'Aha Moment Frontstage Interaction Architecture'),
     pageGoal: t(
-      '把原本埋在 Language Diary 里的 Agent Aha Mode wireframes 单独抽出来，重读为三层介入强度下的前台姿态选择问题。',
-      'Pull the Agent Aha Mode wireframes out of Language Diary and reread them as a frontstage posture-selection problem across three intervention tiers.',
+      '用精选 case canvas 直接替换原本的 Agent Aha Mode wireframe，把介入姿态放回真实语言学习场景里读。',
+      'Replace the original Agent Aha Mode wireframe with a selected case canvas, reading intervention postures inside concrete language-learning moments.',
     ),
     mainCopy: t(
-      '这一页先让 wireframe 自己说话。上方 canvas 只保留 Agent Aha Mode 这一组：它把 Aha 的前台出现方式从轻到重排成三层，具体的 UI 关系已经在图里完成，不需要在正文里再复述一遍。\n\n正文只补一层读图逻辑：这些姿态不是通知组件清单，而是 agent 在共享记忆、生成潜力、打断成本和用户可反驳权之间做出的介入判断。',
-      'This page lets the wireframe carry the argument first. The canvas above keeps only the Agent Aha Mode group: it orders Aha surfacing from light to heavy across three tiers, while the concrete UI relationships are already handled by the drawing and do not need to be repeated in prose.\n\nThe body adds only the reading frame: these postures are not a notification-component catalog, but intervention decisions made across shared memory, generative potential, interruption cost, and the user\'s right to rebut.',
+      '这一页直接让 case canvas 承担主要说明：用户递交、情境感知、回访与转化三组场景放在同一张可缩放画布里，说明 Agent Aha Mode 如何从入口、提醒、inline、saved state 一直走到 return 与 action。\n\n正文只补一层读图逻辑：不要把这些形态读成通知组件清单，而要看消息如何被递交、Aha 如何进入前台、旧片段如何在未来变成行动。',
+      'This page lets the case canvas carry the argument: user handoff, context-aware intervention, and return/transformation sit on one scalable canvas, showing how Agent Aha Mode moves from entry, notification, inline help, and saved state toward return and action.\n\nThe body adds only the reading frame: do not read these forms as a notification-component catalog. Read how a message is handed off, how an Aha enters the foreground, and how an old fragment later becomes action.',
     ),
     leadContentBlocks: [
       {
         type: 'showcaseEmbed',
-        title: t('Agent Aha Mode Wireframes', 'Agent Aha Mode Wireframes'),
+        title: t('精选 case canvas', 'Selected case canvas'),
         caption: t(
-          '上方 canvas 只保留 Agent Aha Mode 三张 artboard，作为这一页的主要证据。',
-          'The canvas above keeps only the three Agent Aha Mode artboards as the primary evidence for this page.',
+          '上方 canvas 用三组 use case 直接替换原来的 Agent Aha Mode wireframe：用户递交、情境感知、回访与转化。',
+          'The canvas above replaces the original Agent Aha Mode wireframe with three use-case groups: user handoff, context-aware Aha, and return/transformation.',
         ),
-        src: '/language-diary-wireframes-standalone.html',
+        src: '/language-diary-ux-showcase-cases.html',
       },
     ],
     contentBlocks: [
@@ -177,24 +177,24 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         title: t('三种读图方式', 'Three ways to read the canvas'),
         items: [
           {
-            title: t('从低介入到高介入', 'From lighter to heavier intervention'),
+            title: t('先分清用户递交和情境感知', 'First separate handoff from context-aware Aha'),
             body: t(
-              '先看 agent 如何逐步取得前台资格：从只留痕，到嵌入当前动作，再到把用户带入一个可选择的行动路径。',
-              'First read how the agent gradually earns foreground permission: from leaving a trace, to embedding inside the current action, to opening a selectable action path.',
+              '左侧是用户主动把内容交给 agent，右侧和中间更多是 agent 在授权上下文里判断 Aha 候选成立。',
+              'The left group is explicit handoff. The middle and right groups show the agent judging inside authorized context that an Aha candidate exists.',
             ),
           },
           {
-            title: t('从保存状态到生成动作', 'From saved state to generated action'),
+            title: t('再看通知、inline 和保存状态', 'Then compare notification, inline, and saved state'),
             body: t(
-              '不要按 UI 组件读，而要看每一步生成到什么程度：只是保存、解释关系、给一句可用表达，还是开启一个小任务。',
-              'Do not read it as a UI component list. Read how far each moment is generated: saved state, relationship explanation, usable sentence, or a small task.',
+              '同样是主动介入，可能是 banner notification、inline reply，也可能只是 saved state；差别来自 Aha 强度和当前打断成本。',
+              'The same proactive intervention may become a banner notification, an inline reply, or only a saved state; the difference comes from Aha strength and interruption cost.',
             ),
           },
           {
-            title: t('从系统判断到用户反驳', 'From agent judgment to user rebuttal'),
+            title: t('最后看回访如何变成行动', 'Finally read how return becomes action'),
             body: t(
-              '每一种介入都要留下退出口：忽略、降级、查看依据、标记不是这个意思，都是 Aha Mode 的一部分。',
-              'Every intervention needs exits: ignore, downgrade, view evidence, or mark this is not what I meant. These are part of Aha Mode itself.',
+              'Return card、morphing 和 micro-session 说明 Aha 不止是提醒，而是能被带回、变形，并进入用户可控制的下一步。',
+              'Return cards, morphing, and micro-sessions show that an Aha is not just a reminder; it can return, transform, and enter a next step the user still controls.',
             ),
           },
         ],
@@ -205,35 +205,64 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         items: [
           t(
             'HTML 已经承担主要说明，正文只标出判断维度：共享记忆、生成潜力、打断成本、可反驳权。',
-            'The HTML carries the main explanation. The prose only names the judgment dimensions: shared memory, generative potential, interruption cost, and rebuttal rights.',
+            'The HTML carries the main explanation. The prose only names the judgment dimensions: shared memory, generative potential, interruption cost, and rebuttable rights.',
           ),
           t(
-            '这里不在文字里重讲每一种姿态，避免把图例降级成说明书。',
-            'This section does not retell every posture in prose, so the drawing remains evidence instead of becoming an instruction manual.',
+            '这里不在文字里重讲每一种 case，避免把画布降级成说明书。',
+            'This section does not retell every case in prose, so the canvas remains evidence instead of becoming an instruction manual.',
           ),
         ],
       },
     ],
   },
   {
-    pageTitle: t('HTML UX Showcase', 'HTML UX Showcase'),
+    pageTitle: t('Aha Mode 的 Use Case 佐证', 'Aha Mode Use Case Evidence'),
     pageGoal: t(
-      '把原本埋在 `A Ritual of Expression` 里的页面，作为 Aha Moment 前台 UX 证据单独放在第三页。',
-      'Place the page originally embedded inside `A Ritual of Expression` on a separate third page as frontstage UX evidence for the Aha Moment.',
+      '把完整 UX showcase 收束成一张可缩放的精选 case canvas，用真实语言学习场景验证第二页的介入姿态。',
+      'Condense the full UX showcase into a scalable selected case canvas, using concrete language-learning moments to validate the intervention postures from page 2.',
     ),
     mainCopy: t(
-      '这份 showcase 先区分用户递交型参与与情境感知型介入，然后用七种姿态的 storyboards——Trace / Ambient / Inline / Morphing / Echo / Co-creation / Agentic Action——演示 Agent Aha Mode 在不同置信度和场景下的真实出现方式。',
-      'This showcase first separates user-handoff participation from context-aware intervention, then walks through the seven posture storyboards — Trace / Ambient / Inline / Morphing / Echo / Co-creation / Agentic Action — showing how Agent Aha Mode actually surfaces under different confidence levels and scenes.',
+      '这一页不再放完整长 showcase，而是只保留能证明架构成立的精选 case canvas：用户递交、情境感知、回访与转化三组场景。\n\n读图重点不是再记一遍姿态名称，而是看第二页的介入姿态是否能落到真实语言学习时刻：消息如何递交、Aha 如何进入前台、旧片段如何在未来变成行动。',
+      'This page no longer embeds the full long showcase. It keeps only a selected case canvas that proves the architecture through three groups: user handoff, context-aware intervention, and return/transformation.\n\nThe point is not to memorize posture names again. Read whether the page-2 intervention postures survive real language-learning moments: how a message is handed off, how an Aha enters the foreground, and how an old fragment returns later as action.',
     ),
-    contentBlocks: [
+    leadContentBlocks: [
       {
         type: 'showcaseEmbed',
-        title: t('HTML UX Showcase', 'HTML UX Showcase'),
+        title: t('精选 case canvas', 'Selected case canvas'),
         caption: t(
-          '下方 showcase 是这一案例的前台 UX 证据。它先区分用户递交型参与与情境感知型介入，然后用七种姿态的 storyboards 演示 Agent Aha Mode 如何在不同置信度下出现，并保持可反驳。',
-          'The showcase below is the frontstage UX evidence for this case. It first separates user-handoff participation from context-aware intervention, then walks through the seven postures storyboards to show how Agent Aha Mode surfaces under different confidence levels and stays rebuttable.',
+          '上方 canvas 把完整 UX showcase 收束为三组 use case：用户递交、情境感知、回访与转化。',
+          'The canvas above condenses the full UX showcase into three use-case groups: user handoff, context-aware Aha, and return/transformation.',
         ),
-        src: '/language-diary-ux-showcase/index.html',
+        src: '/language-diary-ux-showcase-cases.html',
+      },
+    ],
+    contentBlocks: [
+      {
+        type: 'comparisonCards',
+        title: t('三组 case 证明什么', 'What the three case groups prove'),
+        items: [
+          {
+            title: t('用户递交', 'User handoff'),
+            body: t(
+              '证明 agent 被主动召唤时，系统如何快速建立共同注意力，并把内容接成可处理的学习或表达对象。',
+              'Shows how the system establishes shared attention when the agent is explicitly summoned, turning handed-off content into a learnable or expressible object.',
+            ),
+          },
+          {
+            title: t('情境感知', 'Context-aware Aha'),
+            body: t(
+              '证明不同强度的主动介入可以覆盖 banner notification、inline reply、saved state，而不是固定成一种通知组件。',
+              'Shows that proactive intervention can range across banner notification, inline reply, and saved state instead of collapsing into one notification component.',
+            ),
+          },
+          {
+            title: t('回访与转化', 'Return and transformation'),
+            body: t(
+              '证明 Aha 的价值不止在当下出现，而在未来被带回、变形、共创，并转成用户可控制的行动。',
+              'Shows that an Aha is valuable not only when it appears, but when it returns, morphs, co-creates, and becomes user-controlled action.',
+            ),
+          },
+        ],
       },
     ],
   },

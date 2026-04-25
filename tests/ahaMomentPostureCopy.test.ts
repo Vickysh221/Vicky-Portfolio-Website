@@ -6,6 +6,13 @@ function read(relativePath: string) {
   return readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8');
 }
 
+function pageBlock(src: string, pageTitleZh: string) {
+  const start = src.indexOf(`pageTitle: t('${pageTitleZh}'`);
+  assert.notEqual(start, -1, `missing page block: ${pageTitleZh}`);
+  const nextPage = src.indexOf('\n  {\n    pageTitle:', start + 1);
+  return nextPage === -1 ? src.slice(start) : src.slice(start, nextPage);
+}
+
 function standaloneTemplateSource() {
   const html = read('public/language-diary-wireframes-standalone.html');
   const match = html.match(/<script type="__bundler\/template">([\s\S]*?)<\/script>/);
@@ -22,21 +29,23 @@ function standaloneAppSource() {
   return html.slice(start, end);
 }
 
-test('page-2 mainCopy frames the wireframe as primary evidence', () => {
+test('page-2 mainCopy frames the case canvas as primary evidence', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
-  assert.match(src, /Agent Aha Mode/);
-  assert.match(src, /wireframe 自己说话/);
-  assert.match(src, /reading frame/);
-  assert.match(src, /不需要在正文里再复述一遍/);
+  const block = pageBlock(src, 'Aha Moment 的前台交互架构');
+  assert.match(block, /case canvas/);
+  assert.match(block, /用户递交、情境感知、回访与转化/);
+  assert.match(block, /message is handed off/);
 });
 
-test('page-2 leads with the standalone wireframe html embed', () => {
+test('page-2 leads with the selected case canvas embed', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
-  assert.match(src, /leadContentBlocks/);
-  assert.match(src, /language-diary-wireframes-standalone\.html/);
+  const block = pageBlock(src, 'Aha Moment 的前台交互架构');
+  assert.match(block, /leadContentBlocks/);
+  assert.match(block, /language-diary-ux-showcase-cases\.html/);
+  assert.doesNotMatch(block, /language-diary-wireframes-standalone\.html/);
   assert.ok(
-    src.indexOf('leadContentBlocks') < src.indexOf('contentBlocks: ['),
-    'standalone HTML embed should be declared before the regular body content blocks',
+    block.indexOf('leadContentBlocks') < block.indexOf('contentBlocks: ['),
+    'case canvas embed should be declared before the regular body content blocks',
   );
 });
 
@@ -64,12 +73,13 @@ test('standalone wireframe html app renders only the Agent Aha Mode section', ()
 
 test('page-2 body provides auxiliary reading guidance instead of retelling the canvas', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
-  assert.match(src, /三种读图方式/);
-  assert.match(src, /从低介入到高介入/);
-  assert.match(src, /从保存状态到生成动作/);
-  assert.match(src, /从系统判断到用户反驳/);
-  assert.match(src, /这页文字只做辅助/);
-  assert.match(src, /不在文字里重讲每一种姿态/);
+  const block = pageBlock(src, 'Aha Moment 的前台交互架构');
+  assert.match(block, /三种读图方式/);
+  assert.match(block, /先分清用户递交和情境感知/);
+  assert.match(block, /再看通知、inline 和保存状态/);
+  assert.match(block, /最后看回访如何变成行动/);
+  assert.match(block, /这页文字只做辅助/);
+  assert.match(block, /不在文字里重讲每一种 case/);
 });
 
 test('page-2 surfaces the rebuttable principle', () => {
@@ -105,4 +115,16 @@ test('page-3 case canvas declares scalable artboards and three case groups', () 
   assert.match(html, /banner notification/);
   assert.match(html, /inline reply/);
   assert.match(html, /saved state/);
+});
+
+test('case canvas supports drag pan and gesture zoom', () => {
+  const html = read('public/language-diary-ux-showcase-cases.html');
+  assert.match(html, /data-pan-canvas/);
+  assert.match(html, /touch-action:\s*none/);
+  assert.match(html, /function updateZoomAt/);
+  assert.match(html, /activePointers/);
+  assert.match(html, /pinchStart/);
+  assert.match(html, /pointerdown/);
+  assert.match(html, /pointermove/);
+  assert.match(html, /wheel/);
 });
