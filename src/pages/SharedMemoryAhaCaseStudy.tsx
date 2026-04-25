@@ -33,6 +33,7 @@ type SharedMemoryAhaPage = {
   pageTitle: LocalizedText;
   pageGoal: LocalizedText;
   mainCopy: LocalizedText;
+  leadContentBlocks?: ContentBlock[];
   contentBlocks: ContentBlock[];
 };
 
@@ -136,9 +137,20 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
       'Pull the Agent Aha Mode wireframes out of Language Diary and reread them as a frontstage posture-selection problem across three intervention tiers.',
     ),
     mainCopy: t(
-      '上一页的两个时刻——刷到一句精准的英文、卡在一条 Slack 回复——是两种不同的发生方式：一种是你自己撞见的，一种是你正在表达时卡住的。同一个 agent，在这两种时刻里不该用同一种姿态出现。\n\n这一页提出 Agent Aha Mode：当 Aha 候选已经成立，agent 该用哪一种姿态出现？我不再把它写成七张平铺的功能卡，而是按你 wireframe 里的三层强度组织：Tier 1 是轻量、被动的 Trace / Ambient / Inline；Tier 2 是生成式、可延迟的 Morphing / Echo；Tier 3 是 agent 占座、共同作者式的 Co-creation / Agentic Action。\n\nAha Moment 的共同前提是 agent 主动介入：系统发现当前生活流里出现了一个可能值得学习、保存或回访的时刻。但进入前台之前，它要先分清两种参与关系——用户递交型参与（用户主动把内容、草稿、问题或意图交给 agent）和情境感知型介入（用户没有显式召唤，但 agent 通过共享上下文判断 Aha 候选成立）。Agent Aha Mode 主要服务后者。\n\n这三层介入强度有一个共同底线：可反驳原则。每一次介入都附带一组反驳通道（not now / not my point / show original context / don\'t connect these again），让用户能在低代价下中止、降级或永久排除某种连接。Agent 拥有判断权，但用户拥有最终否决权。',
-      'The two moments from the previous page — stumbling on a precise English caption and getting stuck on a Slack reply — represent two different kinds of occurrence: one you walked into, one you were blocked inside. The same agent should not appear the same way in both.\n\nThis page introduces Agent Aha Mode: once an Aha candidate has been found, which posture should the agent use? I no longer present it as seven flat feature cards. I follow the three-tier structure from your wireframe: Tier 1 is light and passive Trace / Ambient / Inline; Tier 2 is generative and deferred Morphing / Echo; Tier 3 is agentic and co-authoring Co-creation / Agentic Action.\n\nThe shared premise of an Aha Moment is active agent intervention: the system notices that the current flow of life contains a moment worth learning from, saving, or returning to. Before it enters the foreground, it has to distinguish two participation relationships — user-handoff participation (the user actively gives content, a draft, a question, or an intention to the agent) and context-aware intervention (the user has not explicitly summoned the agent, but the agent judges from shared context that an Aha candidate exists). Agent Aha Mode primarily serves the latter.\n\nAll three intervention tiers share a single floor: the rebuttable principle. Every intervention carries a row of rebuttal channels (not now / not my point / show original context / don\'t connect these again) so the user can stop, downgrade, or permanently exclude a connection at low cost. The agent owns judgment; the user owns the final veto.',
+      '这一页先让 wireframe 自己说话。上方 canvas 只保留 Agent Aha Mode 这一组：它把 Aha 的前台出现方式从轻到重排成三层，具体的 UI 关系已经在图里完成，不需要在正文里再复述一遍。\n\n正文只补一层读图逻辑：这些姿态不是通知组件清单，而是 agent 在共享记忆、生成潜力、打断成本和用户可反驳权之间做出的介入判断。',
+      'This page lets the wireframe carry the argument first. The canvas above keeps only the Agent Aha Mode group: it orders Aha surfacing from light to heavy across three tiers, while the concrete UI relationships are already handled by the drawing and do not need to be repeated in prose.\n\nThe body adds only the reading frame: these postures are not a notification-component catalog, but intervention decisions made across shared memory, generative potential, interruption cost, and the user\'s right to rebut.',
     ),
+    leadContentBlocks: [
+      {
+        type: 'showcaseEmbed',
+        title: t('Agent Aha Mode Wireframes', 'Agent Aha Mode Wireframes'),
+        caption: t(
+          '上方 canvas 只保留 Agent Aha Mode 三张 artboard，作为这一页的主要证据。',
+          'The canvas above keeps only the three Agent Aha Mode artboards as the primary evidence for this page.',
+        ),
+        src: '/language-diary-wireframes-standalone.html',
+      },
+    ],
     contentBlocks: [
       {
         type: 'comparisonCards',
@@ -147,61 +159,57 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
           {
             title: t('用户递交型参与', 'User-handoff participation'),
             body: t(
-              '用户主动把消息传给 agent：选中文本、点击入口、分享内容、请求回复、保存片段或召唤 orchestrator。前台重点是接住这次递交，并让用户知道 agent 为什么在这里。',
-              'The user actively gives something to the agent: selected text, an entry click, shared content, a reply request, a saved fragment, or an orchestrator summons. The frontstage has to receive that handoff and make it clear why the agent is here.',
+              '用户已经把内容、草稿、问题或意图交给 agent，重点是接住请求并完成回应；Aha Mode 不是主要发生在这里。',
+              'The user has already handed content, a draft, a question, or an intention to the agent. The focus is receiving the request and responding; Aha Mode is not primarily happening here.',
             ),
           },
           {
             title: t('情境感知型介入', 'Context-aware intervention'),
             body: t(
-              'agent 没有收到显式递交，但已经在授权上下文里识别出 Aha 候选。系统根据 Aha 强度、生成潜力和打断成本选择介入姿态：留痕、呼吸、镶嵌、变形、回声、共创或代理行动都可能成立。',
-              'The agent has not received an explicit handoff, but has identified an Aha candidate inside an authorized context. The system chooses an intervention posture according to Aha strength, generative potential, and interruption cost: Trace, Ambient, Inline, Morphing, Echo, Co-creation, or Agentic Action can all be valid.',
+              'agent 没有被显式召唤，但在授权上下文里判断 Aha 候选成立；这才是上方 canvas 讨论的范围。',
+              'The agent has not been explicitly summoned, but judges inside an authorized context that an Aha candidate exists; this is the scope of the canvas above.',
             ),
           },
         ],
       },
       {
         type: 'comparisonCards',
-        title: t('Agent Aha Mode 的三层介入姿态', 'Agent Aha Mode · three intervention tiers'),
+        title: t('三种读图方式', 'Three ways to read the canvas'),
         items: [
           {
-            title: t('Tier 1 · Trace · Ambient · Inline', 'Tier 1 · Trace · Ambient · Inline'),
+            title: t('从低介入到高介入', 'From lighter to heavier intervention'),
             body: t(
-              'light & passive / 低介入，用户不必停下来。Trace 留痕是 edge dot + silent seed，只保存 G0-G1；Ambient 呼吸是界面轻微变化，只给 state pill 和 tap to expand；Inline 镶嵌在用户卡住时给 reason layer + micro-asset，用户可以 insert / soften / dismiss。',
-              'Light and passive: the user does not have to stop. Trace is an edge dot and silent seed, holding only G0-G1. Ambient is a slight interface change with a state pill and tap-to-expand. Inline appears when the user is stuck, adding a reason layer plus a micro-asset the user can insert, soften, or dismiss.',
+              '先看 agent 如何逐步取得前台资格：从只留痕，到嵌入当前动作，再到把用户带入一个可选择的行动路径。',
+              'First read how the agent gradually earns foreground permission: from leaving a trace, to embedding inside the current action, to opening a selectable action path.',
             ),
           },
           {
-            title: t('Tier 2 · Morphing · Echo', 'Tier 2 · Morphing · Echo'),
+            title: t('从保存状态到生成动作', 'From saved state to generated action'),
             body: t(
-              'generative & deferred / 生成内容，把价值带回未来。Morphing 变形把同一个 fragment 居中保存，并解释为什么它适合 expression card / interview answer / portfolio bullet；Echo 回声先在低置信度时不前台化，等相关性升高后带着 bring in / not now / don\'t connect again 回来。',
-              'Generative and deferred: value is generated and brought back later. Morphing holds one fragment centrally and explains why it fits an expression card, interview answer, or portfolio bullet. Echo does not surface at low confidence; it waits until relevance rises and returns with bring in / not now / don\'t connect again.',
+              '不要按 UI 组件读，而要看每一步生成到什么程度：只是保存、解释关系、给一句可用表达，还是开启一个小任务。',
+              'Do not read it as a UI component list. Read how far each moment is generated: saved state, relationship explanation, usable sentence, or a small task.',
             ),
           },
           {
-            title: t('Tier 3 · Co-creation · Agentic Action', 'Tier 3 · Co-creation · Agentic Action'),
+            title: t('从系统判断到用户反驳', 'From agent judgment to user rebuttal'),
             body: t(
-              'agentic & co-authoring / agent 占座，必须可反驳。Co-creation 共创先声明 lens 和 criteria，生成候选而不是 verdict，用户可以 choose lens / edit / not my point；Agentic Action 代理行动只在高置信、高相关、高时效时开启 3-step mini-session：revisit → rewrite → save → write back，并保留 stop session / don\'t memorize。',
-              'Agentic and co-authoring: the agent takes a visible seat and must remain rebuttable. Co-creation declares its lens and criteria first, then offers a candidate rather than a verdict; the user can choose lens, edit, or mark not my point. Agentic Action only appears at high confidence, relevance, and timeliness, opening a 3-step mini-session: revisit, rewrite, save, write back, with stop session and don\'t memorize always available.',
+              '每一种介入都要留下退出口：忽略、降级、查看依据、标记不是这个意思，都是 Aha Mode 的一部分。',
+              'Every intervention needs exits: ignore, downgrade, view evidence, or mark this is not what I meant. These are part of Aha Mode itself.',
             ),
           },
         ],
       },
       {
         type: 'shortParagraphs',
-        title: t('七种姿态的共同底线', 'The shared floor across all seven postures'),
+        title: t('这页文字只做辅助', 'The prose stays secondary'),
         items: [
           t(
-            '可反驳原则（rebuttable）。每一张 Aha 卡片都带一组反驳通道：not now / not my point / show original context / don\'t connect these again。Agent 拥有判断权，用户拥有最终否决权。',
-            'The rebuttable principle. Every Aha card carries a row of rebuttal channels: not now / not my point / show original context / don\'t connect these again. The agent owns judgment; the user owns the final veto.',
+            'HTML 已经承担主要说明，正文只标出判断维度：共享记忆、生成潜力、打断成本、可反驳权。',
+            'The HTML carries the main explanation. The prose only names the judgment dimensions: shared memory, generative potential, interruption cost, and rebuttal rights.',
           ),
           t(
-            '统一的视觉语言。amber 主色 + 三层卡片结构（header / body / footer）+ marker dot / island dot / hint glow 的 marker triplet——七种姿态在视觉上是同一个 agent 的不同体态，而不是七个互不认识的功能。',
-            'A unified visual language. Amber primary colour, three-layer card structure (header / body / footer), and the marker triplet (marker dot / island dot / hint glow). The seven postures look like one agent in different bodies, not seven unrelated features.',
-          ),
-          t(
-            'Aha 不是通知，而是被带入的学习动作。用户看到之后，要么能试着说一句、改一句，要么能立刻进入下一步，而不是只被告知"这里有个知识点"。',
-            'An Aha is not a notification but an invited learning action. After seeing it, the user should be able to try or revise a line, or step into the next move, instead of being told that a language point exists.',
+            '这里不在文字里重讲每一种姿态，避免把图例降级成说明书。',
+            'This section does not retell every posture in prose, so the drawing remains evidence instead of becoming an instruction manual.',
           ),
         ],
       },
@@ -309,7 +317,7 @@ function IntroReveal({
 }: {
   pageTitle: LocalizedText;
   pageGoal: LocalizedText;
-  mainCopy: LocalizedText;
+  mainCopy?: LocalizedText;
   isMobile?: boolean;
 }) {
   const { text } = useI18n();
@@ -318,7 +326,7 @@ function IntroReveal({
     <section style={{ padding: isMobile ? '8px 4px 0' : '12px 8px 0', display: 'grid', gap: 16 }}>
       <div style={pageTitleStyle(isMobile)}>{text(pageTitle)}</div>
       <div style={{ color: '#9f8d73', fontSize: 13, lineHeight: 1.7, maxWidth: 860 }}>{text(pageGoal)}</div>
-      <p style={{ ...paragraphStyle(), maxWidth: 860, whiteSpace: 'pre-line' }}>{text(mainCopy)}</p>
+      {mainCopy ? <p style={{ ...paragraphStyle(), maxWidth: 860, whiteSpace: 'pre-line' }}>{text(mainCopy)}</p> : null}
     </section>
   );
 }
@@ -410,10 +418,31 @@ export default function SharedMemoryAhaCaseStudy({
   void enableMotion;
   const page = sharedMemoryAhaPages[slideIndex];
   if (!page) return null;
+  const leadContentBlocks = page.leadContentBlocks ?? [];
+  const hasLeadContentBlocks = leadContentBlocks.length > 0;
 
   return (
     <div style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
-      <IntroReveal pageTitle={page.pageTitle} pageGoal={page.pageGoal} mainCopy={page.mainCopy} isMobile={isMobile} />
+      <IntroReveal
+        pageTitle={page.pageTitle}
+        pageGoal={page.pageGoal}
+        mainCopy={hasLeadContentBlocks ? undefined : page.mainCopy}
+        isMobile={isMobile}
+      />
+
+      {hasLeadContentBlocks ? (
+        <section style={{ display: 'grid', gap: 14 }}>
+          {leadContentBlocks.map((block, index) => (
+            <div key={`lead-${block.type}-${index}`}>{renderContentBlock(block, accentColor, text)}</div>
+          ))}
+        </section>
+      ) : null}
+
+      {hasLeadContentBlocks ? (
+        <section style={{ padding: isMobile ? '0 4px' : '0 8px' }}>
+          <p style={{ ...paragraphStyle(), maxWidth: 860, whiteSpace: 'pre-line' }}>{text(page.mainCopy)}</p>
+        </section>
+      ) : null}
 
       <section style={{ display: 'grid', gap: 14 }}>
         {page.contentBlocks.map((block, index) => (
