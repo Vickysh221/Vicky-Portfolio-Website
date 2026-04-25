@@ -1502,6 +1502,108 @@
       gap: 6px;
       margin-top: 4px;
     }
+
+    /* ============ 姿态特定载体 ============ */
+
+    .os-banner-top {
+      margin: 0 8px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 11px;
+    }
+    .os-banner-top-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--aha-amber);
+      flex: 0 0 auto;
+    }
+    .os-banner-top-time {
+      color: var(--ink-muted);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+    }
+
+    .inline-suggestion {
+      margin: 6px 8px 0;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-left: 2px solid var(--aha-amber);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .inline-suggestion-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .return-sheet {
+      margin-top: auto;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      padding: 12px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.18);
+    }
+    .return-sheet-grabber {
+      width: 36px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      align-self: center;
+      margin-bottom: 4px;
+    }
+    .return-sheet--reverse {
+      background: #1f1d2a;
+      color: #fff;
+    }
+
+    .micro-session-frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 14px;
+      gap: 10px;
+      background: linear-gradient(180deg, rgba(200,133,74,0.10), rgba(200,133,74,0.02));
+    }
+    .micro-session-step-row {
+      display: flex;
+      gap: 4px;
+    }
+    .micro-session-step {
+      flex: 1;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.10);
+    }
+    .micro-session-step--done { background: var(--aha-amber); }
+    .micro-session-step--active { background: var(--aha-amber); opacity: 0.55; }
+    .micro-session-step-label {
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--aha-amber);
+      font-family: "Black Han Sans", sans-serif;
+    }
+    .micro-session-content {
+      flex: 1;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
   </style>
 </head>
 <body>

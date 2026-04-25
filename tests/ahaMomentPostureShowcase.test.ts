@@ -31,3 +31,13 @@ test('showcase declares dynamic island three states', () => {
   // idle 尺寸接近 116x28
   assert.match(html, /\.dynamic-island\s*\{[\s\S]*?width:\s*116px[\s\S]*?height:\s*28px/);
 });
+
+test('showcase declares posture-specific carriers', () => {
+  const html = readShowcase();
+  assert.match(html, /\.os-banner-top\s*\{/);
+  assert.match(html, /\.inline-suggestion\s*\{/);
+  assert.match(html, /\.return-sheet\s*\{/);
+  assert.match(html, /\.return-sheet-grabber\s*\{/);
+  assert.match(html, /\.micro-session-frame\s*\{/);
+  assert.match(html, /\.micro-session-step\s*\{/);
+});
