@@ -25,10 +25,10 @@
       --card: #f4efe7;
       --card-soft: #ece7df;
       --screen-base: #edf4f1;
-      --phone-shell: #73717b;
-      --shadow-lg: 12px 12px 0 var(--ink);
-      --shadow-md: 8px 8px 0 var(--ink);
-      --border: 3px solid var(--ink);
+      --phone-shell: #e4e4e8;
+      --shadow-lg: 0 16px 48px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.07);
+      --shadow-md: 0 10px 32px rgba(0,0,0,0.11), 0 2px 8px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.55);
+      --border: 1px solid rgba(0,0,0,0.09);
       /* actor colors (legacy — kept for agentic-canvas-v1 compat) */
       --ux-agent: #2f9bff;
       --research-agent: #9b7dd4;
@@ -360,12 +360,12 @@
       color: var(--ink);
     }
 
-    .phone-screen--day    { background: #edf7f2; }
-    .phone-screen--day-alt { background: #ebf4ef; }
-    .phone-screen--surface { background: #f1efea; }
-    .phone-screen--coral  { background: #fff2ed; }
-    .phone-screen--night  { background: #b8acd0; color: #2d1a5e; }
-    .phone-screen--deep   { background: #7b7290; color: #f7f2ff; }
+    .phone-screen--day    { background: #f0f5f2; }
+    .phone-screen--day-alt { background: #f1f4f1; }
+    .phone-screen--surface { background: #f4f4f2; }
+    .phone-screen--coral  { background: #fdf4f1; }
+    .phone-screen--night  { background: #edeaf6; color: #3d2860; }
+    .phone-screen--deep   { background: #2c2840; color: #f2eeff; }
 
     .phone-statusbar {
       display: flex;
@@ -394,11 +394,9 @@
       font-size: 10px;
       letter-spacing: 0.06em;
     }
-    .phone-screen--night .phone-statusbar .status-time,
     .phone-screen--deep .phone-statusbar .status-time,
-    .phone-screen--night .phone-statusbar .status-icons,
     .phone-screen--deep .phone-statusbar .status-icons {
-      color: #fff;
+      color: rgba(255,255,255,0.82);
     }
 
     .phone-home {
@@ -429,23 +427,23 @@
     .bubble {
       width: fit-content;
       max-width: 80%;
-      padding: 9px 12px;
-      border: 2px solid var(--ink);
-      border-radius: 16px;
-      background: var(--card);
-      box-shadow: 3px 3px 0 var(--ink);
-      font-size: 13px;
+      padding: 8px 11px;
+      border-radius: 14px;
+      font-size: 11px;
       line-height: 1.45;
-      color: var(--ink);
+      color: #3a3a3e;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
     }
     .bubble--user {
       align-self: flex-end;
-      background: var(--day);
-      border-radius: 16px 16px 5px 16px;
+      background: #d6ede0;
+      border-color: transparent;
+      border-radius: 14px 14px 4px 14px;
     }
     .bubble--agent {
       align-self: flex-start;
-      border-radius: 5px 16px 16px 16px;
+      border-radius: 4px 14px 14px 14px;
     }
 
     .mark-dot     { border-bottom: 2px dotted var(--ink); padding-bottom: 1px; }
@@ -466,27 +464,27 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid var(--ink);
+      border: 1px solid rgba(0,0,0,0.10);
       border-radius: 999px;
       padding: 3px 8px;
-      background: var(--card);
+      background: rgba(0,0,0,0.04);
       font-family: "Black Han Sans", sans-serif;
       font-size: 10px;
       line-height: 1;
-      color: var(--ink);
+      color: #4a4a50;
     }
 
-    .tag--day     { background: var(--day); }
-    .tag--morning { background: var(--morning); }
-    .tag--night   { background: var(--night); }
-    .tag--coral   { background: var(--coral); color: #fff; }
+    .tag--day     { background: rgba(0,160,80,0.10); }
+    .tag--morning { background: rgba(200,150,0,0.10); }
+    .tag--night   { background: rgba(130,80,210,0.12); color: #5a3e80; }
+    .tag--coral   { background: rgba(200,70,50,0.10); color: #7a2820; }
 
     .chat-header {
-      padding: 12px 16px 8px;
-      border-bottom: 2px solid var(--ink);
-      background: var(--day);
+      padding: 10px 14px 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      background: #f8f8fa;
       flex: 0 0 auto;
-      color: var(--ink);
+      color: #2a2a2e;
     }
     .chat-header--night { background: rgba(255, 255, 255, 0.18); color: #2d1a5e; }
     .chat-title    { font-family: "Black Han Sans", sans-serif; font-size: 16px; line-height: 1.2; }
@@ -494,11 +492,11 @@
 
     .screen-card, .screen-drawer, .feed-card, .story-card,
     .widget-card, .peek-card, .note-card, .annotation-card, .stack-card {
-      border: var(--border);
-      border-radius: 18px;
-      background: var(--card);
-      box-shadow: 4px 4px 0 var(--ink);
-      color: var(--ink);
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      color: #2a2a2e;
     }
 
     .screen-card { padding: 12px; }
@@ -524,11 +522,11 @@
 
     .feed-head { display: flex; align-items: center; gap: 8px; }
     .avatar {
-      width: 28px; height: 28px;
-      border: 2px solid var(--ink);
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: var(--morning);
+      background: #c8c8cc;
       flex: 0 0 auto;
+      flex-shrink: 0;
     }
     .feed-actions .tiny-pill { background: var(--card-soft); }
 
@@ -646,11 +644,11 @@
     .mini-im--weibo   { background: #e6162d; }
 
     .orchestrator-card {
-      border: var(--border);
-      border-radius: 16px;
-      background: rgba(189, 162, 217, 0.22);
-      box-shadow: 4px 4px 0 var(--ink);
-      padding: 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 14px;
+      background: rgba(47, 155, 255, 0.06);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      padding: 10px 12px;
       display: flex; flex-direction: column; gap: 7px;
       font-size: 10.5px; line-height: 1.45;
     }
@@ -662,9 +660,9 @@
     .orch-route {
       display: flex; align-items: center; gap: 6px;
       padding: 5px 7px;
-      border: 2px solid var(--ink);
-      background: var(--card);
-      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: #ffffff;
+      border-radius: 8px;
     }
     .orch-arrow {
       font-family: "Black Han Sans", sans-serif;
@@ -851,14 +849,14 @@
       display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
     }
     .letter-card {
-      border: var(--border);
-      border-radius: 18px;
-      background: var(--card);
-      box-shadow: 4px 4px 0 var(--ink);
-      padding: 14px;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 12px 14px;
       font-size: 11px; line-height: 1.55;
-      display: flex; flex-direction: column; gap: 10px;
-      color: var(--ink);
+      display: flex; flex-direction: column; gap: 8px;
+      color: #2a2a2e;
     }
     .timeline-stack { display: flex; flex-direction: column; gap: 10px; }
     .timeline-node {
@@ -1538,6 +1536,55 @@
       margin-top: 4px;
     }
 
+    /* ============ Wireframe Placeholder Components ============ */
+
+    .wf-row { display: flex; align-items: center; gap: 8px; }
+    .wf-col { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 0; }
+    .wf-avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #c4c4c8;
+      flex-shrink: 0;
+    }
+    .wf-thumb {
+      border-radius: 8px;
+      background: #c4c4c8;
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+    }
+    .wf-thumb--lg { width: 52px; height: 52px; border-radius: 10px; }
+    .wf-block { width: 100%; height: 52px; border-radius: 8px; background: #c4c4c8; }
+    .wf-line {
+      height: 7px;
+      border-radius: 3.5px;
+      background: #c4c4c8;
+      flex-shrink: 0;
+    }
+    .wf-line--sm { height: 5px; background: #d2d2d6; }
+    .wf-line--xs { height: 4px; background: #dcdce0; }
+    .wf-line--full { width: 100%; }
+    .wf-line--90  { width: 90%; }
+    .wf-line--75  { width: 75%; }
+    .wf-line--60  { width: 60%; }
+    .wf-line--45  { width: 45%; }
+    .wf-line--30  { width: 30%; }
+    .wf-card {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .wf-label {
+      height: 5px;
+      width: 48px;
+      border-radius: 3px;
+      background: #d4d4d8;
+    }
+
     /* ============ 姿态特定载体 ============ */
 
     .os-banner-top {
@@ -1856,8 +1903,8 @@
                         <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div class="feed-head"><div class="avatar"></div><div style="font-size:11px;color:var(--ink-muted);">Xiaohongshu</div></div>
-                            <div>I want my work to feel inevitable, not loud.</div>
+                            <div class="wf-row"><div class="wf-avatar"></div><div class="wf-line wf-line--45 wf-line--sm"></div></div>
+                            <div class="wf-col"><div class="wf-line wf-line--full"></div><div class="wf-line wf-line--75 wf-line--sm"></div></div>
                           </div>
                           <div class="agent-floater" style="margin-top:8px;">
                             <div class="agent-floater-head"><span class="agent-floater-pill">Mimo</span><span>ready to help</span></div>
@@ -1880,8 +1927,11 @@
                         <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div class="feed-head"><div class="avatar"></div><div style="font-size:11px;color:var(--ink-muted);">Xiaohongshu</div></div>
-                            <div>I want my work to feel <span class="word-select"><span class="sel-dot sel-dot--start"></span>inevitable, not loud<span class="sel-dot sel-dot--end"></span></span>.</div>
+                            <div class="wf-row"><div class="wf-avatar"></div><div class="wf-line wf-line--45 wf-line--sm"></div></div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--60"></div>
+                              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-line wf-line--30" style="flex-shrink:0;"></div><span class="word-select" style="flex-shrink:0;font-size:11px;"><span class="sel-dot sel-dot--start"></span>inevitable, not loud<span class="sel-dot sel-dot--end"></span></span></div>
+                            </div>
                           </div>
                           <div class="select-menu">
                             <span class="select-menu-item">Copy</span>
@@ -1937,7 +1987,7 @@
                         <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div>I want my work to feel inevitable, not loud.</div>
+                            <div class="wf-col"><div class="wf-line wf-line--full"></div><div class="wf-line wf-line--75 wf-line--sm"></div></div>
                           </div>
                           <div class="agent-banner">Want to try reading this line in your target language? ↗<br><span style="font-size:10px;color:var(--ink-muted);">gives you a moment to make it yours</span></div>
                         </div>
@@ -2034,8 +2084,11 @@
                         <div class="phone-statusbar"><span class="status-time">14:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div class="feed-head"><div class="avatar"></div><div style="font-size:10px;color:var(--ink-muted);">Xiaohongshu</div></div>
-                            <div>I want my work to feel inevitable, not loud.<span class="aha-marker-dot"></span></div>
+                            <div class="wf-row"><div class="wf-avatar"></div><div class="wf-line wf-line--40 wf-line--sm"></div></div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div style="display:flex;align-items:center;gap:4px;"><div class="wf-line wf-line--75" style="flex:1;"></div><span class="aha-marker-dot" style="flex-shrink:0;"></span></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2106,11 +2159,18 @@
                         <div class="phone-statusbar"><span class="status-time">15:24</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">AHA</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div style="font-size:10px;color:var(--ink-muted);margin-bottom:6px;">Long read · Personal OS</div>
-                            <div>Proactive systems don't wait for instruction — they anticipate based on shared memory.</div>
+                            <div class="wf-line wf-line--40 wf-line--sm"></div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--90"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
-                          <div class="feed-card" style="opacity:0.7;">
-                            <div>The next era of agents won't live inside one app.</div>
+                          <div class="feed-card" style="opacity:0.55;">
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2127,8 +2187,12 @@
                       <div class="phone-screen phone-screen--surface">
                         <div class="phone-statusbar" style="position:relative;"><span class="status-time">15:24</span><div class="dynamic-island dynamic-island--expanded" style="position:absolute;left:50%;top:6px;transform:translateX(-50%);width:300px;"><span class="island-reason"><span class="aha-card-header" style="color:rgba(255,255,255,0.92);">AHA · ambient</span><br>related to your Personal OS framing</span><div class="island-actions"><span class="rebuttal-pill rebuttal-pill--reverse">save for later</span><span class="rebuttal-pill rebuttal-pill--reverse">dismiss</span></div></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body" style="padding-top:90px;">
-                          <div class="feed-card" style="opacity:0.6;">
-                            <div>Proactive systems don't wait for instruction — they anticipate based on shared memory.</div>
+                          <div class="feed-card" style="opacity:0.45;">
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--90"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2146,7 +2210,10 @@
                         <div class="phone-statusbar"><span class="status-time">15:25</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">AHA</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body" style="position:relative;">
                           <div class="feed-card">
-                            <div>Proactive systems don't wait for instruction.</div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
                           <div class="aha-card" style="position:absolute;right:8px;top:60px;width:160px;">
                             <div class="aha-card-header">AHA · ambient</div>
@@ -2181,7 +2248,7 @@
                       <div class="phone-screen phone-screen--surface">
                         <div class="phone-statusbar"><span class="status-time">15:42</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);margin-bottom:4px;">Slack · #design-review</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Slack · #design-review</div>
                           <div class="bubble bubble--user" style="text-align:right;">I'd want to push back on this...<span style="opacity:0.4;">|</span></div>
                           <div style="flex:1;"></div>
                           <div style="height:80px;background:rgba(0,0,0,0.04);border-top:1px solid rgba(0,0,0,0.06);border-radius:0;font-size:10px;color:var(--ink-soft);text-align:center;padding-top:30px;">keyboard</div>
@@ -2261,7 +2328,7 @@
                       <div class="phone-screen phone-screen--surface">
                         <div class="phone-statusbar"><span class="status-time">10:18</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);">iMessage · Aoife</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">iMessage · Aoife</div>
                           <div class="bubble bubble--user" style="text-align:right;font-size:11px;">about agents living everywhere</div>
                           <div class="inline-suggestion">
                             <div class="aha-card-header">AHA · morphing → sentence</div>
@@ -2287,7 +2354,7 @@
                       <div class="phone-screen phone-screen--day">
                         <div class="phone-statusbar"><span class="status-time">14:02</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);">Portfolio · Section 02</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Portfolio · Section 02</div>
                           <div class="aha-card">
                             <div class="aha-card-header">AHA · morphing → framing</div>
                             <div class="aha-card-body" style="font-size:11px;">"Agents that don't live inside one app — a Personal OS thesis."</div>
@@ -2313,7 +2380,7 @@
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span class="status-time">21:20</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);">Interview Prep · Agent OS</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Interview Prep · Agent OS</div>
                           <div class="aha-card">
                             <div class="aha-card-header">AHA · morphing → answer</div>
                             <div class="aha-card-body" style="font-size:10.5px;line-height:1.5;">"I'd describe Agent OS as the layer that lets agents persist across apps — not as another assistant locked inside one of them..."</div>
@@ -2353,8 +2420,12 @@
                         <div class="phone-statusbar"><span class="status-time">14:30</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">saved</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div style="font-size:10px;color:var(--ink-muted);">Long read · proactive systems</div>
-                            <div>The future agent doesn't wait for instruction — it anticipates based on what you've already left it.</div>
+                            <div class="wf-line wf-line--40 wf-line--sm"></div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--90"></div>
+                              <div class="wf-line wf-line--75 wf-line--sm"></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2372,10 +2443,17 @@
                         <div class="phone-statusbar"><span class="status-time">14:30</span><div class="dynamic-island aha-hint-glow"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card" style="opacity:0.85;">
-                            <div>The future agent doesn't wait for instruction — it anticipates based on what you've already left it.</div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--90"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
-                          <div class="feed-card" style="opacity:0.6;">
-                            <div>Proactive doesn't mean noisy. It means present without asking permission to think.</div>
+                          <div class="feed-card" style="opacity:0.5;">
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--75 wf-line--sm"></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2392,9 +2470,13 @@
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span class="status-time">21:48</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">1 from earlier ↓</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);">Interview Prep · Agent OS</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Interview Prep · Agent OS</div>
                           <div class="feed-card">
-                            <div>How would you describe what an Agent OS does that an in-app assistant cannot?</div>
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--90"></div>
+                              <div class="wf-line wf-line--60 wf-line--sm"></div>
+                            </div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
@@ -2411,8 +2493,11 @@
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span class="status-time">21:48</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body" style="position:relative;">
-                          <div class="feed-card" style="opacity:0.5;">
-                            <div>How would you describe what an Agent OS does...</div>
+                          <div class="feed-card" style="opacity:0.38;">
+                            <div class="wf-col">
+                              <div class="wf-line wf-line--full"></div>
+                              <div class="wf-line wf-line--75 wf-line--sm"></div>
+                            </div>
                           </div>
                           <div style="flex:1;"></div>
                           <div class="return-sheet">
@@ -2559,7 +2644,7 @@
                       <div class="phone-screen phone-screen--coral">
                         <div class="phone-statusbar"><span class="status-time">20:02</span><div class="dynamic-island dynamic-island--expanded"><span class="aha-island-dot"></span><span class="island-text">interview tomorrow · 3 saved fragments ready</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
-                          <div style="font-size:10px;color:var(--ink-muted);">Calendar · 明早 09:30 Phoenix Interview</div>
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Calendar · 09:30 Phoenix Interview</div>
                           <div class="aha-card" style="margin-top:8px;">
                             <div class="aha-card-header">AHA · agentic</div>
                             <div class="aha-card-body" style="font-size:11px;line-height:1.5;">明早面试 · 我可以帮你 run a 3-step prep（10 分钟）— 把今天三条 fragment 串成自我介绍。</div>
