@@ -18,7 +18,7 @@ function embedFrameStyle(): CSSProperties {
 }
 
 function ShowcaseEmbedPanel({ accentColor }: { accentColor: string }) {
-  const src = '/language-diary-ux-showcase/index.html';
+  const src = '/language-diary-ux-showcase/agentic-canvas-v1.html';
 
   return (
     <div style={{ ...noteCardStyle(), marginTop: 16, padding: 12, background: 'rgba(0,0,0,0.28)' }}>
@@ -31,7 +31,7 @@ function ShowcaseEmbedPanel({ accentColor }: { accentColor: string }) {
           marginBottom: 10,
         }}
       >
-        <div style={{ ...blockLabelStyle(), color: accentColor, margin: 0 }}>Embedded UX Showcase</div>
+        <div style={{ ...blockLabelStyle(), color: accentColor, margin: 0 }}>Embedded UX Showcase · v1 Archive</div>
       </div>
       <div style={embedFrameStyle()}>
         <iframe
@@ -55,7 +55,7 @@ export function getPersonalLanguageDiarySlide03ShowcaseSections(accentColor: str
     {
       id: 'language-diary-ux-showcase',
       numeral: '03',
-      title: 'UX Showcase · 从白天捕获到夜间知识梳理',
+      title: 'UX Showcase · Language Diary Agentic Canvas v1',
       blocks: [<ShowcaseEmbedPanel accentColor={accentColor} />],
     },
   ];

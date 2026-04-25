@@ -131,12 +131,12 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
   {
     pageTitle: t('Aha Moment 的前台交互架构', 'Aha Moment Frontstage Interaction Architecture'),
     pageGoal: t(
-      '把原本埋在 Language Diary 里的 UX showcase 单独抽出来，重读为同一个 agent 如何为自己选择合适前台形态的设计问题。',
-      'Pull the UX showcase out of Language Diary and reread it as a design question about how the same agent chooses the right frontstage form for itself.',
+      '把原本埋在 Language Diary 里的 UX showcase 单独抽出来，重读为同一个 agent 如何在 4 个 perspective 的建议下，为自己选择主前台形态与副前台形态。',
+      'Pull the UX showcase out of Language Diary and reread it as a design question about how the same agent, informed by four perspectives, chooses a primary and secondary frontstage form for itself.',
     ),
     mainCopy: t(
-      'Aha 不是一个统一弹窗，也不是“发现了一个语点”就自动触发的提醒。它更像 frontstage mode selection：系统先判断当前是 explicit attention 还是 shared attention，再决定应该用 ambient nudge、co-reading anchor、reply suggestion、target language challenge，还是 deferred return 的方式出现。\n\n因此前台真正要展示的，不只是 agent 能看到什么，而是它如何在不同时机里保持克制，同时总给用户一个低成本下一步。',
-      'An Aha is not one universal pop-up, nor a reminder that fires automatically after a language point is found. It behaves more like frontstage mode selection: the system first decides whether the current condition is explicit attention or shared attention, then chooses whether to appear as an ambient nudge, co-reading anchor, reply suggestion, target language challenge, or deferred return.\n\nWhat the frontstage really needs to show is not only what the agent can see, but how it stays restrained across different moments while still giving the user a low-cost next step.',
+      'Aha 不是一个统一弹窗，也不是“发现了一个语点”就自动触发的提醒。它更像 frontstage mode selection：系统先判断当前是 explicit attention 还是 shared attention，再决定应该用 ambient nudge、co-reading anchor、reply suggestion、target language challenge、relation-topic invitation，还是 deferred return card 的方式出现。\n\n因此前台真正要展示的，不只是 agent 能看到什么，而是它如何在不同时机里保持克制，同时总给用户一个低成本下一步；同一个判断也可能同时保留一个主前台形态和一个副前台形态。',
+      'An Aha is not one universal pop-up, nor a reminder that fires automatically after a language point is found. It behaves more like frontstage mode selection: the system first decides whether the current condition is explicit attention or shared attention, then chooses whether to appear as an ambient nudge, co-reading anchor, reply suggestion, target language challenge, relation-topic invitation, or deferred return card.\n\nWhat the frontstage really needs to show is not only what the agent can see, but how it stays restrained across different moments while still giving the user a low-cost next step; the same judgment may also keep both a primary and a secondary frontstage form in play.',
     ),
     contentBlocks: [
       {
@@ -144,14 +144,14 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         title: t('两种注意力模式', 'Two attention modes'),
         items: [
           {
-            title: t('Explicit attention mode', 'Explicit attention mode'),
+            title: t('模式 1 · Explicit attention mode', 'Explicit attention mode'),
             body: t(
               '用户已经主动分享内容、选中文本或邀请 agent 对话。系统可以更直接地进入共读、回复建议或 challenge。',
               'The user has already shared content, selected text, or explicitly invited the agent in. The system can enter co-reading, reply suggestion, or a challenge more directly.',
             ),
           },
           {
-            title: t('Shared attention mode', 'Shared attention mode'),
+            title: t('模式 2 · Shared attention mode', 'Shared attention mode'),
             body: t(
               'agent 与用户共享可见范围，但当前阅读和思考流不能被粗暴打断，所以更适合轻提示、边缘气泡或晚点回来卡片。',
               'The agent shares the user’s visible field, but the current reading and thinking flow cannot be interrupted bluntly, so lighter forms such as ambient hints, edge bubbles, or deferred cards fit better.',
@@ -164,42 +164,42 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         title: t('可复用的前台形态', 'Reusable frontstage forms'),
         items: [
           {
-            title: t('Ambient nudge', 'Ambient nudge'),
+            title: t('轻提示 · Ambient nudge', 'Ambient nudge'),
             body: t(
               '不抢主任务，只轻轻标出“这里值得留意”。',
               'Do not hijack the main task; simply mark that something here is worth noticing.',
             ),
           },
           {
-            title: t('Co-reading anchor', 'Co-reading anchor'),
+            title: t('共读锚点 · Co-reading anchor', 'Co-reading anchor'),
             body: t(
               '把注意力收在一句值得一起看的内容上，让 agent 像共同在场，而不是开始授课。',
               'Gather attention on a sentence worth looking at together so the agent feels co-present rather than instructional.',
             ),
           },
           {
-            title: t('Reply suggestion', 'Reply suggestion'),
+            title: t('回复入口 · Reply suggestion', 'Reply suggestion'),
             body: t(
               '当用户已经想回应但卡住时，先给一个能立刻行动的表达入口。',
               'When the user wants to respond but gets stuck, provide an entry point that can be acted on immediately.',
             ),
           },
           {
-            title: t('Target language challenge', 'Target language challenge'),
+            title: t('目标语言挑战 · Target language challenge', 'Target language challenge'),
             body: t(
               '不是替用户回答，而是把当前时刻转成一次轻量练习机会。',
               'Do not answer for the user; turn the current moment into a lightweight practice opportunity.',
             ),
           },
           {
-            title: t('Relation-topic invitation', 'Relation-topic invitation'),
+            title: t('关系 / 目标话题邀请 · Relation-topic invitation', 'Relation-topic invitation'),
             body: t(
               '把当前内容和用户最近在意的目标、关系或项目重新接上。',
               'Reconnect the current content with the goals, relationships, or projects the user already cares about.',
             ),
           },
           {
-            title: t('Deferred return card', 'Deferred return card'),
+            title: t('晚点回来卡片 · Deferred return card', 'Deferred return card'),
             body: t(
               '当下不适合打断，但这个时刻值得被留下，于是系统先替用户保留，晚些再带回来。',
               'If now is not the right time to interrupt but the moment deserves to survive, the system keeps it and brings it back later.',
@@ -229,8 +229,8 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         type: 'showcaseEmbed',
         title: t('HTML UX Showcase', 'HTML UX Showcase'),
         caption: t(
-          '这份原本嵌在 `A Ritual of Expression` 里的页面，现在被重新归位为 Aha Moment 的前台 UX 证据：它展示的不是入口本身，而是同一个 agent 如何在不同模式下选择自己的出现方式。',
-          'This page originally lived inside `A Ritual of Expression`. It is now repositioned as frontstage evidence for the Aha Moment: not an entry-point demo, but a study of how the same agent chooses its way of appearing under different modes.',
+          '下方 showcase 是这一案例的前台 UX 证据。每个场景按 5 层结构展开：场景 → 模式 1/2 → agent 选中的交互形态 → 用户怎么被带入下一步 → 最后沉淀成什么。投票方从 UX / Research / Human 改为 Expression / Relationship / Timing / Review，由 Orchestrator 决定主与副。',
+          'The showcase below is the frontstage UX evidence for this case. Each scenario unfolds through five layers: scenario, mode 1/2, the interaction form selected by the agent, how the user is carried into the next step, and what finally gets sedimented. The voters shift from UX / Research / Human to Expression / Relationship / Timing / Review, and the Orchestrator decides the primary and secondary form.',
         ),
         src: '/language-diary-ux-showcase/index.html',
       },
