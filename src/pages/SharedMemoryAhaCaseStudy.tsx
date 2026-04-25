@@ -43,86 +43,87 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
       'Shared-Memory Aha Moments for Language Learning',
     ),
     pageGoal: t(
-      '把 Language Diary 从一个 ritual-based multi-agent case，重构成一个由记忆调度驱动的跨应用语言 companion。',
-      'Reframe Language Diary from a ritual-based multi-agent case into a memory-orchestrated cross-app language companion.',
+      '我在设计的不是一个语言 app，而是一个能在你一天里穿过不同 app 出现的 agent。语言学习，只是它第一次被严肃验证的场景。',
+      'I am not designing a language app. I am designing an agent that can appear across different apps throughout your day. Language learning is simply the first scenario where this has been seriously tested.',
     ),
     mainCopy: t(
-      '这一版叙事不再把重点放在“系统里有多少 agent”。真正被验证的是：同一个 agent 如何在用户授权的不同三方场景里，复用 shared memory、稳定 persona 和累积 user understanding，把高价值片段判断成值得进入前台的语言学习时刻。\n\n因此这个案例的核心不再是 multi-agent workflow demo，而是 memory orchestration。Aha Moment 也不再只是一个被发现的语言点，而是系统经过判断、门禁和时机控制之后，选择让用户感知到的前台结果。',
-      'This framing no longer centers on how many agents exist in the system. What it actually validates is how the same agent reuses shared memory, a stable persona, and accumulated user understanding across authorized third-party contexts, then decides which fragments deserve to surface as language-learning moments.\n\nThat shifts the case away from a multi-agent workflow demo and toward memory orchestration. An Aha Moment is no longer just a discovered language point; it becomes the frontstage result that the system chooses to surface after judgment, gating, and timing control.',
+      '最尖锐的语言学习时刻往往不在语言 app 里——它在你读一篇文章时、在你给朋友写回复时、在你为一段话反复改词却说不准语气时。那些时刻里，一个应用内的“practice”根本来不及。真正有价值的 agent 必须在那里，用你的记忆接你。',
+      'The sharpest language-learning moments rarely happen inside a language app — they happen when you are reading an article, drafting a reply to a friend, or stuck on a phrasing that does not quite carry the tone you meant. An in-app practice flow cannot reach those moments. An agent that matters has to be there, with your memory, ready to meet you.',
     ),
     contentBlocks: [
       {
-        type: 'comparisonCards',
-        title: t('系统核心', 'System core'),
+        type: 'shortParagraphs',
+        title: t('场景一 · 阅读时撞上“你一直想说却说不出”的那句', 'Scene 1 · Reading and hitting the exact phrase you could never quite say'),
         items: [
-          {
-            title: t('Shared memory substrate', 'Shared memory substrate'),
-            body: t(
-              '把 life / goal / preference 等通用用户理解，与 expression / learning progress / review 等语言学习专属记忆拆开管理。',
-              'Separate general user understanding such as life, goals, and preferences from language-specific memory like expression, learning progress, and review.',
-            ),
-          },
-          {
-            title: t('Memory orchestration layer', 'Memory orchestration layer'),
-            body: t(
-              '系统先判断此刻该调哪些 memory、它们有资格做什么，而不是先默认所有 agent 都要参与。',
-              'The system decides which memories should be called and what they are allowed to do before assuming every agent should participate.',
-            ),
-          },
-          {
-            title: t('Agentic interface layer', 'Agentic interface layer'),
-            body: t(
-              '用户最终看到的是被精挑过的前台接口，例如 Aha Moment、inline assist、daily review，而不是内部模块本身。',
-              'What the user ultimately sees is a carefully chosen frontstage interface such as an Aha Moment, inline assist, or daily review rather than the internal modules themselves.',
-            ),
-          },
+          t(
+            '你在小红书刷到一条 caption。里面有一句：“I want my work to feel inevitable, not loud.” 你愣了两秒——这恰好是你在 portfolio 里这两周反复改的那一段一直在试着表达的意思。你之前写的所有句子都没到位。',
+            'You scroll past a caption on social media and something stops you: “I want my work to feel inevitable, not loud.” For two seconds you just sit with it — this is exactly what you have been trying to say in your portfolio drafts for the past two weeks. None of your sentences landed right.',
+          ),
+          t(
+            '这一刻你真正需要的不是把这个句子加进生词本，不是看一段语法解释——而是有人注意到“这句对你有意义，因为它精准接住了你最近没说清的那个意思”，然后安静地把它留下，晚上还能和你的 portfolio 草稿一起召回。',
+            'What you actually need is not a vocabulary card or a grammar note. You need someone to notice that this sentence matters to you — because it precisely catches the meaning you could not get out — and to quietly hold onto it so it can come back alongside your draft tonight.',
+          ),
+          t(
+            '这件事不可能在一个 language app 里发生。你不在 language app 里——你在小红书。“这句为什么对你有意义”这个判断，依赖的是另一个 app 里你的写作痕迹。没有跨 app 的共享记忆，系统只能把它当一个好看的句子。',
+            'This cannot happen inside a language app. You are not in a language app; you are on social media. Knowing why that sentence matters to you depends on evidence from another app entirely — your writing. Without shared memory across apps, the system can only see it as a pretty sentence.',
+          ),
+        ],
+      },
+      {
+        type: 'shortParagraphs',
+        title: t('场景二 · 回复时在两种说法之间犹豫', 'Scene 2 · Drafting a reply and stuck between two phrasings'),
+        items: [
+          t(
+            '你在 Slack 给一个英文母语的同事写消息。你想表达“我对这个方案有保留，但不想显得在挑刺”。写到第二句卡住——一种说法太硬，另一种太绕，两个你都不满意。',
+            'You are writing a Slack message to an English-speaking colleague. You want to say that you have reservations about a proposal but you do not want to come across as picking a fight. You get stuck at the second sentence — one phrasing is too blunt, the other too convoluted, and neither feels right.',
+          ),
+          t(
+            '你真正需要的不是翻译插件，也不是语法正确的三个候选——三个可能都对，但都不像“你”。你需要 agent 知道你和这个同事的关系调子、知道你在英语里一直想练的那个气质，给出的版本是“哪一个更像你想成为的那个表达者”，而不只是“哪一个语法没问题”。',
+            'A translation plugin is not what you need, nor are three grammatically correct options — any one of them might be perfectly correct but none of them sounds like you. You need the agent to know the tone of your relationship with this person, to know the quality of expression you have been working toward in English, and to offer a version that is closer to the writer you are trying to become rather than the one with the fewest errors.',
+          ),
+          t(
+            '这同样不可能在一个 language app 里发生。关系调子的判断在聊天记录里，语气偏好的积累在过去的写作痕迹里。没有跨 app 的连续人格，agent 的建议只能落到语法对错这种平庸层。',
+            'This also cannot happen inside a language app. Relationship tone lives in your chat history. Stylistic preference accumulates across your writing. Without a continuous persona across apps, the agent’s suggestions can only reach the level of correctness, not character.',
+          ),
         ],
       },
       {
         type: 'comparisonCards',
-        title: t('从观察到显化的状态链', 'State chain from observation to surfacing'),
+        title: t('如果只是一个 language app，vs. 这两个场景说明的', 'If this were just a language app, vs. what these two scenes reveal'),
         items: [
           {
-            title: t('Observe', 'Observe'),
+            title: t('如果只是一个 language app', 'If this were just a language app'),
             body: t(
-              '在授权范围内读取当前 app、可见文本和用户正在做的事，但不直接争抢前台。',
-              'Read the current app, visible text, and ongoing activity within the granted scope without immediately competing for the foreground.',
+              '用户主动打开才学习 · 一套学习记忆 · 单个 app 边界内 · 弹出提示 = 服务',
+              'Learning only when the user opens it · One set of learning memory · Bounded within a single app · Pop-up = service',
             ),
           },
           {
-            title: t('Aha candidate', 'Aha candidate'),
+            title: t('这两个场景告诉我的', 'What these two scenes reveal'),
             body: t(
-              '系统先判断“这里可能有一个值得留下的时刻”，这个阶段可以完全不打扰用户。',
-              'The system first decides that a moment may be worth keeping, and this stage can remain completely silent.',
-            ),
-          },
-          {
-            title: t('Gate review', 'Gate review'),
-            body: t(
-              '再单独评估权限、时机、注意力连续性和打扰成本，决定是触发、延后、静默保留还是忽略。',
-              'Permission, timing, attentional continuity, and interruption cost are reviewed separately to decide whether to trigger, defer, silently keep, or ignore.',
-            ),
-          },
-          {
-            title: t('Aha moment', 'Aha moment'),
-            body: t(
-              '只有通过门禁之后，系统才把高价值判断转成一个真正被用户感知到的学习动作。',
-              'Only after the gate passes does the system turn a high-value judgment into a learning action the user can actually feel.',
+              '有价值的时刻不在 app 里 · 两类共生记忆（你是谁 + 你在练什么）· 跨 app 同一个 agent + 同一份理解 · 克制本身是设计',
+              'The valuable moments happen outside any app · Two coexisting memory types (who you are + what you are practicing) · Same agent across apps with the same understanding · Restraint is the design',
             ),
           },
         ],
       },
       {
         type: 'shortParagraphs',
-        title: t('为什么这比 “multi-agent” 更准确', 'Why this is more accurate than “multi-agent”'),
+        title: t('这是这个项目真正的设计对象', 'This is what this project is actually designing'),
         items: [
           t(
-            '系统中心不再是 agent 数量，而是 memory router、trigger policy 和 writeback policy 如何一起工作。',
-            'The center of gravity is no longer the number of agents, but how the memory router, trigger policy, and writeback policy work together.',
+            '所以这不是“更聪明的语言 app”。当我开始严肃对待这些时刻里 agent 应该交付什么价值，我发现我实际在设计一个跨 app 的、有连续记忆的、有边界感的 agent。语言学习只是它第一次被验证的场景——因为语言学习是少数几个“必须发生在生活流里”的能力。',
+            'So this is not a smarter language app. When I began seriously asking what value an agent should deliver in those moments, I found I was designing a cross-app agent with continuous memory and a genuine sense of what it should and should not do. Language learning is simply the first scenario where this was put to the test — because language learning is one of the few capabilities that must happen inside the flow of life.',
           ),
+        ],
+      },
+      {
+        type: 'shortParagraphs',
+        title: t('这一版叙事的来路', 'How this framing came to be'),
+        items: [
           t(
-            'Agent 在这里更像 memory operation worker：读取、判断、组合、写回。真正的产品核心，是共享记忆如何在跨场景里持续服务同一个用户。',
-            'Here an agent behaves more like a memory-operation worker that reads, judges, composes, and writes back. The real product core is how shared memory keeps serving the same user across contexts.',
+            'v1.0 以为在做 ritual companion。v2.0 意识到核心是 memory orchestration。v3.0 才看清：我设计的对象不是语言 app，而是一个 agent——memory orchestration 是它的内脏，Aha Moment 是它最锋利的前台接口。这一页是 v3.0 的开场。',
+            'v1.0 framing: a ritual companion. v2.0 reframe: the core is memory orchestration. v3.0 clarity: what I am designing is not a language app but an agent — memory orchestration is its internal logic, and Aha Moment is its sharpest frontstage expression. This page is where v3.0 begins.',
           ),
         ],
       },
@@ -131,106 +132,126 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
   {
     pageTitle: t('Aha Moment 的前台交互架构', 'Aha Moment Frontstage Interaction Architecture'),
     pageGoal: t(
-      '把原本埋在 Language Diary 里的 UX showcase 单独抽出来，重读为同一个 agent 如何为自己选择合适前台形态的设计问题。',
-      'Pull the UX showcase out of Language Diary and reread it as a design question about how the same agent chooses the right frontstage form for itself.',
+      '把原本埋在 Language Diary 里的 UX showcase 单独抽出来，重读为两种 agent 参与模式下的前台形态选择问题。',
+      'Pull the UX showcase out of Language Diary and reread it as a frontstage-form selection problem across two agent participation modes.',
     ),
     mainCopy: t(
-      'Aha 不是一个统一弹窗，也不是“发现了一个语点”就自动触发的提醒。它更像 frontstage mode selection：系统先判断当前是 explicit attention 还是 shared attention，再决定应该用 ambient nudge、co-reading anchor、reply suggestion、target language challenge，还是 deferred return 的方式出现。\n\n因此前台真正要展示的，不只是 agent 能看到什么，而是它如何在不同时机里保持克制，同时总给用户一个低成本下一步。',
-      'An Aha is not one universal pop-up, nor a reminder that fires automatically after a language point is found. It behaves more like frontstage mode selection: the system first decides whether the current condition is explicit attention or shared attention, then chooses whether to appear as an ambient nudge, co-reading anchor, reply suggestion, target language challenge, or deferred return.\n\nWhat the frontstage really needs to show is not only what the agent can see, but how it stays restrained across different moments while still giving the user a low-cost next step.',
+      '上一页的两个时刻——刷到一句精准的英文、卡在一条 Slack 回复——是两种不同的发生方式：一种是你自己撞见的，一种是你正在表达时卡住的。同一个 agent，在这两种时刻里不该用同一种姿态出现。\n\n这一页提出 Agent Aha Mode：当 Aha 候选已经成立，agent 该用哪一种姿态出现？我把它收敛成七种介入姿态——Trace（留痕）、Ambient（呼吸）、Inline（镶嵌）、Morphing（变形）、Echo（回声）、Co-creation（共创）、Agentic Action（代理行动）。每一种对应不同的置信度、上下文合法性和关系深度，分别使用灵动岛 saved pill、ambient hint、inline 建议条、跨工作区 morphing、跨时间 return sheet、共创候选、micro-session 等不同载体。\n\nAha Moment 的共同前提是 agent 主动介入：系统发现当前生活流里出现了一个可能值得学习、保存或回访的时刻。但进入前台之前，它要先分清两种参与关系——用户递交型参与（用户主动把内容、草稿、问题或意图交给 agent）和情境感知型介入（用户没有显式召唤，但 agent 通过共享上下文判断 Aha 候选成立）。Agent Aha Mode 主要服务后者。\n\n这七种姿态有一个共同底线：可反驳原则。每一次介入都附带一组反驳通道（not now / not my point / show original context / don\'t connect these again），让用户能在低代价下中止、降级或永久排除某种连接。Agent 拥有判断权，但用户拥有最终否决权。',
+      'The two moments from the previous page — stumbling on a precise English caption and getting stuck on a Slack reply — represent two different kinds of occurrence: one you walked into, one you were blocked inside. The same agent should not appear the same way in both.\n\nThis page introduces Agent Aha Mode: once an Aha candidate has been found, which posture should the agent use? I converge it into seven postures of intervention — Trace, Ambient, Inline, Morphing, Echo, Co-creation, and Agentic Action. Each corresponds to a different level of confidence, contextual legitimacy, and relationship depth, and uses a different carrier: dynamic-island saved pill, ambient hint, inline suggestion bar, cross-workspace morphing, cross-time return sheet, co-creation candidates, or a micro-session.\n\nThe shared premise of an Aha Moment is active agent intervention: the system notices that the current flow of life contains a moment worth learning from, saving, or returning to. Before it enters the foreground, it has to distinguish two participation relationships — user-handoff participation (the user actively gives content, a draft, a question, or an intention to the agent) and context-aware intervention (the user has not explicitly summoned the agent, but the agent judges from shared context that an Aha candidate exists). Agent Aha Mode primarily serves the latter.\n\nAll seven postures share a single floor: the rebuttable principle. Every intervention carries a row of rebuttal channels (not now / not my point / show original context / don\'t connect these again) so the user can stop, downgrade, or permanently exclude a connection at low cost. The agent owns judgment; the user owns the final veto.',
     ),
     contentBlocks: [
       {
         type: 'comparisonCards',
-        title: t('两种注意力模式', 'Two attention modes'),
+        title: t('两种 agent 参与模式', 'Two agent participation modes'),
         items: [
           {
-            title: t('Explicit attention mode', 'Explicit attention mode'),
+            title: t('用户递交型参与', 'User-handoff participation'),
             body: t(
-              '用户已经主动分享内容、选中文本或邀请 agent 对话。系统可以更直接地进入共读、回复建议或 challenge。',
-              'The user has already shared content, selected text, or explicitly invited the agent in. The system can enter co-reading, reply suggestion, or a challenge more directly.',
+              '用户主动把消息传给 agent：选中文本、点击入口、分享内容、请求回复、保存片段或召唤 orchestrator。前台重点是接住这次递交，并让用户知道 agent 为什么在这里。',
+              'The user actively gives something to the agent: selected text, an entry click, shared content, a reply request, a saved fragment, or an orchestrator summons. The frontstage has to receive that handoff and make it clear why the agent is here.',
             ),
           },
           {
-            title: t('Shared attention mode', 'Shared attention mode'),
+            title: t('情境感知型介入', 'Context-aware intervention'),
             body: t(
-              'agent 与用户共享可见范围，但当前阅读和思考流不能被粗暴打断，所以更适合轻提示、边缘气泡或晚点回来卡片。',
-              'The agent shares the user’s visible field, but the current reading and thinking flow cannot be interrupted bluntly, so lighter forms such as ambient hints, edge bubbles, or deferred cards fit better.',
+              'agent 没有收到显式递交，但已经在授权上下文里识别出 Aha 候选。系统根据 Aha 强度选择通知类型：banner、灵动岛、inline 回复、edge bubble、return card 或弹窗都可能成立。',
+              'The agent has not received an explicit handoff, but has identified an Aha candidate inside an authorized context. The system chooses the notification type according to Aha strength: banner, island, inline reply, edge bubble, return card, or modal can all be valid.',
             ),
           },
         ],
       },
       {
         type: 'comparisonCards',
-        title: t('可复用的前台形态', 'Reusable frontstage forms'),
+        title: t('Agent Aha Mode 的七种介入姿态', 'Agent Aha Mode · seven postures of intervention'),
         items: [
           {
-            title: t('Ambient nudge', 'Ambient nudge'),
+            title: t('① Trace 留痕', '① Trace'),
             body: t(
-              '不抢主任务，只轻轻标出“这里值得留意”。',
-              'Do not hijack the main task; simply mark that something here is worth noticing.',
+              '低置信度时只在灵动岛 compact 闪一下、留下 marker dot，不打断阅读，但用户回头能看见。',
+              'At low confidence, only flash the compact dynamic island and leave a marker dot. Reading is not interrupted, but the moment is visible if the user looks back.',
             ),
           },
           {
-            title: t('Co-reading anchor', 'Co-reading anchor'),
+            title: t('② Ambient 呼吸', '② Ambient'),
             body: t(
-              '把注意力收在一句值得一起看的内容上，让 agent 像共同在场，而不是开始授课。',
-              'Gather attention on a sentence worth looking at together so the agent feels co-present rather than instructional.',
+              '中等置信度的环境提示。Hint glow 或灵动岛 expanded 短暂出现一行 "related to your Personal OS framing"，用户可点开也可忽略。',
+              'A medium-confidence ambient hint. A hint glow or expanded dynamic island briefly carries one line — "related to your Personal OS framing" — to be opened or ignored.',
             ),
           },
           {
-            title: t('Reply suggestion', 'Reply suggestion'),
+            title: t('③ Inline 镶嵌', '③ Inline'),
             body: t(
-              '当用户已经想回应但卡住时，先给一个能立刻行动的表达入口。',
-              'When the user wants to respond but gets stuck, provide an entry point that can be acted on immediately.',
+              '当用户在表达时卡住，suggestion bar 贴在键盘上方给出 softer / more direct 等候选，不替用户写。',
+              'When the user is stuck mid-expression, an inline suggestion bar sits above the keyboard with softer / more direct candidates, never writing for them.',
             ),
           },
           {
-            title: t('Target language challenge', 'Target language challenge'),
+            title: t('④ Morphing 变形', '④ Morphing'),
             body: t(
-              '不是替用户回答，而是把当前时刻转成一次轻量练习机会。',
-              'Do not answer for the user; turn the current moment into a lightweight practice opportunity.',
+              '同一片 fragment 在写英文 / 做作品集 / 准备面试三个工作区里以不同 lens 呈现：same fragment · three workspaces。',
+              'The same fragment appears across writing English / portfolio / interview prep with different lenses applied: same fragment, three workspaces.',
             ),
           },
           {
-            title: t('Relation-topic invitation', 'Relation-topic invitation'),
+            title: t('⑤ Echo 回声 ★', '⑤ Echo ★'),
             body: t(
-              '把当前内容和用户最近在意的目标、关系或项目重新接上。',
-              'Reconnect the current content with the goals, relationships, or projects the user already cares about.',
+              '跨时间的核心姿态：白天静默保存 → 白天 ambient hint → 晚上场景就位 → return card 滑出 → 转化菜单。带 grabber 和"don\'t connect these again"反驳通道。',
+              'The cross-time hero posture: silent daytime save → ambient hint → evening context arrival → return sheet sliding up → transformation menu. Includes a grabber and a "don\'t connect these again" rebuttal channel.',
             ),
           },
           {
-            title: t('Deferred return card', 'Deferred return card'),
+            title: t('⑥ Co-creation 共创', '⑥ Co-creation'),
             body: t(
-              '当下不适合打断，但这个时刻值得被留下，于是系统先替用户保留，晚些再带回来。',
-              'If now is not the right time to interrupt but the moment deserves to survive, the system keeps it and brings it back later.',
+              'agent 邀请用户挑 lens（更产品化 / 更面试化 / 更诗性），生成三条候选，由用户选取并写回。共创发生在表达层。',
+              'The agent invites the user to choose a lens (more product / more interview / more poetic), generates three candidates, and lets the user pick before writing back. Co-creation happens at the expression layer.',
+            ),
+          },
+          {
+            title: t('⑦ Agentic Action 代理行动', '⑦ Agentic Action'),
+            body: t(
+              '高置信高相关时升级为任务分叉口：灵动岛 expanded 提议 "run a 3-step prep"，进入 micro-session，每一步都可中止。',
+              'At high confidence and high relevance, the posture escalates into a task fork: the expanded dynamic island proposes "run a 3-step prep" and enters a micro-session where every step can be stopped.',
             ),
           },
         ],
       },
       {
         type: 'shortParagraphs',
-        title: t('前台原则', 'Frontstage rules'),
+        title: t('七种姿态的共同底线', 'The shared floor across all seven postures'),
         items: [
           t(
-            'Aha 不是通知，而是被带入的学习动作。用户看到之后，要么能试着说一句，要么能立刻进入下一步，而不是只被告知“这里有个知识点”。',
-            'An Aha is not a notification but an invited learning action. After seeing it, the user should be able to try a line or enter the next step immediately instead of being told that a language point exists.',
+            '可反驳原则（rebuttable）。每一张 Aha 卡片都带一组反驳通道：not now / not my point / show original context / don\'t connect these again。Agent 拥有判断权，用户拥有最终否决权。',
+            'The rebuttable principle. Every Aha card carries a row of rebuttal channels: not now / not my point / show original context / don\'t connect these again. The agent owns judgment; the user owns the final veto.',
           ),
           t(
-            '同一个 Aha 不只对应一种 UI。系统必须根据注意力拥有权、任务连续性、关系深度和打扰成本，为自己挑选最合适的前台形态。',
-            'The same Aha does not map to a single UI. The system has to choose the right frontstage form for itself based on attentional ownership, task continuity, relationship depth, and interruption cost.',
+            '统一的视觉语言。amber 主色 + 三层卡片结构（header / body / footer）+ marker dot / island dot / hint glow 的 marker triplet——七种姿态在视觉上是同一个 agent 的不同体态，而不是七个互不认识的功能。',
+            'A unified visual language. Amber primary colour, three-layer card structure (header / body / footer), and the marker triplet (marker dot / island dot / hint glow). The seven postures look like one agent in different bodies, not seven unrelated features.',
           ),
           t(
-            '前台也要体现连续人格。用户感受到的应当仍然是“那个知道我是谁的 agent”，只是换了一种姿态来接我。',
-            'The frontstage also needs to express a continuous persona. The user should still feel that it is the same agent that knows who they are, only arriving in a different posture.',
+            'Aha 不是通知，而是被带入的学习动作。用户看到之后，要么能试着说一句、改一句，要么能立刻进入下一步，而不是只被告知"这里有个知识点"。',
+            'An Aha is not a notification but an invited learning action. After seeing it, the user should be able to try or revise a line, or step into the next move, instead of being told that a language point exists.',
           ),
         ],
       },
+    ],
+  },
+  {
+    pageTitle: t('HTML UX Showcase', 'HTML UX Showcase'),
+    pageGoal: t(
+      '把原本埋在 `A Ritual of Expression` 里的页面，作为 Aha Moment 前台 UX 证据单独放在第三页。',
+      'Place the page originally embedded inside `A Ritual of Expression` on a separate third page as frontstage UX evidence for the Aha Moment.',
+    ),
+    mainCopy: t(
+      '这份 showcase 先区分用户递交型参与与情境感知型介入，然后用七种姿态的 storyboards——Trace / Ambient / Inline / Morphing / Echo / Co-creation / Agentic Action——演示 Agent Aha Mode 在不同置信度和场景下的真实出现方式。',
+      'This showcase first separates user-handoff participation from context-aware intervention, then walks through the seven posture storyboards — Trace / Ambient / Inline / Morphing / Echo / Co-creation / Agentic Action — showing how Agent Aha Mode actually surfaces under different confidence levels and scenes.',
+    ),
+    contentBlocks: [
       {
         type: 'showcaseEmbed',
         title: t('HTML UX Showcase', 'HTML UX Showcase'),
         caption: t(
-          '这份原本嵌在 `A Ritual of Expression` 里的页面，现在被重新归位为 Aha Moment 的前台 UX 证据：它展示的不是入口本身，而是同一个 agent 如何在不同模式下选择自己的出现方式。',
-          'This page originally lived inside `A Ritual of Expression`. It is now repositioned as frontstage evidence for the Aha Moment: not an entry-point demo, but a study of how the same agent chooses its way of appearing under different modes.',
+          '下方 showcase 是这一案例的前台 UX 证据。它先区分用户递交型参与与情境感知型介入，然后用七种姿态的 storyboards 演示 Agent Aha Mode 如何在不同置信度下出现，并保持可反驳。',
+          'The showcase below is the frontstage UX evidence for this case. It first separates user-handoff participation from context-aware intervention, then walks through the seven postures storyboards to show how Agent Aha Mode surfaces under different confidence levels and stays rebuttable.',
         ),
         src: '/language-diary-ux-showcase/index.html',
       },
