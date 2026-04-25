@@ -498,6 +498,170 @@
     }
     .feed-actions .tiny-pill { background: var(--card-soft); }
 
+    /* === S02 daytime social capture · selection-driven agent triggers === */
+    .word-select {
+      position: relative;
+      background: rgba(47, 155, 255, 0.18);
+      padding: 1px 2px;
+      margin: 0 2px;
+      box-shadow: -2px 0 0 var(--blue), 2px 0 0 var(--blue);
+    }
+    .word-select .sel-dot {
+      position: absolute;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--coral);
+      border: 1.5px solid var(--ink);
+    }
+    .word-select .sel-dot--start { top: -3px; left: -5px; }
+    .word-select .sel-dot--end   { bottom: -3px; right: -5px; }
+
+    .select-menu {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: stretch;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      background: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      color: #fff;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .select-menu-item {
+      padding: 8px 11px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 10.5px;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .select-menu-item--accent { background: var(--coral); }
+    .select-menu-divider { width: 2px; background: rgba(255,255,255,0.18); }
+
+    .agent-floater {
+      border: var(--border);
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 11px; line-height: 1.45;
+    }
+    .agent-floater-head {
+      display: flex; align-items: center; gap: 6px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 11px;
+    }
+    .agent-floater-pill {
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: var(--coral);
+      color: #fff;
+      font-size: 9.5px;
+    }
+    .audio-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: var(--night);
+      color: var(--ink);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 10.5px;
+      align-self: flex-start;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .audio-wave {
+      display: inline-flex; gap: 2px; align-items: flex-end; height: 12px;
+    }
+    .audio-wave i {
+      display: block; width: 2px; background: var(--ink); border-radius: 1px;
+    }
+    .audio-wave i:nth-child(1) { height: 5px; }
+    .audio-wave i:nth-child(2) { height: 9px; }
+    .audio-wave i:nth-child(3) { height: 7px; }
+    .audio-wave i:nth-child(4) { height: 11px; }
+    .audio-wave i:nth-child(5) { height: 6px; }
+
+    .thought-input {
+      border: 2px dashed rgba(22,22,26,0.32);
+      border-radius: 12px;
+      padding: 7px 10px;
+      background: var(--card-soft);
+      color: var(--ink-soft);
+      font-size: 10.5px;
+      font-style: italic;
+    }
+
+    .mini-im-row {
+      display: flex; gap: 6px; align-items: center;
+      font-size: 10px; color: var(--ink-muted);
+    }
+    .mini-im-label { font-family: "Black Han Sans", sans-serif; font-size: 10px; }
+    .mini-im {
+      width: 22px; height: 22px;
+      border: 2px solid var(--ink);
+      border-radius: 7px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 9px;
+      color: #fff;
+    }
+    .mini-im--wechat  { background: #08c160; }
+    .mini-im--moments { background: #25b864; }
+    .mini-im--weibo   { background: #e6162d; }
+
+    .orchestrator-card {
+      border: var(--border);
+      border-radius: 16px;
+      background: rgba(189, 162, 217, 0.22);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px;
+      display: flex; flex-direction: column; gap: 7px;
+      font-size: 10.5px; line-height: 1.45;
+    }
+    .orchestrator-head {
+      display: flex; align-items: center; gap: 6px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 11px;
+    }
+    .orch-route {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 7px;
+      border: 2px solid var(--ink);
+      background: var(--card);
+      border-radius: 10px;
+    }
+    .orch-arrow {
+      font-family: "Black Han Sans", sans-serif;
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+    .orch-agent {
+      display: inline-flex; align-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 9px;
+      color: #fff;
+      flex: 0 0 auto;
+    }
+    .orch-agent--ux       { background: var(--ux-agent); }
+    .orch-agent--research { background: var(--research-agent); }
+    .orch-agent--mimo     { background: var(--coral); }
+    .orch-task { font-size: 10px; color: var(--ink-soft); }
+    .orch-status {
+      display: inline-flex; align-items: center; gap: 4px;
+      align-self: flex-start;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: var(--day);
+      font-family: "Black Han Sans", sans-serif;
+      font-size: 10px;
+    }
+
     .share-sheet {
       margin-top: auto;
       border-top: var(--border);
@@ -1042,20 +1206,20 @@
           <section class="portfolio-spread portfolio-spread--day-alt" id="s02">
             <aside class="spread-rail">
               <div class="spread-step">02</div>
-              <h2 class="spread-title">白天捕获 · 社交媒体评论</h2>
-              <p class="spread-subtitle">The source moves outside the main chat. Three surface patterns — which saves the word without interrupting the social experience?</p>
-              <div class="spread-stage">daytime · social capture</div>
-              <p class="spread-rule">This page should feel like one exhibit about capture sources.</p>
+              <h2 class="spread-title">用户主动触发 · 分享给AGENT</h2>
+              <p class="spread-subtitle">Selection becomes the trigger. From a tap menu → agent floater → orchestrator dispatch — which keeps the reader inside the post while still firing an aha?</p>
+              <div class="spread-stage">daytime · selection-driven aha</div>
+              <p class="spread-rule">No page jumps. The reader stays in the feed; the aha comes to them.</p>
             </aside>
             <div class="spread-main">
               <div class="phone-stage phone-stage--spread">
 
-                <!-- A: Human votes -->
+                <!-- A: Human votes - 划词触发 -->
                 <div class="phone-variant pv-vote-human">
                   <div class="vote-cluster">
                     <div class="vote-dot vd-human" title="Human"></div>
                   </div>
-                  <div class="variant-title">A · comment view</div>
+                  <div class="variant-title">A · 划词触发</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
                       <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1068,25 +1232,28 @@
                               <div style="font-size:10px;color:rgba(22,22,26,.56);">Xiaohongshu comment</div>
                             </div>
                           </div>
-                          <div>今天有点 <span class="mark-dot">drained</span>，但 still managed to finish the draft.</div>
-                          <div class="feed-actions">
-                            <div class="tiny-pill">like</div>
-                            <div class="tiny-pill">reply</div>
-                            <div class="tiny-pill">save</div>
-                          </div>
+                          <div>今天有点 <span class="word-select"><span class="sel-dot sel-dot--start"></span>drained<span class="sel-dot sel-dot--end"></span></span>，但 still managed to finish the draft.</div>
                         </div>
+                        <div class="select-menu">
+                          <span class="select-menu-item">Copy</span>
+                          <span class="select-menu-divider"></span>
+                          <span class="select-menu-item">Search</span>
+                          <span class="select-menu-divider"></span>
+                          <span class="select-menu-item select-menu-item--accent">和 Mimo 聊聊</span>
+                        </div>
+                        <div class="screen-note" style="margin-top:8px;">Selection is the capture entry. No jump, no save tap — the menu floats, reading flow stays intact.</div>
                       </div>
                       <div class="phone-home"></div>
                     </div>
                   </div>
                 </div>
 
-                <!-- B: Human votes -->
+                <!-- B: Human votes - agent 悬浮卡 -->
                 <div class="phone-variant pv-vote-human">
                   <div class="vote-cluster">
                     <div class="vote-dot vd-human" title="Human"></div>
                   </div>
-                  <div class="variant-title">B · highlight &amp; save</div>
+                  <div class="variant-title">B · agent 悬浮卡</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
                       <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1096,11 +1263,28 @@
                             <div class="avatar"></div>
                             <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">@afternoonmemo</div>
                           </div>
-                          <div>I <span class="mark-bracket">might as well</span> go, since I'm already downstairs.</div>
+                          <div>I <span class="word-select"><span class="sel-dot sel-dot--start"></span>might as well<span class="sel-dot sel-dot--end"></span></span> go, since I'm already downstairs.</div>
                         </div>
-                        <div class="screen-card">
-                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">Save for tonight</div>
-                          <div class="screen-note">Long-press action appears directly in context.</div>
+                        <div class="agent-floater">
+                          <div class="agent-floater-head">
+                            <span class="agent-floater-pill">Mimo</span>
+                            <span>抓到一个语点</span>
+                          </div>
+                          <div style="font-size:11px;line-height:1.5;">
+                            <strong>might as well</strong> · 反正都已经…顺便就…<br/>
+                            <span style="color:var(--ink-muted);">委婉的"既来之则安之"语气</span>
+                          </div>
+                          <span class="audio-pill">
+                            <span class="audio-wave"><i></i><i></i><i></i><i></i><i></i></span>
+                            按住和 Mimo 聊聊
+                          </span>
+                          <div class="thought-input">+ 补一句你的想法…</div>
+                          <div class="mini-im-row">
+                            <span class="mini-im-label">→ forward</span>
+                            <span class="mini-im mini-im--wechat">微</span>
+                            <span class="mini-im mini-im--moments">圈</span>
+                            <span class="mini-im mini-im--weibo">博</span>
+                          </div>
                         </div>
                       </div>
                       <div class="phone-home"></div>
@@ -1108,14 +1292,14 @@
                   </div>
                 </div>
 
-                <!-- C: STARRED by UX Agent + Research Agent votes -->
+                <!-- C: STARRED by UX Agent + Research Agent votes - orchestrator 自动派单 -->
                 <div class="phone-variant pv-starred-ux pv-vote-research">
                   <div class="vote-cluster">
                     <div class="vote-dot vd-ux" title="UX Agent"></div>
                     <div class="vote-dot vd-research" title="Research Agent"></div>
                   </div>
                   <div class="variant-title">
-                    C · auto-capture pill
+                    C · orchestrator 自动派单
                     <span class="star-badge">★</span>
                   </div>
                   <div class="phone">
@@ -1127,14 +1311,29 @@
                             <div class="avatar"></div>
                             <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">@afternoonmemo</div>
                           </div>
-                          <div>That trip was exhausting but also weirdly worth it.</div>
+                          <div>That trip was <span class="word-select"><span class="sel-dot sel-dot--start"></span>exhausting<span class="sel-dot sel-dot--end"></span></span> but also weirdly worth it.</div>
                         </div>
-                        <div class="screen-card">
-                          <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">1 language point noticed</div>
-                          <div class="tag-row">
-                            <div class="tag tag--day">candidate</div>
-                            <div class="tag">see tonight</div>
+                        <div class="orchestrator-card">
+                          <div class="orchestrator-head">
+                            <span class="agent-floater-pill">Mimo</span>
+                            <span>orchestrator 派单中</span>
                           </div>
+                          <div class="orch-route">
+                            <span class="orch-arrow">→</span>
+                            <span class="orch-agent orch-agent--research">Research</span>
+                            <span class="orch-task">查 'exhausting' 词源 + 同义</span>
+                          </div>
+                          <div class="orch-route">
+                            <span class="orch-arrow">→</span>
+                            <span class="orch-agent orch-agent--ux">UX</span>
+                            <span class="orch-task">写一行旅行场景例句</span>
+                          </div>
+                          <div class="orch-route">
+                            <span class="orch-arrow">→</span>
+                            <span class="orch-agent orch-agent--mimo">Mimo</span>
+                            <span class="orch-task">口语化重写 + 链接</span>
+                          </div>
+                          <span class="orch-status">auto-aha drafted · 留到夜读</span>
                         </div>
                       </div>
                       <div class="phone-home"></div>
@@ -1144,8 +1343,8 @@
 
               </div>
               <div class="shared-bottom-annotation">
-                <p>Shared annotation: external capture surfaces still stay language-first. Auto-capture wins — UX Agent and Research Agent both agree: zero friction is better than an explicit tap.</p>
-                <div class="annotation-badge">source shift · same spread logic</div>
+                <p>Shared annotation: selection is the structured input. Auto-orchestration wins — UX Agent and Research Agent agree: routing the language point to the right specialised agent beats one universal "Save" tap. The user keeps scrolling; the right agent generates the right aha.</p>
+                <div class="annotation-badge">selection-driven · agent-routed</div>
               </div>
             </div>
           </section>
@@ -1154,7 +1353,7 @@
           <section class="portfolio-spread portfolio-spread--surface" id="s03">
             <aside class="spread-rail">
               <div class="spread-step">03</div>
-              <h2 class="spread-title">白天捕获 · OS 系统分享</h2>
+              <h2 class="spread-title">AGENT主动识别可分享的观点</h2>
               <p class="spread-subtitle">Three OS touchpoints. UX Agent and Human prefer the native share sheet — zero new UI to learn.</p>
               <div class="spread-stage">os · user initiated save</div>
               <p class="spread-rule">The page composition supports the devices. Any explanation belongs below.</p>

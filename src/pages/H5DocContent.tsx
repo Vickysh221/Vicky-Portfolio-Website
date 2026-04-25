@@ -34,10 +34,9 @@ import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFo
 import { getPersonalCompanionsSlideSections } from './H5DocContentPersonalCompanions';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
 import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalLanguageDiarySlide02';
-import { getPersonalLanguageDiarySlide03ShowcaseSections } from './H5DocContentPersonalLanguageDiarySlide03Showcase';
-import { getPersonalLanguageDiarySlide04ShiftedSections } from './H5DocContentPersonalLanguageDiarySlide04Shifted';
-import { getPersonalLanguageDiarySlide05ShiftedSections } from './H5DocContentPersonalLanguageDiarySlide05Shifted';
-import { getPersonalLanguageDiarySlide06Sections } from './H5DocContentPersonalLanguageDiarySlide06';
+import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
+import { getPersonalLanguageDiarySlide04Sections } from './H5DocContentPersonalLanguageDiarySlide04';
+import { getPersonalLanguageDiarySlide05Sections } from './H5DocContentPersonalLanguageDiarySlide05';
 import {
   getAgenticDrivingPersonalizationSlide01Sections,
   getAgenticDrivingPersonalizationSlide02Sections,
@@ -57,6 +56,8 @@ import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInt
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 import PersonalOSCaseStudy from './PersonalOSCaseStudy';
 import { hasPersonalOsCaseStudy } from './personalOsCaseStudyMeta.ts';
+import SharedMemoryAhaCaseStudy from './SharedMemoryAhaCaseStudy';
+import { hasSharedMemoryAhaCaseStudy } from './sharedMemoryAhaCaseStudyMeta.ts';
 
 interface H5DocContentProps {
   route: string;
@@ -131,10 +132,9 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
   '/agentic-design-development/language-diary:0': getPersonalLanguageDiarySlide01Sections,
   '/agentic-design-development/language-diary:1': getPersonalLanguageDiarySlide02Sections,
-  '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03ShowcaseSections,
-  '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04ShiftedSections,
-  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05ShiftedSections,
-  '/agentic-design-development/language-diary:5': getPersonalLanguageDiarySlide06Sections,
+  '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,
+  '/agentic-design-development/language-diary:3': getPersonalLanguageDiarySlide04Sections,
+  '/agentic-design-development/language-diary:4': getPersonalLanguageDiarySlide05Sections,
   '/agentic-design-development/agentic-driving:0': getAgenticDrivingPersonalizationSlide01Sections,
   '/agentic-design-development/agentic-driving:1': getAgenticDrivingPersonalizationSlide02Sections,
   '/agentic-design-development/agentic-driving:2': getAgenticDrivingPersonalizationSlide03Sections,
@@ -148,6 +148,7 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
   if (hasPersonalOsCaseStudy(route, slideIndex)) return true;
+  if (hasSharedMemoryAhaCaseStudy(route, slideIndex)) return true;
   if (hasAiInteriorSystemCaseStudy(route, slideIndex)) return true;
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
   if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 2) return true;
@@ -182,6 +183,18 @@ export default function H5DocContent({
   if (hasPersonalOsCaseStudy(route, slideIndex)) {
     return (
       <PersonalOSCaseStudy
+        route={route}
+        accentColor={accentColor}
+        slideIndex={slideIndex}
+        isMobile={isMobile}
+        enableMotion={enableNarrativeMotion}
+      />
+    );
+  }
+
+  if (hasSharedMemoryAhaCaseStudy(route, slideIndex)) {
+    return (
+      <SharedMemoryAhaCaseStudy
         route={route}
         accentColor={accentColor}
         slideIndex={slideIndex}

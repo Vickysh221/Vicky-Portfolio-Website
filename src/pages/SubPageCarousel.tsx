@@ -50,10 +50,10 @@ const showcaseExpandedModalFrameStyle: React.CSSProperties = {
   background: 'rgba(8,6,4,0.98)',
 };
 function shouldAutoExpandShowcase(route: string, slideIndex: number, isMobile?: boolean) {
-  return !isMobile && route === '/agentic-design-development/language-diary' && slideIndex === 2;
+  return !isMobile && route === '/agentic-design-development/aha-moment' && slideIndex === 1;
 }
 function isShowcaseSlide(route: string, slideIndex: number) {
-  return route === '/agentic-design-development/language-diary' && slideIndex === 2;
+  return route === '/agentic-design-development/aha-moment' && slideIndex === 1;
 }
 const readingColumnStyle: React.CSSProperties = {
   width: 'min(860px, 100%)',

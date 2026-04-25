@@ -80,8 +80,9 @@ export const HOME_INDEX_SECTIONS: Record<HomeSectionKey, HomeIndexSection> = {
     phaseProjectRoute: '/agentic-design-development',
     chapters: [
       { ...getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/language-diary'), numeral: 'I' },
-      { ...getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/personal-os'), numeral: 'II' },
-      { ...getSubPageOrThrow('/academic-gamification', '/academic-gamification/companions'), numeral: 'III' },
+      { ...getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/aha-moment'), numeral: 'II' },
+      { ...getSubPageOrThrow('/agentic-design-development', '/agentic-design-development/personal-os'), numeral: 'III' },
+      { ...getSubPageOrThrow('/academic-gamification', '/academic-gamification/companions'), numeral: 'IV' },
     ],
   },
   creation: {
