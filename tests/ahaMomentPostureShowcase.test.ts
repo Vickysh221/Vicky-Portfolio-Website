@@ -136,6 +136,13 @@ test('ambient storyboard uses dynamic island compact and expanded', () => {
   assert.match(block, /class="aha-island-dot"/);
 });
 
+test('case-evidence section and nav link are removed', () => {
+  const html = readShowcase();
+  assert.equal(html.includes('id="case-evidence"'), false, 'case-evidence section should be removed');
+  assert.equal(html.includes('href="#case-evidence"'), false, 'nav link to case-evidence should be removed');
+  assert.equal(html.includes('03 · 场景佐证'), false, '03 scenario heading should be removed');
+});
+
 test('co-creation storyboard invites user to shape lens together', () => {
   const html = readShowcase();
   const block = html.match(/<article class="posture-block" id="posture-cocreation">[\s\S]*?<\/article>/)![0];
