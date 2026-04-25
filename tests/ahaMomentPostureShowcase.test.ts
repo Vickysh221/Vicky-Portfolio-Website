@@ -91,3 +91,17 @@ test('mode-context title says Agent Aha Mode', () => {
   const html = readShowcase();
   assert.match(html, /02 · 情境感知型介入 \/ Agent Aha Mode/);
 });
+
+test('trace storyboard has three frames with marker dot', () => {
+  const html = readShowcase();
+  const traceBlock = html.match(/<article class="posture-block" id="posture-trace">[\s\S]*?<\/article>/);
+  assert.ok(traceBlock, 'trace block found');
+  const block = traceBlock[0];
+  assert.match(block, /class="storyboard-frame-label">A · 捕捉/);
+  assert.match(block, /class="storyboard-frame-label">B · 复盘/);
+  assert.match(block, /class="storyboard-frame-label">C · 写回/);
+  assert.match(block, /class="aha-marker-dot"/);
+  assert.match(block, /kept from afternoon reading/);
+  assert.match(block, /class="rebuttal-pill[^"]*">keep</);
+  assert.match(block, /class="rebuttal-pill[^"]*">dismiss</);
+});
