@@ -50,3 +50,12 @@ test('showcase declares storyboard meta classes', () => {
   assert.match(html, /\.posture-meta\s*\{/);
   assert.match(html, /\.posture-block\s*\{/);
 });
+
+test('phone statusbar uses three-segment structure with island', () => {
+  const html = readShowcase();
+  // 不应再保留旧 ●●● 形式
+  assert.equal(html.includes('<span>●●●</span>'), false, 'old statusbar dots should be replaced');
+  // 新结构必须有 status-time / dynamic-island / status-icons
+  assert.match(html, /class="status-time">9:41/);
+  assert.match(html, /class="status-icons"/);
+});

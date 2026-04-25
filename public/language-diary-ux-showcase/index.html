@@ -371,11 +371,32 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 18px 6px;
+      padding: 8px 14px 4px;
+      flex: 0 0 auto;
+      gap: 8px;
+    }
+    .phone-statusbar .status-time {
       font-family: "Black Han Sans", sans-serif;
       font-size: 11px;
       color: var(--ink);
       flex: 0 0 auto;
+      min-width: 36px;
+    }
+    .phone-statusbar .status-icons {
+      display: flex;
+      gap: 4px;
+      flex: 0 0 auto;
+      min-width: 36px;
+      justify-content: flex-end;
+      color: var(--ink);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+    .phone-screen--night .phone-statusbar .status-time,
+    .phone-screen--deep .phone-statusbar .status-time,
+    .phone-screen--night .phone-statusbar .status-icons,
+    .phone-screen--deep .phone-statusbar .status-icons {
+      color: #fff;
     }
 
     .phone-home {
@@ -1824,7 +1845,7 @@
                     <div class="variant-title">V1.1 Ambient handoff nudge</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div class="feed-head"><div class="avatar"></div><div style="font-size:11px;color:var(--ink-muted);">Xiaohongshu</div></div>
@@ -1848,7 +1869,7 @@
                     <div class="variant-title">V1.2 Co-reading anchor <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div class="feed-head"><div class="avatar"></div><div style="font-size:11px;color:var(--ink-muted);">Xiaohongshu</div></div>
@@ -1877,7 +1898,7 @@
                     <div class="variant-title">V1.3 Reply suggestion <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">3:22</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="orchestrator-card">
                             <div class="orchestrator-head"><span class="agent-floater-pill">Mimo</span><span>3 reply options</span></div>
@@ -1905,7 +1926,7 @@
                     <div class="variant-title">V1.4 Target language challenge <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div>I want my work to feel inevitable, not loud.</div>
@@ -1925,7 +1946,7 @@
                     <div class="variant-title">V1.5 Relation-topic invitation <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--night">
-                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">8:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="letter-card">
                             <div>This connects to your Agent OS interview prep — want to say a line?</div>
@@ -1947,7 +1968,7 @@
                     <div class="variant-title">V1.6 Deferred return card <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--deep">
-                        <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
+                        <div class="phone-statusbar" style="color:#fff;"><span class="status-time">10:05</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="peek-card peek-card--inline" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:#fff;">
                             <div style="font-size:10px;opacity:0.6;margin-bottom:3px;">saved earlier</div>
@@ -2013,7 +2034,7 @@
                     <div class="variant-title">V2.1 AHA banner notification</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div>I want my work to feel inevitable, not loud.</div>
@@ -2035,7 +2056,7 @@
                     <div class="variant-title">V2.2 AHA island save notification</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="tag-row" style="justify-content:center;margin-bottom:8px;">
                             <div class="tag tag--coral">AHA · saved for tonight</div>
@@ -2057,7 +2078,7 @@
                     <div class="variant-title">V2.3 AHA inline reply</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">3:22</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div>Fair point. I'd want to explore one thing first.</div>
@@ -2084,7 +2105,7 @@
                     <div class="variant-title">V2.4 AHA edge bubble notification</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--night">
-                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">8:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card" style="background:#f4f0f8;">
                             <div>Proactive systems don't wait for instruction — they anticipate.</div>
@@ -2103,7 +2124,7 @@
                     <div class="variant-title">V2.5 AHA inline challenge notification <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div>I want my work to feel inevitable, not loud.</div>
@@ -2126,7 +2147,7 @@
                     <div class="variant-title">V2.6 AHA return card / modal preface <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--deep">
-                        <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
+                        <div class="phone-statusbar" style="color:#fff;"><span class="status-time">10:05</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="quiet-room">
                             <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff;">AHA return card</div>
@@ -2209,7 +2230,7 @@
                   <div class="variant-title">A · dotted underline</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header">
                         <div class="chat-title">Language Diary</div>
                         <div class="chat-subtitle">quiet inline noticing</div>
@@ -2239,7 +2260,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header">
                         <div class="chat-title">Language Diary</div>
                         <div class="chat-subtitle">outer-edge notation</div>
@@ -2263,7 +2284,7 @@
                   <div class="variant-title">C · signal strength</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header">
                         <div class="chat-title">Language Diary</div>
                         <div class="chat-subtitle">strength-coded marks</div>
@@ -2309,7 +2330,7 @@
                   <div class="variant-title">A · 划词触发</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
-                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="feed-card">
                           <div class="feed-head">
@@ -2343,7 +2364,7 @@
                   <div class="variant-title">B · agent 悬浮卡</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
-                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="feed-card">
                           <div class="feed-head">
@@ -2391,7 +2412,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--day-alt">
-                      <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">12:08</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="feed-card">
                           <div class="feed-head">
@@ -2460,7 +2481,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body screen-body--space">
                         <div class="bubble bubble--user" style="align-self:flex-start;max-width:100%;background:#fff;border-radius:18px;">今天真的太累了，完全 drained。早上 might as well 出门买了杯咖啡，感觉好多了。</div>
                         <div class="share-sheet">
@@ -2494,7 +2515,7 @@
                   <div class="variant-title">B · saved confirmation banner</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="save-banner">
                           <div class="save-banner-icon">🗂</div>
@@ -2518,7 +2539,7 @@
                   <div class="variant-title">C · home screen widget</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">9:41</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="widget-card">
                           <div class="tag-row" style="margin-bottom:10px;">
@@ -2567,7 +2588,7 @@
                     <div class="variant-title">A1 · inline halo card</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="chat-header">
                           <div class="chat-title">Language Diary</div>
                           <div class="chat-subtitle">trigger inside the chat stream</div>
@@ -2588,7 +2609,7 @@
                     <div class="variant-title">A2 · OS banner push</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
                             <div class="feed-head">
@@ -2618,7 +2639,7 @@
                     </div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:12</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="chat-header">
                           <div class="chat-title">Language Diary</div>
                           <div class="chat-subtitle">low-interruption prompt</div>
@@ -2644,7 +2665,7 @@
                     <div class="variant-title">B1 · open now</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="bubble bubble--user">might as well go now.</div>
                         </div>
@@ -2673,7 +2694,7 @@
                     </div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="bubble bubble--user">I might as well go now.</div>
                           <div class="screen-card">
@@ -2693,7 +2714,7 @@
                     <div class="variant-title">B3 · chat now</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="chat-header">
                           <div class="chat-title">Language Diary</div>
                           <div class="chat-subtitle">fork into main chat</div>
@@ -2714,7 +2735,7 @@
                     <div class="variant-title">B4 · dismiss</div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span>4:15</span><span>●●●</span></div>
+                        <div class="phone-statusbar"><span class="status-time">4:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="bubble bubble--user">might as well go.</div>
                           <div class="screen-card">
@@ -2757,7 +2778,7 @@
                   <div class="variant-title">A · overlay popover</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">6:18</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header">
                         <div class="chat-title">Language Diary</div>
                         <div class="chat-subtitle">anchored glance</div>
@@ -2786,7 +2807,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">6:18</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header">
                         <div class="chat-title">Language Diary</div>
                         <div class="chat-subtitle">within the thread</div>
@@ -2810,7 +2831,7 @@
                   <div class="variant-title">C · bottom drawer</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar"><span>6:18</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">6:18</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="bubble bubble--user">I was <span class="mark-bracket">running on fumes</span> by the end.</div>
                       </div>
@@ -2855,7 +2876,7 @@
                   <div class="variant-title">A · sunset timeline</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
+                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span class="status-time">7:42</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="timeline-card">
                           <div class="timeline-bar"></div>
@@ -2879,7 +2900,7 @@
                   <div class="variant-title">B · envelope</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--surface">
-                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span>7:42</span><span>●●●</span></div>
+                      <div class="phone-statusbar" style="background:rgba(253,192,50,.22);"><span class="status-time">7:42</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body screen-body--space">
                         <div class="envelope-card">
                           <div style="font-family:'Black Han Sans',sans-serif;font-size:18px;">today's fragments</div>
@@ -2907,7 +2928,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
-                      <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">9:14</span><span style="color:#fff;">●●●</span></div>
+                      <div class="phone-statusbar" style="color:#fff;"><span class="status-time">9:14</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="quiet-room">
                           <div style="font-family:'Black Han Sans',sans-serif;font-size:16px;">narrative composing...</div>
@@ -2952,7 +2973,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
-                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header chat-header--night">
                         <div class="chat-title">Tonight's Letter</div>
                         <div class="chat-subtitle">one flowing artifact</div>
@@ -2977,7 +2998,7 @@
                   <div class="variant-title">B · chaptered scroll</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
-                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="chat-header chat-header--night">
                         <div class="chat-title">Night Narrative</div>
                         <div class="chat-subtitle">morning / afternoon / evening</div>
@@ -3000,7 +3021,7 @@
                   <div class="variant-title">C · card stack</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--night">
-                      <div class="phone-statusbar"><span>10:12</span><span>●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="stack-card stack-card--tilt-a">
                           <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">hero card</div>
@@ -3044,7 +3065,7 @@
                   <div class="variant-title">A · by type</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
-                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="knowledge-chip"><strong>pattern</strong>might as well</div>
                         <div class="knowledge-chip"><strong>vocab</strong>drained</div>
@@ -3063,7 +3084,7 @@
                   <div class="variant-title">B · by event anchor</div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
-                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="event-group">
                           <div style="font-family:'Black Han Sans',sans-serif;font-size:12px;">coffee run</div>
@@ -3091,7 +3112,7 @@
                   </div>
                   <div class="phone">
                     <div class="phone-screen phone-screen--deep">
-                      <div class="phone-statusbar"><span style="color:#fff;">10:12</span><span style="color:#fff;">●●●</span></div>
+                      <div class="phone-statusbar"><span class="status-time">10:12</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                       <div class="screen-body">
                         <div class="woven-field">
                           <div class="constellation-row" style="margin-top:12px;">
