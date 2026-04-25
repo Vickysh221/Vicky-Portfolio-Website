@@ -59,3 +59,19 @@ test('phone statusbar uses three-segment structure with island', () => {
   assert.match(html, /class="status-time">9:41/);
   assert.match(html, /class="status-icons"/);
 });
+
+test('legend uses seven postures instead of six forms', () => {
+  const html = readShowcase();
+  // 旧词不应再出现在 legend 中
+  assert.equal(html.includes('六种AGENT前台形态'), false);
+  // 新词必须出现
+  assert.match(html, /七种 Aha Mode 介入姿态/);
+  // 七种姿态英文名都要出现
+  assert.match(html, /\bTrace\b/);
+  assert.match(html, /\bAmbient\b/);
+  assert.match(html, /\bInline\b/);
+  assert.match(html, /\bMorphing\b/);
+  assert.match(html, /\bEcho\b/);
+  assert.match(html, /\bCo-creation\b/);
+  assert.match(html, /\bAgentic Action\b/);
+});
