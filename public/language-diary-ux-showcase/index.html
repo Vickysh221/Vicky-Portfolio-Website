@@ -39,6 +39,9 @@
       --timing-agent:       #2f9bff;
       --review-agent:       #c8a96e;
       --orchestrator-mark:  #1b1b1f;
+      /* Aha Mode 视觉语言 token */
+      --aha-amber: #c8854a;
+      --aha-amber-soft: rgba(200, 133, 74, 0.16);
     }
 
     * { box-sizing: border-box; }
@@ -1361,6 +1364,97 @@
     .variant-title.is-starred-ux.is-consensus {
       box-shadow: 6px 6px 0 var(--ux-agent), 0 0 18px rgba(47,155,255,0.22);
     }
+
+    /* ============ Aha Mode 视觉语言 ============ */
+
+    .aha-card {
+      border: 1px solid rgba(0,0,0,0.08);
+      border-left: 2px solid var(--aha-amber);
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .aha-card--reverse {
+      background: rgba(0,0,0,0.55);
+      border-color: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+    .aha-card-header {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--aha-amber);
+      font-family: "Black Han Sans", sans-serif;
+    }
+    .aha-card--reverse .aha-card-header {
+      color: rgba(255,255,255,0.92);
+    }
+    .aha-card-body {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .aha-card--reverse .aha-card-body {
+      color: #fff;
+    }
+    .aha-card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .aha-marker-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--aha-amber-soft);
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    .aha-island-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--aha-amber);
+      flex: 0 0 auto;
+    }
+
+    .aha-hint-glow {
+      box-shadow: 0 0 0 2px var(--aha-amber-soft);
+      border-radius: 999px;
+    }
+
+    .rebuttal-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .rebuttal-pill {
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(200, 133, 74, 0.4);
+      color: var(--aha-amber);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      background: transparent;
+      font-family: "Black Han Sans", sans-serif;
+    }
+    .rebuttal-pill:hover {
+      background: var(--aha-amber-soft);
+    }
+    .rebuttal-pill--reverse {
+      color: rgba(255,255,255,0.92);
+      border-color: rgba(255,255,255,0.32);
+    }
   </style>
 </head>
 <body>
@@ -1393,11 +1487,10 @@
     <main>
       <section class="layout-panel is-active" id="layout-new" data-layout-panel="new" role="tabpanel">
         <nav class="section-nav" aria-label="Showcase sections">
-          <a class="section-pill" href="#s00">00 · 读图例</a>
-          <a class="section-pill" href="#scenario-01">01 · 共同阅读</a>
-          <a class="section-pill" href="#scenario-02">02 · 回复引导</a>
-          <a class="section-pill" href="#scenario-03">03 · 关系 / 目标话题</a>
-          <a class="section-pill" href="#scenario-04">04 · 晚点回来</a>
+          <a class="section-pill" href="#s00">00 · 图例</a>
+          <a class="section-pill" href="#mode-handoff">01 · 用户递交型参与</a>
+          <a class="section-pill" href="#mode-context">02 · 情境感知型介入</a>
+          <a class="section-pill" href="#case-evidence">03 · 场景佐证</a>
         </nav>
 
         <div class="portfolio-page">
@@ -1408,12 +1501,12 @@
               <h2 class="legend-title">两种AGENT参与模式</h2>
               <div class="legend-mode-grid">
                 <article class="legend-mode-card legend-mode-card--explicit">
-                  <div class="legend-mode-label"><span>模式 1 ·</span> EXPLICIT ATTENTION</div>
-                  <p class="legend-mode-copy">用户已经主动分享内容、选中文本或邀请 agent 对话。系统可以更直接地进入共读、回复建议或 challenge<br>——当前打扰成本低，用户知道 agent 为什么在这里。</p>
+                  <div class="legend-mode-label"><span>模式 1 ·</span> 用户递交型参与</div>
+                  <p class="legend-mode-copy">用户主动把内容、草稿、问题或意图交给 agent。系统重点不是“发现”，而是接住这次递交：选中文本、分享、点击 agent、请求回复、保存片段或召唤 orchestrator。</p>
                 </article>
                 <article class="legend-mode-card legend-mode-card--shared">
-                  <div class="legend-mode-label"><span>模式 2 ·</span> SHARED ATTENTION</div>
-                  <p class="legend-mode-copy">agent 与用户共享可见范围，但当前阅读和思考流不能被粗暴打断。更适合轻提示、边缘气泡或晚点回来卡片<br>——出现本身也是设计决策。</p>
+                  <div class="legend-mode-label"><span>模式 2 ·</span> 情境感知型介入</div>
+                  <p class="legend-mode-copy">Aha Moment 都是 agent 主动介入的时刻。用户未必显式递交任务，系统要根据 Aha 强度选择通知类型：banner notification、灵动岛式 saved pill、inline 回复、edge bubble、卡片 / 弹窗或晚点回访。</p>
                 </article>
               </div>
             </div>
@@ -1449,7 +1542,7 @@
             </div>
 
             <div class="legend-note">
-              <p>下面 4 个场景都用这套词汇。每个 spread 的星标不再表示「谁觉得 UI 好看」，而是 orchestrator 在当前条件下挑选的主/副前台形态。</p>
+              <p>下面先按两种参与模式列出 UX 证据；四个具体场景只作为最后的 case evidence。每个星标不再表示「谁觉得 UI 好看」，而是 orchestrator 在当前条件下挑选的主/副前台形态。</p>
               <div class="legend-note-flow" aria-label="Orchestrator selection model">
                 <span class="legend-agent-dots">
                   <span class="legend-agent-dot legend-agent-dot--expression"></span>
@@ -1462,26 +1555,57 @@
             </div>
           </section>
 
-          <!-- ═══ SCENARIO 01 · 共同阅读 ═══ -->
-          <section class="scenario-spread portfolio-spread--day-alt" id="scenario-01">
+          <!-- ═══ MODE 01 · 用户递交型参与 ═══ -->
+          <section class="scenario-spread portfolio-spread--day-alt" id="mode-handoff">
             <div class="scenario-rail">
-              <h2 class="scenario-title">01 · 共同阅读</h2>
-              <p class="scenario-subtitle">触发前提：用户正在读一段内容（社交帖、评论区、浏览器文章）。系统判断：这段内容与用户有关、有语言学习价值、值得和用户一起被看见。</p>
-              <p class="scenario-subtitle" style="color:var(--ink);">模式 1 用户主动召唤 agent 一起读，前台可以更直接；模式 2 agent 主动发现，前台要轻，像"我注意到这里"而不是"我来接管阅读"。</p>
+              <h2 class="scenario-title">01 · 用户递交型参与</h2>
+              <p class="scenario-subtitle">用户主动把内容、草稿、问题或意图交给 agent。这个模式的重点不是 agent 如何发现 Aha，而是人如何把消息传达给 agent，以及 agent 如何接住这次递交。</p>
+              <p class="scenario-subtitle" style="color:var(--ink);">递交可以发生在选中文本、点击入口、分享内容、请求回复、保存片段或召唤 orchestrator 的瞬间。下面同一组前台形态都站在“用户已经把注意力交过来”的前提下展开。</p>
+            </div>
+
+            <div class="next-step-band">
+              <strong>用户把消息传给 agent：</strong>
+              <div class="next-step-cta">选中文本</div>
+              <div class="next-step-cta">点击 agent 入口</div>
+              <div class="next-step-cta">请求回复</div>
+              <div class="next-step-cta">保存片段</div>
+              <div class="next-step-cta">Orchestrator 派单</div>
             </div>
 
             <div class="mode-stage">
-              <!-- Mode 1 -->
               <div class="mode-column mode-column--explicit">
-                <div class="mode-column-label">模式 1 · Explicit Attention</div>
+                <div class="mode-column-label">递交后即时接住</div>
                 <div class="phone-row">
+
+                  <div class="phone-variant">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-timing" title="Timing"></div>
+                    </div>
+                    <div class="variant-title">V1.1 Ambient handoff nudge</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--day-alt">
+                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="feed-card">
+                            <div class="feed-head"><div class="avatar"></div><div style="font-size:11px;color:var(--ink-muted);">Xiaohongshu</div></div>
+                            <div>I want my work to feel inevitable, not loud.</div>
+                          </div>
+                          <div class="agent-floater" style="margin-top:8px;">
+                            <div class="agent-floater-head"><span class="agent-floater-pill">Mimo</span><span>ready to help</span></div>
+                            <div style="font-size:11px;line-height:1.5;">You selected this line. Want me to read it with you?</div>
+                          </div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="phone-variant is-orch-primary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-expression" title="Expression"></div>
                       <div class="vote-dot vd-relationship" title="Relationship"></div>
                     </div>
-                    <div class="variant-title">V1.1 共读锚点 <span class="star-badge">★</span></div>
+                    <div class="variant-title">V1.2 Co-reading anchor <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--day-alt">
                         <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
@@ -1505,135 +1629,12 @@
                     </div>
                   </div>
 
-                  <div class="phone-variant is-orch-secondary">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-timing" title="Timing"></div>
-                    </div>
-                    <div class="variant-title">V1.2 Target language challenge <span class="star-badge">★</span></div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card">
-                            <div>I want my work to feel inevitable, not loud.</div>
-                          </div>
-                          <div class="agent-banner">Want to try reading this line in your target language? ↗<br><span style="font-size:10px;color:var(--ink-muted);">gives you a moment to make it yours</span></div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- Mode 2 -->
-              <div class="mode-column mode-column--shared">
-                <div class="mode-column-label">模式 2 · Shared Attention</div>
-                <div class="phone-row">
-
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-timing" title="Timing"></div>
-                    </div>
-                    <div class="variant-title">V2.1 Ambient nudge</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card">
-                            <div>I want my work to feel inevitable, not loud.</div>
-                          </div>
-                          <div class="os-banner">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;">✦ Mimo</div>
-                            <div style="font-size:10px;margin-top:2px;">something here worth noticing</div>
-                          </div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="phone-variant is-orch-primary">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-review" title="Review"></div>
-                    </div>
-                    <div class="variant-title">V2.2 Deferred return card <span class="star-badge">★</span></div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card">
-                            <div>I want my work to feel inevitable, not loud.</div>
-                          </div>
-                          <div class="screen-card">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;">Holding this for tonight.</div>
-                            <div class="screen-note">Quietly held — no interruption now.</div>
-                          </div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-relationship" title="Relationship"></div>
-                    </div>
-                    <div class="variant-title">V2.3 Co-reading anchor（轻版）</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card">
-                            <div>I want my work to feel inevitable, not loud.</div>
-                          </div>
-                          <div class="halo-card">I noticed this line — worth a second look when you have a moment. ↗</div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="next-step-band">
-              <strong>低成本下一步：</strong>
-              <div class="next-step-cta">试一版 target language</div>
-              <div class="next-step-cta">保存到今晚复盘</div>
-            </div>
-            <div class="sediment-chip-row">
-              <div class="sediment-chip">共读片段</div>
-              <div class="sediment-chip">可复用表达卡</div>
-              <div class="sediment-chip">晚间复盘候选</div>
-              <div class="sediment-chip">Aha candidate</div>
-            </div>
-            <div class="vote-note">
-              <em>Expression + Relationship</em> 推 V1.1：用户已召唤 agent，co-reading anchor 是关系感最强的入口。<em>Timing</em> 推 V2.2：当前注意力未给出，选 deferred。Orchestrator 在<strong>注意力拥有权</strong>和<strong>行动紧迫度</strong>两个维度分别判断 → 模式 1 主★ = V1.1，副✩ = V1.2；模式 2 主★ = V2.2。
-            </div>
-          </section>
-
-          <!-- ═══ SCENARIO 02 · 回复引导 ═══ -->
-          <section class="scenario-spread portfolio-spread--surface" id="scenario-02">
-            <div class="scenario-rail">
-              <h2 class="scenario-title">02 · 回复引导</h2>
-              <p class="scenario-subtitle">触发前提：用户看到内容后，不只是想理解它，而是想回应它。评论区、聊天、社交媒体互动——用户想用目标语言回应，但卡在怎么说。</p>
-              <p class="scenario-subtitle" style="color:var(--ink);">模式 1 用户明确把内容交给 agent，请求帮忙回复。模式 2 agent 在共视场景里发现用户犹豫，更像"你可以试试这种方式回"。</p>
-            </div>
-
-            <div class="mode-stage">
-              <div class="mode-column mode-column--explicit">
-                <div class="mode-column-label">模式 1 · Explicit Attention</div>
-                <div class="phone-row">
-
                   <div class="phone-variant is-orch-primary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-expression" title="Expression"></div>
                       <div class="vote-dot vd-relationship" title="Relationship"></div>
                     </div>
-                    <div class="variant-title">V1.1 Reply candidates <span class="star-badge">★</span></div>
+                    <div class="variant-title">V1.3 Reply suggestion <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--surface">
                         <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
@@ -1650,46 +1651,26 @@
                     </div>
                   </div>
 
+                </div>
+              </div>
+
+              <div class="mode-column mode-column--explicit">
+                <div class="mode-column-label">递交后选择前台形态</div>
+                <div class="phone-row">
+
                   <div class="phone-variant is-orch-secondary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-timing" title="Timing"></div>
                     </div>
-                    <div class="variant-title">V1.2 Tone switch <span class="star-badge">★</span></div>
+                    <div class="variant-title">V1.4 Target language challenge <span class="star-badge">★</span></div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="bubble bubble--user">Fair point. I'd want to explore one thing first.</div>
-                          <div class="peek-card peek-card--inline">
-                            <div style="font-size:10px;color:var(--ink-muted);margin-bottom:4px;">adjust tone</div>
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;">More natural · More polite · Sounds like you</div>
-                          </div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="mode-column mode-column--shared">
-                <div class="mode-column-label">模式 2 · Shared Attention</div>
-                <div class="phone-row">
-
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-expression" title="Expression"></div>
-                    </div>
-                    <div class="variant-title">V2.1 TL challenge nudge</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
+                      <div class="phone-screen phone-screen--day-alt">
+                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
                         <div class="screen-body">
                           <div class="feed-card">
-                            <div>Fair point. I'd want to explore one thing first.</div>
+                            <div>I want my work to feel inevitable, not loud.</div>
                           </div>
-                          <div class="agent-banner">You could try saying this one in your target language first. ↗<br><span style="font-size:10px;color:var(--ink-muted);">Mimo can refine after</span></div>
+                          <div class="agent-banner">Want to try reading this line in your target language? ↗<br><span style="font-size:10px;color:var(--ink-muted);">gives you a moment to make it yours</span></div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
@@ -1699,63 +1680,9 @@
                   <div class="phone-variant is-orch-primary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-relationship" title="Relationship"></div>
-                      <div class="vote-dot vd-timing" title="Timing"></div>
-                      <div class="vote-dot vd-review" title="Review"></div>
-                    </div>
-                    <div class="variant-title">V2.2 Co-reading first <span class="star-badge">★</span></div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card">
-                            <div>Fair point. I'd want to explore one thing first.</div>
-                          </div>
-                          <div class="halo-card">Read the tone of this line together before deciding how to reply. ↗</div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="next-step-band">
-              <strong>低成本下一步：</strong>
-              <div class="next-step-cta">先自己说一版</div>
-              <div class="next-step-cta">用推荐语气发送</div>
-            </div>
-            <div class="sediment-chip-row">
-              <div class="sediment-chip">已发回复</div>
-              <div class="sediment-chip">目标语言版本</div>
-              <div class="sediment-chip">高频回复结构</div>
-              <div class="sediment-chip">Later review 候选</div>
-            </div>
-            <div class="vote-note">
-              <em>Expression + Relationship</em> 推 V1.1：用户已准备好行动，直接给候选。<em>Timing</em> 推 V1.2 作副选：语气调节成本更低。模式 2 中 <em>Relationship + Timing + Review</em> 三方推 V2.2。Orchestrator 优先看<strong>注意力拥有权</strong>和<strong>语言负荷</strong>→ 模式 1 主★ = V1.1，副✩ = V1.2；模式 2 主★ = V2.2。
-            </div>
-          </section>
-
-          <!-- ═══ SCENARIO 03 · 关系/目标话题 ═══ -->
-          <section class="scenario-spread portfolio-spread--night" id="scenario-03">
-            <div class="scenario-rail">
-              <h2 class="scenario-title">03 · 关系 / 目标话题</h2>
-              <p class="scenario-subtitle">触发前提：当前内容本身不一定是最明显的语点，但它与用户的目标、关系线索、项目或长期关注话题发生了强连接。例如用户最近在准备 Agent OS 面试，或在打磨某个作品集说法。</p>
-              <p class="scenario-subtitle" style="color:var(--ink);">模式 1 用户明确邀请，agent 可以清晰说"这和你最近的 X 有关"。模式 2 agent 主动发现，应该像"轻轻把你本来就在走的线重新提到前台"。</p>
-            </div>
-
-            <div class="mode-stage">
-              <div class="mode-column mode-column--explicit">
-                <div class="mode-column-label">模式 1 · Explicit Attention</div>
-                <div class="phone-row">
-
-                  <div class="phone-variant is-orch-primary">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-relationship" title="Relationship"></div>
                       <div class="vote-dot vd-expression" title="Expression"></div>
                     </div>
-                    <div class="variant-title">V1.1 Relation-topic invitation <span class="star-badge">★</span></div>
+                    <div class="variant-title">V1.5 Relation-topic invitation <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--night">
                         <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
@@ -1772,114 +1699,12 @@
                     </div>
                   </div>
 
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-timing" title="Timing"></div>
-                    </div>
-                    <div class="variant-title">V1.2 Co-reading on relation</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--night">
-                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card" style="background:#f4f0f8;">
-                            <div>Proactive systems don't wait for instruction — they anticipate.</div>
-                          </div>
-                          <div class="halo-card" style="background:rgba(155,125,212,0.12);">same thread as what you mentioned before ↗</div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="mode-column mode-column--shared">
-                <div class="mode-column-label">模式 2 · Shared Attention</div>
-                <div class="phone-row">
-
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-timing" title="Timing"></div>
-                    </div>
-                    <div class="variant-title">V2.1 Edge bubble</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--night">
-                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="feed-card" style="background:#f4f0f8;">
-                            <div>Proactive systems don't wait for instruction — they anticipate.</div>
-                          </div>
-                          <div class="peek-card peek-card--popover" style="font-size:11px;">← related to the framing you've been working on</div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="phone-variant is-orch-primary">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-review" title="Review"></div>
-                      <div class="vote-dot vd-relationship" title="Relationship"></div>
-                    </div>
-                    <div class="variant-title">V2.2 Deferred relation card <span class="star-badge">★</span></div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--night">
-                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
-                        <div class="screen-body">
-                          <div class="screen-card">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;">Tonight:</div>
-                            <div class="screen-note">Turn this into the interview line you've been looking for.</div>
-                          </div>
-                          <div class="letter-card" style="margin-top:8px;font-size:11px;">
-                            <div>Proactive systems don't wait — they anticipate.</div>
-                            <div class="tag-row" style="margin-top:6px;"><div class="tag tag--night">saved for tonight</div></div>
-                          </div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="next-step-band">
-              <strong>低成本下一步：</strong>
-              <div class="next-step-cta">基于这个话题说一句</div>
-              <div class="next-step-cta">保存到今晚深入聊</div>
-            </div>
-            <div class="sediment-chip-row">
-              <div class="sediment-chip">目标绑定的表达卡</div>
-              <div class="sediment-chip">面试说法</div>
-              <div class="sediment-chip">作品集概念句</div>
-              <div class="sediment-chip">晚间深入讨论入口</div>
-            </div>
-            <div class="vote-note">
-              <em>Relationship + Expression</em> 推 V1.1：模式 1 中关系深度判断最优，直接 relation-topic。<em>Review + Relationship</em> 推 V2.2：模式 2 中当前阅读流不能打断，先 defer。Orchestrator 在<strong>关系深度</strong>和<strong>记忆命中置信度</strong>两个维度判断 → 模式 1 主★ = V1.1；模式 2 主★ = V2.2。
-            </div>
-          </section>
-
-          <!-- ═══ SCENARIO 04 · 晚点回来 ═══ -->
-          <section class="scenario-spread portfolio-spread--deep" id="scenario-04">
-            <div class="scenario-rail">
-              <h2 class="scenario-title">04 · 晚点回来</h2>
-              <p class="scenario-subtitle">触发前提：系统已经发现某个 Aha 候选，但当下不适合打断，或用户当时没有展开。之后在晚间复盘、第二天回顾或类似场景再次出现时，它重新回来。</p>
-              <p class="scenario-subtitle" style="color:var(--ink);">模式 1 用户主动保存过，复盘时有记忆感，前台可以直接"saved and returned"。模式 2 agent 当时主动发现但选择不打断，复盘时需要先补足合法性："我当时觉得这句和你有关，所以先替你留住了。"</p>
-            </div>
-
-            <div class="mode-stage">
-              <div class="mode-column mode-column--explicit">
-                <div class="mode-column-label">模式 1 · Explicit Attention</div>
-                <div class="phone-row">
-
                   <div class="phone-variant is-orch-primary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-expression" title="Expression"></div>
                       <div class="vote-dot vd-review" title="Review"></div>
                     </div>
-                    <div class="variant-title">V1.1 Saved-and-returned <span class="star-badge">★</span></div>
+                    <div class="variant-title">V1.6 Deferred return card <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--deep">
                         <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
@@ -1898,23 +1723,106 @@
                     </div>
                   </div>
 
+                </div>
+              </div>
+            </div>
+
+            <div class="next-step-band">
+              <strong>递交后的下一步：</strong>
+              <div class="next-step-cta">试一版 target language</div>
+              <div class="next-step-cta">生成回复候选</div>
+              <div class="next-step-cta">保存到晚点回来</div>
+            </div>
+            <div class="sediment-chip-row">
+              <div class="sediment-chip">用户明确递交</div>
+              <div class="sediment-chip">可复用表达卡</div>
+              <div class="sediment-chip">可行动回复</div>
+              <div class="sediment-chip">可回访片段</div>
+            </div>
+            <div class="vote-note">
+              用户递交型参与的核心判断是<strong>用户已经把上下文交给 agent</strong>。Orchestrator 不需要先证明自己为什么在场，而是要判断递交对象更适合共读、回复、练习、关系连接，还是保存后回访。
+            </div>
+          </section>
+
+          <!-- ═══ MODE 02 · 情境感知型介入 ═══ -->
+          <section class="scenario-spread portfolio-spread--surface" id="mode-context">
+            <div class="scenario-rail">
+              <h2 class="scenario-title">02 · 情境感知型介入</h2>
+              <p class="scenario-subtitle">Aha Moment 都是 agent 主动介入的时刻。用户没有显式递交任务，但系统在授权上下文中识别出 Aha 候选，并根据 Aha 强度选择通知类型和出现层级。</p>
+              <p class="scenario-subtitle" style="color:var(--ink);">这里不预设“低打扰”。banner notification、灵动岛式 saved pill、inline 回复、edge bubble、卡片、弹窗、保存状态或晚点回访都可以成立，关键是介入强度和通知类型要被判断。</p>
+            </div>
+
+            <div class="next-step-band">
+              <strong>Aha 强度 → 通知类型：</strong>
+              <div class="next-step-cta">Banner notification</div>
+              <div class="next-step-cta">灵动岛 / saved pill</div>
+              <div class="next-step-cta">Inline 回复</div>
+              <div class="next-step-cta">Edge bubble</div>
+              <div class="next-step-cta">Return card / 弹窗</div>
+            </div>
+
+            <div class="mode-stage">
+              <div class="mode-column mode-column--shared">
+                <div class="mode-column-label">系统级通知 / inline 介入</div>
+                <div class="phone-row">
+
                   <div class="phone-variant">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-timing" title="Timing"></div>
                     </div>
-                    <div class="variant-title">V1.2 Compare-then-now</div>
+                    <div class="variant-title">V2.1 AHA banner notification</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--deep">
-                        <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
+                      <div class="phone-screen phone-screen--day-alt">
+                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
                         <div class="screen-body">
-                          <div class="event-group" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff;">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:10px;opacity:0.5;margin-bottom:4px;">original line</div>
-                            <div style="font-size:11px;">inevitable, not loud</div>
+                          <div class="feed-card">
+                            <div>I want my work to feel inevitable, not loud.</div>
                           </div>
-                          <div class="event-group" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);color:#fff;margin-top:10px;">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:10px;opacity:0.5;margin-bottom:4px;">your version now</div>
-                            <div style="font-size:11px;opacity:0.5;font-style:italic;">—</div>
+                          <div class="os-banner" style="background:var(--coral);color:#fff;">
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;color:#fff;">AHA · banner notification</div>
+                            <div style="font-size:10px;margin-top:2px;color:#fff;">this line may be worth keeping</div>
                           </div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-relationship" title="Relationship"></div>
+                    </div>
+                    <div class="variant-title">V2.2 AHA island save notification</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--day-alt">
+                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="tag-row" style="justify-content:center;margin-bottom:8px;">
+                            <div class="tag tag--coral">AHA · saved for tonight</div>
+                          </div>
+                          <div class="feed-card">
+                            <div>I want my work to feel inevitable, not loud.</div>
+                          </div>
+                          <div class="screen-note" style="margin-top:8px;">weak system notification only — no return card yet.</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-expression" title="Expression"></div>
+                    </div>
+                    <div class="variant-title">V2.3 AHA inline reply</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--surface">
+                        <div class="phone-statusbar"><span>3:22</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="feed-card">
+                            <div>Fair point. I'd want to explore one thing first.</div>
+                          </div>
+                          <div class="agent-banner"><strong>AHA · inline reply</strong><br>Try a softer response before sending:<br><span style="color:var(--ink-muted);">Fair point. I'd want to explore one thing first.</span></div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
@@ -1925,21 +1833,64 @@
               </div>
 
               <div class="mode-column mode-column--shared">
-                <div class="mode-column-label">模式 2 · Shared Attention</div>
+                <div class="mode-column-label">边缘通知 / 回访介入</div>
                 <div class="phone-row">
+
+                  <div class="phone-variant">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-relationship" title="Relationship"></div>
+                      <div class="vote-dot vd-timing" title="Timing"></div>
+                    </div>
+                    <div class="variant-title">V2.4 AHA edge bubble notification</div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--night">
+                        <div class="phone-statusbar"><span>8:15</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="feed-card" style="background:#f4f0f8;">
+                            <div>Proactive systems don't wait for instruction — they anticipate.</div>
+                          </div>
+                          <div class="peek-card peek-card--popover" style="font-size:11px;"><strong>AHA · edge bubble</strong><br>← related to the framing you've been working on</div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="phone-variant is-orch-primary">
+                    <div class="vote-cluster">
+                      <div class="vote-dot vd-review" title="Review"></div>
+                    </div>
+                    <div class="variant-title">V2.5 AHA inline challenge notification <span class="star-badge">★</span></div>
+                    <div class="phone">
+                      <div class="phone-screen phone-screen--day-alt">
+                        <div class="phone-statusbar"><span>12:08</span><span>●●●</span></div>
+                        <div class="screen-body">
+                          <div class="feed-card">
+                            <div>I want my work to feel inevitable, not loud.</div>
+                          </div>
+                          <div class="screen-card">
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:11px;">AHA · inline challenge</div>
+                            <div class="screen-note">Try saying this line in your target language when you return.</div>
+                          </div>
+                        </div>
+                        <div class="phone-home"></div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="phone-variant is-orch-primary">
                     <div class="vote-cluster">
                       <div class="vote-dot vd-relationship" title="Relationship"></div>
                       <div class="vote-dot vd-review" title="Review"></div>
                     </div>
-                    <div class="variant-title">V2.1 Legitimacy preface + return <span class="star-badge">★</span></div>
+                    <div class="variant-title">V2.6 AHA return card / modal preface <span class="star-badge">★</span></div>
                     <div class="phone">
                       <div class="phone-screen phone-screen--deep">
                         <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
                         <div class="screen-body">
                           <div class="quiet-room">
-                            <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff;">I held this because it felt relevant.</div>
+                            <div style="font-family:'Black Han Sans',sans-serif;font-size:13px;color:#fff;">AHA return card</div>
+                            <div style="font-size:11px;line-height:1.45;color:#fff;">I held this because it felt relevant.</div>
                             <div class="screen-note screen-note--night" style="margin-top:8px;">Want to bring it back?</div>
                             <div class="response-actions" style="margin-top:10px;">
                               <div class="tiny-pill" style="color:#fff;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);">yes, let's</div>
@@ -1952,55 +1903,54 @@
                     </div>
                   </div>
 
-                  <div class="phone-variant">
-                    <div class="vote-cluster">
-                      <div class="vote-dot vd-expression" title="Expression"></div>
-                    </div>
-                    <div class="variant-title">V2.2 Relation re-link</div>
-                    <div class="phone">
-                      <div class="phone-screen phone-screen--deep">
-                        <div class="phone-statusbar" style="color:#fff;"><span style="color:#fff;">10:05</span><span style="color:#fff;">●●●</span></div>
-                        <div class="screen-body">
-                          <div class="woven-field">
-                            <div class="constellation-row" style="margin-top:12px;">
-                              <div class="constellation-node"></div>
-                              <div class="constellation-node"></div>
-                            </div>
-                            <div class="constellation-row" style="margin-top:46px;">
-                              <div class="constellation-node"></div>
-                              <div class="constellation-node"></div>
-                              <div class="constellation-node"></div>
-                            </div>
-                          </div>
-                          <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:8px;text-align:center;">saved fragment → today's new thread</div>
-                        </div>
-                        <div class="phone-home"></div>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>
 
-            <div class="next-step-band">
-              <strong>低成本下一步：</strong>
-              <div class="next-step-cta">现在试说一版</div>
-              <div class="next-step-cta">带到今晚的 review</div>
-            </div>
             <div class="sediment-chip-row">
-              <div class="sediment-chip">强化后的学习记忆</div>
-              <div class="sediment-chip">可复现表达</div>
-              <div class="sediment-chip">Review completion</div>
-              <div class="sediment-chip">长期语言资产</div>
+              <div class="sediment-chip">Aha 强度判断</div>
+              <div class="sediment-chip">上下文合法性</div>
+              <div class="sediment-chip">通知类型</div>
+              <div class="sediment-chip">保存 / 回访状态</div>
             </div>
             <div class="vote-note">
-              <em>Expression + Review</em> 推 V1.1：任务连续性已建立（用户主动保存过），返回成本低。<em>Relationship + Review</em> 推 V2.1：agent 需要先解释合法性才能触发。Orchestrator 在<strong>任务连续性</strong>和<strong>记忆命中置信度</strong>两个维度判断 → 模式 1 主★ = V1.1；模式 2 主★ = V2.1（需先过合法性门禁）。
+              情境感知型介入不是低打扰的同义词。Orchestrator 要判断<strong>Aha 强度</strong>、<strong>关系深度</strong>、<strong>记忆命中置信度</strong>和<strong>当前任务连续性</strong>，再决定它属于 banner notification、灵动岛式 saved pill、inline 回复、edge bubble，还是更强的 return card / 弹窗。
+            </div>
+          </section>
+
+          <!-- ═══ CASE EVIDENCE · 场景佐证 ═══ -->
+          <section class="scenario-spread portfolio-spread--night" id="case-evidence">
+            <div class="scenario-rail">
+              <h2 class="scenario-title">03 · 场景佐证</h2>
+              <p class="scenario-subtitle">四个场景不再是主分类，而是用来证明：同一组 AGENT 前台形态，会根据“用户是否递交”和“Aha 强度”被不同地调用。</p>
+            </div>
+
+            <div class="legend-card-stage">
+              <article class="legend-agent-card">
+                <div class="legend-agent-card-title">共同阅读</div>
+                <p class="legend-agent-card-copy">用户递交时是 Read with Mimo / co-reading anchor；情境感知时可以从 banner、inline 回复或 edge bubble 升级到共读锚点。</p>
+              </article>
+              <article class="legend-agent-card">
+                <div class="legend-agent-card-title">回复引导</div>
+                <p class="legend-agent-card-copy">用户明确请求时直接给 reply candidates；agent 主动介入时要先判断语气负荷、关系风险和行动紧迫度。</p>
+              </article>
+              <article class="legend-agent-card">
+                <div class="legend-agent-card-title">关系 / 目标话题</div>
+                <p class="legend-agent-card-copy">用户递交时可以直接接上目标；情境感知时需要更高记忆命中置信度，才能从边缘提示升级为关系话题卡。</p>
+              </article>
+              <article class="legend-agent-card">
+                <div class="legend-agent-card-title">晚点回来</div>
+                <p class="legend-agent-card-copy">当下 Aha 强度不足或场景不适合时先保存状态；复盘或强相关时再升级成完整 return card。</p>
+              </article>
+            </div>
+
+            <div class="vote-note">
+              这意味着 UX showcase 的主叙事不再是“哪个场景选哪个 UI”，而是“同一个 agent 如何在两种参与关系下，为六种前台形态选择不同强度的出现方式”。
             </div>
           </section>
 
           <!-- ═══ S01 ═══ -->
-          <section class="portfolio-spread portfolio-spread--day" id="s01">
+          <section class="portfolio-spread portfolio-spread--day" id="s01" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">01</div>
               <h2 class="spread-title">白天捕获 · 主聊天 Agent</h2>
@@ -2100,7 +2050,7 @@
           </section>
 
           <!-- ═══ S02 ═══ -->
-          <section class="portfolio-spread portfolio-spread--day-alt" id="s02">
+          <section class="portfolio-spread portfolio-spread--day-alt" id="s02" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">02</div>
               <h2 class="spread-title">用户主动触发 · 分享给AGENT</h2>
@@ -2247,7 +2197,7 @@
           </section>
 
           <!-- ═══ S03 ═══ -->
-          <section class="portfolio-spread portfolio-spread--surface" id="s03">
+          <section class="portfolio-spread portfolio-spread--surface" id="s03" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">03</div>
               <h2 class="spread-title">AGENT主动识别可分享的观点</h2>
@@ -2355,7 +2305,7 @@
           </section>
 
           <!-- ═══ S04 ═══ -->
-          <section class="portfolio-spread portfolio-spread--aha" id="s04">
+          <section class="portfolio-spread portfolio-spread--aha" id="s04" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">04</div>
               <h2 class="spread-title">Aha Moment</h2>
@@ -2548,7 +2498,7 @@
           </section>
 
           <!-- ═══ S05 ═══ -->
-          <section class="portfolio-spread portfolio-spread--surface" id="s05">
+          <section class="portfolio-spread portfolio-spread--surface" id="s05" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">05</div>
               <h2 class="spread-title">Candidate Peek</h2>
@@ -2646,7 +2596,7 @@
           </section>
 
           <!-- ═══ S06 ═══ -->
-          <section class="portfolio-spread portfolio-spread--transition" id="s06">
+          <section class="portfolio-spread portfolio-spread--transition" id="s06" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">06</div>
               <h2 class="spread-title">Day → Night 过渡</h2>
@@ -2738,7 +2688,7 @@
           </section>
 
           <!-- ═══ S07 ═══ -->
-          <section class="portfolio-spread portfolio-spread--night" id="s07">
+          <section class="portfolio-spread portfolio-spread--night" id="s07" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">07</div>
               <h2 class="spread-title">夜间叙事 · Night Narrative</h2>
@@ -2837,7 +2787,7 @@
           </section>
 
           <!-- ═══ S08 ═══ -->
-          <section class="portfolio-spread portfolio-spread--deep" id="s08">
+          <section class="portfolio-spread portfolio-spread--deep" id="s08" hidden aria-hidden="true" style="display:none;">
             <aside class="spread-rail">
               <div class="spread-step">08</div>
               <h2 class="spread-title">知识梳理 · Knowledge Constellation</h2>
