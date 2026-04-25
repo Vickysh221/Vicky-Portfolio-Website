@@ -136,6 +136,30 @@ test('ambient storyboard uses dynamic island compact and expanded', () => {
   assert.match(block, /class="aha-island-dot"/);
 });
 
+test('co-creation storyboard invites user to shape lens together', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-cocreation">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /storyboard-frame-label">A · 邀请/);
+  assert.match(block, /storyboard-frame-label">B · 选 lens/);
+  assert.match(block, /storyboard-frame-label">C · 写回/);
+  assert.match(block, /Want to shape it together/);
+  assert.match(block, /更产品化/);
+  assert.match(block, /更面试化/);
+  assert.match(block, /更诗性/);
+  assert.match(block, /lens preference learned/);
+});
+
+test('agentic storyboard branches into micro-session', () => {
+  const html = readShowcase();
+  const block = html.match(/<article class="posture-block" id="posture-agentic">[\s\S]*?<\/article>/)![0];
+  assert.match(block, /storyboard-frame-label">A · 高置信触发/);
+  assert.match(block, /storyboard-frame-label">B · 微会话/);
+  assert.match(block, /storyboard-frame-label">C · 收尾/);
+  assert.match(block, /class="micro-session-frame"/);
+  assert.match(block, /class="micro-session-step"/);
+  assert.match(block, /run a 3-step prep/);
+});
+
 test('trace storyboard has three frames with marker dot', () => {
   const html = readShowcase();
   const traceBlock = html.match(/<article class="posture-block" id="posture-trace">[\s\S]*?<\/article>/);
