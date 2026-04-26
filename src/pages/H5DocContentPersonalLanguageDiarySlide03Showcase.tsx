@@ -18,7 +18,7 @@ function embedFrameStyle(): CSSProperties {
 }
 
 function ShowcaseEmbedPanel({ accentColor }: { accentColor: string }) {
-  const src = '/language-diary-ux-showcase/index.html';
+  const src = '/language-diary-ux-showcase/posture-modes.html';
 
   return (
     <div style={{ ...noteCardStyle(), marginTop: 16, padding: 12, background: 'rgba(0,0,0,0.28)' }}>

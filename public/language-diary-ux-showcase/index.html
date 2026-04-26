@@ -1699,6 +1699,129 @@
     }
     .micro-session-step--done { background: rgba(255,255,255,0.85); }
     .micro-session-step--active { background: rgba(255,255,255,0.45); }
+
+    /* ── Voice input bar ── */
+    .voice-input-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.95);
+      border-top: 1px solid rgba(0,0,0,0.07);
+      border-radius: 0 0 0 0;
+      flex-shrink: 0;
+    }
+    .voice-wave-group {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 22px;
+    }
+    .voice-wave-bar {
+      width: 2.5px;
+      border-radius: 2px;
+      background: var(--aha-amber);
+    }
+    .voice-mic-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--aha-amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+
+    /* ── Co-creation bottom sheet ── */
+    .co-creation-sheet {
+      background: #fff;
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -3px 16px rgba(0,0,0,0.10);
+      padding: 8px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .co-creation-sheet-handle {
+      width: 28px;
+      height: 3.5px;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.13);
+      margin: 0 auto 8px;
+    }
+    .co-creation-sheet-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .co-creation-lens-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 2px;
+      border-bottom: 1px solid rgba(0,0,0,0.055);
+      font-size: 10.5px;
+      color: var(--ink);
+      font-family: 'Montserrat', sans-serif;
+    }
+    .co-creation-lens-row:last-of-type { border-bottom: none; }
+    .co-creation-lens-check {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(0,0,0,0.22);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+    .co-creation-lens-check--on {
+      background: var(--aha-amber);
+      border-color: var(--aha-amber);
+      color: #fff;
+    }
+    .co-creation-apply-btn {
+      background: #111;
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    /* ── Agentic workspace back bar ── */
+    .app-back-bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px 4px;
+      font-size: 9.5px;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .workspace-label {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
+      padding: 4px 12px 2px;
+      flex-shrink: 0;
+    }
+
     .micro-session-step-label {
       font-size: 10px;
       letter-spacing: 0.10em;
@@ -2106,14 +2229,14 @@
           <section class="scenario-spread portfolio-spread--surface" id="mode-context">
             <div class="scenario-rail">
               <h2 class="scenario-title">02 · 情境感知型介入 / Agent Aha Mode</h2>
-              <p class="scenario-subtitle">Aha Moment 都是 agent 主动介入的时刻 —— 包括用户停顿、卡住、正在表达时。这一节按七种介入姿态展开，每种用一个 storyboard 把场景从捕捉到写回演完。Phone 帧严格按真 iPhone chrome（灵动岛 / banner 贴顶 / inline 挂键盘或气泡）绘制。</p>
+              <p class="scenario-subtitle">七种 Agent Aha Mode 姿态，不是功能分类 —— 是 agent 在不同关系席位上介入用户当下的方式。从 Trace 留痕到 Agentic Action 代理行动，每种用一个 storyboard 把场景从捕捉到写回演完。Phone 帧严格还原：语音输入层、inline 改造表面、底部共创工作台、可返回的微行动 workspace。agent 在任何姿态下都不替用户做决定。</p>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:18px;">
 
               <article class="posture-block" id="posture-trace">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>① Trace 留痕</strong><span>·</span><span>G0–G1</span><span>·</span><span>有价值但不急，先不打断</span></div>
+                  <div class="posture-meta"><strong>① Trace 留痕</strong><span>·</span><span>G0–G1</span><span>·</span><span>记忆在内容里的低可见痕迹 · 不是保存卡 · 是未来可回访的权重</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
@@ -2128,16 +2251,13 @@
                               <span style="font-size:9px;color:#c0c0c6;letter-spacing:0.03em;">@英语写作笔记</span>
                             </div>
                             <div style="font-size:10.5px;line-height:1.5;color:var(--ink-soft);margin-top:3px;">在设计一门语言，你想让它有重量，又不想让它变成噪音。</div>
-                            <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
-                              <span style="font-size:11px;line-height:1.5;color:var(--ink);flex:1;">I want my work to feel inevitable, not loud.</span>
-                              <span class="aha-marker-dot" style="flex-shrink:0;"></span>
-                            </div>
+                            <div style="font-size:11px;line-height:1.75;color:var(--ink);margin-top:2px;">I want my work to feel <mark style="background:rgba(200,133,74,0.3);color:var(--ink);border-radius:3px;padding:0 2px 1px;">inevitable, not loud</mark>.</div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">灵动岛 idle · 无系统级提示 · 句末极轻 marker</div>
+                    <div class="storyboard-frame-state">无 popup · 无 marker dot · 关键短语被 agent 静默标色 · 阅读流不中断</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2186,13 +2306,13 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>用户保留 → 提升该表达类型的 future recall 权重；忽略 → 降低类似轻量阅读片段的主动回访频率。
+                  <strong>写回结果：</strong>保留 → 该短语权重上升，未来相似语境下更早浮现；忽略 → 权重不变，随时间自然衰减；dismiss → 从可回访候选中移除。痕迹不需要用户主动管理 —— agent 通过后续行为验证权重，不做单次打扰。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-ambient">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>② Ambient 呼吸</strong><span>·</span><span>G1–G2</span><span>·</span><span>用户连续阅读，让 agent 被看见但不打断</span></div>
+                  <div class="posture-meta"><strong>② Ambient 呼吸</strong><span>·</span><span>G1–G2</span><span>·</span><span>界面环境轻微状态变化 · agent 作为系统场而非消息</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
@@ -2274,30 +2394,36 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>展开 → 系统记录该主题连接有用；连续忽略 → 降低 Ambient 强度。
+                  <strong>写回结果：</strong>展开互动 → 系统标记该主题关联有效，场信号置信度上升；持续忽略 → 自动降低该主题的介入频率；no more like this → 从场信号候选中排除。agent 不以消息形式要求确认，呼吸姿态的写回发生在环境层而非通知层。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-inline">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>③ Inline 镶嵌</strong><span>·</span><span>G2–G3</span><span>·</span><span>用户写、回、改、卡住，顺手推进一步</span></div>
+                  <div class="posture-meta"><strong>③ Inline 镶嵌</strong><span>·</span><span>G2–G3</span><span>·</span><span>输入/阅读/表达表面被 agent 临时改造为生成层</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
-                    <div class="storyboard-frame-label">A · 卡住</div>
+                    <div class="storyboard-frame-label">A · 语音输入</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--surface">
+                      <div class="phone-screen phone-screen--surface" style="display:flex;flex-direction:column;">
                         <div class="phone-statusbar"><span class="status-time">15:42</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.05em;">Slack · #design-review</div>
-                          <div class="bubble bubble--user" style="text-align:right;">I'd want to push back on this...<span style="opacity:0.4;">|</span></div>
+                          <div class="bubble bubble--user" style="text-align:right;">I'd want to push back on this...<span style="color:var(--aha-amber);opacity:0.7;">|</span></div>
                           <div style="flex:1;"></div>
-                          <div style="height:80px;background:rgba(0,0,0,0.04);border-top:1px solid rgba(0,0,0,0.06);border-radius:0;font-size:10px;color:var(--ink-soft);text-align:center;padding-top:30px;">keyboard</div>
+                        </div>
+                        <div class="voice-input-bar">
+                          <div style="font-size:9px;color:var(--aha-amber);font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:0.04em;flex-shrink:0;">speaking…</div>
+                          <div class="voice-wave-group">
+                            <div class="voice-wave-bar" style="height:5px;"></div><div class="voice-wave-bar" style="height:13px;"></div><div class="voice-wave-bar" style="height:19px;"></div><div class="voice-wave-bar" style="height:9px;"></div><div class="voice-wave-bar" style="height:15px;"></div><div class="voice-wave-bar" style="height:7px;"></div><div class="voice-wave-bar" style="height:17px;"></div><div class="voice-wave-bar" style="height:11px;opacity:0.75;"></div><div class="voice-wave-bar" style="height:5px;opacity:0.6;"></div>
+                          </div>
+                          <div class="voice-mic-btn">🎙</div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">灵动岛 idle · 草稿停 · agent 检测到停顿</div>
+                    <div class="storyboard-frame-state">语音输入中 · agent 监听暂停信号 · 输入表面已激活</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2305,8 +2431,8 @@
                   <div class="storyboard-frame">
                     <div class="storyboard-frame-label">B · 介入</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--surface">
-                        <div class="phone-statusbar"><span class="status-time">15:42</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
+                      <div class="phone-screen phone-screen--surface" style="display:flex;flex-direction:column;">
+                        <div class="phone-statusbar"><span class="status-time">15:42</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">AHA</span></div><span class="status-icons">●●●</span></div>
                         <div class="screen-body">
                           <div class="bubble bubble--user" style="text-align:right;">I'd want to push back on this...</div>
                           <div style="flex:1;"></div>
@@ -2314,18 +2440,24 @@
                             <div class="aha-card-header">AHA · inline</div>
                             <div class="aha-card-body" style="font-size:11px;">Try: <em>Fair point. I'd want to explore one thing first.</em></div>
                             <div class="inline-suggestion-chip-row">
-                              <span class="rebuttal-pill" style="border-color:var(--aha-amber);background:var(--aha-amber);color:#fff;">insert</span>
+                              <span class="rebuttal-pill" style="background:rgba(0,0,0,0.82);color:#fff;border-color:transparent;">insert</span>
                               <span class="rebuttal-pill">lens · softer</span>
                               <span class="rebuttal-pill">lens · more direct</span>
                               <span class="rebuttal-pill">dismiss</span>
                             </div>
                           </div>
-                          <div style="height:80px;background:rgba(0,0,0,0.04);font-size:10px;color:var(--ink-soft);text-align:center;padding-top:30px;">keyboard</div>
+                        </div>
+                        <div class="voice-input-bar">
+                          <div style="font-size:9px;color:var(--ink-soft);font-family:'Montserrat',sans-serif;flex-shrink:0;">paused</div>
+                          <div class="voice-wave-group">
+                            <div class="voice-wave-bar" style="height:4px;opacity:0.3;"></div><div class="voice-wave-bar" style="height:5px;opacity:0.3;"></div><div class="voice-wave-bar" style="height:4px;opacity:0.3;"></div><div class="voice-wave-bar" style="height:6px;opacity:0.3;"></div><div class="voice-wave-bar" style="height:4px;opacity:0.3;"></div>
+                          </div>
+                          <div class="voice-mic-btn" style="background:rgba(0,0,0,0.12);">🎙</div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">suggestion bar 挂键盘上方 · 不挡输入流</div>
+                    <div class="storyboard-frame-state">agent 介入 · suggestion 出现在语音区上方 · input 表面被临时改造</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2354,13 +2486,13 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>采用 → 学习用户偏好语气方向；dismiss → 不写入长期记忆。
+                  <strong>写回结果：</strong>采纳 → 学习用户在该场景下的语气偏好，更新 tone 模型；lens 选择 → 优先权更新；dismiss → 本次不写入长期记忆；memory · don't memorize → 永久排除该类型。生成层介入不替换原输入表面，用户可随时回到原始草稿。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-morphing">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>④ Morphing 变形</strong><span>·</span><span>G3–G4</span><span>·</span><span>同一片段转成当前任务需要的材料</span></div>
+                  <div class="posture-meta"><strong>④ Morphing 变形</strong><span>·</span><span>G3–G4</span><span>·</span><span>同一片段在不同 workspace 自动适形为句子、作品集 framing、面试回答</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
@@ -2445,13 +2577,13 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>转化路径成为 future routing policy 的输入；转化资产进入对应工作区。
+                  <strong>写回结果：</strong>转化路径写入 future routing policy（哪个 workspace 适合哪种表达形式）；转化资产进入对应工作区；多次选同一路径 → 该 workspace 的自动 morphing 置信度上升，下次更早适形。同一片段无需重新递交。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-echo">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>⑤ Echo 回声 ★</strong><span>·</span><span>G2–G4</span><span>·</span><span>未来更合适时把旧内容带回来</span></div>
+                  <div class="posture-meta"><strong>⑤ Echo 回声 ★</strong><span>·</span><span>G2–G4</span><span>·</span><span>过去内容穿越时间对齐当前任务 · 不是通知 · 是跨时间的回声</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
@@ -2581,35 +2713,39 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>接受 → 进入面试准备工作区；拒绝 → 降低跨时间回访置信度；<code>don't connect these again</code> → 该连接排除。
+                  <strong>写回结果：</strong>接受 → 跨时间连接写入关系图谱，影响未来 Echo 触发阈值；<code>don't connect these again</code> → 永久排除该配对；不响应 → 降低同类时间窗回访频率，回声不会在相近时间窗内重复出现。Echo 的写回是双向的 —— 过去的内容和当前的任务都会被更新。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-cocreation">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>⑥ Co-creation 共创</strong><span>·</span><span>G3–G4</span><span>·</span><span>邀请用户一起塑形</span></div>
+                  <div class="posture-meta"><strong>⑥ Co-creation 共创</strong><span>·</span><span>G3–G4</span><span>·</span><span>用户与 agent 共占生成工作台 · 用户调 lens · agent 生成候选</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
                     <div class="storyboard-frame-label">A · 邀请</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span class="status-time">14:14</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
-                        <div class="screen-body">
-                          <div class="aha-card">
-                            <div class="aha-card-header">AHA · co-creation</div>
-                            <div class="aha-card-body" style="font-size:11px;line-height:1.5;">Want to shape it together? 你想让我用哪个 lens 帮你转化这条想法？</div>
-                            <div class="aha-card-footer rebuttal-row">
-                              <span class="rebuttal-pill">更产品化</span>
-                              <span class="rebuttal-pill">更面试化</span>
-                              <span class="rebuttal-pill">更诗性</span>
-                            </div>
+                      <div class="phone-screen phone-screen--day-alt" style="display:flex;flex-direction:column;">
+                        <div class="phone-statusbar"><span class="status-time">14:14</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">AHA</span></div><span class="status-icons">●●●</span></div>
+                        <div class="screen-body" style="padding-bottom:4px;">
+                          <div style="font-size:9px;color:#c0c0c6;letter-spacing:0.04em;">Language Diary · 今日片段</div>
+                          <div class="feed-card">
+                            <div style="font-size:10.5px;line-height:1.55;color:var(--ink);">Personal OS 不是 feature，而是你给 agent 的一份意图框架。</div>
                           </div>
+                          <div style="flex:1;font-size:9px;color:var(--ink-soft);text-align:center;padding-top:6px;">Want to shape it together?</div>
+                        </div>
+                        <div class="co-creation-sheet">
+                          <div class="co-creation-sheet-handle"></div>
+                          <div class="co-creation-sheet-title">Co-creation · 选 lens</div>
+                          <div class="co-creation-lens-row"><div class="co-creation-lens-check"></div><span>更产品化</span></div>
+                          <div class="co-creation-lens-row"><div class="co-creation-lens-check"></div><span>更面试化</span></div>
+                          <div class="co-creation-lens-row"><div class="co-creation-lens-check"></div><span>更诗性</span></div>
+                          <div class="co-creation-apply-btn">Generate</div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">三 lens chip 平铺 · 用户决定 transformation 方向</div>
+                    <div class="storyboard-frame-state">底部工作台滑出 · 原片段仍可见 · 不完全切断上下文</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2617,27 +2753,33 @@
                   <div class="storyboard-frame">
                     <div class="storyboard-frame-label">B · 选 lens</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--day-alt">
-                        <div class="phone-statusbar"><span class="status-time">14:15</span><div class="dynamic-island"></div><span class="status-icons">●●●</span></div>
-                        <div class="screen-body">
-                          <div class="aha-card-header" style="margin-top:8px;">AHA · co-creation · 候选</div>
-                          <div class="aha-card" style="margin-top:6px;">
-                            <div class="aha-card-body" style="font-size:11px;">→ Personal OS 是用户主权层，让 agent 在你框架里工作。</div>
+                      <div class="phone-screen phone-screen--day-alt" style="display:flex;flex-direction:column;">
+                        <div class="phone-statusbar"><span class="status-time">14:15</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">generating</span></div><span class="status-icons">●●●</span></div>
+                        <div class="screen-body" style="padding-bottom:4px;">
+                          <div class="feed-card" style="opacity:0.65;">
+                            <div style="font-size:10.5px;line-height:1.55;color:var(--ink);">Personal OS 不是 feature，而是你给 agent 的一份意图框架。</div>
+                          </div>
+                          <div style="flex:1;"></div>
+                        </div>
+                        <div class="co-creation-sheet">
+                          <div class="co-creation-sheet-handle"></div>
+                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                            <div class="co-creation-sheet-title" style="margin-bottom:0;">更产品化 · 3 candidates</div>
+                            <div style="font-size:9px;color:var(--aha-amber);font-weight:600;font-family:'Montserrat',sans-serif;">✓ lens set</div>
+                          </div>
+                          <div class="aha-card" style="margin-bottom:5px;">
+                            <div class="aha-card-body" style="font-size:10.5px;">Personal OS 是用户主权层，让 agent 在你框架里工作。</div>
                             <div class="aha-card-footer rebuttal-row"><span class="rebuttal-pill" style="background:rgba(0,0,0,0.82);color:#fff;border-color:transparent;">pick</span><span class="rebuttal-pill">refine</span></div>
                           </div>
                           <div class="aha-card">
-                            <div class="aha-card-body" style="font-size:11px;">→ 它不是工具集合，而是你给 agent 的一份意图地图。</div>
-                            <div class="aha-card-footer rebuttal-row"><span class="rebuttal-pill">pick</span><span class="rebuttal-pill">refine</span></div>
-                          </div>
-                          <div class="aha-card">
-                            <div class="aha-card-body" style="font-size:11px;">→ Personal OS = 让 agent 听你的优先级，而不是 app 的。</div>
+                            <div class="aha-card-body" style="font-size:10.5px;">Personal OS = 给 agent 一份意图地图，不是 app 列表。</div>
                             <div class="aha-card-footer rebuttal-row"><span class="rebuttal-pill">pick</span><span class="rebuttal-pill">refine</span></div>
                           </div>
                         </div>
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">三候选竖排 · 用户挑第一条</div>
+                    <div class="storyboard-frame-state">lens 选定 · 候选在工作台内生成 · 用户在同一界面操作</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2662,13 +2804,13 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>选中 lens → 该 lens 写入用户偏好；refine → 进入第二轮；不选 → 不学。共创发生在表达层，不在判断层。
+                  <strong>写回结果：</strong>选中 lens → 写入用户偏好模型，下次默认该方向生成；refine → 进入第二轮，工作台不关闭；不选 → 不学习本次 lens 偏好。共创发生在表达层，不在判断层 —— agent 不替用户决定结果，只在工作台内持续生成候选。
                 </div>
               </article>
 
               <article class="posture-block" id="posture-agentic">
                 <div class="posture-block-head">
-                  <div class="posture-meta"><strong>⑦ Agentic Action 代理行动</strong><span>·</span><span>G4–G5</span><span>·</span><span>高置信高相关，转成任务分叉口</span></div>
+                  <div class="posture-meta"><strong>⑦ Agentic Action 代理行动</strong><span>·</span><span>G4–G5</span><span>·</span><span>agent 临时生成可中止、可审阅、可回写的微型行动空间</span></div>
                 </div>
                 <div class="posture-storyboard">
                   <div class="storyboard-frame">
@@ -2699,8 +2841,13 @@
                   <div class="storyboard-frame">
                     <div class="storyboard-frame-label">B · 微会话</div>
                     <div class="phone">
-                      <div class="phone-screen phone-screen--coral">
-                        <div class="phone-statusbar"><span class="status-time">20:04</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">step 2 / 3</span></div><span class="status-icons">●●●</span></div>
+                      <div class="phone-screen phone-screen--deep" style="display:flex;flex-direction:column;">
+                        <div class="phone-statusbar" style="color:rgba(255,255,255,0.8);"><span class="status-time">20:04</span><div class="dynamic-island dynamic-island--compact"><span class="aha-island-dot"></span><span class="island-text">step 2 / 3</span></div><span class="status-icons">●●●</span></div>
+                        <div class="app-back-bar" style="color:rgba(200,133,74,0.9);">
+                          <span style="font-size:11px;">←</span>
+                          <span>Calendar · Phoenix Interview</span>
+                        </div>
+                        <div class="workspace-label" style="color:rgba(255,255,255,0.38);">Interview Prep Workspace</div>
                         <div class="screen-body">
                           <div class="micro-session-frame">
                             <div class="aha-card-header">AHA · prep · 3 步</div>
@@ -2718,7 +2865,7 @@
                         <div class="phone-home"></div>
                       </div>
                     </div>
-                    <div class="storyboard-frame-state">3 步进度 · 每步可中止 · 灵动岛同步显进度</div>
+                    <div class="storyboard-frame-state">新 workspace 界面 · 顶部保留返回旧任务入口 · 可随时跳出</div>
                   </div>
 
                   <div class="storyboard-arrow">→</div>
@@ -2746,7 +2893,7 @@
                 </div>
 
                 <div class="posture-block-writeback">
-                  <strong>写回结果：</strong>start prep → 进入 micro-session；任一步 stop → 已生成内容保留 + 跳出；最终 reminder 默认开但用户可关。代理行动以"分叉口"形式出现，不替用户做决定。
+                  <strong>写回结果：</strong>start → 打开 workspace，原任务界面保留在返回入口；任一步 stop → 已生成内容保留，跳出 workspace 回到原上下文；完成 → 产出写回对应 workspace；follow-up reminder 默认开，用户可关。代理行动以"临时可中止空间"形式出现，用户始终持有控制权，agent 不自动执行到底。
                 </div>
               </article>
 

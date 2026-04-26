@@ -13,6 +13,8 @@ import SubPageCarousel from './pages/SubPageCarousel';
 import { PROJECT_COLORS } from './projectRegistry';
 import { SceneManager } from './three/SceneManager';
 import CompanionsSceneGalleryPage from './musikNacht/CompanionsSceneGalleryPage';
+import SharedMemoryAhaShowcaseRoute from './pages/SharedMemoryAhaShowcaseRoute';
+import { SHARED_MEMORY_AHA_SHOWCASE_ROUTE } from './pages/sharedMemoryAhaCaseStudyMeta.ts';
 
 export default function App() {
   const webglRef = useRef<HTMLDivElement>(null);
@@ -33,6 +35,7 @@ export default function App() {
     : null;
   const isHome = location.pathname === '/';
   const isMusikNachtEmbedRoute = location.pathname === '/musik-nacht-scenes-embed';
+  const isSharedMemoryAhaShowcaseRoute = location.pathname === SHARED_MEMORY_AHA_SHOWCASE_ROUTE;
   const isProjectRootPath = isProjectRootRoute(location.pathname);
   const isSubPage = location.pathname !== '/' && !!PAGE_META[location.pathname] && !isProjectRootPath;
 
@@ -99,6 +102,10 @@ export default function App() {
         <CompanionsSceneGalleryPage />
       </div>
     );
+  }
+
+  if (isSharedMemoryAhaShowcaseRoute) {
+    return <SharedMemoryAhaShowcaseRoute />;
   }
 
   return (

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前台介入模式 · Aha Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* dot grid */
+#bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* ── canvas ── */
+.canvas {
+  position: relative; z-index: 1;
+  padding: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.col { display: flex; flex-direction: column; gap: 28px; }
+
+/* ── column labels ── */
+.mode-label { display: flex; flex-direction: column; gap: 4px; }
+.mode-name {
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  font-size: 22px; font-weight: 600; color: #fff; line-height: 1.25;
+}
+.mode-desc {
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.55;
+}
+
+/* ── phone wrapper (holds scaled phone) ── */
+.phone-wrap { width: 100%; position: relative; }
+
+/* ── phone shell (original 375px wide, scaled by JS) ── */
+.phone {
+  width: 375px;
+  position: relative;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  box-shadow: 12px 12px 0 0 #000;
+  overflow: hidden;
+  transform-origin: top left;
+  /* height set inline per phone */
+}
+
+/* ── shared phone internals ── */
+.screen-header {
+  position: absolute; left: 0; top: 0; width: 375px; height: 118px;
+  background: #fff; z-index: 10;
+  border-bottom: 1px solid #18191f;
+  overflow: hidden;
+}
+.header-menu { position: absolute; left: 24px; top: 47px; display: flex; flex-direction: column; gap: 5px; }
+.header-menu-bar { width: 20px; height: 2.5px; background: #18191f; border-radius: 2px; }
+.header-bell { position: absolute; right: 24px; top: 68px; width: 22px; height: 22px; }
+.header-bell svg { width: 100%; height: 100%; }
+.header-notif {
+  position: absolute; right: 21px; top: 62px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #f95a2c; border: 1.5px solid #fff;
+}
+.header-title {
+  position: absolute; left: 0; right: 0; top: 71px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800;
+  color: #18191f;
+}
+
+/* ── bottom tab bar ── */
+.tab-bar {
+  position: absolute; bottom: 0; left: 0; width: 375px; height: 86px;
+  background: #fff; border-top: 1px solid #18191f;
+  display: flex; align-items: center; justify-content: space-around;
+  z-index: 10;
+}
+.tab-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 80px; }
+.tab-icon { width: 22px; height: 22px; position: relative; }
+.tab-icon-home { border-radius: 50%; background: #1947e6; border: 1.5px solid #18191f; }
+.tab-icon-box { border-radius: 4px; background: #eeeff4; border: 1.5px solid #474a57; }
+.tab-icon-circle { border-radius: 50%; background: #eeeff4; border: 1.5px solid #474a57; }
+.tab-label { font-size: 11px; font-weight: 800; color: #474a57; }
+.tab-label--active { color: #18191f; }
+
+/* ── blog body text ── */
+.blog-body {
+  font-family: 'Montserrat', sans-serif; font-size: 15px;
+  font-weight: 500; color: #474a57; line-height: 1.55;
+}
+.blog-title {
+  font-family: 'Montserrat', sans-serif; font-size: 32px;
+  font-weight: 800; color: #18191f; line-height: 1.2;
+}
+
+/* ── chat bubbles ── */
+.bubble {
+  font-family: 'Montserrat', sans-serif; font-size: 15px;
+  font-weight: 700; color: #18191f; line-height: 1.5;
+  padding: 14px 16px; border-radius: 16px; border: 2px solid #18191f;
+  position: absolute;
+}
+.bubble--gray { background: #cdcdcd; }
+.bubble--teal { background: #8bc8c1; }
+.bubble--orange { background: #f95a2c; color: #fff; border-color: #18191f; }
+
+/* ── blog card ── */
+.blog-card {
+  border-radius: 16px; border: 2px solid #18191f;
+  box-shadow: 0 2px 0 0 #18191f;
+  padding: 24px; overflow: hidden; position: absolute;
+}
+.blog-card-by { font-size: 11px; font-weight: 700; color: #474a57; margin-bottom: 6px; }
+.blog-card-title { font-size: 20px; font-weight: 800; color: #18191f; line-height: 1.3; }
+
+/* follow button */
+.follow-btn {
+  border: 2px solid #18191f; border-radius: 12px;
+  box-shadow: 0 2px 0 0 #18191f;
+  padding: 6px 14px;
+  font-size: 11px; font-weight: 800; color: #18191f;
+  background: #cdcdcd;
+}
+
+/* ugc bar */
+.ugc-bar {
+  position: absolute; display: flex; align-items: center; gap: 16px;
+  font-size: 15px; font-weight: 800; color: #18191f;
+}
+.ugc-sep { width: 2px; height: 26px; background: #18191f; }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<div class="canvas">
+  <div class="grid">
+
+    <!-- ═══════════════════════
+         COL 1 — Trace + Ambient
+         ═══════════════════════ -->
+    <div class="col">
+
+      <!-- Trace 留痕 -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Trace 留痕</div>
+          <div class="mode-desc">Agent 高亮值得用户注意的部分</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:797px;">
+
+            <!-- blog modal bg -->
+            <div style="position:absolute;left:0;top:84px;width:375px;height:720px;
+                 background:#fff;border-radius:16px 16px 0 0;"></div>
+
+            <!-- avatar + more -->
+            <div style="position:absolute;left:24px;top:97px;
+                 width:54px;height:54px;border-radius:50%;
+                 background:#cdcdcd;border:2px solid #18191f;"></div>
+            <div style="position:absolute;right:24px;top:107px;
+                 font-size:18px;color:#18191f;letter-spacing:3px;">···</div>
+
+            <!-- title -->
+            <div class="blog-title" style="position:absolute;left:24px;top:192px;width:327px;">
+              Work with us and forget about others
+            </div>
+
+            <!-- UGC bar -->
+            <div class="ugc-bar" style="left:46px;top:344px;">
+              <span>♡ Like</span>
+              <div class="ugc-sep"></div>
+              <span>↑ Share</span>
+            </div>
+
+            <!-- body text -->
+            <div class="blog-body" style="position:absolute;left:24px;top:394px;width:327px;">
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+            </div>
+
+            <!-- pink highlight overlay -->
+            <div style="position:absolute;left:104px;top:439px;width:237px;height:23px;
+                 background:#ff4035;opacity:0.45;mix-blend-mode:multiply;pointer-events:none;"></div>
+
+            <!-- second body paragraph -->
+            <div class="blog-body" style="position:absolute;left:24px;top:585px;width:327px;">
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation.
+            </div>
+
+            <!-- AHA white text lines on orange area (bottom of blog) -->
+            <div style="position:absolute;left:0;top:620px;width:375px;height:100px;
+                 background:#f95a2c;display:flex;flex-direction:column;
+                 align-items:center;justify-content:center;gap:4px;padding:0 36px;">
+              <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:.1em;align-self:flex-start;">AHA</div>
+              <div style="font-size:11px;font-weight:500;color:#fff;text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+              <div style="font-size:11px;font-weight:500;color:#fff;text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+              <div style="font-size:11px;font-weight:500;color:#fff;text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+            </div>
+
+            <!-- user + follow footer -->
+            <div style="position:absolute;left:24px;bottom:0;width:327px;height:68px;
+                 display:flex;align-items:center;justify-content:space-between;
+                 border-top:1px solid rgba(0,0,0,0.1);">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#cdcdcd;border:2px solid #18191f;"></div>
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:#18191f;">Alisa Red</div>
+                  <div style="font-size:11px;font-weight:500;color:#474a57;">33 March, 20</div>
+                </div>
+              </div>
+              <div class="follow-btn">Follow</div>
+            </div>
+
+          </div><!-- /phone -->
+        </div><!-- /phone-wrap -->
+      </div>
+
+      <!-- Ambient 呼吸 -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Ambient 呼吸</div>
+          <div class="mode-desc">Agent 界面环境发生轻微状态变化。Agent 被感知为系统场高亮值得用户注意的部分</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:812px;">
+
+            <!-- AHA MOMENT SAVED orange button at top -->
+            <div style="position:absolute;left:56px;top:8px;
+                 background:#f95a2c;border:2.2px solid #18191f;border-radius:18px;
+                 padding:12px 20px;z-index:20;">
+              <div style="font-size:11px;font-weight:800;color:#fff;letter-spacing:.06em;
+                   display:flex;gap:4px;align-items:center;">
+                <span>AHA</span><span style="opacity:.8;font-weight:400;">MOMENT SAVED</span>
+              </div>
+            </div>
+
+            <!-- header -->
+            <div class="screen-header" style="top:0;">
+              <div class="header-menu" style="top:50px;">
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+              </div>
+              <div class="header-title">XHS</div>
+              <!-- bell -->
+              <div style="position:absolute;right:24px;top:68px;font-size:18px;">🔔</div>
+              <div class="header-notif" style="right:21px;top:62px;"></div>
+            </div>
+
+            <!-- search box -->
+            <div style="position:absolute;left:21px;top:130px;width:327px;height:52px;
+                 background:#fff;border:2px solid #18191f;border-radius:16px;
+                 box-shadow:0 4px 0 0 #18191f;display:flex;align-items:center;padding:0 14px;">
+              <span style="font-size:18px;font-weight:500;color:#18191f;flex:1;">Search with love ...</span>
+              <span style="font-size:16px;color:#18191f;">🔍</span>
+            </div>
+
+            <!-- image grid: left col -->
+            <!-- card 1 gray left top -->
+            <div style="position:absolute;left:21px;top:203px;width:155px;height:200px;
+                 background:#cdcdcd;border:2px solid #18191f;border-radius:16px;
+                 display:flex;align-items:center;justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 42 42" fill="none">
+                <rect x="1" y="1" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+                <path d="M1 30L13 18L21 26L28 19L41 30" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="25" cy="12" r="4" stroke="white" stroke-width="2"/>
+              </svg>
+            </div>
+            <div style="position:absolute;left:21px;top:415px;font-size:14px;font-weight:800;color:#18191f;">Image Title...</div>
+            <div style="position:absolute;left:21px;top:435px;font-size:12px;font-weight:500;color:#474a57;">Optional line</div>
+
+            <!-- card 2 orange right top -->
+            <div style="position:absolute;left:193px;top:203px;width:155px;height:160px;
+                 background:#f95a2c;border:2px solid #18191f;border-radius:16px;
+                 display:flex;align-items:center;justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 42 42" fill="none">
+                <rect x="1" y="1" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+                <path d="M1 30L13 18L21 26L28 19L41 30" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="25" cy="12" r="4" stroke="white" stroke-width="2"/>
+              </svg>
+            </div>
+            <div style="position:absolute;left:193px;top:375px;font-size:14px;font-weight:800;color:#18191f;">Image Title...</div>
+            <div style="position:absolute;left:193px;top:395px;font-size:12px;font-weight:500;color:#474a57;">Optional line <span style="margin-left:20px;">♡</span></div>
+
+            <!-- card 3 gray left bottom -->
+            <div style="position:absolute;left:21px;top:480px;width:155px;height:220px;
+                 background:#cdcdcd;border:2px solid #18191f;border-radius:16px;
+                 display:flex;align-items:center;justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 42 42" fill="none">
+                <rect x="1" y="1" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+                <path d="M1 30L13 18L21 26L28 19L41 30" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="25" cy="12" r="4" stroke="white" stroke-width="2"/>
+              </svg>
+            </div>
+            <div style="position:absolute;left:21px;top:712px;font-size:14px;font-weight:800;color:#18191f;">Image Title...</div>
+            <div style="position:absolute;left:21px;top:732px;font-size:12px;font-weight:500;color:#474a57;">Optional line</div>
+
+            <!-- card 4 gray right bottom -->
+            <div style="position:absolute;left:193px;top:416px;width:155px;height:240px;
+                 background:#cdcdcd;border:2px solid #18191f;border-radius:16px;
+                 display:flex;align-items:center;justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 42 42" fill="none">
+                <rect x="1" y="1" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+                <path d="M1 30L13 18L21 26L28 19L41 30" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="25" cy="12" r="4" stroke="white" stroke-width="2"/>
+              </svg>
+            </div>
+            <div style="position:absolute;left:193px;top:668px;font-size:14px;font-weight:800;color:#18191f;">Image Title... <span style="margin-left:10px;">♡</span></div>
+            <div style="position:absolute;left:193px;top:688px;font-size:12px;font-weight:500;color:#474a57;">Optional line</div>
+
+          </div><!-- /phone -->
+        </div>
+      </div>
+
+    </div><!-- /col 1 -->
+
+
+    <!-- ═════════════════════════════
+         COL 2 — Inline + Co-creation
+         ═════════════════════════════ -->
+    <div class="col">
+
+      <!-- Inline 镶嵌 -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Inline 镶嵌</div>
+          <div class="mode-desc">Agent 在原本的正文中置入自己的理解</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:973px;">
+
+            <!-- faded "Blogs" header layer -->
+            <div style="position:absolute;left:0;top:0;width:375px;height:126px;
+                 opacity:0.2;overflow:hidden;">
+              <div style="position:absolute;left:24px;top:48px;
+                   font-size:40px;font-weight:800;color:#18191f;">Blogs</div>
+            </div>
+
+            <!-- blog modal bg -->
+            <div style="position:absolute;left:0;top:118px;width:375px;height:860px;
+                 background:#fff;border-radius:16px 16px 0 0;"></div>
+
+            <!-- avatar + more -->
+            <div style="position:absolute;left:24px;top:131px;
+                 width:54px;height:54px;border-radius:50%;
+                 background:#cdcdcd;border:2px solid #18191f;"></div>
+            <div style="position:absolute;right:24px;top:141px;font-size:18px;color:#18191f;letter-spacing:3px;">···</div>
+
+            <!-- title -->
+            <div class="blog-title" style="position:absolute;left:24px;top:226px;width:327px;font-size:30px;">
+              Work with us and forget about others
+            </div>
+
+            <!-- UGC bar -->
+            <div class="ugc-bar" style="left:46px;top:378px;">
+              <span>♡ Like</span>
+              <div class="ugc-sep"></div>
+              <span>↑ Share</span>
+            </div>
+
+            <!-- body text before inline box -->
+            <div class="blog-body" style="position:absolute;left:24px;top:428px;width:327px;">
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+            </div>
+
+            <!-- inline AHA orange box (embedded in blog text) -->
+            <div style="position:absolute;left:24px;top:620px;width:327px;height:138px;
+                 background:#f95a2c;border:2px solid #18191f;border-radius:16px;
+                 display:flex;flex-direction:column;align-items:center;
+                 justify-content:center;gap:6px;padding:0 20px;">
+              <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.9);text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+              <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.9);text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+              <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.9);text-align:center;line-height:1.4;">Being in this world is always becoming with...</div>
+            </div>
+
+            <!-- body text after inline box -->
+            <div class="blog-body" style="position:absolute;left:24px;top:782px;width:327px;">
+              Wireframe is still important for ideation. It will help you to quickly test idea.
+              Wireframe is still important for ideation.
+            </div>
+
+            <!-- user + follow footer -->
+            <div style="position:absolute;left:24px;bottom:0;width:327px;height:68px;
+                 display:flex;align-items:center;justify-content:space-between;
+                 border-top:1px solid rgba(0,0,0,0.1);">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#cdcdcd;border:2px solid #18191f;"></div>
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:#18191f;">Alisa Red</div>
+                  <div style="font-size:11px;font-weight:500;color:#474a57;">33 March, 20</div>
+                </div>
+              </div>
+              <div class="follow-btn">Follow</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Co-creation 共创 -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Co-creation 共创</div>
+          <div class="mode-desc">Agent 基于用户沉淀的个人专题生成下一步共创内容邀请</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:812px;">
+
+            <!-- header -->
+            <div class="screen-header">
+              <div class="header-menu">
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+              </div>
+              <div class="header-title" style="font-style:italic;">contra</div>
+              <div style="position:absolute;right:24px;top:68px;font-size:18px;">🔔</div>
+              <div class="header-notif"></div>
+            </div>
+
+            <!-- blog cards feed -->
+            <!-- card 1: purple -->
+            <div class="blog-card" style="left:21px;top:131px;width:327px;background:#e9e7fc;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <!-- card 2: pink -->
+            <div class="blog-card" style="left:21px;top:266px;width:327px;background:#ffe8e8;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <!-- card 3: cyan -->
+            <div class="blog-card" style="left:21px;top:401px;width:327px;background:#d6fcf7;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <!-- tab bar -->
+            <div class="tab-bar">
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-home"></div>
+                <div class="tab-label tab-label--active">Home</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Search</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Saved</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-circle" style="position:relative;">
+                  <div style="position:absolute;top:-4px;right:-4px;width:9px;height:9px;
+                       border-radius:50%;background:#f95a2c;border:1.5px solid #fff;"></div>
+                </div>
+                <div class="tab-label">Profile</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col 2 -->
+
+
+    <!-- ══════════════════════════════════════
+         COL 3 — Suggest 建议 (two phone states)
+         ══════════════════════════════════════ -->
+    <div class="col">
+
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Suggest 建议</div>
+          <div class="mode-desc">在识别到用户有轻微卡顿的时候，生成不同程度的建议卡片或建议文字</div>
+        </div>
+
+        <!-- Suggest state 1: suggestion card -->
+        <div class="phone-wrap" style="margin-bottom:28px;">
+          <div class="phone" style="height:812px;">
+
+            <!-- header: back btn + Kerry -->
+            <div class="screen-header">
+              <!-- back circle button -->
+              <div style="position:absolute;left:24px;top:54px;
+                   width:46px;height:46px;border-radius:50%;
+                   background:#fff;border:2px solid #18191f;
+                   box-shadow:0 2px 0 0 #18191f;
+                   display:flex;align-items:center;justify-content:center;
+                   font-size:18px;font-weight:700;color:#18191f;">‹</div>
+              <div class="header-title">Kerry</div>
+            </div>
+
+            <!-- date label -->
+            <div style="position:absolute;left:0;right:0;top:134px;text-align:center;
+                 font-size:14px;font-weight:700;color:#9fa4b4;">24, March 18</div>
+
+            <!-- avatar -->
+            <div style="position:absolute;left:23px;top:172px;
+                 width:46px;height:46px;border-radius:50%;
+                 background:#cdcdcd;border:1.8px solid #18191f;"></div>
+
+            <!-- chat bubbles -->
+            <div class="bubble bubble--gray" style="left:94px;top:178px;max-width:220px;">Hi</div>
+            <div class="bubble bubble--gray" style="left:94px;top:242px;max-width:220px;">
+              You always working. It's 4 in the morning.
+            </div>
+            <div class="bubble bubble--teal" style="left:231px;top:376px;max-width:120px;right:24px;left:auto;">Hey Kerry</div>
+            <div class="bubble bubble--teal" style="right:24px;left:auto;top:447px;max-width:220px;text-align:right;">
+              You know legends sleep after 5 in morning.
+            </div>
+
+            <!-- AHA suggestion box (orange card) -->
+            <div style="position:absolute;left:24px;top:566px;width:327px;
+                 background:#f95a2c;border:2px solid #18191f;border-radius:16px;
+                 padding:16px 18px;">
+              <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.75);
+                   letter-spacing:.08em;margin-bottom:6px;">AHA Suggestion</div>
+              <div style="font-size:13px;font-weight:500;color:#fff;line-height:1.45;margin-bottom:12px;">
+                Being in this world is always becoming with...
+              </div>
+              <div style="display:flex;gap:8px;">
+                <div style="flex:1;background:#18191f;border:1.5px solid #18191f;
+                     border-radius:8px;padding:8px;text-align:center;
+                     font-size:12px;font-weight:800;color:#fff;">Pick</div>
+                <div style="flex:1;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);
+                     border-radius:8px;padding:8px;text-align:center;
+                     font-size:12px;font-weight:800;color:#fff;">Refine</div>
+              </div>
+            </div>
+
+            <!-- input bar -->
+            <div style="position:absolute;left:24px;top:714px;width:327px;height:60px;
+                 background:#fff;border:2px solid #18191f;border-radius:60px;
+                 display:flex;align-items:center;padding:0 18px;gap:10px;">
+              <span style="flex:1;font-size:14px;font-weight:500;color:#969bab;">Type your message</span>
+              <span style="font-size:16px;">🎤</span>
+              <span style="font-size:16px;transform:rotate(45deg);display:inline-block;">➤</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Suggest state 2: inline AHA in input -->
+        <div class="phone-wrap">
+          <div class="phone" style="height:812px;">
+
+            <!-- header -->
+            <div class="screen-header">
+              <div style="position:absolute;left:24px;top:54px;
+                   width:46px;height:46px;border-radius:50%;
+                   background:#fff;border:2px solid #18191f;
+                   box-shadow:0 2px 0 0 #18191f;
+                   display:flex;align-items:center;justify-content:center;
+                   font-size:18px;font-weight:700;color:#18191f;">‹</div>
+              <div class="header-title">Kerry</div>
+            </div>
+
+            <!-- date -->
+            <div style="position:absolute;left:0;right:0;top:134px;text-align:center;
+                 font-size:14px;font-weight:700;color:#9fa4b4;">24, March 18</div>
+
+            <!-- avatar -->
+            <div style="position:absolute;left:23px;top:172px;
+                 width:46px;height:46px;border-radius:50%;
+                 background:#cdcdcd;border:1.8px solid #18191f;"></div>
+
+            <!-- same chat bubbles -->
+            <div class="bubble bubble--gray" style="left:94px;top:178px;max-width:220px;">Hi</div>
+            <div class="bubble bubble--gray" style="left:94px;top:242px;max-width:220px;">
+              You always working. It's 4 in the morning.
+            </div>
+            <div class="bubble bubble--teal" style="right:24px;left:auto;top:376px;max-width:120px;">Hey Kerry</div>
+            <div class="bubble bubble--teal" style="right:24px;left:auto;top:447px;max-width:220px;text-align:right;">
+              You know legends sleep after 5 in morning.
+            </div>
+
+            <!-- inline AHA text (orange, not a full card) -->
+            <div style="position:absolute;left:94px;top:570px;
+                 font-size:14px;font-weight:500;color:#f95a2c;line-height:1.45;
+                 max-width:240px;border-left:3px solid #f95a2c;padding-left:10px;">
+              Being in this world is always becoming with...
+            </div>
+
+            <!-- input with orange preview text -->
+            <div style="position:absolute;left:24px;top:714px;width:327px;height:68px;
+                 background:#fff;border:2px solid #18191f;border-radius:60px;
+                 display:flex;align-items:center;padding:0 18px;gap:10px;">
+              <span style="flex:1;font-size:13px;font-weight:500;color:#f95a2c;line-height:1.3;">
+                Being in this world is always becoming with...
+              </span>
+              <span style="font-size:16px;">🎤</span>
+              <span style="font-size:16px;transform:rotate(45deg);display:inline-block;">➤</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /col 3 -->
+
+
+    <!-- ══════════════════════════════════════
+         COL 4 — Echo 回声 + Agentic Action
+         ══════════════════════════════════════ -->
+    <div class="col">
+
+      <!-- Echo 回声 -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Echo 回声</div>
+          <div class="mode-desc">过去内容穿过时间回来，和当前任务发生对齐。</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:812px;">
+
+            <!-- header -->
+            <div class="screen-header">
+              <div class="header-menu">
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+                <div class="header-menu-bar"></div>
+              </div>
+              <div style="position:absolute;right:24px;top:68px;font-size:18px;">🔔</div>
+              <div class="header-notif"></div>
+            </div>
+
+            <!-- blog cards -->
+            <div class="blog-card" style="left:21px;top:131px;width:327px;background:#e9e7fc;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <div class="blog-card" style="left:21px;top:266px;width:327px;background:#fff;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <div class="blog-card" style="left:21px;top:401px;width:327px;background:#fff;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title">I'm post title, Please keep it 2 line onely...</div>
+            </div>
+
+            <!-- AHA orange action button -->
+            <div style="position:absolute;left:24px;top:538px;
+                 background:#f95a2c;border:2.2px solid #18191f;border-radius:18px;
+                 padding:14px 20px;display:inline-flex;align-items:center;gap:6px;">
+              <span style="font-size:10px;font-weight:800;color:#fff;letter-spacing:.06em;">AHA &nbsp;MOMENT SAVED</span>
+            </div>
+
+            <!-- tab bar -->
+            <div class="tab-bar">
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-home"></div>
+                <div class="tab-label tab-label--active">Home</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Search</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Saved</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-circle" style="position:relative;">
+                  <div style="position:absolute;top:-4px;right:-4px;width:9px;height:9px;
+                       border-radius:50%;background:#f95a2c;border:1.5px solid #fff;"></div>
+                </div>
+                <div class="tab-label">Profile</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Agentic Action -->
+      <div>
+        <div class="mode-label" style="margin-bottom:16px;">
+          <div class="mode-name">Agentic Action</div>
+          <div class="mode-desc">过去内容穿过时间回来，和当前任务发生对齐。</div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" style="height:1074px;">
+
+            <!-- header: Personal OS -->
+            <div class="screen-header" style="height:126px;">
+              <div style="position:absolute;left:24px;top:48px;
+                   font-size:40px;font-weight:800;color:#18191f;white-space:nowrap;">Personal OS</div>
+            </div>
+
+            <!-- hero blog cards -->
+            <div class="blog-card" style="left:21px;top:139px;width:327px;height:130px;background:#e9e7fc;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title" style="font-size:24px;">I'm post title, Please keep it 2 line only...</div>
+            </div>
+
+            <div class="blog-card" style="left:21px;top:290px;width:327px;height:130px;background:#fff;">
+              <div class="blog-card-by">by Lara Trina &nbsp;•&nbsp; 12 March, 20</div>
+              <div class="blog-card-title" style="font-size:24px;">I'm post title, Please keep it 2 line only...</div>
+            </div>
+
+            <!-- listing items -->
+            <div style="position:absolute;left:72px;top:462px;
+                 font-size:15px;font-weight:800;color:#18191f;line-height:1.5;">
+              Chiang Mai markets have to
+            </div>
+            <div style="position:absolute;left:24px;top:452px;
+                 width:36px;height:36px;border-radius:6px;
+                 background:#eeeff4;border:2px solid #474a57;"></div>
+
+            <div style="position:absolute;left:72px;top:545px;
+                 font-size:15px;font-weight:800;color:#18191f;line-height:1.5;">
+              Elephant and swim!
+            </div>
+            <div style="position:absolute;left:24px;top:535px;
+                 width:36px;height:36px;border-radius:6px;
+                 background:#f95a2c;border:2px solid #18191f;
+                 display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:16px;font-weight:900;color:#fff;">✓</span>
+            </div>
+
+            <!-- more listing items -->
+            <div style="position:absolute;left:72px;top:620px;
+                 font-size:15px;font-weight:800;color:#18191f;line-height:1.5;">
+              UX thinking strategy
+            </div>
+            <div style="position:absolute;left:24px;top:610px;
+                 width:36px;height:36px;border-radius:6px;
+                 background:#eeeff4;border:2px solid #474a57;"></div>
+
+            <div style="position:absolute;left:72px;top:680px;
+                 font-size:15px;font-weight:800;color:#18191f;line-height:1.5;">
+              Memory as new OS
+            </div>
+            <div style="position:absolute;left:24px;top:670px;
+                 width:36px;height:36px;border-radius:6px;
+                 background:#eeeff4;border:2px solid #474a57;"></div>
+
+            <!-- tab bar -->
+            <div class="tab-bar">
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-home"></div>
+                <div class="tab-label tab-label--active">Home</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Search</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-box"></div>
+                <div class="tab-label">Saved</div>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon tab-icon-circle" style="position:relative;">
+                  <div style="position:absolute;top:-4px;right:-4px;width:9px;height:9px;
+                       border-radius:50%;background:#f95a2c;border:1.5px solid #fff;"></div>
+                </div>
+                <div class="tab-label">Profile</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col 4 -->
+
+  </div><!-- /grid -->
+</div><!-- /canvas -->
+
+<script>
+  function applyPhoneScales() {
+    document.querySelectorAll('.phone-wrap').forEach(function(wrap) {
+      var phone = wrap.querySelector('.phone');
+      if (!phone) return;
+      var wrapW = wrap.offsetWidth;
+      var scale = wrapW / 375;
+      phone.style.transform = 'scale(' + scale + ')';
+      phone.style.transformOrigin = 'top left';
+      var phoneH = parseFloat(phone.style.height) || phone.scrollHeight;
+      wrap.style.height = (phoneH * scale) + 'px';
+    });
+  }
+
+  applyPhoneScales();
+  window.addEventListener('resize', applyPhoneScales);
+</script>
+</body>
+</html>

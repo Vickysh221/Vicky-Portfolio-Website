@@ -40,6 +40,19 @@ type PersonalOSPage = {
 
 const personalOsPages: PersonalOSPage[] = [
   {
+    skillName: 'personal-os-doctrine',
+    pageTitle: t(
+      'Personal OS：right aspects of memory × right aspects of agents',
+      'Personal OS: right aspects of memory × right aspects of agents',
+    ),
+    mainCopy: t(
+      '对我来说，Personal OS 指的不是一个总控系统，而是 right aspects of memory × right aspects of agents 所形成的个人协调机制。\n\n每一个个体同时拥有很多处在不同目标、关系和情境中的「身份切片」：工作中的我、生活中的我、学语言的我、探索面包的我、跳弗拉明戈的我、做作品集的我、准备面试的我。Personal OS 要处理的不是“记住所有事情”，而是判断此刻哪一个“我”正在出现，哪些记忆对这个“我”是相关的，哪些 agent 行为对这个“我”是合适的，哪些跨切片联动是有价值的，以及哪些内容必须保持沉默或延迟。\n\n在 Language Diary Agent 的设计里，我其实是在建立“学语言的我”这个切片。这个切片带着它独有的语言记忆、表达习惯、学习卡点和目标上下文，同时又能和社交媒体、生活事件、关系记忆以及其他 「记忆模块」发生联动。Memory 让这个切片拥有连续性，agent 让这个切片获得行动层，也让这部分原本隐性的“我”被显化出来。\n\n所以，我对 Personal OS 的探索不是从一个完整系统开始，而是从可验证的 Language Diary Agent 开始。Aha Moment 在这里不是泛泛的惊喜时刻，而是当 language-learning-specific memory 与 general user memory 的关联度同时达到阈值时，agent 有充分理由主动触达人、发起一次注意力请求的灵光一现时刻。',
+      'For me, Personal OS is not a command system. It is a personal coordination mechanism formed by right aspects of memory × right aspects of agents.\n\nEach individual carries many identity slices across different goals, relationships, and contexts: the self at work, the self in daily life, the self learning languages, the self exploring bread, the self dancing flamenco, the self building a portfolio, and the self preparing for interviews. Personal OS is not about remembering everything. It is about judging which self is appearing now, which memories are relevant to that self, which agent behaviors are appropriate for that self, which cross-slice connections are valuable, and which content must stay silent or be delayed.\n\nIn the design of Language Diary Agent, I am building the slice of “the self learning languages.” This slice carries its own language memories, expression habits, learning friction, and goal context. It can also connect with social media, life events, relationship memories, and other memory modules. Memory gives this slice continuity. The agent gives this slice an action layer, and makes this originally implicit part of the self become visible.\n\nSo my exploration of Personal OS does not begin with a complete system. It begins with the verifiable Language Diary Agent. Here, Aha Moment is not a generic moment of surprise. It is the flash moment when the association strength of language-learning-specific memory and general user memory both reach their thresholds, giving the agent enough reason to actively reach the person and initiate an attention request.',
+    ),
+    linksTitle: t('相关材料', 'Related Material'),
+    linkCards: [],
+  },
+  {
     skillName: 'product-ontological-analysis',
     pageTitle: t(
       'Product Ontology：把研究判断沉淀成可追溯对象',

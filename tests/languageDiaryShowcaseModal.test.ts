@@ -6,25 +6,22 @@ function read(relativePath: string) {
   return readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8');
 }
 
-test('language diary showcase auto expand uses a centered modal frame', () => {
+test('aha page 3 no longer auto expands into the hidden html showcase', () => {
   const subPageCarousel = read('src/pages/SubPageCarousel.tsx');
 
-  assert.match(subPageCarousel, /const\s+showcaseExpandedModalViewportStyle:\s+React\.CSSProperties\s*=\s*\{/);
-  assert.match(subPageCarousel, /showcaseExpandedModalViewportStyle[\s\S]*alignItems:\s*'center'/);
-  assert.match(subPageCarousel, /showcaseExpandedModalViewportStyle[\s\S]*justifyContent:\s*'center'/);
-  assert.match(subPageCarousel, /const\s+showcaseExpandedModalFrameStyle:\s+React\.CSSProperties\s*=\s*\{/);
-  assert.match(subPageCarousel, /showcaseExpandedModalFrameStyle[\s\S]*width:\s*'min\(/);
-  assert.match(subPageCarousel, /showcaseExpandedModalFrameStyle[\s\S]*height:\s*'min\(/);
-  assert.match(subPageCarousel, /className=\{isExpandedShowcaseOverlay \? 'showcase-expanded-modal-frame' : undefined\}/);
-  assert.match(subPageCarousel, /height:\s*isExpandedShowcasePage \? '100%' : 'calc\(100vh - 120px\)'/);
-  assert.match(subPageCarousel, /flex:\s*isExpandedShowcasePage \? 1 : undefined/);
-  assert.match(subPageCarousel, /shouldAutoExpandShowcase[\s\S]*slideIndex === 2/);
+  assert.doesNotMatch(subPageCarousel, /shouldAutoExpandShowcase/);
+  assert.doesNotMatch(subPageCarousel, /isShowcaseSlide/);
+  assert.doesNotMatch(subPageCarousel, /isExpandedShowcasePage/);
+  assert.doesNotMatch(subPageCarousel, /language-diary-ux-showcase\/posture-modes\.html/);
+  assert.doesNotMatch(subPageCarousel, /language-diary-ux-showcase\/index\.html/);
+  assert.match(subPageCarousel, /hasSectionContent\(route,\s*slideIndex\)\s*\?\s*\(/);
+  assert.match(subPageCarousel, /<H5DocContent[\s\S]*slideIndex=\{slideIndex\}/);
 });
 
-test('language diary showcase hides page meta copy so the canvas is not obstructed', () => {
+test('aha page 3 keeps the normal page meta copy around its static image', () => {
   const subPageCarousel = read('src/pages/SubPageCarousel.tsx');
 
-  assert.match(subPageCarousel, /const\s+shouldShowTitleBlock\s*=\s*!isShowcaseSlide\(route,\s*slideIndex\);/);
+  assert.match(subPageCarousel, /const\s+shouldShowTitleBlock\s*=\s*true;/);
   assert.match(subPageCarousel, /\{shouldShowTitleBlock && !shouldScrollTitleBlock && titleBlock\}/);
   assert.match(subPageCarousel, /\{shouldShowTitleBlock && shouldScrollTitleBlock && titleBlock\}/);
 });

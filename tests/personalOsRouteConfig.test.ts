@@ -13,7 +13,7 @@ test('personal os case study is registered under agentic-design-development and 
   const relationsRoutes = HOME_INDEX_SECTIONS.relations.chapters.map((chapter) => chapter.route);
 
   assert.ok(subPage);
-  assert.equal(SLIDE_COUNTS[route], 2);
+  assert.equal(SLIDE_COUNTS[route], 3);
   assert.equal(PAGE_META[route]?.parent, '/agentic-design-development');
   assert.ok(CHAPTER_SUMMARIES[route]);
   assert.equal(relationsRoutes.includes(route), true);

@@ -16,7 +16,7 @@ export const CHAPTER_SUMMARIES: Record<string, string> = {
   '/agentic-design-development/ai-interior-system':
     '把 AI 室内设计从“生成一个房间”改写成“理解一种生活方式”——先建立用户、空间与家具之间的语义结构，再让生成能力进入产品。',
   '/agentic-design-development/personal-os':
-    '把 personal OS 当成一套持续运行的设计方法：上游用 0→1 conductor 判断方向，下游用 product ontology 把判断沉淀成可追溯写回。',
+    '把 personal OS 定义为 right aspects of memory × right aspects of agents 形成的身份切片协调机制，再用两个 skill 展示它如何进入判断与写回。',
   '/agentic-design-development/driving-authority-contracts':
     '座舱不再只是回应指令，而是在默默的注视中，慢慢建立对"你此刻是谁"的理解。',
   '/agentic-design-development/agentic-driving':

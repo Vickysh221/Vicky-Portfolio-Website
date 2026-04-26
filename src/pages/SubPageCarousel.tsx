@@ -30,31 +30,6 @@ const expandedContentFrameStyle: React.CSSProperties = {
   height: '100%',
   margin: '0 auto',
 };
-const showcaseExpandedModalViewportStyle: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: expandedViewportPadding,
-  boxSizing: 'border-box',
-};
-const showcaseExpandedModalFrameStyle: React.CSSProperties = {
-  width: 'min(1680px, calc(100vw - 96px))',
-  height: 'min(940px, calc(100vh - 72px))',
-  maxHeight: 'calc(100vh - 72px)',
-  borderRadius: 28,
-  overflow: 'hidden',
-  border: '1px solid rgba(200,169,110,0.18)',
-  boxShadow: '0 30px 120px rgba(0,0,0,0.46)',
-  background: 'rgba(8,6,4,0.98)',
-};
-function shouldAutoExpandShowcase(route: string, slideIndex: number, isMobile?: boolean) {
-  return !isMobile && route === '/agentic-design-development/aha-moment' && slideIndex === 2;
-}
-function isShowcaseSlide(route: string, slideIndex: number) {
-  return route === '/agentic-design-development/aha-moment' && slideIndex === 2;
-}
 const readingColumnStyle: React.CSSProperties = {
   width: 'min(860px, 100%)',
   margin: '0 auto',
@@ -247,9 +222,8 @@ function SlideContent({
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   const slideLabel = `${romanNumerals[slideIndex] ?? slideIndex + 1} · ${romanNumerals[totalSlides - 1] ?? totalSlides}`;
   const isReadingMode = !!isExpanded && !isMobile;
-  const isExpandedShowcasePage = isReadingMode && isShowcaseSlide(route, slideIndex);
-  const shouldShowTitleBlock = !isShowcaseSlide(route, slideIndex);
-  const shouldScrollTitleBlock = shouldShowTitleBlock && !!isExpanded && !isExpandedShowcasePage;
+  const shouldShowTitleBlock = true;
+  const shouldScrollTitleBlock = shouldShowTitleBlock && !!isExpanded;
 
   useEffect(() => {
     if (!isReadingMode) return;
@@ -259,7 +233,7 @@ function SlideContent({
   const titleBlock = (
     <div
         style={{
-          ...(isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : null),
+          ...(isReadingMode ? readingColumnStyle : null),
           padding: isReadingMode ? '0 0 28px' : isMobile ? '16px 20px 14px' : '24px 28px 20px',
           flexShrink: 0,
         }}
@@ -328,13 +302,13 @@ function SlideContent({
       style={{
         width: '100%',
         height: '100%',
-        background: isExpandedShowcasePage ? 'rgba(8,6,4,0.98)' : isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
+        background: isReadingMode ? 'transparent' : 'rgba(8,6,4,0.96)',
         border: isReadingMode ? 'none' : `1px solid rgba(200,169,110,${isActive ? '0.28' : '0.14'})`,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         fontFamily: "Georgia, 'Times New Roman', serif",
-        overflow: isExpandedShowcasePage ? 'hidden' : isReadingMode ? 'auto' : 'hidden',
+        overflow: isReadingMode ? 'auto' : 'hidden',
         transition: 'border-color 0.4s',
       }}
     >
@@ -364,7 +338,7 @@ function SlideContent({
           alignItems: 'center',
         }}
       >
-        <div style={isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : { width: '100%' }}>
+        <div style={isReadingMode ? readingColumnStyle : { width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
               <BackButton onClick={onBack} label={chromeCopy.back} />
@@ -411,31 +385,14 @@ function SlideContent({
       <div
         style={{
           flex: 1,
-          padding: isExpandedShowcasePage ? 0 : isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
-          overflow: isExpandedShowcasePage ? 'hidden' : isReadingMode ? 'visible' : 'auto',
-          minHeight: isExpandedShowcasePage ? 0 : undefined,
-          display: isExpandedShowcasePage ? 'flex' : undefined,
-          flexDirection: isExpandedShowcasePage ? 'column' : undefined,
-          ...(isReadingMode && !isExpandedShowcasePage ? readingColumnStyle : null),
+          padding: isReadingMode ? '0 0 56px' : isMobile ? '0 20px 20px' : '0 28px 24px',
+          overflow: isReadingMode ? 'visible' : 'auto',
+          ...(isReadingMode ? readingColumnStyle : null),
         }}
         className={isReadingMode ? 'panel-scroll portfolio-scroll h5-reading-view' : 'panel-scroll portfolio-scroll'}
       >
         {shouldShowTitleBlock && shouldScrollTitleBlock && titleBlock}
-        {isExpandedShowcasePage ? (
-          <iframe
-            src="/language-diary-ux-showcase/index.html"
-            title="language-diary-ux-showcase-expanded-default"
-            style={{
-              width: '100%',
-              height: isExpandedShowcasePage ? '100%' : 'calc(100vh - 120px)',
-              minHeight: isExpandedShowcasePage ? 0 : 720,
-              border: 'none',
-              display: 'block',
-              background: '#000',
-              flex: isExpandedShowcasePage ? 1 : undefined,
-            }}
-          />
-        ) : hasSectionContent(route, slideIndex) ? (
+        {hasSectionContent(route, slideIndex) ? (
           <H5DocContent
             route={route}
             accentColor={accentColor}
@@ -542,12 +499,6 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
     const raf = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(raf);
   }, []);
-
-  useEffect(() => {
-    if (shouldAutoExpandShowcase(route, activeIndex, isMobile)) {
-      setIsExpanded(true);
-    }
-  }, [activeIndex, isMobile, route]);
 
   useEffect(() => {
     const initialSlideIndex =
@@ -684,7 +635,6 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
   }
 
   // ── PC Expanded fullscreen overlay (portal) ──
-  const isExpandedShowcaseOverlay = isExpanded && isShowcaseSlide(route, activeIndex);
   const expandedOverlay = isExpanded
     ? createPortal(
         <div
@@ -699,18 +649,15 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
           }}
         >
           <div
-            style={isExpandedShowcaseOverlay
-              ? showcaseExpandedModalViewportStyle
-              : {
-                  width: '100%',
-                  height: '100%',
-                  padding: expandedViewportPadding,
-                  boxSizing: 'border-box',
-                }}
+            style={{
+              width: '100%',
+              height: '100%',
+              padding: expandedViewportPadding,
+              boxSizing: 'border-box',
+            }}
           >
             <div
-              className={isExpandedShowcaseOverlay ? 'showcase-expanded-modal-frame' : undefined}
-              style={isExpandedShowcaseOverlay ? showcaseExpandedModalFrameStyle : expandedContentFrameStyle}
+              style={expandedContentFrameStyle}
             >
               <SlideContent
                 route={route}

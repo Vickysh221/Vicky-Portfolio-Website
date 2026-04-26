@@ -167,7 +167,7 @@ test('agentic storyboard branches into micro-session', () => {
   assert.match(block, /run a 3-step prep/);
 });
 
-test('trace storyboard has three frames with marker dot', () => {
+test('trace storyboard has three frames with inline highlight', () => {
   const html = readShowcase();
   const traceBlock = html.match(/<article class="posture-block" id="posture-trace">[\s\S]*?<\/article>/);
   assert.ok(traceBlock, 'trace block found');
@@ -175,7 +175,9 @@ test('trace storyboard has three frames with marker dot', () => {
   assert.match(block, /class="storyboard-frame-label">A · 捕捉/);
   assert.match(block, /class="storyboard-frame-label">B · 复盘/);
   assert.match(block, /class="storyboard-frame-label">C · 写回/);
-  assert.match(block, /class="aha-marker-dot"/);
+  // Frame A: inline amber highlight replaces marker dot
+  assert.match(block, /<mark[^>]*>inevitable, not loud<\/mark>/);
+  assert.equal(block.includes('class="aha-marker-dot"'), false, 'marker dot should be replaced by inline highlight');
   assert.match(block, /kept from afternoon reading/);
   assert.match(block, /class="rebuttal-pill[^"]*">keep</);
   assert.match(block, /class="rebuttal-pill[^"]*">dismiss</);

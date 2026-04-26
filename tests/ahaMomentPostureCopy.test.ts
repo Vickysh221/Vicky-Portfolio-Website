@@ -97,11 +97,14 @@ test('page-2 drops the legacy six-frontstage-forms card list', () => {
   assert.equal(src.includes('Deferred return card'), false, 'old Deferred return card should be removed');
 });
 
-test('page-3 caption mentions seven postures storyboards', () => {
+test('page-3 temporarily uses the static Aha image instead of the html showcase', () => {
   const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
-  assert.match(src, /language-diary-ux-showcase-cases\.html/);
-  assert.match(src, /精选 case canvas/);
-  assert.match(src, /selected case canvas/i);
+  const block = pageBlock(src, 'Aha Mode 的 Use Case 佐证');
+
+  assert.match(src, /slide03Img01.*\.\.\/images\/aha\/slide03-img01\.png/);
+  assert.match(block, /type:\s*'showcaseImage'/);
+  assert.match(block, /slide03Img01/);
+  assert.doesNotMatch(block, /language-diary-ux-showcase-cases\.html/);
 });
 
 test('page-3 case canvas declares scalable artboards and three case groups', () => {

@@ -26,13 +26,15 @@ test('V1.4 feed-card shows key sentence for target-language challenge', () => {
   assert.match(block, /inevitable, not loud/);
 });
 
-test('Trace Frame A shows source handle and key sentence with marker dot', () => {
+test('Trace Frame A shows key sentence with inline amber highlight', () => {
   const html = readShowcase();
   const article = html.match(/<article class="posture-block" id="posture-trace">[\s\S]*?<\/article>/)![0];
   const frameA = article.match(/storyboard-frame-label">A · 捕捉[\s\S]*?storyboard-arrow/)![0];
   assert.match(frameA, /@英语写作笔记/);
   assert.match(frameA, /inevitable, not loud/);
-  assert.match(frameA, /aha-marker-dot/);
+  // inline highlight replaces marker dot
+  assert.match(frameA, /<mark[^>]*>inevitable, not loud<\/mark>/);
+  assert.equal(frameA.includes('aha-marker-dot'), false, 'marker dot removed in favour of inline highlight');
 });
 
 test('Ambient Frame A top feed-card shows language OS article', () => {

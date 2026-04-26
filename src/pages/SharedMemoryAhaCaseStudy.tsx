@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 
+import slide03Img01 from '../images/aha/slide03-img01.png';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import type { LocalizedText } from '../i18n/types.ts';
 import { hasSharedMemoryAhaCaseStudy } from './sharedMemoryAhaCaseStudyMeta.ts';
@@ -27,6 +28,13 @@ type ContentBlock =
       title: LocalizedText;
       caption: LocalizedText;
       src: string;
+    }
+  | {
+      type: 'showcaseImage';
+      title: LocalizedText;
+      caption: LocalizedText;
+      src: string;
+      alt: LocalizedText;
     };
 
 type SharedMemoryAhaPage = {
@@ -227,13 +235,17 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
     ),
     leadContentBlocks: [
       {
-        type: 'showcaseEmbed',
+        type: 'showcaseImage',
         title: t('精选 case canvas', 'Selected case canvas'),
         caption: t(
           '上方 canvas 把完整 UX showcase 收束为三组 use case：用户递交、情境感知、回访与转化。',
           'The canvas above condenses the full UX showcase into three use-case groups: user handoff, context-aware Aha, and return/transformation.',
         ),
-        src: '/language-diary-ux-showcase-cases.html',
+        src: slide03Img01,
+        alt: t(
+          'Aha Mode 第三页静态展示图',
+          'Static presentation image for the third Aha Mode page',
+        ),
       },
     ],
     contentBlocks: [
@@ -338,6 +350,17 @@ function embedFrameStyle(): CSSProperties {
   };
 }
 
+function imageFrameStyle(): CSSProperties {
+  return {
+    width: '100%',
+    borderRadius: 16,
+    overflow: 'hidden',
+    border: '1px solid rgba(200,169,110,0.12)',
+    background: '#000',
+    marginTop: 12,
+  };
+}
+
 function IntroReveal({
   pageTitle,
   pageGoal,
@@ -406,20 +429,40 @@ function renderContentBlock(block: ContentBlock, accentColor: string, text: (val
     );
   }
 
+  if (block.type === 'showcaseEmbed') {
+    return (
+      <div style={{ ...panelStyle(), padding: 12 }}>
+        <div style={sectionLabelStyle(accentColor)}>{text(block.title)}</div>
+        <div style={{ color: '#8f7d61', fontSize: 13, lineHeight: 1.7 }}>{text(block.caption)}</div>
+        <div style={embedFrameStyle()}>
+          <iframe
+            src={block.src}
+            title="shared-memory-aha-showcase"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              display: 'block',
+              background: '#000',
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ ...panelStyle(), padding: 12 }}>
       <div style={sectionLabelStyle(accentColor)}>{text(block.title)}</div>
       <div style={{ color: '#8f7d61', fontSize: 13, lineHeight: 1.7 }}>{text(block.caption)}</div>
-      <div style={embedFrameStyle()}>
-        <iframe
+      <div style={imageFrameStyle()}>
+        <img
           src={block.src}
-          title="shared-memory-aha-showcase"
+          alt={text(block.alt)}
           style={{
             width: '100%',
-            height: '100%',
-            border: 'none',
+            height: 'auto',
             display: 'block',
-            background: '#000',
           }}
         />
       </div>
