@@ -1,6 +1,7 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 import gestureSlide01Image03 from '../images/gesture/slide01-img03.png';
 import gestureSlide01Image04 from '../images/gesture/slide01-img04.png';
 import gestureSlide01Image05 from '../images/gesture/slide01-img05.png';
@@ -8,10 +9,11 @@ import gestureSlide01Image06 from '../images/gesture/slide01-img06.png';
 
 export function get3dMapGestureSlide01Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/3d-map-gesture', accentColor),
     {
       id: '3d-map-gesture-design',
       numeral: '01',
-      title: '3D Map Gesture Interaction Design',
+      title: '共享视角：映射 3D 地图手势',
       blocks: [
         <>
           <p style={paragraphStyle()}>

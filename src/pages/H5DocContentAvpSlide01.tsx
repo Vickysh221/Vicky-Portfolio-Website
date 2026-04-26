@@ -2,6 +2,7 @@ import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle, ListItem } from './h5Styles';
 import { ImageWithStatus, VideoWithStatus } from '../components/MediaWithStatus';
 import Anchor from '../components/agents/Anchor';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 import avpSlide01Image01 from '../images/avp/slide01-img01.jpg';
 import avpSlide01Image00 from '../images/avp/slide01-img00.png';
 import avpSlide01Image02 from '../images/avp/slide01-img02.png';
@@ -12,10 +13,11 @@ import avpSlide01Video02 from '../images/avp/slide01-vid02.mov';
 
 export function getAvpSlide1Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/avp', accentColor),
     {
       id: 'project-overview',
       numeral: '01',
-      title: '项目概述',
+      title: 'AVP 协作模型：管理学习泊车流程',
       blocks: [
         <>
           <div style={{ marginBottom: '26px', textAlign: 'left' }}>

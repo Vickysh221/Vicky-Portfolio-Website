@@ -12,11 +12,11 @@ const companionsPreviewPoster = new URL('./images/covers/previews/companions-dan
 const unityCameraPreview = new URL('./images/covers/thumbs/cover-cam.jpg', import.meta.url).href;
 const map3d2dPreview = new URL('./images/covers/previews/2d3d-preview.mp4', import.meta.url).href;
 const map3d2dPreviewPoster = new URL('./images/covers/previews/2d3d-poster.jpg', import.meta.url).href;
+const jiduAttentionOntologyPreview = new URL('./images/covers/thumbs/cover-jidu-attention-ontology.png', import.meta.url).href;
+const jiduResponsibilityLanguagePreview = new URL('./images/covers/thumbs/cover-jidu-responsibility-language.png', import.meta.url).href;
 const avpPreview = new URL('./images/covers/thumbs/cover-avp.jpg', import.meta.url).href;
-const dashboardPreview = new URL('./images/covers/thumbs/cover-drv.jpg', import.meta.url).href;
 const slamPreview = new URL('./images/covers/thumbs/cover-slam.jpg', import.meta.url).href;
 const gesturePreview = new URL('./images/covers/thumbs/cover-gesture.jpg', import.meta.url).href;
-const activeSafetyPreview = new URL('./images/covers/thumbs/cover-components.jpg', import.meta.url).href;
 const interiorPreview = new URL('./images/covers/thumbs/cover-interior.jpg', import.meta.url).href;
 
 export interface SubPagePreviewMedia {
@@ -170,45 +170,66 @@ export const PROJECTS: ProjectEntry[] = [
     subPages: [
       {
         route: '/jidu-hmi/unity3d-camera',
-        label: { zh: '3D地图一镜到底系统', en: 'Continuous 3D Map Camera System' },
+        label: {
+          zh: '共驾地图：以一镜到底串联场景',
+          en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
+        },
         numeral: 'I',
         previewMedia: { src: unityCameraPreview, type: 'image' },
       },
       {
         route: '/jidu-hmi/3d-map',
-        label: { zh: '2/3D地图融合策略概念', en: '2D/3D Map Fusion Strategy Concept' },
+        label: {
+          zh: '机器世界模型：把环境理解推到前台',
+          en: 'Machine World Model: Bringing Environmental Understanding to the Frontstage',
+        },
         numeral: 'II',
         previewMedia: { src: map3d2dPreview, type: 'video', poster: map3d2dPreviewPoster },
       },
       {
-        route: '/jidu-hmi/avp',
-        label: { zh: 'AVP自动泊车体设计和原型开发', en: 'AVP Product Design and Prototype Development' },
+        route: '/jidu-hmi/3d-map-driving-component-states',
+        label: {
+          zh: '注意力本体：用线、块、点翻译机器认知',
+          en: 'Attention Ontology: Translating Machine Cognition Into Lines, Blocks, and Points',
+        },
         numeral: 'III',
-        previewMedia: { src: avpPreview, type: 'image' },
+        previewMedia: { src: jiduAttentionOntologyPreview, type: 'image' },
       },
       {
         route: '/jidu-hmi/dashboard-layout',
-        label: { zh: '驾驶区布局和驾驶状态原型设计', en: 'Driving-Zone Layout and Driving-State Prototype Design' },
+        label: {
+          zh: '责任语言：说明谁主导、何时接管',
+          en: 'Responsibility Language: Showing Who Leads and When to Take Over',
+        },
         numeral: 'IV',
-        previewMedia: { src: dashboardPreview, type: 'image' },
+        previewMedia: { src: jiduResponsibilityLanguagePreview, type: 'image' },
       },
       {
-        route: '/jidu-hmi/minimap-camera',
-        label: { zh: 'SLAM小地图策略', en: 'SLAM Minimap Strategy' },
+        route: '/jidu-hmi/avp',
+        label: {
+          zh: 'AVP 协作模型：在机器执行中保留人的判断',
+          en: 'AVP Collaboration Model: Keeping Human Judgment Inside Machine Execution',
+        },
         numeral: 'V',
-        previewMedia: { src: slamPreview, type: 'image' },
+        previewMedia: { src: avpPreview, type: 'image' },
       },
       {
         route: '/jidu-hmi/3d-map-gesture',
-        label: { zh: '3D地图手势系统', en: '3D Map Gesture System' },
+        label: {
+          zh: '共享视角：让人进入机器的观察方式',
+          en: "Shared Perspective: Letting the Human Enter the Machine's View",
+        },
         numeral: 'VI',
         previewMedia: { src: gesturePreview, type: 'image' },
       },
       {
-        route: '/jidu-hmi/3d-map-driving-component-states',
-        label: { zh: '3D地图和驾驶组件状态设计', en: '3D Map and Driving Component State Design' },
+        route: '/jidu-hmi/minimap-camera',
+        label: {
+          zh: '空间证据：用 SLAM 小地图确认局部环境',
+          en: 'Spatial Evidence: Confirming Local Context Through the SLAM Minimap',
+        },
         numeral: 'VII',
-        previewMedia: { src: activeSafetyPreview, type: 'image' },
+        previewMedia: { src: slamPreview, type: 'image' },
       },
     ],
   },

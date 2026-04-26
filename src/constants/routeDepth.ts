@@ -5,11 +5,11 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/jidu-hmi": -1000,
   "/jidu-hmi/unity3d-camera": -2000,
   "/jidu-hmi/3d-map": -3000,
-  "/jidu-hmi/avp": -4000,
+  "/jidu-hmi/3d-map-driving-component-states": -4000,
   "/jidu-hmi/dashboard-layout": -5000,
-  "/jidu-hmi/minimap-camera": -6000,
+  "/jidu-hmi/avp": -6000,
   "/jidu-hmi/3d-map-gesture": -7000,
-  "/jidu-hmi/3d-map-driving-component-states": -8000,
+  "/jidu-hmi/minimap-camera": -8000,
   "/web-design-develop": -8000,
   "/web-design-develop/overview": -9000,
   "/web-design-develop/component-framework": -10000,
@@ -36,11 +36,11 @@ export const ROUTE_DEPTH: Record<string, number> = {
 export const SLIDE_COUNTS: Record<string, number> = {
   '/jidu-hmi/unity3d-camera': 4,
   '/jidu-hmi/3d-map': 4,
-  '/jidu-hmi/avp': 1,
-  '/jidu-hmi/dashboard-layout': 1,
-  '/jidu-hmi/minimap-camera': 1,
-  '/jidu-hmi/3d-map-gesture': 1,
   '/jidu-hmi/3d-map-driving-component-states': 3,
+  '/jidu-hmi/dashboard-layout': 1,
+  '/jidu-hmi/avp': 1,
+  '/jidu-hmi/3d-map-gesture': 1,
+  '/jidu-hmi/minimap-camera': 1,
 
   '/web-design-develop/overview': 1,
   '/web-design-develop/component-framework': 1,
@@ -90,17 +90,69 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#c8a96e",
     subPages: [
-      { route: "/jidu-hmi/unity3d-camera", label: { zh: '3D地图一镜到底系统', en: 'Continuous 3D Map Camera System' }, numeral: "I" },
-      { route: "/jidu-hmi/3d-map", label: { zh: '2/3D地图融合策略概念', en: '2D/3D Map Fusion Strategy Concept' }, numeral: "II" },
-      { route: "/jidu-hmi/avp", label: { zh: 'AVP自动泊车体设计和原型开发', en: 'AVP Product Design and Prototype Development' }, numeral: "III" },
-      { route: "/jidu-hmi/dashboard-layout", label: { zh: '驾驶区布局和驾驶状态原型设计', en: 'Driving-Zone Layout and Driving-State Prototype Design' }, numeral: "IV" },
-      { route: "/jidu-hmi/minimap-camera", label: { zh: 'SLAM小地图策略', en: 'SLAM Minimap Strategy' }, numeral: "V" },
-      { route: "/jidu-hmi/3d-map-gesture", label: { zh: '3D地图手势系统', en: '3D Map Gesture System' }, numeral: "VI" },
-      { route: "/jidu-hmi/3d-map-driving-component-states", label: { zh: '3D地图和驾驶组件状态设计', en: '3D Map and Driving Component State Design' }, numeral: "VII" },
+      {
+        route: "/jidu-hmi/unity3d-camera",
+        label: {
+          zh: '共驾地图：以一镜到底串联场景',
+          en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
+        },
+        numeral: "I",
+      },
+      {
+        route: "/jidu-hmi/3d-map",
+        label: {
+          zh: '机器世界模型：把环境理解推到前台',
+          en: 'Machine World Model: Bringing Environmental Understanding to the Frontstage',
+        },
+        numeral: "II",
+      },
+      {
+        route: "/jidu-hmi/3d-map-driving-component-states",
+        label: {
+          zh: '注意力本体：用线、块、点翻译机器认知',
+          en: 'Attention Ontology: Translating Machine Cognition Into Lines, Blocks, and Points',
+        },
+        numeral: "III",
+      },
+      {
+        route: "/jidu-hmi/dashboard-layout",
+        label: {
+          zh: '责任语言：说明谁主导、何时接管',
+          en: 'Responsibility Language: Showing Who Leads and When to Take Over',
+        },
+        numeral: "IV",
+      },
+      {
+        route: "/jidu-hmi/avp",
+        label: {
+          zh: 'AVP 协作模型：在机器执行中保留人的判断',
+          en: 'AVP Collaboration Model: Keeping Human Judgment Inside Machine Execution',
+        },
+        numeral: "V",
+      },
+      {
+        route: "/jidu-hmi/3d-map-gesture",
+        label: {
+          zh: '共享视角：让人进入机器的观察方式',
+          en: "Shared Perspective: Letting the Human Enter the Machine's View",
+        },
+        numeral: "VI",
+      },
+      {
+        route: "/jidu-hmi/minimap-camera",
+        label: {
+          zh: '空间证据：用 SLAM 小地图确认局部环境',
+          en: 'Spatial Evidence: Confirming Local Context Through the SLAM Minimap',
+        },
+        numeral: "VII",
+      },
     ],
   },
   "/jidu-hmi/unity3d-camera": {
-    title: { zh: '3D地图一镜到底系统', en: 'Continuous 3D Map Camera System' },
+    title: {
+      zh: '共驾地图：以一镜到底串联场景',
+      en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
+    },
     subtitle: { zh: 'JIDU HMI · Camera Architecture', en: 'JIDU HMI · Camera Architecture' },
     year: "2022–2024",
     desc: {
@@ -111,7 +163,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/3d-map": {
-    title: { zh: '2/3D地图融合策略概念', en: '2D/3D Map Fusion Strategy Concept' },
+    title: {
+      zh: '机器世界模型：把环境理解推到前台',
+      en: 'Machine World Model: Bringing Environmental Understanding to the Frontstage',
+    },
     subtitle: { zh: 'JIDU HMI · Map Design', en: 'JIDU HMI · Map Design' },
     year: "2022–2024",
     desc: {
@@ -122,7 +177,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/avp": {
-    title: { zh: 'AVP自动泊车体设计和原型开发', en: 'AVP Product Design and Prototype Development' },
+    title: {
+      zh: 'AVP 协作模型：在机器执行中保留人的判断',
+      en: 'AVP Collaboration Model: Keeping Human Judgment Inside Machine Execution',
+    },
     subtitle: { zh: 'JIDU HMI · Low-Speed ADAS', en: 'JIDU HMI · Low-Speed ADAS' },
     year: "2022–2024",
     desc: {
@@ -133,7 +191,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/dashboard-layout": {
-    title: { zh: '驾驶区布局和驾驶状态原型设计', en: 'Driving-Zone Layout and Driving-State Prototype Design' },
+    title: {
+      zh: '责任语言：说明谁主导、何时接管',
+      en: 'Responsibility Language: Showing Who Leads and When to Take Over',
+    },
     subtitle: { zh: 'JIDU HMI · Dashboard Layout', en: 'JIDU HMI · Dashboard Layout' },
     year: "2022–2024",
     desc: {
@@ -144,7 +205,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/minimap-camera": {
-    title: { zh: 'SLAM小地图策略', en: 'SLAM Minimap Strategy' },
+    title: {
+      zh: '空间证据：用 SLAM 小地图确认局部环境',
+      en: 'Spatial Evidence: Confirming Local Context Through the SLAM Minimap',
+    },
     subtitle: { zh: 'JIDU HMI · Map UI', en: 'JIDU HMI · Map UI' },
     year: "2022–2024",
     desc: {
@@ -155,7 +219,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/3d-map-gesture": {
-    title: { zh: '3D地图手势系统', en: '3D Map Gesture System' },
+    title: {
+      zh: '共享视角：让人进入机器的观察方式',
+      en: "Shared Perspective: Letting the Human Enter the Machine's View",
+    },
     subtitle: { zh: 'JIDU HMI · Interaction Design', en: 'JIDU HMI · Interaction Design' },
     year: "2022–2024",
     desc: {
@@ -166,7 +233,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     color: "#c8a96e",
   },
   "/jidu-hmi/3d-map-driving-component-states": {
-    title: { zh: '3D地图和驾驶组件状态设计', en: '3D Map and Driving Component State Design' },
+    title: {
+      zh: '注意力本体：用线、块、点翻译机器认知',
+      en: 'Attention Ontology: Translating Machine Cognition Into Lines, Blocks, and Points',
+    },
     subtitle: { zh: 'JIDU HMI · Component State Design', en: 'JIDU HMI · Component State Design' },
     year: "2022–2024",
     desc: {

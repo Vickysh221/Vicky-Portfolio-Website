@@ -1,6 +1,7 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, mediaBlockStyle, h2Style } from './h5Styles';
 import { ImageWithStatus } from '../components/MediaWithStatus';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 import slamSlide01Image01 from '../images/slam/slide01-img01.png';
 import slamSlide01Image02 from '../images/slam/slide01-img02.png';
 import slamSlide01Image03 from '../images/slam/slide01-img03.png';
@@ -9,10 +10,11 @@ import slamSlide01Image05 from '../images/slam/slide01-img05.png';
 
 export function getMinimapCameraSlide01Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/minimap-camera', accentColor),
     {
       id: 'slam-concept',
       numeral: '01',
-      title: 'SLAM minimap concept and layout',
+      title: '空间证据：建立 SLAM 小地图布局',
       blocks: [
         <>
           <p style={paragraphStyle()}>

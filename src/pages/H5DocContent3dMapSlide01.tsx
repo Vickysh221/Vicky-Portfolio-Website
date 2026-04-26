@@ -1,12 +1,14 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, ListItem } from './h5Styles';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 
 export function get3dMapSlide1Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/3d-map', accentColor),
     {
       id: 'project-background',
       numeral: '01',
-      title: '项目目标和背景',
+      title: '机器世界模型：统一多源驾驶事件',
       blocks: [
         <>
           <p style={paragraphStyle()}>

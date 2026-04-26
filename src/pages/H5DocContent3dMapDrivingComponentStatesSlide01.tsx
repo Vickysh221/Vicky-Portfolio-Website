@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { ImageWithStatus } from '../components/MediaWithStatus';
 import type { SectionData } from './H5DocContentSlideFactory';
 import { h2Style, mediaBlockStyle, paragraphStyle } from './h5Styles';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 import speedLimitSign01 from '../images/地图和仪表元素设计/限速标识 1.png';
 import speedLimitSign02 from '../images/地图和仪表元素设计/限速标识 2.png';
 import experienceLimitAdjust from '../images/地图和仪表元素设计/经验限速和手动自动调节.png';
@@ -28,10 +29,11 @@ function stackedMediaStyle(): CSSProperties {
 
 export function get3dMapDrivingComponentStatesSlide01Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/3d-map-driving-component-states', accentColor),
     {
       id: '3d-map-driving-component-states-speed-limit',
       numeral: '01',
-      title: 'Speed Limit Sign State Design',
+      title: '注意力本体：定义驾驶组件状态',
       blocks: [
         <>
           <p style={paragraphStyle()}>

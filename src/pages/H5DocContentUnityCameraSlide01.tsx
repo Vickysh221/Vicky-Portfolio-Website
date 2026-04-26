@@ -1,14 +1,16 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style } from './h5Styles';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 
 
 
 export function getUnitySections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/unity3d-camera', accentColor),
     {
       id: 'goal',
       numeral: '01',
-      title: '总览',
+      title: '共驾地图：定义多事件主视图',
       blocks: [
         <>
           <h2 style={h2Style(accentColor)}><span style={{ width: 3, height: 12, borderRadius: 2, background: accentColor }} />系统目标</h2>

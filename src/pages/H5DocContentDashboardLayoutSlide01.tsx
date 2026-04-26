@@ -1,6 +1,7 @@
 import type { SectionData } from './H5DocContentSlideFactory';
 import { paragraphStyle, h2Style, mediaBlockStyle } from './h5Styles';
 import { ImageWithStatus, VideoWithStatus } from '../components/MediaWithStatus';
+import { createJiduNarrativeCoverSection } from './jiduHmiNarrativeCover';
 import dashboardLayoutVideo01 from '../images/dashboard layout/slide01-vid01.mov';
 import dashboardLayoutImage01 from '../images/dashboard layout/U-LEFT.png';
 import dashboardLayoutImage02 from '../images/dashboard layout/O-LEFT.png';
@@ -8,10 +9,11 @@ import dashboardLayoutImage03 from '../images/dashboard layout/O-MID.png';
 
 export function getDashboardLayoutSlide01Sections(accentColor: string): SectionData[] {
   return [
+    createJiduNarrativeCoverSection('/jidu-hmi/dashboard-layout', accentColor),
     {
       id: 'dashboard-layout-prototype',
       numeral: '01',
-      title: '驾驶区布局和驾驶状态原型设计',
+      title: '责任语言：组织驾驶区状态信息',
       blocks: [
         <>
           <p style={paragraphStyle()}>
