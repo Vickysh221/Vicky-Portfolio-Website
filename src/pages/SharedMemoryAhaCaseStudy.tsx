@@ -52,29 +52,43 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
       'Shared-Memory Aha Moments for Language Learning',
     ),
     pageGoal: t(
-      '我在设计的不是一个语言 app，而是一个能在你一天里穿过不同 app 出现的 agent。语言学习，只是它第一次被严肃验证的场景。',
-      'I am not designing a language app. I am designing an agent that can appear across different apps throughout your day. Language learning is simply the first scenario where this has been seriously tested.',
+      '我把 Personal OS 理解为一种选择机制。它让系统在具体场景里选择合适的记忆、合适的 agent 姿态和合适的前台介入方式。Aha Moment 是我用语言学习验证这个机制的第一块切片。',
+      'I understand Personal OS as a selection mechanism. It helps the system choose the right memory, the right agent posture, and the right frontstage intervention for a specific moment. Aha Moment is my first language-learning slice for testing that mechanism.',
     ),
     mainCopy: t(
-      '最尖锐的语言学习时刻往往不在语言 app 里——它在你读一篇文章时、在你给朋友写回复时、在你为一段话反复改词却说不准语气时。那些时刻里，一个应用内的“practice”根本来不及。真正有价值的 agent 必须在那里，用你的记忆接你。',
-      'The sharpest language-learning moments rarely happen inside a language app — they happen when you are reading an article, drafting a reply to a friend, or stuck on a phrasing that does not quite carry the tone you meant. An in-app practice flow cannot reach those moments. An agent that matters has to be there, with your memory, ready to meet you.',
+      '语言学习让我第一次看见这个问题。用户真正卡住的时刻常常不在学习 app 里。用户可能在读一篇文章。用户也可能在写一条 Slack 回复。系统如果只看当前页面，它只能给出翻译或语法建议。系统如果带着共享记忆出现，它可以判断这句话为什么和用户有关。',
+      'Language learning made this problem visible to me first. The moment when a user truly gets stuck often happens outside a learning app. The user may be reading an article. The user may be writing a Slack reply. If the system only sees the current page, it can only offer translation or grammar help. If the system arrives with shared memory, it can judge why a sentence matters to that user.',
     ),
     contentBlocks: [
       {
         type: 'shortParagraphs',
-        title: t('场景一 · 阅读时撞上“你一直想说却说不出”的那句', 'Scene 1 · Reading and hitting the exact phrase you could never quite say'),
+        title: t('从 Personal OS 到 Aha Moment', 'From Personal OS to Aha Moment'),
         items: [
           t(
-            '你在小红书刷到一条 caption。里面有一句：“I want my work to feel inevitable, not loud.” 你愣了两秒——这恰好是你在 portfolio 里这两周反复改的那一段一直在试着表达的意思。你之前写的所有句子都没到位。',
-            'You scroll past a caption on social media and something stops you: “I want my work to feel inevitable, not loud.” For two seconds you just sit with it — this is exactly what you have been trying to say in your portfolio drafts for the past two weeks. None of your sentences landed right.',
+            'Personal OS 在这里不是一个总入口。Personal OS 是一套判断框架。这个框架关心三个问题。系统应该调用哪一部分用户记忆？系统应该调用哪一部分语言学习记忆？agent 应该用什么姿态进入当前场景？',
+            'Personal OS is not a single entry point here. Personal OS is a judgment framework. This framework asks three questions. Which part of user memory should the system call? Which part of language-learning memory should the system call? Which agent posture should enter the current scene?',
           ),
           t(
-            '这一刻你真正需要的不是把这个句子加进生词本，不是看一段语法解释——而是有人注意到“这句对你有意义，因为它精准接住了你最近没说清的那个意思”，然后安静地把它留下，晚上还能和你的 portfolio 草稿一起召回。',
-            'What you actually need is not a vocabulary card or a grammar note. You need someone to notice that this sentence matters to you — because it precisely catches the meaning you could not get out — and to quietly hold onto it so it can come back alongside your draft tonight.',
+            'Aha Moment 把这些问题压缩到一个很小的时刻。用户没有打开课程。用户只是遇到一句话，或者写不出一个语气。agent 需要判断这个片段是否值得被打亮。agent 还需要判断自己是否应该出现。',
+            'Aha Moment compresses those questions into one small moment. The user has not opened a course. The user has simply met a sentence or failed to find a tone. The agent needs to judge whether this fragment deserves attention. The agent also needs to judge whether it should appear at all.',
+          ),
+        ],
+      },
+      {
+        type: 'shortParagraphs',
+        title: t('场景一 · 阅读时撞上“你一直想说却说不出”的那句', 'Scene 1 · Reading and meeting the sentence you could not say'),
+        items: [
+          t(
+            '你在小红书看到一句英文 caption。那句话写着：“I want my work to feel inevitable, not loud.” 你停了两秒。这个句子正好说出了你最近在作品集里反复修改的意思。',
+            'You see an English caption on social media. The sentence says, “I want my work to feel inevitable, not loud.” You pause for two seconds. This sentence says exactly what you have been trying to express in your portfolio drafts.',
           ),
           t(
-            '这件事不可能在一个 language app 里发生。你不在 language app 里——你在小红书。“这句为什么对你有意义”这个判断，依赖的是另一个 app 里你的写作痕迹。没有跨 app 的共享记忆，系统只能把它当一个好看的句子。',
-            'This cannot happen inside a language app. You are not in a language app; you are on social media. Knowing why that sentence matters to you depends on evidence from another app entirely — your writing. Without shared memory across apps, the system can only see it as a pretty sentence.',
+            '普通 language app 会把它当作一个好句子。共享记忆系统会把它连回你的作品集草稿。系统会知道这个句子不是泛用素材。系统会知道它正在帮你找回一个还没说清的表达。',
+            'A normal language app would treat it as a good sentence. A shared-memory system would connect it back to your portfolio draft. The system would know that this sentence is not generic material. The system would know that it helps you recover an expression you have not yet clarified.',
+          ),
+          t(
+            '这个判断需要两种记忆。一般用户记忆保存你的项目和表达偏好。语言学习记忆保存你正在练的语气、句式和表达目标。Aha Moment 发生在这两种记忆接上的那一秒。',
+            'This judgment needs two kinds of memory. General user memory holds your projects and expression preferences. Language-learning memory holds the tones, sentence patterns, and expression goals you are practicing. Aha Moment happens in the second when those two memories connect.',
           ),
         ],
       },
@@ -83,46 +97,50 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         title: t('场景二 · 回复时在两种说法之间犹豫', 'Scene 2 · Drafting a reply and stuck between two phrasings'),
         items: [
           t(
-            '你在 Slack 给一个英文母语的同事写消息。你想表达“我对这个方案有保留，但不想显得在挑刺”。写到第二句卡住——一种说法太硬，另一种太绕，两个你都不满意。',
-            'You are writing a Slack message to an English-speaking colleague. You want to say that you have reservations about a proposal but you do not want to come across as picking a fight. You get stuck at the second sentence — one phrasing is too blunt, the other too convoluted, and neither feels right.',
+            '你在 Slack 给一位英文母语的同事写消息。你想表达自己对方案有保留。你不想显得像在挑刺。你写到第二句时卡住了。一种说法太硬。另一种说法太绕。',
+            'You write a Slack message to an English-speaking colleague. You want to express reservations about a proposal. You do not want to sound like you are picking a fight. You get stuck on the second sentence. One phrasing feels too blunt. Another phrasing feels too indirect.',
           ),
           t(
-            '你真正需要的不是翻译插件，也不是语法正确的三个候选——三个可能都对，但都不像“你”。你需要 agent 知道你和这个同事的关系调子、知道你在英语里一直想练的那个气质，给出的版本是“哪一个更像你想成为的那个表达者”，而不只是“哪一个语法没问题”。',
-            'A translation plugin is not what you need, nor are three grammatically correct options — any one of them might be perfectly correct but none of them sounds like you. You need the agent to know the tone of your relationship with this person, to know the quality of expression you have been working toward in English, and to offer a version that is closer to the writer you are trying to become rather than the one with the fewest errors.',
+            '语法插件会给三个正确版本。Personal OS 视角下的 agent 会先判断关系、身份和表达目标。它会问：哪个版本更像你想成为的表达者？',
+            'A grammar tool would offer three correct versions. An agent shaped by a Personal OS view would first judge relationship, identity, and expression goals. It would ask which version sounds closer to the speaker you are trying to become.',
           ),
           t(
-            '这同样不可能在一个 language app 里发生。关系调子的判断在聊天记录里，语气偏好的积累在过去的写作痕迹里。没有跨 app 的连续人格，agent 的建议只能落到语法对错这种平庸层。',
-            'This also cannot happen inside a language app. Relationship tone lives in your chat history. Stylistic preference accumulates across your writing. Without a continuous persona across apps, the agent’s suggestions can only reach the level of correctness, not character.',
+            '系统不应该每次都跳出来。系统需要计算打断成本。系统也需要保留用户反驳和忽略的权利。',
+            'The system should not jump in every time. The system needs to calculate interruption cost. The system also needs to preserve the user’s right to reject or ignore it.',
           ),
         ],
       },
       {
         type: 'comparisonCards',
-        title: t('如果只是一个 language app，vs. 这两个场景说明的', 'If this were just a language app, vs. what these two scenes reveal'),
+        title: t('这个项目验证的机制', 'The mechanism this project tests'),
         items: [
           {
-            title: t('如果只是一个 language app', 'If this were just a language app'),
+            title: t('不是 language app 变聪明', 'This is not just a smarter language app'),
             body: t(
-              '用户主动打开才学习 · 一套学习记忆 · 单个 app 边界内 · 弹出提示 = 服务',
-              'Learning only when the user opens it · One set of learning memory · Bounded within a single app · Pop-up = service',
+              '用户不是只在打开课程时学习。用户在生活流里遇到表达问题。单个 app 不能完整理解这个时刻。',
+              'The user does not learn only after opening a course. The user meets expression problems inside the flow of life. A single app cannot fully understand that moment.',
             ),
           },
           {
-            title: t('这两个场景告诉我的', 'What these two scenes reveal'),
+            title: t('这是 Personal OS 的一个前台切片', 'This is one frontstage slice of Personal OS'),
             body: t(
-              '有价值的时刻不在 app 里 · 两类共生记忆（你是谁 + 你在练什么）· 跨 app 同一个 agent + 同一份理解 · 克制本身是设计',
-              'The valuable moments happen outside any app · Two coexisting memory types (who you are + what you are practicing) · Same agent across apps with the same understanding · Restraint is the design',
+              '同一个 agent 带着共享记忆进入多个场景。系统把一般用户记忆和语言学习记忆分开使用。界面只在高价值时刻进入前台。',
+              'The same agent enters multiple scenes with shared memory. The system uses general user memory and language-learning memory separately. The interface enters the foreground only at high-value moments.',
             ),
           },
         ],
       },
       {
         type: 'shortParagraphs',
-        title: t('这是这个项目真正的设计对象', 'This is what this project is actually designing'),
+        title: t('这个项目的设计对象', 'The design object of this project'),
         items: [
           t(
-            '所以这不是“更聪明的语言 app”。当我开始严肃对待这些时刻里 agent 应该交付什么价值，我发现我实际在设计一个跨 app 的、有连续记忆的、有边界感的 agent。语言学习只是它第一次被验证的场景——因为语言学习是少数几个“必须发生在生活流里”的能力。',
-            'So this is not a smarter language app. When I began seriously asking what value an agent should deliver in those moments, I found I was designing a cross-app agent with continuous memory and a genuine sense of what it should and should not do. Language learning is simply the first scenario where this was put to the test — because language learning is one of the few capabilities that must happen inside the flow of life.',
+            '这个项目真正设计的是一个判断链。系统先识别 moment。系统再查找相关记忆。系统随后选择介入强度。用户最后决定是否接受、保存或继续展开。',
+            'This project designs a judgment chain. The system first identifies a moment. The system then retrieves related memory. The system then chooses an intervention strength. The user finally decides whether to accept it, save it, or continue with it.',
+          ),
+          t(
+            '语言学习是这个判断链的第一种验证场景。语言学习天然发生在阅读、写作和关系沟通里。它逼迫系统从 app 边界转向生活流。',
+            'Language learning is the first validation scene for this judgment chain. Language learning naturally happens in reading, writing, and relationship communication. It forces the system to move from app boundaries into the flow of life.',
           ),
         ],
       },
@@ -131,8 +149,12 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
         title: t('这一版叙事的来路', 'How this framing came to be'),
         items: [
           t(
-            'v1.0 以为在做 ritual companion。v2.0 意识到核心是 memory orchestration。v3.0 才看清：我设计的对象不是语言 app，而是一个 agent——memory orchestration 是它的内脏，Aha Moment 是它最锋利的前台接口。这一页是 v3.0 的开场。',
-            'v1.0 framing: a ritual companion. v2.0 reframe: the core is memory orchestration. v3.0 clarity: what I am designing is not a language app but an agent — memory orchestration is its internal logic, and Aha Moment is its sharpest frontstage expression. This page is where v3.0 begins.',
+            'v1.0 把 Language Diary 看成 ritual companion。v2.0 把核心推进到 memory orchestration。v3.0 把 Aha Moment 放回 Personal OS 的方法框架里。',
+            'v1.0 treated Language Diary as a ritual companion. v2.0 moved the core toward memory orchestration. v3.0 places Aha Moment back inside the method framework of Personal OS.',
+          ),
+          t(
+            'Personal OS 提供问题意识。共享记忆提供系统能力。Aha Moment 提供前台证据。这个项目因此从一个学习 app 案例，变成一个 cross-app agent 的验证切片。',
+            'Personal OS provides the problem lens. Shared memory provides the system capability. Aha Moment provides the frontstage evidence. This project therefore moves from a learning-app case into a validation slice for a cross-app agent.',
           ),
         ],
       },
