@@ -33,12 +33,26 @@ type TerminalHighlightContent = {
   tags?: LocalizedText[];
 };
 
+type MemoryArchitectureLayer = {
+  label: LocalizedText;
+  body: LocalizedText;
+};
+
+type WorkspaceMemorySection = {
+  eyebrow: LocalizedText;
+  title: LocalizedText;
+  body: LocalizedText;
+  layers: MemoryArchitectureLayer[];
+  bodyAppendix: LocalizedText;
+};
+
 type PersonalOSPage = {
   skillName: string;
   pageTitle: LocalizedText;
   pageGoal?: LocalizedText;
   mainCopy: LocalizedText;
   terminalHighlight?: TerminalHighlightContent;
+  workspaceMemorySection?: WorkspaceMemorySection;
   insightCards?: InsightCard[];
   fewShotTitle?: LocalizedText;
   fewShotScenario?: LocalizedText;
@@ -71,6 +85,58 @@ const personalOsPages: PersonalOSPage[] = [
         t('agents', 'agents'),
         t('coordination', 'coordination'),
       ],
+    },
+    workspaceMemorySection: {
+      eyebrow: t('memory os / knowledge base', 'memory os / knowledge base'),
+      title: t(
+        'Memory OS 想法与 shared 知识库架构',
+        'Memory OS Thinking and the shared Knowledge Base Architecture',
+      ),
+      body: t(
+        '我正在探索的是一个给人和 agent 共同读取的 work-oriented Memory OS。它的核心是先判断材料处在哪个记忆层或只是原始痕迹。',
+        'My shared directory is a work-oriented Memory OS that both humans and agents can read. Its core is deciding which memory layer a material belongs to, or whether it is still raw trace.',
+      ),
+      layers: [
+        {
+          label: t('L0 原始痕迹', 'L0 Raw Trace'),
+          body: t(
+            '截图、草稿、原始笔记、外部 repo、未整理材料。',
+            'Screenshots, drafts, raw notes, external repos, and unstructured material.',
+          ),
+        },
+        {
+          label: t('L1 项目/事件记忆', 'L1 Project / Event Memory'),
+          body: t(
+            'project.md、current-state、changelog、handoff、单场复盘。',
+            'project.md, current-state, changelog, handoff, and single-event retrospectives.',
+          ),
+        },
+        {
+          label: t('L2 工作方式记忆', 'L2 Procedural Memory'),
+          body: t(
+            'workflow、roles、任务书、review 规则、协作推进记录。',
+            'Workflow, roles, task briefs, review rules, and collaboration progression records.',
+          ),
+        },
+        {
+          label: t('L3 概念/原则记忆', 'L3 Semantic / Principle Memory'),
+          body: t(
+            'Personal OS、memory legitimacy、attention arbitration、人机协作框架。',
+            'Personal OS, memory legitimacy, attention arbitration, and human-agent collaboration frameworks.',
+          ),
+        },
+        {
+          label: t('L4 身份锚点候选', 'L4 Identity Anchor Candidates'),
+          body: t(
+            '只记录候选，不自动提升；必须由我确认后才能成为身份层。',
+            'Candidate only, never automatic promotion; it becomes identity-level only after my confirmation.',
+          ),
+        },
+      ],
+      bodyAppendix: t(
+        'Views: portfolio / resume / interview 只作为面向目的的外部展示，不影响 memory 本身的记录和治理。',
+        'Views (portfolio, resume, interview) remain purpose-facing external displays without affecting how memory itself is recorded and governed.',
+      ),
     },
     linksTitle: t('相关材料', 'Related Material'),
     linkCards: [],
@@ -233,10 +299,11 @@ function TerminalHighlight({
 
   const bodyTextStyle: CSSProperties = {
     color: '#e8a564',
-    fontSize: 'clamp(15px, 2vw, 22px)',
-    lineHeight: 1.5,
+    fontSize: 'clamp(13px, 1.6vw, 15px)',
+    lineHeight: 1.6,
     letterSpacing: '0.02em',
     textShadow: '0 0 18px rgba(232, 165, 100, 0.32), 0 0 4px rgba(232, 165, 100, 0.18)',
+    whiteSpace: 'pre-line',
   };
 
   const promptCaretStyle: CSSProperties = {
@@ -296,6 +363,74 @@ function TerminalHighlight({
         </span>
       </div>
     </div>
+  );
+}
+
+function MemoryArchitectureHighlight({
+  section,
+  isMobile,
+}: {
+  section: WorkspaceMemorySection;
+  isMobile?: boolean;
+}) {
+  const { text } = useI18n();
+
+  return (
+    <div
+      data-personal-os-memory-architecture
+      style={{ display: 'grid', gap: 16 }}
+      aria-label="shared workspace memory architecture"
+    >
+      <div style={sectionLabelStyle('#e8a564')}>{text(section.eyebrow)}</div>
+      <div style={{ ...cardTitleStyle(), fontSize: isMobile ? 20 : 24 }}>{text(section.title)}</div>
+
+      <p style={{ ...cardBodyStyle(), maxWidth: 880 }}>{text(section.body)}</p>
+
+      <TerminalHighlight
+        highlight={{
+          body: {
+            zh: 'L0 原始痕迹\n↓\nL1 项目/事件记忆\n↓\nL2 工作方式记忆\n↓\nL3 概念/原则记忆\n↓\nL4 身份锚点候选',
+            en: 'L0 Raw Trace\n↓\nL1 Project / Event Memory\n↓\nL2 Procedural Memory\n↓\nL3 Semantic / Principle Memory\n↓\nL4 Identity Anchor Candidates',
+          },
+          promptLabel: {
+            zh: 'memory-os',
+            en: 'memory-os',
+          },
+        }}
+        isMobile={isMobile}
+      />
+
+      <div style={{ display: 'grid', gap: 12 }}>
+        {section.layers.map((layer) => (
+          <div key={layer.label.zh}>
+            <div style={{ color: '#f4ecde', fontSize: 15, lineHeight: 1.45, marginBottom: 4 }}>
+              {text(layer.label)}
+            </div>
+            <div style={{ ...cardBodyStyle(), color: '#bda98a', fontSize: 14 }}>
+              {text(layer.body)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p style={{ ...cardBodyStyle(), maxWidth: 880, color: '#9f8d73', fontSize: 14 }}>
+        {text(section.bodyAppendix)}
+      </p>
+    </div>
+  );
+}
+
+function WorkspaceMemorySectionView({
+  section,
+  isMobile,
+}: {
+  section: WorkspaceMemorySection;
+  isMobile?: boolean;
+}) {
+  return (
+    <section style={{ padding: isMobile ? '2px 4px 0' : '0 8px', display: 'grid', gap: 14 }}>
+      <MemoryArchitectureHighlight section={section} isMobile={isMobile} />
+    </section>
   );
 }
 
@@ -451,6 +586,10 @@ export default function PersonalOSCaseStudy({
   return (
     <div style={{ display: 'grid', gap: 18, padding: isMobile ? '0 4px 16px' : '0 10px 22px' }}>
       <IntroReveal page={page} isMobile={isMobile} />
+
+      {page.workspaceMemorySection ? (
+        <WorkspaceMemorySectionView section={page.workspaceMemorySection} isMobile={isMobile} />
+      ) : null}
 
       {hasInsightCards ? renderInsightCards(page.insightCards!, accentColor, text) : null}
 

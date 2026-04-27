@@ -208,3 +208,112 @@ export function dividerStyle(): CSSProperties {
     margin: '12px 0',
   };
 }
+
+/** 终端 highlight 组件（作为 H5 slide 类型） */
+export function TerminalHighlight({
+  content,
+  headerLabel = 'personal-os',
+}: {
+  content: string;
+  headerLabel?: string;
+}) {
+  const monoFont =
+    '"JetBrains Mono", "SF Mono", ui-monospace, "Cascadia Code", "Menlo", monospace';
+
+  return (
+    <div
+      data-h5-terminal-highlight
+      style={{
+        maxWidth: '100%',
+        background: 'linear-gradient(180deg, #1a0e07 0%, #120904 100%)',
+        border: '1px solid rgba(200, 133, 74, 0.32)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        fontFamily: monoFont,
+        boxShadow:
+          '0 18px 48px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(200, 133, 74, 0.06), 0 0 64px rgba(217, 122, 48, 0.06)',
+        margin: '16px 0',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+          padding: '12px 18px',
+          color: 'rgba(217, 152, 88, 0.78)',
+          fontSize: 12,
+          letterSpacing: '0.04em',
+          borderBottom: '1px solid rgba(200, 133, 74, 0.14)',
+        }}
+      >
+        <span>~/{headerLabel}</span>
+        <span style={{ fontSize: 11, opacity: 0.65 }}>highlight · 1 axiom</span>
+      </div>
+
+      {/* Body */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '48px 28px',
+          textAlign: 'center',
+        }}
+      >
+        <span
+          style={{
+            color: '#e8a564',
+            fontSize: 'clamp(14px, 2vw, 20px)',
+            lineHeight: 1.5,
+            letterSpacing: '0.02em',
+            textShadow: '0 0 18px rgba(232, 165, 100, 0.32), 0 0 4px rgba(232, 165, 100, 0.18)',
+          }}
+        >
+          <span style={{ color: 'rgba(232, 165, 100, 0.55)', marginRight: 12, fontWeight: 600 }}>
+            &gt;
+          </span>
+          {content}
+        </span>
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 10,
+          padding: '12px 18px',
+          color: 'rgba(217, 152, 88, 0.62)',
+          fontSize: 11,
+          letterSpacing: '0.04em',
+          borderTop: '1px solid rgba(200, 133, 74, 0.14)',
+        }}
+      >
+        <span>[↵] Open   [Y] Save   [O] Expand</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <span
+            style={{
+              padding: '2px 8px',
+              borderRadius: '4px',
+              border: '1px solid rgba(200, 133, 74, 0.28)',
+              background: 'rgba(200, 133, 74, 0.08)',
+              color: 'rgba(232, 165, 100, 0.86)',
+              fontSize: 10,
+              letterSpacing: '0.04em',
+            }}
+          >
+            highlight
+          </span>
+          <span style={{ color: 'rgba(217, 152, 88, 0.5)', fontSize: 13 }} aria-hidden="true">
+            ⚑
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}

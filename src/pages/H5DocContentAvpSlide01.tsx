@@ -8,12 +8,34 @@ import avpSlide01Image00 from '../images/avp/slide01-img00.png';
 import avpSlide01Image02 from '../images/avp/slide01-img02.png';
 import avpSlide01Image03 from '../images/avp/slide01-img03.png';
 import avpSlide01Image04 from '../images/avp/slide01-img04.png';
+import avpHumanMachineImage from '../images/avp/avp-human-machine.png';
 import avpSlide01Video01 from '../images/avp/slide01-vid01.mov';
 import avpSlide01Video02 from '../images/avp/slide01-vid02.mov';
 
 export function getAvpSlide1Sections(accentColor: string): SectionData[] {
+  const narrativeCoverSection = createJiduNarrativeCoverSection('/jidu-hmi/avp', accentColor);
+
   return [
-    createJiduNarrativeCoverSection('/jidu-hmi/avp', accentColor),
+    {
+      ...narrativeCoverSection,
+      blocks: [
+        ...narrativeCoverSection.blocks,
+        <div style={{ ...mediaBlockStyle(), marginTop: '18px' }}>
+          <ImageWithStatus
+            src={avpHumanMachineImage}
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              borderRadius: '5px',
+              border: `1px solid ${accentColor}33`,
+              background: '#fff',
+            }}
+            alt="Human-machine collaboration model for AVP routines, machine execution, and human decision-making"
+          />
+        </div>,
+      ],
+    },
     {
       id: 'project-overview',
       numeral: '01',

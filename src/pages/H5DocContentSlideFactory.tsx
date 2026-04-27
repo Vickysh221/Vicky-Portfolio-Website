@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import type { CSSProperties } from 'react';
 import type { SectionShape } from '../i18n/sectionBuilders.ts';
-import { paragraphStyle } from './h5Styles';
+import { paragraphStyle, TerminalHighlight } from './h5Styles';
 
 export type SectionData = SectionShape<string>;
 
@@ -13,6 +14,31 @@ function markerStyle(accentColor: string): CSSProperties {
     opacity: 0.9,
     display: 'inline-block',
   };
+}
+
+/**
+ * Parse title text with {highlight} prefix to extract header label and content.
+ * Format: "{highlight:custom-label} content" or "{highlight} content"
+ * Returns null if title doesn't start with {highlight}
+ */
+export function parseTerminalHighlightTitle(
+  titleText: string,
+): { headerLabel: string; content: string } | null {
+  const match = titleText.match(/^\{highlight(?::([^\}]+))?\}\s*(.+)$/);
+  if (!match) return null;
+
+  const headerLabel = match[1] || 'personal-os';
+  const content = match[2];
+
+  return { headerLabel, content };
+}
+
+/**
+ * Generate a terminal highlight content block for H5 slides.
+ * Usage: getTerminalHighlightBlock('my content', 'custom-label')
+ */
+export function getTerminalHighlightBlock(content: string, headerLabel?: string): ReactNode {
+  return <TerminalHighlight key={`terminal-${content}`} content={content} headerLabel={headerLabel} />;
 }
 
 export function createPlaceholderSections(

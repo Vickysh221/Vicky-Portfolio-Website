@@ -171,7 +171,7 @@ export const PROJECTS: ProjectEntry[] = [
       {
         route: '/jidu-hmi/unity3d-camera',
         label: {
-          zh: '共驾地图：以一镜到底串联场景',
+          zh: '共驾地图：让车始终以连续视角观察世界',
           en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
         },
         numeral: 'I',

@@ -12,7 +12,7 @@ import slamCover from '../images/covers/thumbs/cover-slam.jpg';
 
 export const JIDU_HMI_NARRATIVE_COVERS = {
   '/jidu-hmi/unity3d-camera': {
-    title: '共驾地图：以一镜到底串联场景',
+    title: '共驾地图：让车始终以连续视角观察世界',
     description:
       'Single-shot was not a visual effect. It was a product principle: one system, one set of eyes, multiple scenarios.',
     descriptionZh: '一镜到底不是视觉效果，而是把驾驶、导航、泊车和 AVP 统一到同一套共驾视角里的产品原则。',

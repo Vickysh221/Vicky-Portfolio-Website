@@ -37,8 +37,8 @@ export const FULI_PLUS_INTRO_COPY = {
     en: 'Open with the core interaction result and build the first impression through an autoplay, muted video.',
   },
   mainCopy: {
-    zh: '这一页只承担一个任务：让读者先看到系统实际交付出来的设计演示。页面会根据设备性能和视口宽度在 540p 与 720p 之间做单路选择，默认静音并自动播放，但这套行为只作用在当前页，不会改动其他页面媒体的音频策略。',
-    en: 'This page has one job: show the design demo the system actually ships. It selects either 540p or 720p based on device capability and viewport width, autoplays muted by default, and keeps that media behavior scoped to this page only.',
+    zh: 'fuli+ 功能演示：AI赋能的地毯设计功能演示',
+    en: 'Fuli Plus Product Demo: Show the design demo the system actually ships.',
   },
 } satisfies {
   pageTitle: LocalizedText;

@@ -4,6 +4,7 @@ import slide03Img01 from '../images/aha/slide03-img01.png';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import type { Language, LocalizedText } from '../i18n/types.ts';
 import { hasSharedMemoryAhaCaseStudy } from './sharedMemoryAhaCaseStudyMeta.ts';
+import { TerminalHighlight } from './h5Styles';
 
 function t(zh: string, en: string): LocalizedText {
   return { zh, en };
@@ -41,6 +42,7 @@ type SharedMemoryAhaPage = {
   pageTitle: LocalizedText;
   pageGoal: LocalizedText;
   mainCopy: LocalizedText;
+  ahaHighlight?: { body: LocalizedText; headerLabel?: LocalizedText };
   leadContentBlocks?: ContentBlock[];
   contentBlocks: ContentBlock[];
 };
@@ -59,6 +61,13 @@ const sharedMemoryAhaPages: SharedMemoryAhaPage[] = [
       '语言学习让我第一次看见这个问题。用户真正卡住的时刻常常不在学习 app 里。用户可能在读一篇文章。用户也可能在写一条 Slack 回复。系统如果只看当前页面，它只能给出翻译或语法建议。系统如果带着共享记忆出现，它可以判断这句话为什么和用户有关。',
       'Language learning made this problem visible to me first. The moment when a user truly gets stuck often happens outside a learning app. The user may be reading an article. The user may be writing a Slack reply. If the system only sees the current page, it can only offer translation or grammar help. If the system arrives with shared memory, it can judge why a sentence matters to that user.',
     ),
+    ahaHighlight: {
+      headerLabel: t('aha moment in personal-os', 'aha moment in personal-os'),
+      body: t(
+        'AHA MOMENT：智能体在判定当前语料同时满足「语言学习可拓展阶段」与「锚定用户关注话题」两个条件时，信息与用户身份达成共鸣的灵光乍现时刻',
+        'AHA MOMENT: The flash of insight when an agent judges that current language material simultaneously meets both "learnable progression stage" and "anchored to user focus", creating resonance between information and user identity',
+      ),
+    },
     contentBlocks: [
       {
         type: 'shortParagraphs',
@@ -387,11 +396,13 @@ function IntroReveal({
   pageTitle,
   pageGoal,
   mainCopy,
+  ahaHighlight,
   isMobile,
 }: {
   pageTitle: LocalizedText;
   pageGoal: LocalizedText;
   mainCopy?: LocalizedText;
+  ahaHighlight?: { body: LocalizedText; headerLabel?: LocalizedText };
   isMobile?: boolean;
 }) {
   const { text } = useI18n();
@@ -401,6 +412,12 @@ function IntroReveal({
       <div style={pageTitleStyle(isMobile)}>{text(pageTitle)}</div>
       <div style={{ color: '#9f8d73', fontSize: 13, lineHeight: 1.7, maxWidth: 860 }}>{text(pageGoal)}</div>
       {mainCopy ? <p style={{ ...paragraphStyle(), maxWidth: 860, whiteSpace: 'pre-line' }}>{text(mainCopy)}</p> : null}
+      {ahaHighlight ? (
+        <TerminalHighlight
+          content={text(ahaHighlight.body)}
+          headerLabel={ahaHighlight.headerLabel ? text(ahaHighlight.headerLabel) : undefined}
+        />
+      ) : null}
     </section>
   );
 }
@@ -528,6 +545,7 @@ export default function SharedMemoryAhaCaseStudy({
         pageTitle={page.pageTitle}
         pageGoal={page.pageGoal}
         mainCopy={hasLeadContentBlocks ? undefined : page.mainCopy}
+        ahaHighlight={page.ahaHighlight}
         isMobile={isMobile}
       />
 

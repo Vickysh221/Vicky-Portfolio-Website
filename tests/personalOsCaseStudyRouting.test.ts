@@ -42,3 +42,15 @@ test('personal os doctrine page renders a terminal highlight after the first par
   assert.match(caseStudy, /splitIndex = fullCopy\.indexOf\('\\n\\n'\)/);
   assert.match(caseStudy, /<TerminalHighlight\s+highlight=\{page\.terminalHighlight\}/);
 });
+
+test('personal os doctrine page explains the shared workspace memory architecture', () => {
+  const caseStudy = read('src/pages/PersonalOSCaseStudy.tsx');
+
+  assert.match(caseStudy, /workspaceMemorySection\?: WorkspaceMemorySection;/);
+  assert.match(caseStudy, /Memory OS 想法与 shared 知识库架构/);
+  assert.match(caseStudy, /新的父层，定义什么能成为记忆、原则、身份锚点/);
+  assert.match(caseStudy, /Memory OS 宪章：定义 L0-L4、promotion rule、读写权限/);
+  assert.match(caseStudy, /L0 原始痕迹[\s\S]*L4 身份锚点候选[\s\S]*Views: portfolio \/ resume \/ interview/);
+  assert.match(caseStudy, /function MemoryArchitectureHighlight\(\{/);
+  assert.match(caseStudy, /data-personal-os-memory-architecture/);
+});

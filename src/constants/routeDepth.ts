@@ -93,8 +93,8 @@ export const PAGE_META: Record<string, PageMeta> = {
       {
         route: "/jidu-hmi/unity3d-camera",
         label: {
-          zh: '共驾地图：以一镜到底串联场景',
-          en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
+          zh: '共驾地图：让车始终以连续视角观察世界',
+          en: 'Co-Driving Map: Continuous View of the World Across Driving Modes',
         },
         numeral: "I",
       },
@@ -150,8 +150,8 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   "/jidu-hmi/unity3d-camera": {
     title: {
-      zh: '共驾地图：以一镜到底串联场景',
-      en: 'Co-Driving Map: Linking Scenarios Through a Single Continuous View',
+      zh: '共驾地图：让车始终以连续视角观察世界',
+      en: 'Co-Driving Map: Continuous View of the World Across Driving Modes',
     },
     subtitle: { zh: 'JIDU HMI · Camera Architecture', en: 'JIDU HMI · Camera Architecture' },
     year: "2022–2024",
