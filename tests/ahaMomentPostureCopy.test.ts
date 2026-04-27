@@ -131,3 +131,71 @@ test('case canvas supports drag pan and gesture zoom', () => {
   assert.match(html, /pointermove/);
   assert.match(html, /wheel/);
 });
+
+test('case canvas exposes a language-aware i18n layer', () => {
+  const html = read('public/language-diary-ux-showcase-cases.html');
+  // i18n dictionary keyed by language
+  assert.match(html, /const i18n = \{/);
+  assert.match(html, /\bzh:\s*\{/);
+  assert.match(html, /\ben:\s*\{/);
+  // applies translations based on `?lang=` URL parameter
+  assert.match(html, /readLangParam/);
+  assert.match(html, /URLSearchParams/);
+  assert.match(html, /applyI18n/);
+  // every translatable element carries a data-i18n attribute
+  assert.match(html, /data-i18n="g1Title"/);
+  assert.match(html, /data-i18n="c11Title"/);
+  // postMessage live language switching
+  assert.match(html, /set-lang/);
+});
+
+test('case canvas grounds every mode in a concrete language-learning example', () => {
+  const html = read('public/language-diary-ux-showcase-cases.html');
+  // 1.1 Read with agent — co-reading on a specific English sentence
+  assert.match(html, /inevitable, not loud/);
+  assert.match(html, /Read with Mimo/);
+  // 1.2 Reply candidate — Slack tone candidate
+  assert.match(html, /push back on this/);
+  assert.match(html, /Fair point\. I'd want to explore one thing first/);
+  // 2.1 Banner notification — polysemous "loaded" surfaced in new register
+  assert.match(html, /Politicians like loaded questions/);
+  assert.match(html, /loaded/);
+  // 2.2 Saved state — a casual idiom kept silently
+  assert.match(html, /low-key brilliant/);
+  // 2.3 Inline learned — gently direct preference
+  assert.match(html, /gently direct/);
+  // 3.1 Echo — afternoon line returns inside an evening email draft
+  assert.match(html, /Could you take another pass on the proposal/);
+  // 3.2 Morphing — same English phrase routed to email / portfolio / interview
+  assert.match(html, /draw the line between X and Y/);
+  // 3.3 Agentic action — three-step micro session from accumulated tone hits
+  assert.match(html, /rewrite an old email/);
+  assert.match(html, /save as your tone preference/);
+});
+
+test('case canvas keeps zh and en strings language-pure for each mode title', () => {
+  const html = read('public/language-diary-ux-showcase-cases.html');
+  // Match each pure-zh title in the zh dictionary block
+  const zhBlock = html.match(/zh:\s*\{[\s\S]*?\},\s*en:\s*\{/);
+  assert.ok(zhBlock, 'zh i18n block present');
+  const zh = zhBlock[0];
+  // Pure-zh group titles (no Latin chars except digits and middle dot)
+  assert.match(zh, /g1Title:\s*'案例组 1 · 用户递交'/);
+  assert.match(zh, /g2Title:\s*'案例组 2 · 情境感知'/);
+  assert.match(zh, /g3Title:\s*'案例组 3 · 回访与转化'/);
+  assert.match(zh, /c11Title:\s*'唤起共读'/);
+  assert.match(zh, /c12Title:\s*'回复候选'/);
+
+  // Pure-en titles
+  assert.match(html, /c11Title:\s*'Read with agent'/);
+  assert.match(html, /c12Title:\s*'Reply candidate'/);
+});
+
+test('page-2 iframe forwards the active language to the case canvas', () => {
+  const src = read('src/pages/SharedMemoryAhaCaseStudy.tsx');
+  // showcaseEmbed branch should append `?lang=${language}` (or `&lang=`) to block.src
+  assert.match(src, /lang=\$\{language\}/);
+  // language is taken from the i18n hook
+  assert.match(src, /useI18n\(\)/);
+  assert.match(src, /\blanguage\b/);
+});

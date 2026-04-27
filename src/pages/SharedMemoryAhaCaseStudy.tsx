@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 
 import slide03Img01 from '../images/aha/slide03-img01.png';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
-import type { LocalizedText } from '../i18n/types.ts';
+import type { Language, LocalizedText } from '../i18n/types.ts';
 import { hasSharedMemoryAhaCaseStudy } from './sharedMemoryAhaCaseStudyMeta.ts';
 
 function t(zh: string, en: string): LocalizedText {
@@ -405,7 +405,12 @@ function IntroReveal({
   );
 }
 
-function renderContentBlock(block: ContentBlock, accentColor: string, text: (value: LocalizedText) => string) {
+function renderContentBlock(
+  block: ContentBlock,
+  accentColor: string,
+  text: (value: LocalizedText) => string,
+  language: Language,
+) {
   if (block.type === 'shortParagraphs') {
     return (
       <div style={panelStyle()}>
@@ -452,13 +457,15 @@ function renderContentBlock(block: ContentBlock, accentColor: string, text: (val
   }
 
   if (block.type === 'showcaseEmbed') {
+    const separator = block.src.includes('?') ? '&' : '?';
+    const localizedSrc = `${block.src}${separator}lang=${language}`;
     return (
       <div style={{ ...panelStyle(), padding: 12 }}>
         <div style={sectionLabelStyle(accentColor)}>{text(block.title)}</div>
         <div style={{ color: '#8f7d61', fontSize: 13, lineHeight: 1.7 }}>{text(block.caption)}</div>
         <div style={embedFrameStyle()}>
           <iframe
-            src={block.src}
+            src={localizedSrc}
             title="shared-memory-aha-showcase"
             style={{
               width: '100%',
@@ -505,7 +512,7 @@ export default function SharedMemoryAhaCaseStudy({
   isMobile?: boolean;
   enableMotion?: boolean;
 }) {
-  const { text } = useI18n();
+  const { text, language } = useI18n();
 
   if (!hasSharedMemoryAhaCaseStudy(route, slideIndex)) return null;
 
@@ -527,7 +534,7 @@ export default function SharedMemoryAhaCaseStudy({
       {hasLeadContentBlocks ? (
         <section style={{ display: 'grid', gap: 14 }}>
           {leadContentBlocks.map((block, index) => (
-            <div key={`lead-${block.type}-${index}`}>{renderContentBlock(block, accentColor, text)}</div>
+            <div key={`lead-${block.type}-${index}`}>{renderContentBlock(block, accentColor, text, language)}</div>
           ))}
         </section>
       ) : null}
@@ -540,7 +547,7 @@ export default function SharedMemoryAhaCaseStudy({
 
       <section style={{ display: 'grid', gap: 14 }}>
         {page.contentBlocks.map((block, index) => (
-          <div key={`${block.type}-${index}`}>{renderContentBlock(block, accentColor, text)}</div>
+          <div key={`${block.type}-${index}`}>{renderContentBlock(block, accentColor, text, language)}</div>
         ))}
       </section>
     </div>

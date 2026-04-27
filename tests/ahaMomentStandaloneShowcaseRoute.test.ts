@@ -20,6 +20,7 @@ test('hidden Aha html is exposed through a standalone app route', () => {
   assert.equal(existsSync(componentUrl), true, 'standalone showcase route component should exist');
 
   const routeComponent = read('src/pages/SharedMemoryAhaShowcaseRoute.tsx');
-  assert.match(routeComponent, /src="\/language-diary-ux-showcase-cases\.html"/);
+  assert.match(routeComponent, /\/language-diary-ux-showcase-cases\.html/);
+  assert.match(routeComponent, /lang=\$\{language\}/);
   assert.match(routeComponent, /navigate\(SHARED_MEMORY_AHA_CASE_STUDY_ROUTE\)/);
 });

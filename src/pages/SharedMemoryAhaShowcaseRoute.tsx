@@ -67,7 +67,9 @@ const frameStyle: CSSProperties = {
 
 export default function SharedMemoryAhaShowcaseRoute() {
   const navigate = useNavigate();
-  const { text } = useI18n();
+  const { text, language } = useI18n();
+
+  const showcaseSrc = `/language-diary-ux-showcase-cases.html?lang=${language}`;
 
   return (
     <main style={pageStyle}>
@@ -86,7 +88,7 @@ export default function SharedMemoryAhaShowcaseRoute() {
         </div>
       </header>
       <iframe
-        src="/language-diary-ux-showcase-cases.html"
+        src={showcaseSrc}
         title="Aha Moment UX Showcase"
         style={frameStyle}
       />

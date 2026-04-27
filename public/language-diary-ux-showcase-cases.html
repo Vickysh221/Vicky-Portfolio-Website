@@ -422,11 +422,11 @@
       }
     </style>
   </head>
-  <body>
+  <body data-lang="zh">
     <div class="toolbar" aria-label="case canvas controls">
       <div class="toolbar-title">
-        <strong>Agent Aha Foreground Architecture Canvas</strong>
-        <span>zoomable canvas · selected cases from the full UX showcase</span>
+        <strong data-i18n="toolbarTitle">Agent Aha 前台架构画布</strong>
+        <span data-i18n="toolbarSub">可缩放画布 · 取自完整 UX showcase 的精选语言学习场景</span>
       </div>
       <div class="zoom-controls">
         <button type="button" data-zoom-out aria-label="Zoom out">-</button>
@@ -439,29 +439,29 @@
       <div class="canvas-spacer" data-canvas-spacer>
         <main class="case-stage" data-case-stage>
           <header class="stage-head">
-            <div class="stage-kicker">3 · selected UX evidence</div>
-            <h1>Use cases that prove the Agent Aha Mode pattern</h1>
+            <div class="stage-kicker" data-i18n="stageKicker">三组 · 精选语言学习佐证</div>
+            <h1 data-i18n="stageH1">佐证 Agent Aha Mode 架构的语言学习场景</h1>
           </header>
 
           <section class="artboard-row" aria-label="selected case artboards">
             <article class="artboard">
-              <h2>Case Group 1 · User Handoff</h2>
-              <div class="artboard-sub">用户主动把内容传给 agent：重点是“消息如何被递交”，不是 agent 主动打断。</div>
+              <h2 data-i18n="g1Title">案例组 1 · 用户递交</h2>
+              <div class="artboard-sub" data-i18n="g1Sub">用户主动把英文片段或回复请求交给代理：重点是消息如何被递交，不是代理主动打断。</div>
 
               <div class="case-grid">
                 <section class="case-card">
                   <div class="phone">
                     <div class="screen day">
                       <div class="status"><span>12:08</span><span class="island"></span><span>●●●</span></div>
-                      <div class="feed"><small>@英语写作笔记</small>I want my work to feel inevitable, not loud.<span class="marker"></span></div>
-                      <div class="aha"><small>Read with Mimo</small>co-reading anchor · why this sentence matters now</div>
+                      <div class="feed"><small data-i18n="c11Source">@英语写作笔记</small><span data-i18n="c11Feed">I want my work to feel inevitable, not loud.</span><span class="marker"></span></div>
+                      <div class="aha"><small data-i18n="c11AhaLabel">Read with Mimo</small><span data-i18n="c11AhaBody">拆 inevitable 的语气分量，还是接进作品集草稿？</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">explicit handoff</span>
-                    <div class="case-title">Read with agent</div>
-                    <div class="case-body">用户选中内容或点击入口后，agent 可以进入共读、解释、追问或 challenge。这里强调的是用户主动把注意力交给 agent。</div>
-                    <div class="chips"><span class="chip">shared focal point</span><span class="chip">co-reading</span><span class="chip">low ambiguity</span></div>
+                    <span class="case-label" data-i18n="c11Label">用户递交</span>
+                    <div class="case-title" data-i18n="c11Title">唤起共读</div>
+                    <div class="case-body" data-i18n="c11Body">在 feed 里读到一句正中草稿核心的英文。用户长按递交后，代理不是给翻译，而是问要拆语气分量还是直接接进作品集草稿。</div>
+                    <div class="chips"><span class="chip" data-i18n="c11Chip1">共读锚点</span><span class="chip" data-i18n="c11Chip2">用户递交</span><span class="chip" data-i18n="c11Chip3">注意力同框</span></div>
                   </div>
                 </section>
 
@@ -469,46 +469,46 @@
                   <div class="phone">
                     <div class="screen">
                       <div class="status"><span>15:42</span><span class="island"></span><span>●●●</span></div>
-                      <div class="bubble">I'd want to push back on this...</div>
-                      <div class="inline"><strong>AHA · inline reply</strong><br />Try: Fair point. I'd want to explore one thing first.</div>
+                      <div class="bubble" data-i18n="c12Bubble">I'd want to push back on this...</div>
+                      <div class="inline"><strong data-i18n="c12InlineLabel">AHA · 内联回复</strong><br /><span data-i18n="c12InlineBody">试试：Fair point. I'd want to explore one thing first.</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">reply request</span>
-                    <div class="case-title">Reply candidate</div>
-                    <div class="case-body">用户已经处在回复流里，agent 不需要解释自己为何出现；它要给出可直接采用、可调 tone 的表达候选。</div>
-                    <div class="chips"><span class="chip">inline reply</span><span class="chip">tone lens</span><span class="chip">insert / dismiss</span></div>
+                    <span class="case-label" data-i18n="c12Label">回复请求</span>
+                    <div class="case-title" data-i18n="c12Title">回复候选</div>
+                    <div class="case-body" data-i18n="c12Body">用户在 Slack 写英文回复，第二句卡在两种语气之间：太硬还是太绕都不像自己。代理接住请求，给出可直接采用、可调语气的候选。</div>
+                    <div class="chips"><span class="chip" data-i18n="c12Chip1">内联候选</span><span class="chip" data-i18n="c12Chip2">语气切换</span><span class="chip" data-i18n="c12Chip3">采用或忽略</span></div>
                   </div>
                 </section>
 
                 <section class="case-card is-wide">
                   <div class="case-copy">
-                    <span class="case-label">handoff proof</span>
-                    <div class="case-title">用户递交型参与验证的是入口与接住能力</div>
-                    <div class="case-body">这组 case 不证明 agent 的主动性，而是证明当用户已经把内容交出来时，系统要快速建立共同注意力，并把内容转成可处理的学习或表达对象。</div>
+                    <span class="case-label" data-i18n="c13Label">递交佐证</span>
+                    <div class="case-title" data-i18n="c13Title">用户递交型参与验证的是入口与接住能力</div>
+                    <div class="case-body" data-i18n="c13Body">这组 case 不证明代理的主动性，而是证明当用户已经把英文片段或回复请求交出来时，系统能立刻建立共同注意力，并把内容转成可学、可改的对象。</div>
                   </div>
                 </section>
               </div>
             </article>
 
             <article class="artboard">
-              <h2>Case Group 2 · Context-aware Aha</h2>
-              <div class="artboard-sub">agent 没有被显式召唤，但判断当前片段值得进入前台；通知形态随 Aha 强度变化。</div>
+              <h2 data-i18n="g2Title">案例组 2 · 情境感知</h2>
+              <div class="artboard-sub" data-i18n="g2Sub">代理没有被显式召唤，但判断当前片段值得进入前台；通知形态随 Aha 强度变化。</div>
 
               <div class="case-grid">
                 <section class="case-card">
                   <div class="phone">
                     <div class="screen">
                       <div class="status"><span>15:24</span><span class="island amber">AHA</span><span>●●●</span></div>
-                      <div class="feed"><small>少数派 · AI 与语言学习</small>An agent that knows your vocabulary history isn't a dictionary — it's a language OS.</div>
-                      <div class="banner">AHA · banner notification<br />related to your Personal OS framing</div>
+                      <div class="feed"><small data-i18n="c21Source">@英语写作笔记</small><span data-i18n="c21Feed">Politicians like loaded questions because the answer is half-given before you speak.</span></div>
+                      <div class="banner"><span data-i18n="c21BannerLabel">AHA · banner notification</span><br /><span data-i18n="c21BannerBody">你昨天存过 'loaded' 的「装载」义；这里它是「暗藏立场」的另一种用法。</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">banner notification</span>
-                    <div class="case-title">Aha 值得被看见，但不一定要进入任务</div>
-                    <div class="case-body">灵动岛或顶部 banner 适合中低打扰的主动发现：系统解释“为什么相关”，用户决定是否展开。</div>
-                    <div class="chips"><span class="chip">dynamic island</span><span class="chip">tap to expand</span><span class="chip">show less</span></div>
+                    <span class="case-label" data-i18n="c21Label">横幅通知</span>
+                    <div class="case-title" data-i18n="c21Title">同一个旧词换了语境，值得被看见</div>
+                    <div class="case-body" data-i18n="c21Body">用户没有召唤代理。在文章里读到一个昨天查过的多义词，被换了个语境用。系统用灵动岛或顶部 banner 低强度提示新用法，由用户决定是否展开。</div>
+                    <div class="chips"><span class="chip" data-i18n="c21Chip1">灵动岛</span><span class="chip" data-i18n="c21Chip2">点开展开</span><span class="chip" data-i18n="c21Chip3">收起</span></div>
                   </div>
                 </section>
 
@@ -516,54 +516,54 @@
                   <div class="phone">
                     <div class="screen day">
                       <div class="status"><span>14:08</span><span class="island"></span><span>●●●</span></div>
-                      <div class="feed"><small>@英语写作笔记</small>I want my work to feel inevitable, not loud.<span class="marker"></span></div>
-                      <div class="aha"><small>AHA · saved state</small>kept for tonight · no interruption</div>
+                      <div class="feed"><small data-i18n="c22Source">@英语写作笔记</small><span data-i18n="c22Feed">low-key brilliant — said the way you'd actually say it.</span><span class="marker"></span></div>
+                      <div class="aha"><small data-i18n="c22AhaLabel">AHA · saved state</small><span data-i18n="c22AhaBody">留到今晚回访，不打断</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">saved state</span>
-                    <div class="case-title">价值存在，但现在不该打断</div>
-                    <div class="case-body">Trace / saved state 只留下 marker 或状态，不要求用户马上处理；它验证的是 agent 的克制。</div>
-                    <div class="chips"><span class="chip">trace</span><span class="chip">silent save</span><span class="chip">future recall</span></div>
+                    <span class="case-label" data-i18n="c22Label">沉默保存</span>
+                    <div class="case-title" data-i18n="c22Title">价值存在，但现在不该打断</div>
+                    <div class="case-body" data-i18n="c22Body">通勤时刷 feed，代理看到一个口语化表达和你正在练的 'gently direct' 语气邻近。打扰成本高，于是只留 marker，等今晚回访。</div>
+                    <div class="chips"><span class="chip" data-i18n="c22Chip1">痕迹</span><span class="chip" data-i18n="c22Chip2">静默保存</span><span class="chip" data-i18n="c22Chip3">未来回访</span></div>
                   </div>
                 </section>
 
                 <section class="case-card">
                   <div class="phone">
                     <div class="screen">
-                      <div class="status"><span>15:43</span><span class="island amber">saved</span><span>●●●</span></div>
-                      <div class="bubble">Fair point. I'd want to explore one thing first.</div>
-                      <div class="aha"><small>AHA · learned</small>tone preference: gently direct</div>
+                      <div class="status"><span>15:43</span><span class="island amber" data-i18n="c23Island">已采用</span><span>●●●</span></div>
+                      <div class="bubble" data-i18n="c23Bubble">Fair point. I'd want to explore one thing first.</div>
+                      <div class="aha"><small data-i18n="c23AhaLabel">AHA · inline reply 已学</small><span data-i18n="c23AhaBody">语气偏好：温和直接（gently direct）</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">inline reply</span>
-                    <div class="case-title">用户卡住时，介入嵌入当前动作</div>
-                    <div class="case-body">Inline 不是弹出一个知识点，而是在键盘、输入框或回复气泡附近给出下一步，让用户可以顺手采用。</div>
-                    <div class="chips"><span class="chip">micro-asset</span><span class="chip">not my voice</span><span class="chip">don't memorize</span></div>
+                    <span class="case-label" data-i18n="c23Label">内联介入</span>
+                    <div class="case-title" data-i18n="c23Title">用户在键盘前犹豫时，介入贴着当前动作</div>
+                    <div class="case-body" data-i18n="c23Body">Inline 不是弹窗讲知识点。系统从「输入－删除」的节奏判断用户在语气上犹豫，于是在键盘上方递候选，并附 softer / more direct 切换；采用之后，偏好被默默学下来。</div>
+                    <div class="chips"><span class="chip" data-i18n="c23Chip1">微素材</span><span class="chip" data-i18n="c23Chip2">不像我的语气</span><span class="chip" data-i18n="c23Chip3">不记忆</span></div>
                   </div>
                 </section>
               </div>
             </article>
 
             <article class="artboard">
-              <h2>Case Group 3 · Return / Transformation</h2>
-              <div class="artboard-sub">Aha 不止是提醒，而是把旧片段带回、变形、共创，并路由成行动。</div>
+              <h2 data-i18n="g3Title">案例组 3 · 回访与转化</h2>
+              <div class="artboard-sub" data-i18n="g3Sub">Aha 不止是提醒，而是把旧片段带回、变形、共创，并路由成行动。</div>
 
               <div class="case-grid">
                 <section class="case-card">
                   <div class="phone">
                     <div class="screen coral">
-                      <div class="status"><span>21:48</span><span class="island amber">1 earlier</span><span>●●●</span></div>
-                      <div class="feed"><small>Interview Prep</small>How would you describe Personal OS in language learning?</div>
-                      <div class="sheet"><strong>AHA · echo</strong><br />下午那句话现在有用了 · bring it in?</div>
+                      <div class="status"><span>21:48</span><span class="island amber" data-i18n="c31Island">下午存过 1 条</span><span>●●●</span></div>
+                      <div class="feed"><small data-i18n="c31Source">邮件草稿</small><span data-i18n="c31Feed">Could you take another pass on the proposal? I'd like the value to feel ___.</span></div>
+                      <div class="sheet"><strong data-i18n="c31SheetLabel">AHA · echo</strong><br /><span data-i18n="c31SheetBody">下午存的 'inevitable, not loud' 落进这段 — 接进来？</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">return card</span>
-                    <div class="case-title">过去的内容在未来场景变得有用</div>
-                    <div class="case-body">Echo 验证的是时间感：agent 不一定当下说，而是在更适合的任务窗口把它带回来。</div>
-                    <div class="chips"><span class="chip">show original context</span><span class="chip">not now</span><span class="chip">don't connect again</span></div>
+                    <span class="case-label" data-i18n="c31Label">回访卡片</span>
+                    <div class="case-title" data-i18n="c31Title">下午存的英文片段，在晚上写邮件时变得有用</div>
+                    <div class="case-body" data-i18n="c31Body">下午保存的 'inevitable, not loud' 当时只是 caption 余韵。晚上写邮件时，正好需要这种「安静而不容辩驳」的语气。代理把它带回，并允许「现在不要」或「别再连」。</div>
+                    <div class="chips"><span class="chip" data-i18n="c31Chip1">看原始上下文</span><span class="chip" data-i18n="c31Chip2">现在不要</span><span class="chip" data-i18n="c31Chip3">别再连</span></div>
                   </div>
                 </section>
 
@@ -571,46 +571,314 @@
                   <div class="phone">
                     <div class="screen violet">
                       <div class="status"><span>14:02</span><span class="island"></span><span>●●●</span></div>
-                      <div class="aha"><small>AHA · morphing</small>Agents shouldn't be locked inside one app.</div>
-                      <div class="chips"><span class="chip">sentence</span><span class="chip">portfolio</span><span class="chip">interview</span></div>
+                      <div class="aha"><small data-i18n="c32AhaLabel">AHA · morphing</small><span data-i18n="c32AhaBody">draw the line between X and Y</span></div>
+                      <div class="chips"><span class="chip" data-i18n="c32InnerChip1">写邮件</span><span class="chip" data-i18n="c32InnerChip2">作品集要点</span><span class="chip" data-i18n="c32InnerChip3">面试开场</span></div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">morphing</span>
-                    <div class="case-title">同一 fragment 变形成当前需要的材料</div>
-                    <div class="case-body">Morphing 不按组件分类，而按生成结果分类：一句表达、作品集 framing、面试回答，都是同一个 Aha 的不同去处。</div>
-                    <div class="chips"><span class="chip">generated asset</span><span class="chip">routing</span><span class="chip">user chooses form</span></div>
+                    <span class="case-label" data-i18n="c32Label">变形分发</span>
+                    <div class="case-title" data-i18n="c32Title">同一英文短语，变形成当前任务需要的材料</div>
+                    <div class="case-body" data-i18n="c32Body">Morphing 不按组件分类，而按生成结果分类：同一个保存的英文短语 'draw the line between X and Y'，可能在写邮件时是回复句，在作品集里是项目要点，在面试里是开场半句。</div>
+                    <div class="chips"><span class="chip" data-i18n="c32Chip1">生成式素材</span><span class="chip" data-i18n="c32Chip2">路由分发</span><span class="chip" data-i18n="c32Chip3">用户选形态</span></div>
                   </div>
                 </section>
 
                 <section class="case-card">
                   <div class="phone">
                     <div class="screen coral">
-                      <div class="status"><span>20:04</span><span class="island amber">step 2 / 3</span><span>●●●</span></div>
+                      <div class="status"><span>20:04</span><span class="island amber" data-i18n="c33Island">第 2 / 3 步</span><span>●●●</span></div>
                       <div class="session">
-                        <div class="step">1 · choose fragments</div>
-                        <div class="step active">2 · write 90s intro</div>
-                        <div class="step">3 · save to workspace</div>
+                        <div class="step" data-i18n="c33Step1">1 · 读 5 条 gently direct 例句</div>
+                        <div class="step active" data-i18n="c33Step2">2 · 改写一封旧邮件</div>
+                        <div class="step" data-i18n="c33Step3">3 · 存成你的语气偏好</div>
                       </div>
                     </div>
                   </div>
                   <div class="case-copy">
-                    <span class="case-label">agentic action</span>
-                    <div class="case-title">高置信 Aha 可以开启微任务，但必须可退出</div>
-                    <div class="case-body">Agentic Action 是任务分叉口，不是替用户决定。它把 Aha 转成 micro-session，同时保留 stop、later 和 memory control。</div>
-                    <div class="chips"><span class="chip">micro-session</span><span class="chip">stop here</span><span class="chip">write back</span></div>
+                    <span class="case-label" data-i18n="c33Label">代理任务</span>
+                    <div class="case-title" data-i18n="c33Title">高置信 Aha 触发微会话，但永远可退出</div>
+                    <div class="case-body" data-i18n="c33Body">本周连续命中 5 处 'gently direct' 语气候选，代理提议跑一个 3 步微会话：读、改、存为偏好。这是分叉口，不是替你决定——任意一步都可以暂停或丢弃。</div>
+                    <div class="chips"><span class="chip" data-i18n="c33Chip1">微会话</span><span class="chip" data-i18n="c33Chip2">可暂停</span><span class="chip" data-i18n="c33Chip3">写回偏好</span></div>
                   </div>
                 </section>
               </div>
             </article>
           </section>
 
-          <p class="proof-note">
-            Third-page reading rule: these cases are not a second taxonomy. They are proof that the posture architecture on page 2 can survive concrete language-learning moments: handoff, proactive notification, inline help, saved state, return, transformation, and agentic action.
+          <p class="proof-note" data-i18n="proofNote">
+            读图规则：这些 case 不是新分类，而是证明第二页的姿态架构能在真实语言学习时刻里被读出——递交、主动通知、内联介入、沉默保存、回访、变形、代理任务（agentic action）。
           </p>
         </main>
       </div>
     </div>
+
+    <script>
+      const i18n = {
+        zh: {
+          toolbarTitle: 'Agent Aha 前台架构画布',
+          toolbarSub: '可缩放画布 · 取自完整 UX showcase 的精选语言学习场景',
+          stageKicker: '三组 · 精选语言学习佐证',
+          stageH1: '佐证 Agent Aha Mode 架构的语言学习场景',
+          g1Title: '案例组 1 · 用户递交',
+          g1Sub: '用户主动把英文片段或回复请求交给代理：重点是消息如何被递交，不是代理主动打断。',
+          g2Title: '案例组 2 · 情境感知',
+          g2Sub: '代理没有被显式召唤，但判断当前片段值得进入前台；通知形态随 Aha 强度变化。',
+          g3Title: '案例组 3 · 回访与转化',
+          g3Sub: 'Aha 不止是提醒，而是把旧片段带回、变形、共创，并路由成行动。',
+          proofNote:
+            '读图规则：这些 case 不是新分类，而是证明第二页的姿态架构能在真实语言学习时刻里被读出——递交、主动通知、内联介入、沉默保存、回访、变形、代理任务（agentic action）。',
+          // 1.1 Read with agent
+          c11Label: '用户递交',
+          c11Title: '唤起共读',
+          c11Body:
+            '在 feed 里读到一句正中草稿核心的英文。用户长按递交后，代理不是给翻译，而是问要拆语气分量还是直接接进作品集草稿。',
+          c11Chip1: '共读锚点',
+          c11Chip2: '用户递交',
+          c11Chip3: '注意力同框',
+          c11Source: '@英语写作笔记',
+          c11Feed: 'I want my work to feel inevitable, not loud.',
+          c11AhaLabel: 'Read with Mimo',
+          c11AhaBody: '拆 inevitable 的语气分量，还是接进作品集草稿？',
+          // 1.2 Reply candidate
+          c12Label: '回复请求',
+          c12Title: '回复候选',
+          c12Body:
+            '用户在 Slack 写英文回复，第二句卡在两种语气之间：太硬还是太绕都不像自己。代理接住请求，给出可直接采用、可调语气的候选。',
+          c12Chip1: '内联候选',
+          c12Chip2: '语气切换',
+          c12Chip3: '采用或忽略',
+          c12Bubble: "I'd want to push back on this...",
+          c12InlineLabel: 'AHA · 内联回复',
+          c12InlineBody: "试试：Fair point. I'd want to explore one thing first.",
+          // 1.3 Handoff proof
+          c13Label: '递交佐证',
+          c13Title: '用户递交型参与验证的是入口与接住能力',
+          c13Body:
+            '这组 case 不证明代理的主动性，而是证明当用户已经把英文片段或回复请求交出来时，系统能立刻建立共同注意力，并把内容转成可学、可改的对象。',
+          // 2.1 Banner notification
+          c21Label: '横幅通知',
+          c21Title: '同一个旧词换了语境，值得被看见',
+          c21Body:
+            '用户没有召唤代理。在文章里读到一个昨天查过的多义词，被换了个语境用。系统用灵动岛或顶部 banner 低强度提示新用法，由用户决定是否展开。',
+          c21Chip1: '灵动岛',
+          c21Chip2: '点开展开',
+          c21Chip3: '收起',
+          c21Source: '@英语写作笔记',
+          c21Feed:
+            'Politicians like loaded questions because the answer is half-given before you speak.',
+          c21BannerLabel: 'AHA · 横幅通知',
+          c21BannerBody: "你昨天存过 'loaded' 的「装载」义；这里它是「暗藏立场」的另一种用法。",
+          // 2.2 Saved state
+          c22Label: '沉默保存',
+          c22Title: '价值存在，但现在不该打断',
+          c22Body:
+            "通勤时刷 feed，代理看到一个口语化表达和你正在练的 'gently direct' 语气邻近。打扰成本高，于是只留 marker，等今晚回访。",
+          c22Chip1: '痕迹',
+          c22Chip2: '静默保存',
+          c22Chip3: '未来回访',
+          c22Source: '@英语写作笔记',
+          c22Feed: "low-key brilliant — said the way you'd actually say it.",
+          c22AhaLabel: 'AHA · 沉默保存',
+          c22AhaBody: '留到今晚回访，不打断',
+          // 2.3 Inline learned
+          c23Label: '内联介入',
+          c23Title: '用户在键盘前犹豫时，介入贴着当前动作',
+          c23Body:
+            'Inline 不是弹窗讲知识点。系统从「输入－删除」的节奏判断用户在语气上犹豫，于是在键盘上方递候选，并附 softer / more direct 切换；采用之后，偏好被默默学下来。',
+          c23Chip1: '微素材',
+          c23Chip2: '不像我的语气',
+          c23Chip3: '不记忆',
+          c23Island: '已采用',
+          c23Bubble: "Fair point. I'd want to explore one thing first.",
+          c23AhaLabel: 'AHA · 偏好已学',
+          c23AhaBody: '语气偏好：温和直接（gently direct）',
+          // 3.1 Echo / return card
+          c31Label: '回访卡片',
+          c31Title: '下午存的英文片段，在晚上写邮件时变得有用',
+          c31Body:
+            "下午保存的 'inevitable, not loud' 当时只是 caption 余韵。晚上写邮件时，正好需要这种「安静而不容辩驳」的语气。代理把它带回，并允许「现在不要」或「别再连」。",
+          c31Chip1: '看原始上下文',
+          c31Chip2: '现在不要',
+          c31Chip3: '别再连',
+          c31Island: '下午存过 1 条',
+          c31Source: '邮件草稿',
+          c31Feed:
+            "Could you take another pass on the proposal? I'd like the value to feel ___.",
+          c31SheetLabel: 'AHA · 回响',
+          c31SheetBody: "下午存的 'inevitable, not loud' 落进这段 — 接进来？",
+          // 3.2 Morphing
+          c32Label: '变形分发',
+          c32Title: '同一英文短语，变形成当前任务需要的材料',
+          c32Body:
+            "Morphing 不按组件分类，而按生成结果分类：同一个保存的英文短语 'draw the line between X and Y'，可能在写邮件时是回复句，在作品集里是项目要点，在面试里是开场半句。",
+          c32Chip1: '生成式素材',
+          c32Chip2: '路由分发',
+          c32Chip3: '用户选形态',
+          c32AhaLabel: 'AHA · 变形',
+          c32AhaBody: 'draw the line between X and Y',
+          c32InnerChip1: '写邮件',
+          c32InnerChip2: '作品集要点',
+          c32InnerChip3: '面试开场',
+          // 3.3 Agentic action
+          c33Label: '代理任务',
+          c33Title: '高置信 Aha 触发微会话，但永远可退出',
+          c33Body:
+            "本周连续命中 5 处 'gently direct' 语气候选，代理提议跑一个 3 步微会话：读、改、存为偏好。这是分叉口，不是替你决定——任意一步都可以暂停或丢弃。",
+          c33Chip1: '微会话',
+          c33Chip2: '可暂停',
+          c33Chip3: '写回偏好',
+          c33Island: '第 2 / 3 步',
+          c33Step1: '1 · 读 5 条 gently direct 例句',
+          c33Step2: '2 · 改写一封旧邮件',
+          c33Step3: '3 · 存成你的语气偏好',
+        },
+        en: {
+          toolbarTitle: 'Agent Aha Foreground Architecture Canvas',
+          toolbarSub: 'zoomable canvas · selected language-learning cases from the full UX showcase',
+          stageKicker: '3 · selected language-learning evidence',
+          stageH1: 'Use cases that prove the Agent Aha Mode pattern',
+          g1Title: 'Case Group 1 · User Handoff',
+          g1Sub: 'The user hands an English fragment or a reply request to the agent. The focus is how a message is handed off, not the agent interrupting.',
+          g2Title: 'Case Group 2 · Context-aware Aha',
+          g2Sub: 'The agent has not been summoned, yet judges the fragment worthy of foreground; the notification form scales with Aha strength.',
+          g3Title: 'Case Group 3 · Return / Transformation',
+          g3Sub: 'An Aha is more than a reminder. It brings old fragments back, morphs them, co-creates, and routes them to action.',
+          proofNote:
+            'Reading rule: these cases are not a second taxonomy. They prove that the posture architecture on page 2 can survive concrete language-learning moments — handoff, proactive notification, inline help, saved state, return, transformation, and agentic action.',
+          // 1.1 Read with agent
+          c11Label: 'explicit handoff',
+          c11Title: 'Read with agent',
+          c11Body:
+            "While scrolling a feed, the user finds an English line that nails their portfolio draft. After a long-press handoff, the agent does not translate — it asks whether to unpack tonal weight or graft the line into the draft.",
+          c11Chip1: 'shared focal point',
+          c11Chip2: 'co-reading',
+          c11Chip3: 'low ambiguity',
+          c11Source: '@english-craft-notes',
+          c11Feed: 'I want my work to feel inevitable, not loud.',
+          c11AhaLabel: 'Read with Mimo',
+          c11AhaBody: "Unpack the weight of 'inevitable', or graft it into your draft?",
+          // 1.2 Reply candidate
+          c12Label: 'reply request',
+          c12Title: 'Reply candidate',
+          c12Body:
+            "The user is drafting an English Slack reply and stalls on the second sentence: too blunt feels wrong, too indirect feels wrong. Once handed the request, the agent offers a directly-usable candidate with tone toggles.",
+          c12Chip1: 'inline reply',
+          c12Chip2: 'tone lens',
+          c12Chip3: 'insert or dismiss',
+          c12Bubble: "I'd want to push back on this...",
+          c12InlineLabel: 'AHA · inline reply',
+          c12InlineBody: "Try: Fair point. I'd want to explore one thing first.",
+          // 1.3 Handoff proof
+          c13Label: 'handoff proof',
+          c13Title: 'User handoff proves entry and reception',
+          c13Body:
+            'This group does not prove agent initiative. It proves that once the user hands over an English fragment or a reply request, the system can immediately establish shared attention and turn the content into a learnable, editable object.',
+          // 2.1 Banner notification
+          c21Label: 'banner notification',
+          c21Title: 'A familiar word in a new register — worth surfacing',
+          c21Body:
+            "The agent was not summoned. While reading, the user meets a polysemous word saved yesterday, now used in a different register. The system surfaces the new sense via dynamic island or a top banner; the user decides whether to expand.",
+          c21Chip1: 'dynamic island',
+          c21Chip2: 'tap to expand',
+          c21Chip3: 'show less',
+          c21Source: '@english-craft-notes',
+          c21Feed:
+            'Politicians like loaded questions because the answer is half-given before you speak.',
+          c21BannerLabel: 'AHA · banner notification',
+          c21BannerBody:
+            "Yesterday you saved 'loaded' as 'weighted'; here it carries 'baked-in bias'.",
+          // 2.2 Saved state
+          c22Label: 'saved state',
+          c22Title: 'Value exists, but interruption is not worth paying',
+          c22Body:
+            "On the commute, the agent spots a casual phrasing adjacent to the user's 'gently direct' practice. Interruption cost is high, so it leaves only a marker and waits for tonight's review.",
+          c22Chip1: 'trace',
+          c22Chip2: 'silent save',
+          c22Chip3: 'future recall',
+          c22Source: '@english-craft-notes',
+          c22Feed: "low-key brilliant — said the way you'd actually say it.",
+          c22AhaLabel: 'AHA · saved state',
+          c22AhaBody: 'kept for tonight · no interruption',
+          // 2.3 Inline learned
+          c23Label: 'inline reply',
+          c23Title: 'When the user hesitates at the keyboard, intervention rides current action',
+          c23Body:
+            "Inline is not a popup lecture. From the typing-and-deleting rhythm, the system reads tone hesitation and offers a candidate above the keyboard with softer / more direct toggles; once accepted, the preference is quietly learned.",
+          c23Chip1: 'micro-asset',
+          c23Chip2: 'not my voice',
+          c23Chip3: "don't memorize",
+          c23Island: 'inserted',
+          c23Bubble: "Fair point. I'd want to explore one thing first.",
+          c23AhaLabel: 'AHA · learned',
+          c23AhaBody: 'tone preference: gently direct',
+          // 3.1 Echo / return card
+          c31Label: 'return card',
+          c31Title: 'A line saved in the afternoon becomes useful in tonight’s email',
+          c31Body:
+            "Saved at 3 pm, 'inevitable, not loud' was just an echo of a caption. At night, an email needs exactly this 'quiet, undeniable' tone. The agent brings it back, with not-now and don't-connect-again exits.",
+          c31Chip1: 'show original context',
+          c31Chip2: 'not now',
+          c31Chip3: "don't connect again",
+          c31Island: '1 from earlier',
+          c31Source: 'Email draft',
+          c31Feed:
+            "Could you take another pass on the proposal? I'd like the value to feel ___.",
+          c31SheetLabel: 'AHA · echo',
+          c31SheetBody:
+            "This afternoon's 'inevitable, not loud' fits this line — bring it in?",
+          // 3.2 Morphing
+          c32Label: 'morphing',
+          c32Title: 'The same English phrase morphs into the material the current task needs',
+          c32Body:
+            "Morphing classifies by output, not by component: the saved English phrase 'draw the line between X and Y' can be a reply line in an email, a bullet in a portfolio, or a half-line opener in an interview.",
+          c32Chip1: 'generated asset',
+          c32Chip2: 'routing',
+          c32Chip3: 'user chooses form',
+          c32AhaLabel: 'AHA · morphing',
+          c32AhaBody: 'draw the line between X and Y',
+          c32InnerChip1: 'email line',
+          c32InnerChip2: 'portfolio bullet',
+          c32InnerChip3: 'interview opener',
+          // 3.3 Agentic action
+          c33Label: 'agentic action',
+          c33Title: 'A high-confidence Aha opens a micro-session, with exits',
+          c33Body:
+            "This week the agent caught 5 'gently direct' tone candidates. It proposes a 3-step micro-session: read, rewrite, save as a preference. This is a fork — not a decision — and any step can be paused or dropped.",
+          c33Chip1: 'micro-session',
+          c33Chip2: 'pause',
+          c33Chip3: 'write back',
+          c33Island: 'step 2 / 3',
+          c33Step1: '1 · read 5 gently direct samples',
+          c33Step2: '2 · rewrite an old email',
+          c33Step3: '3 · save as your tone preference',
+        },
+      };
+
+      function applyI18n(lang) {
+        const dict = i18n[lang] || i18n.zh;
+        document.body.dataset.lang = lang;
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.getAttribute('data-i18n');
+          if (key && dict[key] !== undefined) {
+            el.textContent = dict[key];
+          }
+        });
+      }
+
+      function readLangParam() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('lang') === 'en' ? 'en' : 'zh';
+      }
+
+      applyI18n(readLangParam());
+
+      window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'set-lang') {
+          applyI18n(event.data.lang === 'en' ? 'en' : 'zh');
+        }
+      });
+    </script>
 
     <script>
       const viewport = document.querySelector('[data-case-canvas]');
