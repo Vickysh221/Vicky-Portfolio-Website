@@ -21,3 +21,24 @@ test('personal os case study is wired into the H5 content renderer', () => {
   assert.match(meta, /PERSONAL_OS_CASE_STUDY_ROUTE = '\/agentic-design-development\/personal-os'/);
   assert.match(meta, /slideIndex >= 0 && slideIndex < PERSONAL_OS_CASE_STUDY_PAGE_COUNT/);
 });
+
+test('personal os doctrine page renders a terminal highlight after the first paragraph', () => {
+  const caseStudy = read('src/pages/PersonalOSCaseStudy.tsx');
+
+  // The schema has an opt-in terminalHighlight slot…
+  assert.match(caseStudy, /terminalHighlight\?: TerminalHighlightContent;/);
+  // …and the doctrine page (slide 0) opts in with the canonical phrase.
+  assert.match(
+    caseStudy,
+    /terminalHighlight: \{[\s\S]*?body: t\(\s*'right aspects of memory × right aspects of agents'/,
+  );
+
+  // A dedicated TerminalHighlight component renders the highlight chrome.
+  assert.match(caseStudy, /function TerminalHighlight\(\{/);
+  assert.match(caseStudy, /data-personal-os-terminal/);
+
+  // IntroReveal splits mainCopy at the first \n\n and inserts the highlight between
+  // the doctrine paragraph and the rest of the body copy.
+  assert.match(caseStudy, /splitIndex = fullCopy\.indexOf\('\\n\\n'\)/);
+  assert.match(caseStudy, /<TerminalHighlight\s+highlight=\{page\.terminalHighlight\}/);
+});
