@@ -119,24 +119,9 @@ export function getPhoenixKeyPagesSlide01Sections(accentColor: string): SectionD
             <div style={eyebrowStyle()}>CASE STUDY · /web-design-develop/key-pages</div>
             <div style={leadTitleStyle()}>Phoenix AI 试装平台的核心页面与任务流设计</div>
             <p style={{ ...paragraphStyle(), marginTop: '10px' }}>
-              这个项目围绕“上传空间图像 - 选择生成策略 - 等待异步任务 - 回到可编辑结果”展开。我将产品关键页面拆成三段：产品 demo、
-              图生图主流程关键页，以及后台个人中心 / API 管理，用来展示前台生成体验和后台资产管理如何被统一设计。
+              这个项目围绕”上传空间图像 - 选择生成策略 - 等待异步任务 - 回到可编辑结果”展开。我将产品关键页面拆成三段：图生图主流程关键页、
+              后台个人中心 / API 管理，以及产品 demo，用来展示前台生成体验和后台资产管理如何被统一设计。
             </p>
-          </div>
-
-          <h2 style={h2Style(accentColor)}>Virtual Staging 产品 Demo</h2>
-          <p style={paragraphStyle()}>
-            Demo 页展示的是 Phoenix 在真实空间图上的生成与替换能力：左侧保留大画布作为主任务空间，右侧使用阶段式面板承载风格、家具和局部编辑，
-            保持每一步操作都不脱离当前结果语境。
-          </p>
-          <div style={mediaBlockStyle()}>
-            <VideoWithStatus
-              src={phoenixDemoVideo}
-              style={imageStyle(accentColor)}
-              controls
-              playsInline
-              title="Virtual Staging 产品 demo"
-            />
           </div>
 
           <h2 style={h2Style(accentColor)}>浅色版网页开发探索</h2>
@@ -201,7 +186,7 @@ export function getPhoenixKeyPagesSlide01Sections(accentColor: string): SectionD
       blocks: [
         <>
           <p style={paragraphStyle()}>
-            后台部分承担的是账户资产与接口能力管理。这里的设计重点不是“更炫”，而是让企业客户能清楚管理密钥、积分和素材状态，
+            后台部分承担的是账户资产与接口能力管理。这里的设计重点不是”更炫”，而是让企业客户能清楚管理密钥、积分和素材状态，
             形成可部署、可维护的 SaaS 工作台。
           </p>
           <div style={imageGridStyle()}>
@@ -212,6 +197,44 @@ export function getPhoenixKeyPagesSlide01Sections(accentColor: string): SectionD
                 <p style={captionStyle()}>{item.note}</p>
               </div>
             ))}
+          </div>
+        </>,
+      ],
+    },
+    {
+      id: 'phoenix-virtual-staging-demo',
+      numeral: '04',
+      title: 'Virtual Staging 产品 Demo',
+      blocks: [
+        <>
+          <p style={paragraphStyle()}>
+            Demo 页展示的是 Phoenix 在真实空间图上的生成与替换能力：左侧保留大画布作为主任务空间，右侧使用阶段式面板承载风格、家具和局部编辑，
+            保持每一步操作都不脱离当前结果语境。
+          </p>
+          <div style={mediaBlockStyle()}>
+            <VideoWithStatus
+              src={phoenixDemoVideo}
+              style={imageStyle(accentColor)}
+              controls
+              playsInline
+              title="Virtual Staging 产品 demo"
+            />
+          </div>
+          <div style={{
+            width: '100%',
+            height: '640px',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            border: `1px solid ${accentColor}33`,
+            marginTop: '16px',
+            background: '#0a0806',
+          }}>
+            <iframe
+              src="https://onion-twirl-13449336.figma.site/"
+              title="Phoenix Virtual Staging 产品演示"
+              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+              allow="fullscreen"
+            />
           </div>
         </>,
       ],
