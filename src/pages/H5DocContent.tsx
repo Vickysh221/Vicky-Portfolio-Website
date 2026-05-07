@@ -32,6 +32,7 @@ import { getPhoenixFuliPlusSlide07Sections } from './H5DocContentPhoenixFuliPlus
 import { getPersonalSimbiocitySlide01Sections } from './H5DocContentPersonalSimbiocitySlide01';
 import { getPersonalFortniteDemoSlide01Sections } from './H5DocContentPersonalFortniteDemoSlide01';
 import { getPersonalCompanionsSlideSections } from './H5DocContentPersonalCompanions';
+import { getMusicPodcastSlide01Sections } from './H5DocContentMusicPodcastSlide01';
 import { getPersonalLanguageDiarySlide01Sections } from './H5DocContentPersonalLanguageDiarySlide01';
 import { getPersonalLanguageDiarySlide02Sections } from './H5DocContentPersonalLanguageDiarySlide02';
 import { getPersonalLanguageDiarySlide03Sections } from './H5DocContentPersonalLanguageDiarySlide03';
@@ -131,6 +132,7 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 
   '/academic-gamification/simbiocity:0': getPersonalSimbiocitySlide01Sections,
   '/academic-gamification/fortnite-demo:0': getPersonalFortniteDemoSlide01Sections,
+  '/agentic-design-development/music-podcast:0': getMusicPodcastSlide01Sections,
   '/agentic-design-development/language-diary:0': getPersonalLanguageDiarySlide01Sections,
   '/agentic-design-development/language-diary:1': getPersonalLanguageDiarySlide02Sections,
   '/agentic-design-development/language-diary:2': getPersonalLanguageDiarySlide03Sections,

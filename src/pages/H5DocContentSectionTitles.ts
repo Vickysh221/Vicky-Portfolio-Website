@@ -131,3 +131,21 @@ export const MAP_3D_SLIDE02_SECTION_DEFINITIONS = {
     title: createLocalizedTitle('封闭 / 弱图空间下的显示关系', 'Display Priority in Closed or Weak-Map Spaces'),
   },
 } as const satisfies Record<string, LocalizedSectionDefinition>;
+
+export const MUSIC_PODCAST_SECTION_DEFINITIONS = {
+  origin: {
+    id: 'music-podcast-origin',
+    numeral: '01',
+    title: createLocalizedTitle('起因 · 我想要的是血缘，不是相似', 'Origin · I wanted bloodlines, not similarity'),
+  },
+  demos: {
+    id: 'music-podcast-demos',
+    numeral: '02',
+    title: createLocalizedTitle('两期播客 · 贝斯手的故事与双主角', "Two Episodes · The Bassist's Story & Dual Protagonists"),
+  },
+  shuffle: {
+    id: 'music-podcast-shuffle',
+    numeral: '03',
+    title: createLocalizedTitle('Music Shuffle · 曲目全览', 'Music Shuffle · Full Playlist'),
+  },
+} as const satisfies Record<string, LocalizedSectionDefinition>;

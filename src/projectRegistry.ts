@@ -121,6 +121,11 @@ export const PROJECTS: ProjectEntry[] = [
         label: { zh: 'personal OS 的探索进行时', en: 'Personal OS: An Ongoing Exploration' },
         numeral: 'VIII',
       },
+      {
+        route: '/agentic-design-development/music-podcast',
+        label: { zh: '我的音乐播客 · 血缘不是相似', en: 'My Music Podcast · Bloodlines, Not Similarity' },
+        numeral: 'IX',
+      },
     ],
   },
   {
