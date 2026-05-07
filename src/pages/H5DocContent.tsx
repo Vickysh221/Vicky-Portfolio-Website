@@ -53,6 +53,7 @@ import {
 import { resolveSectionTitle, type RenderableSectionTitle, type SectionShape } from '../i18n/sectionBuilders.ts';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
 import AiInteriorSystemCaseStudy, { hasAiInteriorSystemCaseStudy } from './AiInteriorSystemCaseStudy';
+import PhoenixKeyPagesDemoSlide, { isPhoenixKeyPagesDemoSlide, PHOENIX_DEMO_IFRAME_URL } from './H5DocContentPhoenixKeyPagesDemoSlide';
 import FuliPlusCaseStudy, { hasFuliPlusCaseStudy } from './FuliPlusCaseStudy';
 import PersonalOSCaseStudy from './PersonalOSCaseStudy';
 import { hasPersonalOsCaseStudy } from './personalOsCaseStudyMeta.ts';
@@ -107,7 +108,7 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 
   '/web-design-develop/overview:0': getPhoenixOverviewSlide01Sections,
   '/web-design-develop/component-framework:0': getPhoenixComponentFrameworkSlide01Sections,
-  '/web-design-develop/key-pages:0': getPhoenixKeyPagesSlide01Sections,
+  '/web-design-develop/key-pages:1': getPhoenixKeyPagesSlide01Sections,
   '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
   '/web-design-develop/semantic-system:1': getPhoenixSemanticSystemSlide02Sections,
   '/web-design-develop/semantic-system:2': getPhoenixSemanticSystemSlide03Sections,
@@ -147,12 +148,22 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
 };
 
 export function hasSectionContent(route: string, slideIndex = 0): boolean {
+  if (isPhoenixKeyPagesDemoSlide(route, slideIndex)) return true;
   if (hasPersonalOsCaseStudy(route, slideIndex)) return true;
   if (hasSharedMemoryAhaCaseStudy(route, slideIndex)) return true;
   if (hasAiInteriorSystemCaseStudy(route, slideIndex)) return true;
   if (hasFuliPlusCaseStudy(route, slideIndex)) return true;
   if (route === '/academic-gamification/companions' && slideIndex >= 0 && slideIndex < 2) return true;
   return `${route}:${slideIndex}` in sectionMap;
+}
+
+export function isAutoExpandSlide(route: string, slideIndex: number): boolean {
+  return isPhoenixKeyPagesDemoSlide(route, slideIndex);
+}
+
+export function getAutoExpandIframeUrl(route: string, slideIndex: number): string | null {
+  if (isPhoenixKeyPagesDemoSlide(route, slideIndex)) return PHOENIX_DEMO_IFRAME_URL;
+  return null;
 }
 
 function H5Section({ section, accentColor }: { section: RenderableSectionData; accentColor: string }) {
@@ -180,6 +191,10 @@ export default function H5DocContent({
   enableNarrativeMotion,
   shouldPlayMedia,
 }: H5DocContentProps) {
+  if (isPhoenixKeyPagesDemoSlide(route, slideIndex)) {
+    return <PhoenixKeyPagesDemoSlide accentColor={accentColor} />;
+  }
+
   if (hasPersonalOsCaseStudy(route, slideIndex)) {
     return (
       <PersonalOSCaseStudy

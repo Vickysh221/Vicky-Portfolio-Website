@@ -5,7 +5,7 @@ import ChapterArrowButton from '../components/ChapterArrowButton';
 import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
 import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus';
-import H5DocContent, { hasSectionContent } from './H5DocContent';
+import H5DocContent, { hasSectionContent, isAutoExpandSlide, getAutoExpandIframeUrl } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
 import { useI18n } from '../i18n/LanguageProvider.tsx';
@@ -514,6 +514,7 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
     setActiveIndex(nextIndex);
   }, [count, location.state, route]);
 
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
@@ -606,6 +607,78 @@ export default function SubPageCarousel({ route, accentColor, count }: Props) {
       </div>
     </>
   );
+
+  // ── Fullpage iframe overlay (non-mobile, auto-expand slides) ──
+  const iframeUrl = getAutoExpandIframeUrl(route, activeIndex);
+  if (!isMobile && iframeUrl) {
+    const pad = 'clamp(20px, 3vw, 48px)';
+    return createPortal(
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: 'rgba(5,4,3,0.97)',
+          backdropFilter: 'blur(8px)',
+          padding: pad,
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0',
+        }}
+      >
+        {/* Top bar */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '14px',
+            flexShrink: 0,
+          }}
+        >
+          <BackButton onClick={handleBack} label={getLiveChromeCopy(language).back} />
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {Array.from({ length: count }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  background: i === activeIndex ? accentColor : 'rgba(200,169,110,0.2)',
+                  transition: 'background 0.3s, transform 0.3s',
+                  transform: i === activeIndex ? 'scale(1.3)' : 'scale(1)',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        {/* iframe */}
+        <div
+          style={{
+            flex: 1,
+            borderRadius: '12px',
+            overflow: 'hidden',
+            border: `1px solid ${accentColor}22`,
+            background: '#050403',
+          }}
+        >
+          <iframe
+            src={iframeUrl}
+            title="Product demo"
+            allow="fullscreen"
+            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+          />
+        </div>
+      </div>,
+      document.body,
+    );
+  }
 
   // ── Mobile mode: fullscreen single slide, no 3D ──
   if (isMobile) {

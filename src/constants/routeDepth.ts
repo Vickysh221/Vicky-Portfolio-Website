@@ -16,10 +16,13 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/web-design-develop/fuli-plus": -13000,
   "/agentic-design-development": -14000,
   "/agentic-design-development/language-diary": -15000,
+  "/agentic-design-development/aha-moment": -15300,
+  "/agentic-design-development/personal-os": -15600,
   "/agentic-design-development/simo-agent-system": -16000,
   "/agentic-design-development/fuli-plus": -16500,
   "/agentic-design-development/ai-interior-system": -16750,
   "/academic-gamification": -17000,
+  "/academic-gamification/companions": -17500,
   "/academic-gamification/simbiocity": -18000,
   "/academic-gamification/fortnite-demo": -19000,
 };
@@ -35,15 +38,18 @@ export const SLIDE_COUNTS: Record<string, number> = {
 
   '/web-design-develop/overview': 1,
   '/web-design-develop/component-framework': 1,
-  '/web-design-develop/key-pages': 1,
+  '/web-design-develop/key-pages': 2,
   '/web-design-develop/semantic-system': 1,
   '/web-design-develop/fuli-plus': 2,
 
   '/agentic-design-development/language-diary': 5,
+  '/agentic-design-development/aha-moment': 3,
+  '/agentic-design-development/personal-os': 3,
   '/agentic-design-development/simo-agent-system': 1,
   '/agentic-design-development/fuli-plus': 2,
   '/agentic-design-development/ai-interior-system': 2,
 
+  '/academic-gamification/companions': 2,
   '/academic-gamification/simbiocity': 1,
   '/academic-gamification/fortnite-demo': 1,
 };
@@ -210,6 +216,22 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: "/agentic-design-development",
     color: "#8b7db5",
   },
+  "/agentic-design-development/aha-moment": {
+    title: "共享记忆驱动的语言学习 Aha 时刻",
+    subtitle: "Agentic Design & Development · Shared Memory",
+    year: "2025",
+    desc: "Shared-memory architecture enabling agents to surface high-value language moments at the right time — from user handoff to context-aware intervention and return.",
+    parent: "/agentic-design-development",
+    color: "#8b7db5",
+  },
+  "/agentic-design-development/personal-os": {
+    title: "personal OS 的探索进行时",
+    subtitle: "Agentic Design & Development · Personal OS",
+    year: "2025",
+    desc: "Personal OS as an identity-slice coordination mechanism: right aspects of memory × right aspects of agents, explored through two skills — judgment and write-back.",
+    parent: "/agentic-design-development",
+    color: "#8b7db5",
+  },
   "/agentic-design-development/simo-agent-system": {
     title: "SIMO Agent System 概念设计",
     subtitle: "JIDU 4.0 · Agent Platform Concept",
@@ -246,6 +268,14 @@ export const PAGE_META: Record<string, PageMeta> = {
       { route: "/academic-gamification/simbiocity", label: "Simbiocity", numeral: "I" },
       { route: "/academic-gamification/fortnite-demo", label: "Fortnite Demo", numeral: "II" },
     ],
+  },
+  "/academic-gamification/companions": {
+    title: "进入伙伴们的音乐世界吧",
+    subtitle: "Academic Works of Gamification · Interactive Experience",
+    year: "2024",
+    desc: "A gamified spatial experience where music becomes a relationship you walk into — not listening from outside, but meeting others from within.",
+    parent: "/academic-gamification",
+    color: "#6f8f92",
   },
   "/academic-gamification/simbiocity": {
     title: "Simbiocity",
