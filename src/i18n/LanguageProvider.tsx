@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_STORAGE_KEY,
+  normalizeLocalizedText,
   pickLocalizedText,
   resolveInitialLanguage,
 } from './localization.ts';
@@ -11,7 +12,7 @@ interface LanguageContextValue {
   language: Language;
   setLanguage: (next: Language) => void;
   toggleLanguage: () => void;
-  text: (value: LocalizedText) => string;
+  text: (value: string | LocalizedText) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -30,7 +31,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       language,
       setLanguage,
       toggleLanguage: () => setLanguage((current) => (current === 'zh' ? 'en' : 'zh')),
-      text: (localized) => pickLocalizedText(localized, language),
+      text: (localized) => pickLocalizedText(normalizeLocalizedText(localized), language),
     }),
     [language],
   );

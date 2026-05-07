@@ -5,7 +5,7 @@ import ChapterArrowButton from '../components/ChapterArrowButton';
 import { getAdjacentChapterSlideTarget } from '../constants/chapterNavigation';
 import { PAGE_META } from '../constants/routeDepth';
 import { buildHomeFocusState, isProjectRootRoute } from '../navigation/homeFocus';
-import H5DocContent, { hasSectionContent, isAutoExpandSlide, getAutoExpandIframeUrl } from './H5DocContent';
+import H5DocContent, { hasSectionContent, getAutoExpandIframeUrl } from './H5DocContent';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useFullscreenHint } from '../hooks/useFullscreenHint';
 import { useI18n } from '../i18n/LanguageProvider.tsx';

@@ -65,6 +65,7 @@ export interface PageMeta {
   desc: string;
   parent: string | null;
   color: string;
+  inlineChildRoute?: string;
   subPages?: { route: string; label: string; numeral: string; disabled?: boolean }[];
 }
 
