@@ -66,7 +66,7 @@ export default function HomeSceneOverlay({
     const preloadMediaList = (mediaList: SubPagePreviewMedia[]) => {
       mediaList.forEach((media) => {
         if (media.type === 'image') {
-          if (imagePreloads.has(media.src)) return;
+          if (!media.src || imagePreloads.has(media.src)) return;
           const image = new Image();
           image.decoding = 'async';
           image.src = media.src;
@@ -81,7 +81,7 @@ export default function HomeSceneOverlay({
           imagePreloads.set(media.poster, poster);
         }
 
-        if (videoPreloads.has(media.src)) return;
+        if (!media.src || videoPreloads.has(media.src)) return;
         const video = document.createElement('video');
         video.preload = 'metadata';
         video.muted = true;
