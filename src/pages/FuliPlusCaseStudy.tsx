@@ -1975,8 +1975,6 @@ export function hasFuliPlusCaseStudy(route: string, slideIndex = 0): boolean {
 function getFuliPlusCaseStudyPageIndex(route: string, slideIndex: number): number | null {
   if (route === '/agentic-design-development/fuli-plus') return slideIndex;
 
-  if (route === '/web-design-develop/fuli-plus') return slideIndex;
-
   return null;
 }
 

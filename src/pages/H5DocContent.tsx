@@ -114,13 +114,6 @@ const sectionMap: Record<string, (accentColor: string) => RenderableSectionData[
   '/web-design-develop/semantic-system:0': getPhoenixSemanticSystemSlide01Sections,
   '/web-design-develop/semantic-system:1': getPhoenixSemanticSystemSlide02Sections,
   '/web-design-develop/semantic-system:2': getPhoenixSemanticSystemSlide03Sections,
-  '/web-design-develop/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
-  '/web-design-develop/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,
-  '/web-design-develop/fuli-plus:2': getPhoenixFuliPlusSlide03Sections,
-  '/web-design-develop/fuli-plus:3': getPhoenixFuliPlusSlide04Sections,
-  '/web-design-develop/fuli-plus:4': getPhoenixFuliPlusSlide05Sections,
-  '/web-design-develop/fuli-plus:5': getPhoenixFuliPlusSlide06Sections,
-  '/web-design-develop/fuli-plus:6': getPhoenixFuliPlusSlide07Sections,
 
   '/agentic-design-development/fuli-plus:0': getPhoenixFuliPlusSlide01Sections,
   '/agentic-design-development/fuli-plus:1': getPhoenixFuliPlusSlide02Sections,

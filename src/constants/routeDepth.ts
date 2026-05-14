@@ -13,7 +13,6 @@ export const ROUTE_DEPTH: Record<string, number> = {
   "/web-design-develop/component-framework": -10000,
   "/web-design-develop/key-pages": -11000,
   "/web-design-develop/semantic-system": -12000,
-  "/web-design-develop/fuli-plus": -13000,
   "/agentic-design-development": -14000,
   "/agentic-design-development/music-podcast": -14500,
   "/agentic-design-development/language-diary": -15000,
@@ -41,14 +40,13 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/web-design-develop/component-framework': 1,
   '/web-design-develop/key-pages': 2,
   '/web-design-develop/semantic-system': 1,
-  '/web-design-develop/fuli-plus': 2,
 
   '/agentic-design-development/music-podcast': 2,
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/aha-moment': 3,
   '/agentic-design-development/personal-os': 3,
-  '/agentic-design-development/simo-agent-system': 1,
-  '/agentic-design-development/fuli-plus': 2,
+  '/agentic-design-development/simo-agent-system': 2,
+  '/agentic-design-development/fuli-plus': 12,
   '/agentic-design-development/ai-interior-system': 2,
 
   '/academic-gamification/companions': 2,
@@ -189,15 +187,6 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: "/web-design-develop",
     color: "#7a9e8e",
   },
-  "/web-design-develop/fuli-plus": {
-    title: "Fuli+ Agent",
-    subtitle: "Agentic Design & Development · AI Agent",
-    year: "2025",
-    desc: "Conversational agent decomposing carpet design intent (style, color, pattern) into structured generation parameters via multi-turn slot-based NLU dialogue.",
-    parent: "/agentic-design-development",
-    color: "#8b7db5",
-  },
-
   "/agentic-design-development": {
     title: "My String Figure Player - Being with AI",
     subtitle: "AI Agent Product Design · Prototyping",
