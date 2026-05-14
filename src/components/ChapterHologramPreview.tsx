@@ -214,7 +214,7 @@ export default function ChapterHologramPreview({
                 }}
               />
             )
-          ) : previewMedia ? (
+          ) : previewMedia?.type === 'image' ? (
             <img
               src={previewMedia.src}
               alt=""
@@ -225,6 +225,81 @@ export default function ChapterHologramPreview({
                 filter: 'saturate(0.9) contrast(1.05)',
               }}
             />
+          ) : previewMedia?.type === 'terminal' ? (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                padding: '28px 14px 52px',
+                boxSizing: 'border-box',
+                fontFamily: "'SF Mono', 'JetBrains Mono', 'Menlo', 'Courier New', monospace",
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage: `radial-gradient(circle, ${hexWithAlpha(accent, 0.1)} 1px, transparent 1px)`,
+                  backgroundSize: '14px 14px',
+                  backgroundPosition: '7px 7px',
+                }}
+              />
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <div
+                  style={{
+                    color: hexWithAlpha(accent, 0.52),
+                    fontSize: 8.5,
+                    letterSpacing: '0.14em',
+                    marginBottom: 5,
+                  }}
+                >
+                  ~/personal-os
+                </div>
+                <div
+                  style={{
+                    height: 1,
+                    background: `linear-gradient(90deg, ${hexWithAlpha(accent, 0.3)}, transparent)`,
+                    marginBottom: 16,
+                  }}
+                />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span
+                    style={{
+                      color: hexWithAlpha(accent, 0.42),
+                      fontSize: 10,
+                      marginRight: 8,
+                    }}
+                  >
+                    $
+                  </span>
+                  <span
+                    style={{
+                      color: '#e8e0d0',
+                      fontSize: 22,
+                      fontWeight: 300,
+                      letterSpacing: '0.04em',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {previewMedia.terminalText}
+                  </span>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 2,
+                      height: 18,
+                      background: accent,
+                      marginLeft: 3,
+                      verticalAlign: 'middle',
+                      animation: 'chapter-holo-cursor-blink 1.1s ease-in-out infinite',
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           ) : (
             <div
               style={{

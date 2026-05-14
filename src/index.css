@@ -450,6 +450,17 @@
   }
 }
 
+@keyframes chapter-holo-cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes chapter-terminal-caret {
   0%,
   49% {

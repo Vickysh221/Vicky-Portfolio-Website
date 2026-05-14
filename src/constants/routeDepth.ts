@@ -43,7 +43,7 @@ export const SLIDE_COUNTS: Record<string, number> = {
   '/web-design-develop/semantic-system': 1,
   '/web-design-develop/fuli-plus': 2,
 
-  '/agentic-design-development/music-podcast': 1,
+  '/agentic-design-development/music-podcast': 2,
   '/agentic-design-development/language-diary': 5,
   '/agentic-design-development/aha-moment': 3,
   '/agentic-design-development/personal-os': 3,
@@ -206,14 +206,14 @@ export const PAGE_META: Record<string, PageMeta> = {
     parent: null,
     color: "#8b7db5",
     subPages: [
-      { route: "/agentic-design-development/music-podcast", label: "我的音乐播客 · 血缘不是相似", numeral: "I" },
+      { route: "/agentic-design-development/music-podcast", label: "基于关联的私人音乐播客平台", numeral: "I" },
       { route: "/agentic-design-development/language-diary", label: "A Ritual of Expression - 语言学习陪伴多智能体系统", numeral: "II" },
       { route: "/agentic-design-development/simo-agent-system", label: "SIMO Agent System 概念设计", numeral: "III" },
       { route: "/agentic-design-development/fuli-plus", label: "Fuli+ Agent", numeral: "IV" },
     ],
   },
   "/agentic-design-development/music-podcast": {
-    title: "我的音乐播客 · 血缘不是相似",
+    title: "基于关联的私人音乐播客平台",
     subtitle: "Agentic Design & Development · Personal Music",
     year: "2025",
     desc: "I asked AI to read my thousands of favorited songs and generate a podcast about the musical lineage of any track. Not 'similar songs' — but who influenced whom, what motifs traveled, and where the bloodlines lead.",

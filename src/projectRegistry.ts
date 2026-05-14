@@ -20,9 +20,10 @@ const gesturePreview = new URL('./images/covers/thumbs/cover-gesture.jpg', impor
 const interiorPreview = new URL('./images/covers/thumbs/cover-interior.jpg', import.meta.url).href;
 
 export interface SubPagePreviewMedia {
-  src: string;
-  type: 'image' | 'video';
+  src?: string;
+  type: 'image' | 'video' | 'terminal';
   poster?: string;
+  terminalText?: string;
 }
 
 export interface SubPage {
@@ -120,11 +121,13 @@ export const PROJECTS: ProjectEntry[] = [
         route: '/agentic-design-development/personal-os',
         label: { zh: 'personal OS 的探索进行时', en: 'Personal OS: An Ongoing Exploration' },
         numeral: 'VIII',
+        previewMedia: { type: 'terminal', terminalText: 'personalOS' },
       },
       {
         route: '/agentic-design-development/music-podcast',
-        label: { zh: '我的音乐播客 · 血缘不是相似', en: 'My Music Podcast · Bloodlines, Not Similarity' },
+        label: { zh: '基于关联的私人音乐播客平台', en: 'A Private Music Podcast Platform Built on Associations' },
         numeral: 'IX',
+        previewMedia: { type: 'image', src: '/music-podcast/musicPOD.png' },
       },
     ],
   },

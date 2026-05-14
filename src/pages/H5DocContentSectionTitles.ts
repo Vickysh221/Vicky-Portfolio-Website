@@ -148,4 +148,9 @@ export const MUSIC_PODCAST_SECTION_DEFINITIONS = {
     numeral: '03',
     title: createLocalizedTitle('Music Shuffle · 曲目全览', 'Music Shuffle · Full Playlist'),
   },
+  explorationProcess: {
+    id: 'music-podcast-exploration-process',
+    numeral: '01',
+    title: createLocalizedTitle('探索过程', 'Exploration Process'),
+  },
 } as const satisfies Record<string, LocalizedSectionDefinition>;
